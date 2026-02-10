@@ -1,0 +1,30 @@
+diff --git a/dist/index.js b/dist/index.js
+index 8818f882151347c07c1168deb7231f102c835082..653e6bb1c9af8c3d8430117b7d2b8d0988c99ecb 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -1447,6 +1447,10 @@ function getElementPath(target, maxDepth = 4) {
+   while (current && depth < maxDepth) {
+     const tag = current.tagName.toLowerCase();
+     if (tag === "html" || tag === "body") break;
++    if (tag.includes("next") || tag.includes("segment") || tag.includes("layout") || tag.includes("boundary")) {
++      current = getParentElement(current);
++      continue;
++    }
+     let identifier = tag;
+     if (current.id) {
+       identifier = `#${current.id}`;
+diff --git a/dist/index.mjs b/dist/index.mjs
+index 93218df29195de24589bd40eb609f5b643d819dc..b05004cf9519fcdd506395a72fb77359b7ae8835 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -1374,6 +1374,10 @@ function getElementPath(target, maxDepth = 4) {
+   while (current && depth < maxDepth) {
+     const tag = current.tagName.toLowerCase();
+     if (tag === "html" || tag === "body") break;
++    if (tag.includes("next") || tag.includes("segment") || tag.includes("layout") || tag.includes("boundary")) {
++      current = getParentElement(current);
++      continue;
++    }
+     let identifier = tag;
+     if (current.id) {
+       identifier = `#${current.id}`;

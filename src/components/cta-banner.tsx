@@ -1,0 +1,29 @@
+import Image from "next/image";
+import ArrowRight from "@/images/arrow-right.svg";
+
+export function CTABanner() {
+  return (
+    <section className="relative h-[302px] overflow-hidden">
+      <div className="absolute inset-0">
+        <Image src="/images/cta-bg.png" alt="" fill className="object-cover" />
+        <div className="absolute inset-0 bg-white/60" />
+      </div>
+
+      <div className="relative max-w-[1280px] mx-auto h-full flex items-center justify-between">
+        <h2 className="text-[48px] font-medium leading-none tracking-[-1px] text-heading">
+          Unlock Your AI Potential Today
+        </h2>
+
+        <a
+          href="#"
+          className="bg-black text-white rounded-sm px-[30px] py-4 flex items-center gap-3"
+        >
+          <span className="font-mono text-sm font-medium tracking-[1.2px] uppercase leading-4">
+            Start Building
+          </span>
+          <ArrowRight className="size-4" />
+        </a>
+      </div>
+    </section>
+  );
+}
