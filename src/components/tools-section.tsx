@@ -128,8 +128,8 @@ function ProviderCard({ card }: { card: ProviderCard }) {
 
   return (
     <div
-      className={`relative h-[320px] overflow-hidden rounded-lg p-6 flex flex-col justify-between ${
-        isLarge ? "w-[632px]" : "w-[308px]"
+      className={`relative h-[320px] overflow-hidden rounded-lg p-6 flex flex-col justify-between shrink-0 ${
+        isLarge ? "flex-[2]" : "flex-1"
       }`}
     >
       {/* Background image(s) */}
@@ -209,30 +209,30 @@ export function ToolsSection() {
       </div>
 
       {/* Cards area — wider than page, centered */}
-      <div className="max-w-[1675px] mx-auto flex flex-col gap-[18px]">
+      <div className="max-w-[1604px] mx-auto flex flex-col gap-[18px] px-10">
         {/* Provider Row 1 */}
-        <div className="flex gap-4 justify-center">
+        <div className="flex gap-4">
           {providerRow1.map((card) => (
             <ProviderCard key={card.name} card={card} />
           ))}
         </div>
 
         {/* Provider Row 2 */}
-        <div className="flex gap-4 justify-center">
+        <div className="flex gap-4">
           {providerRow2.map((card) => (
             <ProviderCard key={card.name} card={card} />
           ))}
         </div>
 
         {/* Category Row 1 */}
-        <div className="flex gap-4 justify-center">
+        <div className="flex gap-4">
           {categoryRow1.map((cat) => (
             <CategoryCard key={cat.name} category={cat} />
           ))}
         </div>
 
         {/* Category Row 2 */}
-        <div className="flex gap-4 justify-center">
+        <div className="flex gap-4">
           {categoryRow2.map((cat) => (
             <CategoryCard key={cat.name + "2"} category={cat} />
           ))}
