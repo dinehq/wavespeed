@@ -103,20 +103,75 @@ const providerRow2 = [
 ];
 
 const categoryRow1 = [
-  { name: "Best Open Source Video Models", count: "30 models", bg: "/images/tools-cat-video.png", dark: true },
-  { name: "Best Open Source Image Models", count: "30 models", bg: "/images/tools-cat-image.png", dark: false },
-  { name: "Swap Anything", count: "22 models", bg: "/images/tools-cat-swap.png", dark: false },
-  { name: "Audio for Video", count: "3 models", bg: "/images/tools-cat-audio.png", dark: false },
-  { name: "Video Edit", count: "3 models", bg: "/images/tools-cat-edit.png", dark: false },
+  {
+    name: "Best Open Source Video Models",
+    count: "30 models",
+    bg: "/images/tools-cat-video.png",
+    dark: true,
+  },
+  {
+    name: "Best Open Source Image Models",
+    count: "30 models",
+    bg: "/images/tools-cat-image.png",
+    dark: false,
+  },
+  {
+    name: "Swap Anything",
+    count: "22 models",
+    bg: "/images/tools-cat-swap.png",
+    dark: false,
+  },
+  {
+    name: "Audio for Video",
+    count: "3 models",
+    bg: "/images/tools-cat-audio.png",
+    dark: false,
+  },
+  {
+    name: "Video Edit",
+    count: "3 models",
+    bg: "/images/tools-cat-edit.png",
+    dark: false,
+  },
 ];
 
 const categoryRow2 = [
-  { name: "Best Open Source Video Models", count: "30 models", bg: "/images/tools-cat-video2.png", dark: true },
-  { name: "Generate Music", count: "30 models", bg: "/images/tools-cat-music.png", dark: false },
-  { name: "Ultra Selection", count: "22 models", bg: "/images/tools-cat-ultra.png", dark: false },
-  { name: "Remove Anything", count: "3 models", bg: "/images/tools-cat-remove.png", dark: false },
-  { name: "3D Creation", count: "3 models", bg: "/images/tools-cat-3d.png", dark: false },
-  { name: "Training Tools", count: "3 models", bg: "/images/tools-cat-training.png", dark: false },
+  {
+    name: "Best Open Source Video Models",
+    count: "30 models",
+    bg: "/images/tools-cat-video2.png",
+    dark: true,
+  },
+  {
+    name: "Generate Music",
+    count: "30 models",
+    bg: "/images/tools-cat-music.png",
+    dark: false,
+  },
+  {
+    name: "Ultra Selection",
+    count: "22 models",
+    bg: "/images/tools-cat-ultra.png",
+    dark: false,
+  },
+  {
+    name: "Remove Anything",
+    count: "3 models",
+    bg: "/images/tools-cat-remove.png",
+    dark: false,
+  },
+  {
+    name: "3D Creation",
+    count: "3 models",
+    bg: "/images/tools-cat-3d.png",
+    dark: false,
+  },
+  {
+    name: "Training Tools",
+    count: "3 models",
+    bg: "/images/tools-cat-training.png",
+    dark: false,
+  },
 ];
 
 type ProviderCard = (typeof providerRow1)[number];
@@ -128,7 +183,7 @@ function ProviderCard({ card }: { card: ProviderCard }) {
 
   return (
     <div
-      className={`relative h-[320px] overflow-hidden rounded-lg p-6 flex flex-col justify-between shrink-0 ${
+      className={`relative h-[320px] overflow-hidden rounded-lg p-6 flex flex-col justify-between shrink-0 cursor-pointer group transition-all duration-200 hover:shadow-xl hover:scale-[1.02] ${
         isLarge ? "flex-[2]" : "flex-1"
       }`}
     >
@@ -136,28 +191,34 @@ function ProviderCard({ card }: { card: ProviderCard }) {
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-[#f1f2f3]" />
         {bgs.map((bg, i) => (
-          <Image key={i} src={bg} alt="" fill className="object-cover" />
+          <Image key={i} src={bg} alt="" fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
         ))}
       </div>
       {/* Bottom gradient */}
-      <div className="absolute bottom-0 left-0 right-0 h-[166px] bg-gradient-to-b from-transparent to-black/40 backdrop-blur-[16px]" />
+      <div className="absolute bottom-0 left-0 right-0 h-[128px] bg-gradient-to-b from-transparent to-black/40 backdrop-blur-[16px]" />
 
       {/* Logo */}
-      <span className="relative font-semibold text-xl text-white">{card.logo}</span>
+      <span className="relative font-semibold text-xl text-white">
+        {card.logo}
+      </span>
 
       {/* Model list */}
       {hasGrid ? (
         <div className="relative grid grid-cols-2 gap-x-4 gap-y-1 font-mono text-sm leading-[1.25] text-white/80">
           {(card.models as string[][]).map((pair, i) =>
             pair.map((model, j) => (
-              <p key={`${i}-${j}`}>{model}</p>
-            ))
+              <p className="truncate" key={`${i}-${j}`}>
+                {model}
+              </p>
+            )),
           )}
         </div>
       ) : (
         <div className="relative flex flex-col gap-1 font-mono text-sm leading-[1.25] text-white/80">
           {(card.models as string[]).map((model, i) => (
-            <p key={i} className="truncate">{model}</p>
+            <p className="truncate" key={i}>
+              {model}
+            </p>
           ))}
         </div>
       )}
@@ -171,9 +232,9 @@ function CategoryCard({
   category: { name: string; count: string; bg: string; dark: boolean };
 }) {
   return (
-    <div className="relative h-[131px] overflow-hidden rounded-lg p-6 flex flex-col justify-between flex-1">
+    <div className="relative h-[131px] overflow-hidden rounded-lg p-6 flex flex-col justify-between flex-1 cursor-pointer group transition-all duration-200 hover:shadow-xl hover:scale-[1.02]">
       <div className="absolute inset-0 pointer-events-none">
-        <Image src={category.bg} alt="" fill className="object-cover" />
+        <Image src={category.bg} alt="" fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
       </div>
       <p
         className={`relative font-semibold text-2xl leading-7 tracking-[-0.5px] ${
@@ -184,7 +245,7 @@ function CategoryCard({
       </p>
       <p
         className={`relative font-mono text-sm leading-[1.25] ${
-          category.dark ? "text-white/64" : "text-black/64"
+          category.dark ? "text-white/64" : "text-black/64 "
         }`}
       >
         {category.count}

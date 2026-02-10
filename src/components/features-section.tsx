@@ -38,7 +38,7 @@ function FeatureCard({
   description: string;
 }) {
   return (
-    <div className="bg-white rounded-lg relative overflow-hidden h-[364px] transition-shadow duration-200 hover:shadow-lg">
+    <div className="bg-white rounded-lg relative overflow-hidden h-[364px] transition-all duration-200 hover:shadow-lg cursor-pointer hover:-translate-y-1">
       <div className="flex flex-col justify-end gap-2 p-6 h-full">
         <h3 className="text-2xl font-medium leading-7 text-black">{title}</h3>
         <p className="font-mono text-sm leading-[1.25] text-muted">

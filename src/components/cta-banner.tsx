@@ -16,7 +16,7 @@ export function CTABanner() {
 
         <a
           href="#"
-          className="bg-black text-white rounded-sm px-[30px] py-4 flex items-center gap-3"
+          className="bg-black text-white rounded-sm px-[30px] py-4 flex items-center gap-3 transition-colors duration-150 hover:bg-black/80"
         >
           <span className="font-mono text-sm font-medium tracking-[1.2px] uppercase leading-4">
             Start Building

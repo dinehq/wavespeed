@@ -255,7 +255,7 @@ export function FeaturedModels() {
       <div className="mx-auto max-w-[1160px] flex justify-center mt-10">
         <a
           href="#"
-          className="bg-black text-white rounded-sm px-4 py-3 font-mono text-sm font-medium tracking-[1.2px]"
+          className="bg-black text-white rounded-sm px-4 py-3 font-mono text-sm font-medium tracking-[1.2px] transition-colors duration-150 hover:bg-black/80"
         >
           Explore all 1326 models
         </a>

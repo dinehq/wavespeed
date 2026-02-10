@@ -39,7 +39,7 @@ export function Testimonials() {
           {testimonials.map((t) => (
             <div
               key={t.name}
-              className="bg-white rounded-md p-10 flex flex-col gap-4 relative overflow-hidden transition-shadow duration-200 group hover:shadow-[0px_12px_24px_0px_rgba(0,0,0,0.08)]"
+              className="bg-white rounded-md p-10 flex flex-col gap-4 relative overflow-hidden transition-all duration-200 group hover:shadow-[0px_12px_24px_0px_rgba(0,0,0,0.08)] cursor-pointer hover:-translate-y-1"
             >
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
                 <Image

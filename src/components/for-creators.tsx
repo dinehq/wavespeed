@@ -237,8 +237,11 @@ export function ForCreators() {
             <div className="flex flex-col gap-10 w-[615px] shrink-0">
               <div className="grid grid-cols-2 gap-6">
                 {features.map((feature) => (
-                  <div key={feature.title} className="flex flex-col gap-4">
-                    <div className="size-10 rounded bg-white/10 flex items-center justify-center text-white">
+                  <div
+                    key={feature.title}
+                    className="flex flex-col gap-4 group cursor-pointer"
+                  >
+                    <div className="size-10 rounded bg-white/10 flex items-center justify-center text-white transition-colors duration-150 group-hover:bg-white/20">
                       {feature.icon}
                     </div>
                     <div className="flex flex-col gap-1">
@@ -256,7 +259,7 @@ export function ForCreators() {
               <div className="flex gap-2">
                 <a
                   href="#"
-                  className="bg-white text-black rounded-sm px-[30px] py-4 flex items-center gap-3"
+                  className="bg-white text-black rounded-sm px-[30px] py-4 flex items-center gap-3 transition-colors duration-150 hover:bg-white/90"
                 >
                   <span className="font-mono text-sm font-medium tracking-[1.2px] uppercase leading-4">
                     Read the Docs
@@ -265,7 +268,7 @@ export function ForCreators() {
                 </a>
                 <a
                   href="#"
-                  className="bg-white/10 text-white rounded-sm px-[30px] py-4 flex items-center justify-center"
+                  className="bg-white/10 text-white rounded-sm px-[30px] py-4 flex items-center justify-center transition-colors duration-150 hover:bg-white/20"
                 >
                   <span className="font-mono text-sm font-medium tracking-[1.2px] uppercase leading-4">
                     View GitHub
@@ -275,7 +278,7 @@ export function ForCreators() {
             </div>
 
             {/* Right: Code block */}
-            <div className="flex-1 bg-[#1a1a2e] rounded-lg overflow-hidden">
+            <div className="flex-1 bg-[#1a1a2e] rounded-lg overflow-hidden transition-shadow duration-300">
               <div className="p-10 font-mono text-sm leading-[22px]">
                 {codeLines.map((line) => (
                   <div key={line.num} className="flex">

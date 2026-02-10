@@ -117,10 +117,10 @@ export function HeroDemo() {
               {tabs.map((tab) => (
                 <button
                   key={tab.name}
-                  className={`px-4 py-3 font-mono text-xs flex items-center gap-2 border-b-2 ${
+                  className={`px-4 py-3 font-mono text-xs flex items-center gap-2 border-b-2 transition-colors duration-150 cursor-pointer ${
                     tab.active
                       ? "border-black text-black"
-                      : "border-transparent text-black/40"
+                      : "border-transparent text-black/40 hover:text-black/70"
                   }`}
                 >
                   <span className="size-4 rounded bg-surface flex items-center justify-center text-[10px]">
@@ -140,8 +140,8 @@ export function HeroDemo() {
               {langTabs.map((lang) => (
                 <button
                   key={lang}
-                  className={`px-3 py-1 font-mono text-xs rounded ${
-                    lang === "node" ? "bg-black text-white" : "text-black/40"
+                  className={`px-3 py-1 font-mono text-xs rounded transition-colors duration-150 cursor-pointer ${
+                    lang === "node" ? "bg-black text-white" : "text-black/40 hover:text-black/70 hover:bg-black/5"
                   }`}
                 >
                   {lang}
@@ -169,12 +169,12 @@ export function HeroDemo() {
               </div>
             </div>
             <div className="w-[320px] p-6 flex items-center justify-center">
-              <div className="relative w-full aspect-square rounded-lg overflow-hidden bg-surface">
+              <div className="relative w-full aspect-square rounded-lg overflow-hidden bg-surface group cursor-pointer">
                 <Image
                   src="/images/hero-banner.png"
                   alt="Generated output"
                   fill
-                  className="object-cover"
+                  className="object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-3">
                   <p className="text-white text-xs font-mono font-medium">

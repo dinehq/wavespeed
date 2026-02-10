@@ -7,7 +7,7 @@ export function Navbar() {
   return (
     <nav className="flex items-center justify-between px-4 h-16 w-full">
       <div className="flex-1">
-        <Link href="/" className="flex items-center">
+        <Link href="/" className="flex items-center transition-opacity duration-150 hover:opacity-70">
           <Logo className="h-6 w-auto text-black" />
         </Link>
       </div>
@@ -17,14 +17,14 @@ export function Navbar() {
           <a
             key={item}
             href="#"
-            className="font-mono text-sm text-foreground tracking-[1.2px] leading-4"
+            className="font-mono text-sm text-foreground tracking-[1.2px] leading-4 transition-colors duration-150 hover:text-black/50"
           >
             {item}
           </a>
         ))}
         <a
           href="#"
-          className="flex items-center gap-1 font-mono text-sm text-foreground tracking-[1.2px] leading-4"
+          className="flex items-center gap-1 font-mono text-sm text-foreground tracking-[1.2px] leading-4 transition-colors duration-150 hover:text-black/50"
         >
           Resources
           <ChevronDown className="size-4" />
@@ -32,7 +32,7 @@ export function Navbar() {
       </div>
 
       <div className="flex-1 flex items-center justify-end gap-2">
-        <button className="bg-surface rounded-sm size-8 flex items-center justify-center">
+        <button className="bg-surface rounded-sm size-8 flex items-center justify-center transition-colors duration-150 hover:bg-black/10 cursor-pointer">
           <svg
             className="size-3"
             viewBox="0 0 16 16"
@@ -54,7 +54,7 @@ export function Navbar() {
             />
           </svg>
         </button>
-        <div className="bg-surface rounded-sm px-2 py-2 flex items-center gap-2">
+        <div className="bg-surface rounded-sm px-2 py-2 flex items-center gap-2 transition-colors duration-150 hover:bg-black/10">
           <SearchIcon className="size-[14px] opacity-40" />
           <input
             type="text"
@@ -64,7 +64,7 @@ export function Navbar() {
         </div>
         <a
           href="#"
-          className="bg-black text-white rounded-sm px-4 py-2 font-mono text-sm tracking-[1.2px] uppercase flex items-center justify-center"
+          className="bg-black text-white rounded-sm px-4 py-2 font-mono text-sm tracking-[1.2px] uppercase flex items-center justify-center transition-colors duration-150 hover:bg-black/80"
         >
           Sign In
         </a>
