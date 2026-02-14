@@ -3,9 +3,17 @@
 import { useRef, useCallback } from "react";
 import Image from "next/image";
 
+import freepikLogo from "@/images/freepik.png";
+import novitaLogo from "@/images/novita.png";
+import socialbookLogo from "@/images/socialbook.png";
+import minimaxLogo from "@/images/minimax.png";
+import drawthingsLogo from "@/images/drawthings.png";
+import imperialvisionLogo from "@/images/imperialvision.png";
+import quoteBg from "@/images/quote-bg.webp";
+
 const testimonials = [
   {
-    logo: "/images/freepik.png",
+    logo: freepikLogo,
     logoWidth: 109,
     logoHeight: 16,
     quote:
@@ -14,7 +22,7 @@ const testimonials = [
     title: "Cloud Architect at Freepik",
   },
   {
-    logo: "/images/novita.png",
+    logo: novitaLogo,
     logoWidth: 105,
     logoHeight: 19,
     quote:
@@ -23,7 +31,7 @@ const testimonials = [
     title: "Novita AI COO",
   },
   {
-    logo: "/images/socialbook.png",
+    logo: socialbookLogo,
     logoWidth: 121,
     logoHeight: 22,
     quote:
@@ -32,7 +40,7 @@ const testimonials = [
     title: "CTO@SocialBook",
   },
   {
-    logo: "/images/minimax.png",
+    logo: minimaxLogo,
     logoWidth: 122,
     logoHeight: 28,
     quote:
@@ -41,7 +49,7 @@ const testimonials = [
     title: "Manager of MiniMax platform",
   },
   {
-    logo: "/images/drawthings.png",
+    logo: drawthingsLogo,
     logoWidth: 138,
     logoHeight: 32,
     quote:
@@ -50,7 +58,7 @@ const testimonials = [
     title: "Draw Things",
   },
   {
-    logo: "/images/imperialvision.png",
+    logo: imperialvisionLogo,
     logoWidth: 93,
     logoHeight: 36,
     quote:
@@ -116,7 +124,7 @@ export function Testimonials() {
             className="group bg-background dark:bg-panel relative flex w-[300px] shrink-0 flex-col justify-between gap-4 overflow-hidden rounded-xs p-6 transition-shadow duration-300 hover:shadow-[0px_12px_24px_0px_rgba(0,0,0,0.08)] md:w-[480px] md:p-10 dark:hover:shadow-[0px_12px_24px_0px_rgba(0,0,0,0.3)]"
           >
             <Image
-              src="/images/quote-bg.webp"
+              src={quoteBg}
               alt=""
               fill
               className="pointer-events-none object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100 dark:hidden"

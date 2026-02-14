@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import heroBg from "@/images/hero-bg.webp";
+import editorPreview from "@/images/editor-image-preview.webp";
 import {
   useCallback,
   useEffect,
@@ -923,7 +925,7 @@ export function HeroDemo() {
     <section className="relative w-full overflow-hidden">
       <div className="absolute inset-0">
         <Image
-          src="/images/hero-bg.webp"
+          src={heroBg}
           alt=""
           fill
           className="object-cover"
@@ -1018,7 +1020,7 @@ export function HeroDemo() {
               {/* Image preview */}
               {activeTab === "image" && (
                 <Image
-                  src="/images/editor-image-preview.webp"
+                  src={editorPreview}
                   alt="Generated output"
                   fill
                   className="pointer-events-none object-cover"

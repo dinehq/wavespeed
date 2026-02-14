@@ -1,4 +1,5 @@
 import Image from "next/image";
+import getStartedBg from "@/images/get-started-bg.webp";
 import ArrowRight from "@/images/arrow-right.svg";
 
 export function CTABanner() {
@@ -6,7 +7,7 @@ export function CTABanner() {
     <section className="relative h-auto overflow-hidden md:h-[302px]">
       <div className="absolute inset-0">
         <Image
-          src="/images/get-started-bg.webp"
+          src={getStartedBg}
           alt=""
           fill
           className="object-cover"

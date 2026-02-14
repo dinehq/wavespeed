@@ -3,6 +3,31 @@
 import Image from "next/image";
 import { useState } from "react";
 
+import thumb1 from "@/images/thumb-1.webp";
+import thumb2 from "@/images/thumb-2.webp";
+import thumb3 from "@/images/thumb-3.webp";
+import thumb4 from "@/images/thumb-4.webp";
+import thumb5 from "@/images/thumb-5.webp";
+import thumb6 from "@/images/thumb-6.webp";
+import thumb7 from "@/images/thumb-7.webp";
+import thumb8 from "@/images/thumb-8.webp";
+import thumb9 from "@/images/thumb-9.webp";
+import thumb10 from "@/images/thumb-10.webp";
+import thumb11 from "@/images/thumb-11.webp";
+import thumb12 from "@/images/thumb-12.webp";
+import thumbR1 from "@/images/thumb-r1.webp";
+import thumbR2 from "@/images/thumb-r2.webp";
+import thumbR3 from "@/images/thumb-r3.webp";
+import thumbR4 from "@/images/thumb-r4.webp";
+import thumbR5 from "@/images/thumb-r5.webp";
+import thumbR6 from "@/images/thumb-r6.webp";
+import thumbR7 from "@/images/thumb-r7.webp";
+import thumbR8 from "@/images/thumb-r8.webp";
+import thumbR9 from "@/images/thumb-r9.webp";
+import thumbR10 from "@/images/thumb-r10.webp";
+import thumbR11 from "@/images/thumb-r11.webp";
+import thumbR12 from "@/images/thumb-r12.webp";
+
 const models = [
   {
     name: "flux-pro/kontext",
@@ -114,14 +139,8 @@ const models = [
   },
 ];
 
-const leftThumbs = Array.from(
-  { length: 12 },
-  (_, i) => `/images/thumb-${i + 1}.webp`,
-);
-const rightThumbs = Array.from(
-  { length: 12 },
-  (_, i) => `/images/thumb-r${i + 1}.webp`,
-);
+const leftThumbs = [thumb1, thumb2, thumb3, thumb4, thumb5, thumb6, thumb7, thumb8, thumb9, thumb10, thumb11, thumb12];
+const rightThumbs = [thumbR1, thumbR2, thumbR3, thumbR4, thumbR5, thumbR6, thumbR7, thumbR8, thumbR9, thumbR10, thumbR11, thumbR12];
 
 function StatusDots({ count }: { count: number }) {
   return (

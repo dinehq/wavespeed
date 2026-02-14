@@ -1,4 +1,5 @@
 import Image from "next/image";
+import creatorBg from "@/images/creator-bg.webp";
 
 const features = [
   { label: "1M+", detail: "Desktop installs" },
@@ -63,7 +64,7 @@ export function ForCreators() {
       <div className="relative mt-[48px] h-[300px] md:h-[660px]">
         <div className="absolute inset-x-0 top-0 h-[300px] overflow-hidden md:h-[660px]">
           <Image
-            src="/images/creator-bg.webp"
+            src={creatorBg}
             alt="WaveSpeed Studio"
             fill
             className="object-cover object-top"

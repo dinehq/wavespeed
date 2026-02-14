@@ -7,27 +7,27 @@ import "./globals.css";
 const azeret = localFont({
   src: [
     {
-      path: "../../public/fonts/Azeret-TRIAL-Regular.woff2",
+      path: "../fonts/Azeret-TRIAL-Regular.woff2",
       weight: "400",
       style: "normal",
     },
     {
-      path: "../../public/fonts/Azeret-TRIAL-Medium.woff2",
+      path: "../fonts/Azeret-TRIAL-Medium.woff2",
       weight: "500",
       style: "normal",
     },
     {
-      path: "../../public/fonts/Azeret-TRIAL-MediumItalic.woff2",
+      path: "../fonts/Azeret-TRIAL-MediumItalic.woff2",
       weight: "500",
       style: "italic",
     },
     {
-      path: "../../public/fonts/Azeret-TRIAL-SemiBold.woff2",
+      path: "../fonts/Azeret-TRIAL-SemiBold.woff2",
       weight: "600",
       style: "normal",
     },
     {
-      path: "../../public/fonts/Azeret-TRIAL-SemiBoldItalic.woff2",
+      path: "../fonts/Azeret-TRIAL-SemiBoldItalic.woff2",
       weight: "600",
       style: "italic",
     },
@@ -38,12 +38,12 @@ const azeret = localFont({
 const azeretSemiMono = localFont({
   src: [
     {
-      path: "../../public/fonts/AzeretSemiMono-TRIAL-Regular.woff2",
+      path: "../fonts/AzeretSemiMono-TRIAL-Regular.woff2",
       weight: "400",
       style: "normal",
     },
     {
-      path: "../../public/fonts/AzeretSemiMono-TRIAL-Medium.woff2",
+      path: "../fonts/AzeretSemiMono-TRIAL-Medium.woff2",
       weight: "500",
       style: "normal",
     },
@@ -64,6 +64,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <meta name="apple-mobile-web-app-title" content="WaveSpeed" />
       <body
         className={`${azeret.variable} ${azeretSemiMono.variable} antialiased`}
       >

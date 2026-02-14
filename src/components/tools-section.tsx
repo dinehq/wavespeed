@@ -1,11 +1,31 @@
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
+import toolsBflBg from "@/images/tools-bfl-bg.webp";
+import toolsWanBg from "@/images/tools-wan-bg.webp";
+import toolsOpenaiBg from "@/images/tools-openai-bg.webp";
+import toolsBytedanceBg from "@/images/tools-bytedance-bg.webp";
+import toolsBytedanceBg2 from "@/images/tools-bytedance-bg2.webp";
+import toolsRunwayBg from "@/images/tools-runway-bg.webp";
+import toolsKlingBg from "@/images/tools-kling-bg.webp";
+import toolsReccraftBg from "@/images/tools-reccraft-bg.webp";
+import toolsGoogleBg from "@/images/tools-google-bg.webp";
+import tool01 from "@/images/tool-01.webp";
+import tool02 from "@/images/tool-02.webp";
+import tool03 from "@/images/tool-03.webp";
+import tool04 from "@/images/tool-04.webp";
+import tool05 from "@/images/tool-05.webp";
+import tool06 from "@/images/tool-06.webp";
+import tool07 from "@/images/tool-07.webp";
+import tool08 from "@/images/tool-08.webp";
+import tool09 from "@/images/tool-09.webp";
+import tool10 from "@/images/tool-10.webp";
+import tool11 from "@/images/tool-11.webp";
 
 const providerRow1 = [
   {
     name: "Black Forest Labs",
     logo: "/images/lab-1.svg",
     size: "large" as const,
-    bg: "/images/tools-bfl-bg.webp",
+    bg: toolsBflBg,
     models: [
       ["FLUX 2 PRO", "FLUX 2 MAX"],
       ["FLUX 2 DEV", "FLUX 2 FLASH"],
@@ -17,7 +37,7 @@ const providerRow1 = [
     name: "Wan",
     logo: "/images/lab-2.svg",
     size: "small" as const,
-    bg: "/images/tools-wan-bg.webp",
+    bg: toolsWanBg,
     models: [
       "Wan 2.6 Text-to-Video",
       "Wan 2.6 Image-to-Video",
@@ -29,7 +49,7 @@ const providerRow1 = [
     name: "OpenAI",
     logo: "/images/lab-3.svg",
     size: "small" as const,
-    bg: "/images/tools-openai-bg.webp",
+    bg: toolsOpenaiBg,
     models: [
       "gpt-image-1.5/edit",
       "sora-2/image-to-video",
@@ -41,7 +61,7 @@ const providerRow1 = [
     name: "ByteDance | Seedance",
     logo: "/images/lab-4.svg",
     size: "small" as const,
-    bg: ["/images/tools-bytedance-bg.webp", "/images/tools-bytedance-bg2.webp"],
+    bg: [toolsBytedanceBg, toolsBytedanceBg2],
     models: [
       "seedance-v1.5-pro/text-to video",
       "seedance-v1.5-pro/image-tovideo",
@@ -55,7 +75,7 @@ const providerRow2 = [
     name: "runway",
     logo: "/images/lab-5.svg",
     size: "small" as const,
-    bg: "/images/tools-runway-bg.webp",
+    bg: toolsRunwayBg,
     models: [
       "gen4-aleph",
       "gen4-turbo",
@@ -68,7 +88,7 @@ const providerRow2 = [
     name: "KlingAI",
     logo: "/images/lab-6.svg",
     size: "small" as const,
-    bg: "/images/tools-kling-bg.webp",
+    bg: toolsKlingBg,
     models: [
       "kling-v2.6-std/motion-contro",
       "kling-v2.5-turbo-std/image-tovideo",
@@ -80,7 +100,7 @@ const providerRow2 = [
     name: "RecCraft",
     logo: "/images/lab-7.svg",
     size: "small" as const,
-    bg: "/images/tools-reccraft-bg.webp",
+    bg: toolsReccraftBg,
     models: [
       "Wan 2.6 Text-to-Video",
       "Wan 2.6 Image-to-Video",
@@ -92,7 +112,7 @@ const providerRow2 = [
     name: "Google",
     logo: "/images/lab-8.svg",
     size: "large" as const,
-    bg: "/images/tools-google-bg.webp",
+    bg: toolsGoogleBg,
     models: [
       ["nano-banana-pro/edit", "veo3.1/reference-to-video"],
       ["veo3.1/text-to-video", "eo extend"],
@@ -106,31 +126,31 @@ const categoryRow1 = [
   {
     name: "Best Open Source Video Models",
     count: "30 models",
-    bg: "/images/tool-01.webp",
+    bg: tool01,
     dark: false,
   },
   {
     name: "Best Open Source Image Models",
     count: "30 models",
-    bg: "/images/tool-02.webp",
+    bg: tool02,
     dark: false,
   },
   {
     name: "Swap Anything",
     count: "22 models",
-    bg: "/images/tool-03.webp",
+    bg: tool03,
     dark: false,
   },
   {
     name: "Audio for Video",
     count: "3 models",
-    bg: "/images/tool-04.webp",
+    bg: tool04,
     dark: false,
   },
   {
     name: "Video Edit",
     count: "3 models",
-    bg: "/images/tool-05.webp",
+    bg: tool05,
     dark: false,
   },
 ];
@@ -139,37 +159,37 @@ const categoryRow2 = [
   {
     name: "Best Open Source Video Models",
     count: "30 models",
-    bg: "/images/tool-06.webp",
+    bg: tool06,
     dark: false,
   },
   {
     name: "Generate Music",
     count: "30 models",
-    bg: "/images/tool-07.webp",
+    bg: tool07,
     dark: false,
   },
   {
     name: "Ultra Selection",
     count: "22 models",
-    bg: "/images/tool-08.webp",
+    bg: tool08,
     dark: false,
   },
   {
     name: "Remove Anything",
     count: "3 models",
-    bg: "/images/tool-09.webp",
+    bg: tool09,
     dark: false,
   },
   {
     name: "3D Creation",
     count: "3 models",
-    bg: "/images/tool-10.webp",
+    bg: tool10,
     dark: false,
   },
   {
     name: "Training Tools",
     count: "3 models",
-    bg: "/images/tool-11.webp",
+    bg: tool11,
     dark: false,
   },
 ];
@@ -243,7 +263,7 @@ function ProviderCard({ card }: { card: ProviderCard }) {
 function CategoryCard({
   category,
 }: {
-  category: { name: string; count: string; bg: string; dark: boolean };
+  category: { name: string; count: string; bg: StaticImageData; dark: boolean };
 }) {
   return (
     <div className="group relative flex h-[80px] min-w-0 cursor-pointer flex-col justify-between overflow-hidden rounded-xs p-4 transition-all duration-200 hover:scale-[1.02] hover:shadow-xl md:h-[131px] md:p-6">

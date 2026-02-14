@@ -1,6 +1,10 @@
 "use client";
 
 import Image from "next/image";
+import logosImg from "@/images/logos.webp";
+import speedImg from "@/images/speed.webp";
+import scaleImg from "@/images/scale.webp";
+import securityImg from "@/images/security.webp";
 import { useEffect, useRef, useState } from "react";
 
 export function FeaturesSection() {
@@ -50,7 +54,7 @@ export function FeaturesSection() {
                 }`}
               >
                 <Image
-                  src="/images/logos.webp"
+                  src={logosImg}
                   alt=""
                   fill
                   className="object-contain object-top-right"
@@ -89,7 +93,7 @@ export function FeaturesSection() {
                 }`}
               >
                 <Image
-                  src="/images/speed.webp"
+                  src={speedImg}
                   alt=""
                   fill
                   className="object-contain object-bottom"
@@ -120,7 +124,7 @@ export function FeaturesSection() {
                 }`}
               >
                 <Image
-                  src="/images/scale.webp"
+                  src={scaleImg}
                   alt=""
                   fill
                   className="object-cover object-top-left"
@@ -138,7 +142,7 @@ export function FeaturesSection() {
                 }`}
               >
                 <Image
-                  src="/images/security.webp"
+                  src={securityImg}
                   alt=""
                   fill
                   className="object-contain"
