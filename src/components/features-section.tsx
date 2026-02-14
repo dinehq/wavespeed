@@ -28,7 +28,7 @@ export function FeaturesSection() {
       <div className="mx-auto max-w-[1280px]">
         <div className="mb-10 flex max-w-[875px] flex-col gap-4">
           <h2 className="text-heading text-[32px] leading-none font-medium tracking-[-1px] text-balance md:text-[48px]">
-            Engineered for Pure Velocity.
+            Engineered for <em className="italic">Velocity</em>
           </h2>
           <p className="text-subtle font-mono text-base leading-[1.3] text-pretty">
             WaveSpeed is a purpose-built inference engine
@@ -39,11 +39,11 @@ export function FeaturesSection() {
 
         <div ref={ref} className="flex flex-col gap-4">
           {/* Row 1: Vast Model Library (smaller) + Blazing Fast Inference (larger) */}
-          <div className="flex flex-col gap-4 md:flex-row">
-            <div className="bg-surface relative h-[280px] w-full shrink-0 overflow-hidden rounded-xs md:h-[360px] md:w-[574px]">
+          <div className="flex flex-col gap-4 lg:flex-row">
+            <div className="bg-surface relative h-[320px] w-full shrink-0 overflow-hidden rounded-xs lg:h-[420px] lg:w-[45%]">
               {/* Provider logos — drift in from left */}
               <div
-                className={`absolute top-[-38px] left-[40px] h-[180px] w-[600px] transition-all duration-1000 ease-out md:h-[287px] ${
+                className={`absolute top-[-38px] right-0 h-[220px] w-[600px] transition-all duration-1000 ease-out sm:h-[260px] md:h-[280px] lg:h-[287px] ${
                   entered
                     ? "translate-x-0 opacity-100"
                     : "-translate-x-8 opacity-0"
@@ -53,7 +53,7 @@ export function FeaturesSection() {
                   src="/images/logos.webp"
                   alt=""
                   fill
-                  className="object-contain object-top-left"
+                  className="object-contain object-top-right"
                 />
               </div>
 
@@ -62,16 +62,16 @@ export function FeaturesSection() {
                 <h3 className="mb-2 text-2xl leading-7 font-medium text-[#191e2e]">
                   Vast Model Library
                 </h3>
-                <p className="text-muted w-auto font-mono text-sm leading-tight text-pretty md:w-[526px]">
+                <p className="text-muted w-auto font-mono text-sm leading-tight text-pretty lg:w-[526px]">
                   Access the entire HuggingFace hub and top proprietary models
                   with a single unified API key.
                 </p>
               </div>
             </div>
 
-            <div className="bg-surface relative h-[280px] w-full overflow-hidden rounded-xs md:h-[360px] md:flex-1">
+            <div className="bg-surface relative h-[320px] w-full overflow-hidden rounded-xs lg:h-[420px] lg:flex-1">
               {/* Title + description */}
-              <div className="absolute top-6 right-6 left-6 z-10 md:w-[584px]">
+              <div className="absolute top-6 right-6 left-6 z-10 lg:w-[584px]">
                 <h3 className="mb-2 text-2xl leading-7 font-medium text-[#191e2e]">
                   Blazing Fast Inference
                 </h3>
@@ -82,7 +82,7 @@ export function FeaturesSection() {
               </div>
               {/* Speed chart — rises from bottom */}
               <div
-                className={`absolute right-0 bottom-0 left-0 h-[180px] transition-all duration-1000 ease-out md:h-[260px] ${
+                className={`absolute right-0 bottom-0 left-0 h-[180px] transition-all duration-1000 ease-out lg:h-[300px] ${
                   entered
                     ? "translate-y-0 opacity-100"
                     : "translate-y-6 opacity-0"
@@ -99,10 +99,10 @@ export function FeaturesSection() {
           </div>
 
           {/* Row 2: Built for Scale (larger) + Enterprise Security (smaller) */}
-          <div className="flex flex-col gap-4 md:flex-row">
-            <div className="bg-surface relative h-[280px] w-full shrink-0 overflow-hidden rounded-xs md:h-[360px] md:w-[690px]">
+          <div className="flex flex-col gap-4 lg:flex-row">
+            <div className="bg-surface relative h-[320px] w-full shrink-0 overflow-hidden rounded-xs lg:h-[420px] lg:w-[55%]">
               {/* Title + description */}
-              <div className="absolute top-6 right-6 left-6 z-10 md:w-[642px]">
+              <div className="absolute top-6 right-6 left-6 z-10 lg:w-[642px]">
                 <h3 className="mb-2 text-2xl leading-7 font-medium text-[#191e2e]">
                   Built for Scale
                 </h3>
@@ -128,10 +128,10 @@ export function FeaturesSection() {
               </div>
             </div>
 
-            <div className="from-surface relative h-[280px] w-full overflow-hidden rounded-xs bg-linear-to-b to-[#d3ddff] md:h-[360px] md:flex-1">
+            <div className="from-surface relative h-[320px] w-full overflow-hidden rounded-xs bg-linear-to-b to-[#d3ddff] lg:h-[420px] lg:flex-1">
               {/* 3D box — drifts in from right */}
               <div
-                className={`absolute top-0 right-[-30px] h-[280px] w-[250px] transition-all duration-1000 ease-out md:top-[-13px] md:right-[-60px] md:h-[425px] md:w-[390px] ${
+                className={`absolute top-0 right-[-30px] h-[320px] w-[250px] transition-all duration-1000 ease-out lg:top-[-13px] lg:right-[-60px] lg:h-[480px] lg:w-[390px] ${
                   entered
                     ? "translate-x-0 opacity-100"
                     : "translate-x-8 opacity-0"
@@ -145,7 +145,7 @@ export function FeaturesSection() {
                 />
               </div>
               {/* Title + description */}
-              <div className="absolute right-6 bottom-[24px] left-6 z-10 md:w-[526px]">
+              <div className="absolute right-6 bottom-[24px] left-6 z-10 lg:w-[526px]">
                 <h3 className="mb-2 text-2xl leading-7 font-medium text-[#191e2e]">
                   Security
                 </h3>
