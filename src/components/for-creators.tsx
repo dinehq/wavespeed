@@ -21,11 +21,11 @@ const featureTabs = [
 export function ForCreators() {
   return (
     <section className="bg-[#0c0e15] relative overflow-hidden">
-      <div className="px-20 pt-[120px]">
+      <div className="px-6 md:px-20 pt-16 md:pt-[120px]">
         <div className="max-w-[1280px] mx-auto">
           {/* Section header: title left, description right */}
-          <div className="flex items-center justify-between mb-[48px]">
-            <h2 className="text-[48px] font-medium leading-none tracking-[-1px] text-white flex-1">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 md:gap-0 mb-[48px]">
+            <h2 className="text-[32px] md:text-[48px] font-medium leading-none tracking-[-1px] text-white flex-1">
               For <em className="italic">Creators</em>,
               <br />
               By <em className="italic">Creators</em>
@@ -39,7 +39,7 @@ export function ForCreators() {
           </div>
 
           {/* Feature tabs */}
-          <div className="flex gap-8">
+          <div className="flex flex-col md:flex-row gap-8">
             {featureTabs.map((tab) => (
               <div
                 key={tab.title}
@@ -58,8 +58,8 @@ export function ForCreators() {
       </div>
 
       {/* App screenshot — full width, outside container */}
-      <div className="relative h-[660px] mt-[48px]">
-        <div className="absolute inset-x-0 top-0 h-[660px] overflow-hidden">
+      <div className="relative h-[300px] md:h-[660px] mt-[48px]">
+        <div className="absolute inset-x-0 top-0 h-[300px] md:h-[660px] overflow-hidden">
           <Image
             src="/images/creator-bg.webp"
             alt="WaveSpeed Studio"

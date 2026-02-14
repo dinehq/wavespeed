@@ -182,7 +182,7 @@ function ProviderCard({ card }: { card: ProviderCard }) {
   const hasGrid = isLarge && Array.isArray(card.models[0]);
 
   return (
-    <div className="relative h-[320px] overflow-hidden rounded-xs p-6 flex flex-col justify-between min-w-0 cursor-pointer group transition-all duration-200 hover:shadow-xl hover:scale-[1.02]">
+    <div className="relative h-[240px] md:h-[320px] overflow-hidden rounded-xs p-6 flex flex-col justify-between min-w-0 cursor-pointer group transition-all duration-200 hover:shadow-xl hover:scale-[1.02]">
       {/* Background image(s) */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-[#f1f2f3]" />
@@ -246,17 +246,17 @@ function CategoryCard({
   category: { name: string; count: string; bg: string; dark: boolean };
 }) {
   return (
-    <div className="relative h-[131px] overflow-hidden rounded-xs p-6 flex flex-col justify-between min-w-0 cursor-pointer group transition-all duration-200 hover:shadow-xl hover:scale-[1.02]">
+    <div className="relative h-[80px] md:h-[131px] overflow-hidden rounded-xs p-4 md:p-6 flex flex-col justify-between min-w-0 cursor-pointer group transition-all duration-200 hover:shadow-xl hover:scale-[1.02]">
       <div className="absolute inset-0 pointer-events-none">
         <Image
           src={category.bg}
           alt=""
           fill
-          className="object-cover object-top scale-[2]"
+          className="object-cover object-top"
         />
       </div>
       <p
-        className={`relative font-medium text-xl leading-7 tracking-[-0.5px] ${
+        className={`relative font-medium text-base md:text-xl leading-6 md:leading-7 tracking-[-0.5px] truncate ${
           category.dark ? "text-white" : "text-black"
         }`}
       >
@@ -277,8 +277,8 @@ export function ToolsSection() {
   return (
     <section className="py-20 overflow-hidden">
       {/* Header */}
-      <div className="max-w-[976px] mx-auto px-20 text-center mb-10">
-        <h2 className="text-[48px] font-medium leading-none tracking-[-1px] text-heading mb-6">
+      <div className="max-w-[976px] mx-auto px-6 md:px-20 text-center mb-10">
+        <h2 className="text-[32px] md:text-[48px] font-medium leading-none tracking-[-1px] text-heading mb-6">
           Get any tool you want
         </h2>
         <p className="font-mono text-base leading-[1.3] text-subtle">
@@ -305,16 +305,20 @@ export function ToolsSection() {
         </div>
 
         {/* Category Row 1 */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div className="flex gap-2 md:gap-4 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:grid lg:grid-cols-5">
           {categoryRow1.map((cat) => (
-            <CategoryCard key={cat.name} category={cat} />
+            <div key={cat.name} className="shrink-0 w-[160px] lg:w-auto">
+              <CategoryCard category={cat} />
+            </div>
           ))}
         </div>
 
         {/* Category Row 2 */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="flex gap-2 md:gap-4 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:grid lg:grid-cols-6">
           {categoryRow2.map((cat) => (
-            <CategoryCard key={cat.name + "2"} category={cat} />
+            <div key={cat.name + "2"} className="shrink-0 w-[160px] lg:w-auto">
+              <CategoryCard category={cat} />
+            </div>
           ))}
         </div>
       </div>

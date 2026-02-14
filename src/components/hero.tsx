@@ -2,9 +2,9 @@ import ArrowRight from "@/images/arrow-right.svg";
 
 export function Hero() {
   return (
-    <section className="relative flex flex-col items-center gap-10 px-20 pt-24 pb-16 overflow-hidden">
+    <section className="relative flex flex-col items-center gap-10 px-6 md:px-20 pt-16 md:pt-24 pb-16 overflow-hidden">
       <div className="relative flex flex-col items-center gap-4 text-center max-w-[788px]">
-        <h1 className="text-[72px] font-semibold leading-none tracking-[-1px] text-heading">
+        <h1 className="text-[36px] md:text-[72px] font-semibold leading-none tracking-[-1px] text-heading">
           The <em className="italic">All-in-One</em>
           <br />
           API for Inference.
@@ -14,10 +14,10 @@ export function Hero() {
         </p>
       </div>
 
-      <div className="relative flex items-start gap-2">
+      <div className="relative flex flex-col sm:flex-row items-stretch sm:items-start gap-2 w-full sm:w-auto">
         <a
           href="#"
-          className="bg-black text-white rounded-xs px-[30px] py-4 flex items-center gap-3 transition-colors duration-150 hover:bg-black/80"
+          className="bg-black text-white rounded-xs px-[30px] py-4 flex items-center justify-center gap-3 transition-colors duration-150 hover:bg-black/80"
         >
           <span className="font-mono text-sm font-medium tracking-[1.2px] uppercase leading-4">
             Start Building

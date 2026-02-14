@@ -890,11 +890,11 @@ export function HeroDemo() {
         <Image src="/images/hero-bg.webp" alt="" fill className="object-cover" />
       </div>
 
-      <div className="relative max-w-[960px] mx-auto py-8">
+      <div className="relative max-w-[960px] mx-auto py-8 px-4 md:px-0">
         <div className="bg-white rounded-[5px] p-2 flex flex-col gap-2">
           {/* Tab bar */}
-          <div className="flex items-center justify-between">
-            <div className="flex gap-1">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0">
+            <div className="flex gap-1 overflow-x-auto w-full sm:w-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {tabs.map((tab) => (
                 <button
                   key={tab.key}
@@ -938,9 +938,9 @@ export function HeroDemo() {
           </div>
 
           {/* Editor content */}
-          <div className="flex bg-[#ecedee] rounded-[3px] overflow-hidden">
+          <div className="flex flex-col md:flex-row bg-[#ecedee] rounded-[3px] overflow-hidden">
             {/* Code panel */}
-            <div className="flex-1 bg-[#f2f3f5] h-[348px] relative">
+            <div className="md:flex-1 bg-[#f2f3f5] h-[260px] md:h-[348px] relative">
               <div className="absolute left-6 top-10 flex">
                 {/* Line numbers */}
                 <div className="flex flex-col gap-1 font-mono text-[13px] leading-[1.25] text-[#7f848e] w-6">
@@ -958,7 +958,7 @@ export function HeroDemo() {
                 </div>
               </div>
               {/* Status */}
-              <div className="absolute left-6 top-[308px] flex items-center gap-2 bg-white px-2 py-1 rounded">
+              <div className="absolute left-6 bottom-3 md:bottom-auto md:top-[308px] flex items-center gap-2 bg-white px-2 py-1 rounded">
                 <span className="size-[6px] rounded-full bg-[#22c55e]" />
                 <span className="font-mono text-xs text-[#737373] leading-[1.25]">
                   {current.status}
@@ -967,7 +967,7 @@ export function HeroDemo() {
             </div>
 
             {/* Preview panel */}
-            <div className="flex-1 h-[348px] relative overflow-hidden flex flex-col items-center justify-end p-2">
+            <div className="md:flex-1 h-[260px] md:h-[348px] relative overflow-hidden flex flex-col items-center justify-end p-2">
               {/* Image preview */}
               {activeTab === "generate_image" && (
                 <Image

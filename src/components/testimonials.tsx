@@ -63,8 +63,8 @@ export function Testimonials() {
 
   return (
     <section className="bg-surface py-20">
-      <div className="px-20 mb-6">
-        <h2 className="max-w-[1280px] mx-auto text-[48px] font-medium leading-none tracking-[-1px] text-heading">
+      <div className="px-6 md:px-20 mb-12">
+        <h2 className="max-w-[1280px] mx-auto text-[32px] md:text-[48px] font-medium leading-none tracking-[-1px] text-heading">
           What people are saying
         </h2>
       </div>
@@ -77,13 +77,13 @@ export function Testimonials() {
         onPointerCancel={onPointerUp}
         className="flex gap-6 overflow-x-auto cursor-grab select-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-8"
         style={{
-          paddingInline: "max(80px, calc((100vw - 1280px) / 2))",
+          paddingInline: "max(24px, calc((100vw - 1280px) / 2))",
         }}
       >
         {testimonials.map((t) => (
           <div
             key={t.name}
-            className="group bg-white w-[511px] rounded-xs shrink-0 p-10 flex flex-col gap-4 relative overflow-hidden transition-shadow duration-300 hover:shadow-[0px_12px_24px_0px_rgba(0,0,0,0.08)]"
+            className="group bg-white w-[300px] md:w-[511px] rounded-xs shrink-0 p-6 md:p-10 flex flex-col gap-4 relative overflow-hidden transition-shadow duration-300 hover:shadow-[0px_12px_24px_0px_rgba(0,0,0,0.08)]"
           >
             <Image
               src="/images/quote-bg.webp"

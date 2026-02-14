@@ -149,7 +149,7 @@ export function FeaturedModels() {
       {/* Header */}
       <div className="mx-auto max-w-[1160px] flex flex-col items-center gap-10">
         <div className="flex flex-col items-center gap-4 text-center max-w-[875px]">
-          <h2 className="text-[48px] font-medium leading-none tracking-[-1px] text-heading">
+          <h2 className="text-[32px] md:text-[48px] font-medium leading-none tracking-[-1px] text-heading">
             Featured Models
           </h2>
           <p className="font-mono text-base leading-[1.3] text-subtle">
@@ -163,7 +163,7 @@ export function FeaturedModels() {
       {/* Full-width table area with edge-pinned thumbnails */}
       <div className="relative mt-10">
         {/* Left thumbnail strip */}
-        <div className="absolute left-0 top-0 flex flex-col items-start pointer-events-none">
+        <div className="absolute left-0 top-0 hidden lg:flex flex-col items-start pointer-events-none">
           {leftThumbs.map((src, i) => {
             const isActive = hoveredIndex === i;
             const size = isActive ? 120 : 80;
@@ -184,7 +184,7 @@ export function FeaturedModels() {
         </div>
 
         {/* Right thumbnail strip */}
-        <div className="absolute right-0 top-0 flex flex-col items-end pointer-events-none">
+        <div className="absolute right-0 top-0 hidden lg:flex flex-col items-end pointer-events-none">
           {rightThumbs.map((src, i) => {
             const isActive = hoveredIndex === i;
             const size = isActive ? 120 : 80;
@@ -212,37 +212,37 @@ export function FeaturedModels() {
                 key={i}
                 onMouseEnter={() => setHoveredIndex(i)}
                 onMouseLeave={() => setHoveredIndex(null)}
-                className={`grid grid-cols-12 gap-4 px-8 py-6 h-20 items-center border-b border-black/5 transition-colors duration-150 cursor-default ${
+                className={`grid grid-cols-2 md:grid-cols-12 gap-4 px-4 md:px-8 py-4 md:py-6 md:h-20 items-center border-b border-black/5 transition-colors duration-150 cursor-default ${
                   hoveredIndex === i ? "bg-surface" : ""
                 }`}
               >
-                <div className="col-span-3">
+                <div className="col-span-1 md:col-span-3">
                   <span className="font-mono text-sm text-black leading-5">
                     {model.name}
                   </span>
                 </div>
-                <div className="col-span-2">
+                <div className="hidden md:block col-span-2">
                   <span className="font-mono text-sm text-black leading-5">
                     {model.provider}
                   </span>
                 </div>
-                <div className="col-span-2">
+                <div className="hidden md:block col-span-2">
                   <span className="font-mono text-sm text-black leading-5">
                     {model.type}
                   </span>
                 </div>
-                <div className="col-span-2 flex items-center gap-2 px-0.5">
+                <div className="col-span-1 md:col-span-2 flex items-center gap-2 px-0.5 justify-end md:justify-start">
                   <span className="font-mono text-sm text-black leading-5">
                     {model.speed}
                   </span>
                   <SpeedBar percent={model.speedBar} />
                 </div>
-                <div className="col-span-1 flex items-center">
+                <div className="hidden md:flex col-span-1 items-center">
                   <span className="font-mono text-sm text-black uppercase leading-[15px]">
                     {model.tps}
                   </span>
                 </div>
-                <div className="col-span-1 flex items-center justify-end">
+                <div className="hidden md:flex col-span-1 items-center justify-end">
                   <StatusDots count={model.status} />
                 </div>
               </div>

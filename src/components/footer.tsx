@@ -20,12 +20,12 @@ const legalLinks = ["Terms of Service", "Privacy Policy", "Security"];
 
 export function Footer() {
   return (
-    <footer className="bg-[#0c0e15] border-t border-white/10 px-20 pt-20 pb-12">
+    <footer className="bg-[#0c0e15] border-t border-white/10 px-6 md:px-20 pt-12 md:pt-20 pb-12">
       <div className="max-w-[1280px] mx-auto">
-        <div className="flex justify-between mb-10">
+        <div className="flex flex-col md:flex-row gap-10 md:gap-0 md:justify-between mb-10">
           {/* Logo + status */}
-          <div className="flex flex-col justify-between w-[174px] h-[216px]">
-            <Logo className="h-6 w-auto text-white" />
+          <div className="flex flex-col gap-6 md:justify-between w-auto md:w-[174px] md:h-[216px]">
+            <Logo className="h-6 w-auto text-white self-start" />
             <div className="flex items-center gap-2">
               <span className="size-2 rounded-full bg-green-400" />
               <span className="font-mono text-[10px] text-white/40 tracking-[1px] uppercase leading-[15px]">
@@ -35,9 +35,9 @@ export function Footer() {
           </div>
 
           {/* Link columns */}
-          <div className="flex gap-4">
+          <div className="grid grid-cols-2 md:flex gap-8 md:gap-4">
             {/* Learn More */}
-            <div className="flex flex-col gap-6 w-[200px]">
+            <div className="flex flex-col gap-6 w-auto md:w-[200px]">
               <h2 className="font-mono text-xs text-[#a1a1a1] tracking-[1.2px] uppercase leading-4">
                 Learn More
               </h2>
@@ -55,7 +55,7 @@ export function Footer() {
             </div>
 
             {/* Platform */}
-            <div className="flex flex-col gap-6 w-[200px]">
+            <div className="flex flex-col gap-6 w-auto md:w-[200px]">
               <h2 className="font-mono text-xs text-[#a1a1a1] tracking-[1.2px] uppercase leading-4">
                 Platform
               </h2>
@@ -73,7 +73,7 @@ export function Footer() {
             </div>
 
             {/* Resources */}
-            <div className="flex flex-col gap-6 w-[200px]">
+            <div className="flex flex-col gap-6 w-auto md:w-[200px]">
               <h2 className="font-mono text-xs text-[#a1a1a1] tracking-[1.2px] uppercase leading-4">
                 Resources
               </h2>
@@ -91,7 +91,7 @@ export function Footer() {
             </div>
 
             {/* Legal */}
-            <div className="flex flex-col gap-6 w-[200px]">
+            <div className="flex flex-col gap-6 w-auto md:w-[200px]">
               <h2 className="font-mono text-xs text-[#a1a1a1] tracking-[1.2px] uppercase leading-4">
                 Legal
               </h2>
@@ -111,7 +111,7 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-white/20 pt-4 flex items-end justify-between">
+        <div className="border-t border-white/20 pt-4 flex flex-col sm:flex-row items-center sm:items-end justify-between gap-4 sm:gap-0">
           <p className="font-mono text-[10px] text-white/40 tracking-[1px] uppercase leading-[15px]">
             &copy; 2026 WAVESPEED
           </p>
