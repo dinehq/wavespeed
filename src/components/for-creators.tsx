@@ -23,19 +23,39 @@ export function ForCreators() {
     <section className="relative overflow-hidden bg-[#0c0e15]">
       <div className="px-6 pt-16 md:px-20 md:pt-[120px]">
         <div className="mx-auto max-w-[1280px]">
-          {/* Section header: title left, description right */}
+          {/* Section header: title left, description + CTA right */}
           <div className="mb-[48px] flex flex-col items-start justify-between gap-6 md:flex-row md:items-center md:gap-0">
             <h2 className="flex-1 text-[32px] leading-none font-medium tracking-[-1px] text-balance text-white md:text-[48px]">
               For <em className="italic">Creators</em>,{" "}
               <br className="hidden md:block" />
               By <em className="italic">Creators</em>
             </h2>
-            <p className="flex-1 font-mono text-sm text-pretty text-white/50">
-              We know the pain of complex integrations. That&apos;s why we built
-              WaveSpeed
-              <br className="hidden md:block" />
-              to be the most developer-friendly AI infrastructure on the planet.
-            </p>
+            <div className="flex flex-1 flex-col items-start gap-5">
+              <p className="font-mono text-sm text-pretty text-white/50">
+                We know the pain of complex integrations. That&apos;s why we
+                built WaveSpeed
+                <br className="hidden md:block" />
+                to be the most developer-friendly AI infrastructure on the
+                planet.
+              </p>
+              <a
+                href="#"
+                className="group inline-flex items-center gap-2 rounded-xs border border-white/20 px-4 py-2 font-mono text-sm tracking-[1.2px] text-white uppercase transition-colors duration-150 hover:bg-white/10"
+              >
+                Download WaveSpeed Studio
+                <svg
+                  className="size-4 transition-transform duration-150 group-hover:translate-y-0.5"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M8 2v9m0 0L4.5 7.5M8 11l3.5-3.5M3 14h10" />
+                </svg>
+              </a>
+            </div>
           </div>
 
           {/* Feature tabs */}
