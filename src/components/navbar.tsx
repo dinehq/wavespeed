@@ -6,8 +6,59 @@ import SearchIcon from "@/images/search-icon.svg";
 import ChevronDown from "@/images/chevron-down.svg";
 import Link from "next/link";
 
+const resourceGroups = [
+  {
+    label: "Products",
+    items: [
+      { name: "Studio", desc: "Create with AI models" },
+      { name: "Tools", desc: "Image & video utilities" },
+      { name: "Download App", desc: "Desktop application" },
+    ],
+  },
+  {
+    label: "Developers",
+    items: [
+      { name: "Doc", desc: "API reference & guides" },
+      { name: "GitHub", desc: "Open source repos" },
+      { name: "Blog", desc: "Engineering updates" },
+    ],
+  },
+  {
+    label: "Company",
+    items: [
+      { name: "Contact Sales", desc: "Talk to our team" },
+      { name: "Customer Stories", desc: "Case studies" },
+      { name: "Affiliate", desc: "Partner program" },
+    ],
+  },
+  {
+    label: "Community",
+    items: [
+      { name: "Support", desc: "Help & troubleshooting" },
+      { name: "Inspiration", desc: "Gallery & showcases" },
+      { name: "Be a Creator", desc: "Join the creator program" },
+    ],
+  },
+];
+
+const languages = [
+  "English",
+  "Bahasa Indonesia",
+  "Français",
+  "Español",
+  "Português",
+  "Deutsch",
+  "한국어",
+  "日本語",
+  "简体中文",
+  "繁體中文",
+];
+
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [resourcesOpen, setResourcesOpen] = useState(false);
+  const [langOpen, setLangOpen] = useState(false);
+  const [activeLang, setActiveLang] = useState("English");
 
   return (
     <nav className="relative flex h-16 w-full items-center justify-between px-4">
@@ -22,7 +73,7 @@ export function Navbar() {
       </div>
 
       <div className="hidden items-center gap-8 md:flex">
-        {["Models", "Pricing", "Enterprise"].map((item) => (
+        {["Explore", "Pricing", "Enterprise"].map((item) => (
           <a
             key={item}
             href="#"
@@ -31,41 +82,110 @@ export function Navbar() {
             {item}
           </a>
         ))}
-        <a
-          href="#"
-          className="text-foreground flex items-center gap-1 font-mono text-sm leading-4 tracking-[1.2px] transition-colors duration-150 hover:text-black/50"
+        <div
+          className="group relative"
+          onMouseEnter={() => setResourcesOpen(true)}
+          onMouseLeave={() => setResourcesOpen(false)}
         >
-          Resources
-          <ChevronDown className="size-4" />
-        </a>
+          <button className="text-foreground flex cursor-pointer items-center gap-1 font-mono text-sm leading-4 tracking-[1.2px] transition-colors duration-150 hover:text-black/50">
+            Resources
+            <ChevronDown
+              className={`size-4 transition-transform duration-150 ${resourcesOpen ? "rotate-180" : ""}`}
+            />
+          </button>
+          {resourcesOpen && (
+            <div className="absolute top-full right-0 z-50 pt-4">
+              <div className="grid w-[420px] grid-cols-2 gap-6 rounded-xs border border-black/5 bg-white p-5 pt-3 shadow-lg">
+                {resourceGroups.map((group) => (
+                  <div key={group.label} className="flex flex-col gap-1">
+                    <p className="mb-1 font-mono text-[10px] tracking-[1.2px] text-black/40 uppercase">
+                      {group.label}
+                    </p>
+                    {group.items.map((item) => (
+                      <a
+                        key={item.name}
+                        href="#"
+                        className="rounded-xs px-2 py-1.5 transition-colors duration-150 hover:bg-black/5"
+                      >
+                        <p className="text-foreground font-mono text-xs leading-4 tracking-[1.2px]">
+                          {item.name}
+                        </p>
+                        <p className="font-mono text-[10px] leading-4 text-black/40">
+                          {item.desc}
+                        </p>
+                      </a>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="flex flex-1 items-center justify-end gap-2">
-        <button
-          aria-label="Language"
-          className="bg-surface hidden size-8 cursor-pointer items-center justify-center rounded-xs transition-colors duration-150 hover:bg-black/10 md:flex"
+        <div
+          className="relative hidden md:flex"
+          onMouseEnter={() => setLangOpen(true)}
+          onMouseLeave={() => setLangOpen(false)}
         >
-          <svg
-            className="size-3"
-            viewBox="0 0 16 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+          <button
+            aria-label="Language"
+            className="bg-surface flex size-8 cursor-pointer items-center justify-center rounded-xs transition-colors duration-150 hover:bg-black/10"
           >
-            <circle
-              cx="8"
-              cy="8"
-              r="6.5"
-              stroke="currentColor"
-              strokeWidth="1.2"
-            />
-            <path
-              d="M1.5 8h13M8 1.5c-2 2-3 4.2-3 6.5s1 4.5 3 6.5M8 1.5c2 2 3 4.2 3 6.5s-1 4.5-3 6.5"
-              stroke="currentColor"
-              strokeWidth="1.2"
-              strokeLinecap="round"
-            />
-          </svg>
-        </button>
+            <svg
+              className="size-3"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle
+                cx="8"
+                cy="8"
+                r="6.5"
+                stroke="currentColor"
+                strokeWidth="1.2"
+              />
+              <path
+                d="M1.5 8h13M8 1.5c-2 2-3 4.2-3 6.5s1 4.5 3 6.5M8 1.5c2 2 3 4.2 3 6.5s-1 4.5-3 6.5"
+                stroke="currentColor"
+                strokeWidth="1.2"
+                strokeLinecap="round"
+              />
+            </svg>
+          </button>
+          {langOpen && (
+            <div className="absolute top-full right-0 z-50 pt-4">
+              <div className="flex w-[200px] flex-col rounded-xs border border-black/5 bg-white py-2 shadow-lg">
+                {languages.map((lang) => (
+                  <button
+                    key={lang}
+                    onClick={() => {
+                      setActiveLang(lang);
+                      setLangOpen(false);
+                    }}
+                    className="flex cursor-pointer items-center justify-between px-4 py-2 text-left font-mono text-sm text-black/80 transition-colors duration-150 hover:bg-black/5"
+                  >
+                    {lang}
+                    {activeLang === lang && (
+                      <svg
+                        className="size-4 shrink-0 text-black"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M3 8.5L6.5 12L13 4" />
+                      </svg>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
         <div className="bg-surface hidden items-center gap-2 rounded-xs px-2 py-2 transition-colors duration-150 hover:bg-black/10 md:flex">
           <SearchIcon className="size-[14px] opacity-40" />
           <input
@@ -114,7 +234,7 @@ export function Navbar() {
       {/* Mobile dropdown panel */}
       {menuOpen && (
         <div className="absolute top-16 right-0 left-0 z-50 flex flex-col gap-4 border-t border-black/5 bg-white p-4 shadow-lg md:hidden">
-          {["Models", "Pricing", "Enterprise", "Resources"].map((item) => (
+          {["Explore", "Pricing", "Enterprise"].map((item) => (
             <a
               key={item}
               href="#"
@@ -123,6 +243,35 @@ export function Navbar() {
               {item}
             </a>
           ))}
+          <button
+            onClick={() => setResourcesOpen(!resourcesOpen)}
+            className="text-foreground flex cursor-pointer items-center gap-1 py-2 font-mono text-sm leading-4 tracking-[1.2px] transition-colors duration-150 hover:text-black/50"
+          >
+            Resources
+            <ChevronDown
+              className={`size-4 transition-transform duration-150 ${resourcesOpen ? "rotate-180" : ""}`}
+            />
+          </button>
+          {resourcesOpen && (
+            <div className="grid grid-cols-2 gap-4 pl-2">
+              {resourceGroups.map((group) => (
+                <div key={group.label} className="flex flex-col gap-1">
+                  <p className="mb-1 font-mono text-[10px] tracking-[1.2px] text-black/40 uppercase">
+                    {group.label}
+                  </p>
+                  {group.items.map((item) => (
+                    <a
+                      key={item.name}
+                      href="#"
+                      className="text-foreground py-1 font-mono text-xs leading-4 tracking-[1.2px] transition-colors duration-150 hover:text-black/50"
+                    >
+                      {item.name}
+                    </a>
+                  ))}
+                </div>
+              ))}
+            </div>
+          )}
           <div className="bg-surface flex items-center gap-2 rounded-xs px-2 py-2">
             <SearchIcon className="size-[14px] opacity-40" />
             <input

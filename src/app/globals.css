@@ -25,3 +25,12 @@ body {
   color: var(--foreground);
   font-family: var(--font-azeret), sans-serif;
 }
+
+@keyframes progress-fill {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}

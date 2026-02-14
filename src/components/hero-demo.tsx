@@ -1,7 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { useState, type ReactNode } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 
 type TabKey =
   | "generate_image"
@@ -878,9 +884,36 @@ const codeData: Record<
   },
 };
 
+const AUTO_ADVANCE_MS = 5000;
+
 export function HeroDemo() {
   const [activeTab, setActiveTab] = useState<TabKey>("generate_image");
   const [activeLang, setActiveLang] = useState<LangKey>("node");
+  const timerRef = useRef<ReturnType<typeof setInterval>>(null);
+
+  const advance = useCallback(() => {
+    setActiveTab((prev) => {
+      const idx = tabs.findIndex((t) => t.key === prev);
+      return tabs[(idx + 1) % tabs.length].key;
+    });
+  }, []);
+
+  const resetTimer = useCallback(() => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = setInterval(advance, AUTO_ADVANCE_MS);
+  }, [advance]);
+
+  useEffect(() => {
+    resetTimer();
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [resetTimer]);
+
+  const handleTabClick = (key: TabKey) => {
+    setActiveTab(key);
+    resetTimer();
+  };
 
   const current = codeData[activeTab][activeLang];
 
@@ -903,7 +936,7 @@ export function HeroDemo() {
               {tabs.map((tab) => (
                 <button
                   key={tab.key}
-                  onClick={() => setActiveTab(tab.key)}
+                  onClick={() => handleTabClick(tab.key)}
                   className={`relative flex cursor-pointer items-center gap-1 rounded-[3px] px-4 py-2 font-mono text-xs transition-colors ${
                     activeTab === tab.key
                       ? "bg-[#f2f3f5] text-[#191e2e]"
@@ -911,7 +944,13 @@ export function HeroDemo() {
                   }`}
                 >
                   {activeTab === tab.key && (
-                    <div className="absolute inset-0 rounded-[3px] bg-[#dee2e9]" />
+                    <div
+                      key={activeTab}
+                      className="absolute inset-y-0 left-0 animate-[progress-fill_linear] rounded-[3px] bg-[#dee2e9]"
+                      style={{
+                        animationDuration: `${AUTO_ADVANCE_MS}ms`,
+                      }}
+                    />
                   )}
                   <Image
                     src={tab.icon}

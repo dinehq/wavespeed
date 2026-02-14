@@ -163,7 +163,7 @@ export function FeaturedModels() {
       {/* Full-width table area with edge-pinned thumbnails */}
       <div className="relative mt-10">
         {/* Left thumbnail strip */}
-        <div className="pointer-events-none absolute top-0 left-0 hidden flex-col items-start lg:flex">
+        <div className="pointer-events-none absolute top-0 left-0 hidden flex-col items-start xl:flex">
           {leftThumbs.map((src, i) => {
             const isActive = hoveredIndex === i;
             const size = isActive ? 120 : 80;
@@ -184,7 +184,7 @@ export function FeaturedModels() {
         </div>
 
         {/* Right thumbnail strip */}
-        <div className="pointer-events-none absolute top-0 right-0 hidden flex-col items-end lg:flex">
+        <div className="pointer-events-none absolute top-0 right-0 hidden flex-col items-end xl:flex">
           {rightThumbs.map((src, i) => {
             const isActive = hoveredIndex === i;
             const size = isActive ? 120 : 80;
