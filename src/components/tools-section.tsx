@@ -256,7 +256,7 @@ function CategoryCard({
         />
       </div>
       <p
-        className={`relative font-semibold text-2xl leading-7 tracking-[-0.5px] ${
+        className={`relative font-medium text-xl leading-7 tracking-[-0.5px] ${
           category.dark ? "text-white" : "text-black"
         }`}
       >

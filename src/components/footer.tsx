@@ -38,9 +38,9 @@ export function Footer() {
           <div className="flex gap-4">
             {/* Learn More */}
             <div className="flex flex-col gap-6 w-[200px]">
-              <h4 className="font-mono text-xs text-[#a1a1a1] tracking-[1.2px] uppercase leading-4">
+              <h2 className="font-mono text-xs text-[#a1a1a1] tracking-[1.2px] uppercase leading-4">
                 Learn More
-              </h4>
+              </h2>
               <div className="flex flex-col gap-4">
                 {learnMoreLinks.map((link) => (
                   <a
@@ -56,9 +56,9 @@ export function Footer() {
 
             {/* Platform */}
             <div className="flex flex-col gap-6 w-[200px]">
-              <h4 className="font-mono text-xs text-[#a1a1a1] tracking-[1.2px] uppercase leading-4">
+              <h2 className="font-mono text-xs text-[#a1a1a1] tracking-[1.2px] uppercase leading-4">
                 Platform
-              </h4>
+              </h2>
               <div className="flex flex-col gap-4">
                 {platformLinks.map((link) => (
                   <a
@@ -74,9 +74,9 @@ export function Footer() {
 
             {/* Resources */}
             <div className="flex flex-col gap-6 w-[200px]">
-              <h4 className="font-mono text-xs text-[#a1a1a1] tracking-[1.2px] uppercase leading-4">
+              <h2 className="font-mono text-xs text-[#a1a1a1] tracking-[1.2px] uppercase leading-4">
                 Resources
-              </h4>
+              </h2>
               <div className="flex flex-col gap-4">
                 {resourcesLinks.map((link) => (
                   <a
@@ -92,9 +92,9 @@ export function Footer() {
 
             {/* Legal */}
             <div className="flex flex-col gap-6 w-[200px]">
-              <h4 className="font-mono text-xs text-[#a1a1a1] tracking-[1.2px] uppercase leading-4">
+              <h2 className="font-mono text-xs text-[#a1a1a1] tracking-[1.2px] uppercase leading-4">
                 Legal
-              </h4>
+              </h2>
               <div className="flex flex-col gap-4">
                 {legalLinks.map((link) => (
                   <a
@@ -119,6 +119,7 @@ export function Footer() {
             {/* GitHub */}
             <a
               href="#"
+              aria-label="GitHub"
               className="text-white/40 hover:text-white transition-colors"
             >
               <svg className="size-4" viewBox="0 0 16 16" fill="currentColor">
@@ -128,6 +129,7 @@ export function Footer() {
             {/* Discord */}
             <a
               href="#"
+              aria-label="Discord"
               className="text-white/40 hover:text-white transition-colors"
             >
               <svg className="size-4" viewBox="0 0 16 16" fill="currentColor">
@@ -137,6 +139,7 @@ export function Footer() {
             {/* X / Twitter */}
             <a
               href="#"
+              aria-label="X"
               className="text-white/40 hover:text-white transition-colors"
             >
               <svg className="size-4" viewBox="0 0 16 16" fill="currentColor">

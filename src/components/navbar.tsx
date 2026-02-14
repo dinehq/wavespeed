@@ -9,6 +9,7 @@ export function Navbar() {
       <div className="flex-1">
         <Link
           href="/"
+          aria-label="WaveSpeed home"
           className="flex items-center transition-opacity duration-150 hover:opacity-70"
         >
           <Logo className="h-6 w-auto text-black" />
@@ -35,7 +36,7 @@ export function Navbar() {
       </div>
 
       <div className="flex-1 flex items-center justify-end gap-2">
-        <button className="bg-surface rounded-xs size-8 flex items-center justify-center transition-colors duration-150 hover:bg-black/10 cursor-pointer">
+        <button aria-label="Language" className="bg-surface rounded-xs size-8 flex items-center justify-center transition-colors duration-150 hover:bg-black/10 cursor-pointer">
           <svg
             className="size-3"
             viewBox="0 0 16 16"

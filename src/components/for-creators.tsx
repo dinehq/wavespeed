@@ -45,9 +45,9 @@ export function ForCreators() {
                 key={tab.title}
                 className="flex-1 border-t border-white/[0.16] py-4"
               >
-                <h4 className="font-mono text-base font-medium text-white mb-2">
+                <h3 className="font-mono text-base font-medium text-white mb-2">
                   {tab.title}
-                </h4>
+                </h3>
                 <p className="font-mono text-xs leading-[1.3] text-white/40">
                   {tab.description}
                 </p>
