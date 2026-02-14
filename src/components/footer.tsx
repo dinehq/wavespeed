@@ -46,7 +46,7 @@ export function Footer() {
                   <a
                     key={link}
                     href="#"
-                    className="font-mono text-xs text-[#737373] leading-4 hover:text-white transition-colors"
+                    className="font-mono text-xs text-[#808080] leading-4 hover:text-white transition-colors"
                   >
                     {link}
                   </a>
@@ -64,7 +64,7 @@ export function Footer() {
                   <a
                     key={link}
                     href="#"
-                    className="font-mono text-xs text-[#737373] leading-4 hover:text-white transition-colors"
+                    className="font-mono text-xs text-[#808080] leading-4 hover:text-white transition-colors"
                   >
                     {link}
                   </a>
@@ -82,7 +82,7 @@ export function Footer() {
                   <a
                     key={link}
                     href="#"
-                    className="font-mono text-xs text-[#737373] leading-4 hover:text-white transition-colors"
+                    className="font-mono text-xs text-[#808080] leading-4 hover:text-white transition-colors"
                   >
                     {link}
                   </a>
@@ -100,7 +100,7 @@ export function Footer() {
                   <a
                     key={link}
                     href="#"
-                    className="font-mono text-xs text-[#737373] leading-4 hover:text-white transition-colors"
+                    className="font-mono text-xs text-[#808080] leading-4 hover:text-white transition-colors"
                   >
                     {link}
                   </a>

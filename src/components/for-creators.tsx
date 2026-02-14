@@ -30,7 +30,7 @@ export function ForCreators() {
               <br />
               By <em className="italic">Creators</em>
             </h2>
-            <p className="font-mono text-sm leading-[1.3] text-white/40 flex-1">
+            <p className="font-mono text-sm leading-[1.3] text-white/50 flex-1">
               We know the pain of complex integrations. That&apos;s why we built
               WaveSpeed
               <br />
@@ -48,7 +48,7 @@ export function ForCreators() {
                 <h3 className="font-mono text-base font-medium text-white mb-2">
                   {tab.title}
                 </h3>
-                <p className="font-mono text-xs leading-[1.3] text-white/40">
+                <p className="font-mono text-xs leading-[1.3] text-white/50">
                   {tab.description}
                 </p>
               </div>
@@ -61,7 +61,7 @@ export function ForCreators() {
       <div className="relative h-[660px] mt-[48px]">
         <div className="absolute inset-x-0 top-0 h-[660px] overflow-hidden">
           <Image
-            src="/images/creator-bg.png"
+            src="/images/creator-bg.webp"
             alt="WaveSpeed Studio"
             fill
             className="object-cover object-top"

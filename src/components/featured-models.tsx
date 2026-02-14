@@ -116,11 +116,11 @@ const models = [
 
 const leftThumbs = Array.from(
   { length: 12 },
-  (_, i) => `/images/thumb-${i + 1}.png`,
+  (_, i) => `/images/thumb-${i + 1}.webp`,
 );
 const rightThumbs = Array.from(
   { length: 12 },
-  (_, i) => `/images/thumb-r${i + 1}.png`,
+  (_, i) => `/images/thumb-r${i + 1}.webp`,
 );
 
 function StatusDots({ count }: { count: number }) {

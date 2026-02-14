@@ -86,7 +86,7 @@ export function Testimonials() {
             className="group bg-white w-[511px] rounded-xs shrink-0 p-10 flex flex-col gap-4 relative overflow-hidden transition-shadow duration-300 hover:shadow-[0px_12px_24px_0px_rgba(0,0,0,0.08)]"
           >
             <Image
-              src="/images/quote-bg.jpg"
+              src="/images/quote-bg.webp"
               alt=""
               fill
               className="object-cover pointer-events-none opacity-0 transition-opacity duration-300 group-hover:opacity-100"

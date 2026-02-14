@@ -22,7 +22,7 @@ export function FeaturesSection() {
               {/* Provider logos — extends past right edge, clipped by overflow */}
               <div className="absolute left-[40px] top-[-38px] w-[600px] h-[287px]">
                 <Image
-                  src="/images/logos.png"
+                  src="/images/logos.webp"
                   alt=""
                   fill
                   className="object-contain object-left-top"
@@ -55,7 +55,7 @@ export function FeaturesSection() {
               {/* Speed chart image */}
               <div className="absolute left-0 bottom-0 right-0 h-[260px]">
                 <Image
-                  src="/images/speed.png"
+                  src="/images/speed.webp"
                   alt=""
                   fill
                   className="object-contain object-bottom"
@@ -80,7 +80,7 @@ export function FeaturesSection() {
               {/* Wave lines image — bleeds right for responsive feel */}
               <div className="absolute left-0 top-0 w-[150%] h-full">
                 <Image
-                  src="/images/scale.png"
+                  src="/images/scale.webp"
                   alt=""
                   fill
                   className="object-cover object-left-top"
@@ -92,7 +92,7 @@ export function FeaturesSection() {
               {/* 3D box image — positioned right, bleeding off edge */}
               <div className="absolute right-[-60px] top-[-13px] w-[390px] h-[425px]">
                 <Image
-                  src="/images/security.png"
+                  src="/images/security.webp"
                   alt=""
                   fill
                   className="object-contain"

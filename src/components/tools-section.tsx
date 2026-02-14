@@ -5,7 +5,7 @@ const providerRow1 = [
     name: "Black Forest Labs",
     logo: "/images/lab-1.svg",
     size: "large" as const,
-    bg: "/images/tools-bfl-bg.png",
+    bg: "/images/tools-bfl-bg.webp",
     models: [
       ["FLUX 2 PRO", "FLUX 2 MAX"],
       ["FLUX 2 DEV", "FLUX 2 FLASH"],
@@ -17,7 +17,7 @@ const providerRow1 = [
     name: "Wan",
     logo: "/images/lab-2.svg",
     size: "small" as const,
-    bg: "/images/tools-wan-bg.png",
+    bg: "/images/tools-wan-bg.webp",
     models: [
       "Wan 2.6 Text-to-Video",
       "Wan 2.6 Image-to-Video",
@@ -29,7 +29,7 @@ const providerRow1 = [
     name: "OpenAI",
     logo: "/images/lab-3.svg",
     size: "small" as const,
-    bg: "/images/tools-openai-bg.png",
+    bg: "/images/tools-openai-bg.webp",
     models: [
       "gpt-image-1.5/edit",
       "sora-2/image-to-video",
@@ -41,7 +41,7 @@ const providerRow1 = [
     name: "ByteDance | Seedance",
     logo: "/images/lab-4.svg",
     size: "small" as const,
-    bg: ["/images/tools-bytedance-bg.png", "/images/tools-bytedance-bg2.png"],
+    bg: ["/images/tools-bytedance-bg.webp", "/images/tools-bytedance-bg2.webp"],
     models: [
       "seedance-v1.5-pro/text-to video",
       "seedance-v1.5-pro/image-tovideo",
@@ -55,7 +55,7 @@ const providerRow2 = [
     name: "runway",
     logo: "/images/lab-5.svg",
     size: "small" as const,
-    bg: "/images/tools-runway-bg.png",
+    bg: "/images/tools-runway-bg.webp",
     models: [
       "gen4-aleph",
       "gen4-turbo",
@@ -68,7 +68,7 @@ const providerRow2 = [
     name: "KlingAI",
     logo: "/images/lab-6.svg",
     size: "small" as const,
-    bg: "/images/tools-kling-bg.png",
+    bg: "/images/tools-kling-bg.webp",
     models: [
       "kling-v2.6-std/motion-contro",
       "kling-v2.5-turbo-std/image-tovideo",
@@ -80,7 +80,7 @@ const providerRow2 = [
     name: "RecCraft",
     logo: "/images/lab-7.svg",
     size: "small" as const,
-    bg: "/images/tools-reccraft-bg.png",
+    bg: "/images/tools-reccraft-bg.webp",
     models: [
       "Wan 2.6 Text-to-Video",
       "Wan 2.6 Image-to-Video",
@@ -92,7 +92,7 @@ const providerRow2 = [
     name: "Google",
     logo: "/images/lab-8.svg",
     size: "large" as const,
-    bg: "/images/tools-google-bg.png",
+    bg: "/images/tools-google-bg.webp",
     models: [
       ["nano-banana-pro/edit", "veo3.1/reference-to-video"],
       ["veo3.1/text-to-video", "eo extend"],
@@ -106,31 +106,31 @@ const categoryRow1 = [
   {
     name: "Best Open Source Video Models",
     count: "30 models",
-    bg: "/images/tool-01.png",
+    bg: "/images/tool-01.webp",
     dark: false,
   },
   {
     name: "Best Open Source Image Models",
     count: "30 models",
-    bg: "/images/tool-02.png",
+    bg: "/images/tool-02.webp",
     dark: false,
   },
   {
     name: "Swap Anything",
     count: "22 models",
-    bg: "/images/tool-03.png",
+    bg: "/images/tool-03.webp",
     dark: false,
   },
   {
     name: "Audio for Video",
     count: "3 models",
-    bg: "/images/tool-04.png",
+    bg: "/images/tool-04.webp",
     dark: false,
   },
   {
     name: "Video Edit",
     count: "3 models",
-    bg: "/images/tool-05.png",
+    bg: "/images/tool-05.webp",
     dark: false,
   },
 ];
@@ -139,37 +139,37 @@ const categoryRow2 = [
   {
     name: "Best Open Source Video Models",
     count: "30 models",
-    bg: "/images/tool-06.png",
+    bg: "/images/tool-06.webp",
     dark: false,
   },
   {
     name: "Generate Music",
     count: "30 models",
-    bg: "/images/tool-07.png",
+    bg: "/images/tool-07.webp",
     dark: false,
   },
   {
     name: "Ultra Selection",
     count: "22 models",
-    bg: "/images/tool-08.png",
+    bg: "/images/tool-08.webp",
     dark: false,
   },
   {
     name: "Remove Anything",
     count: "3 models",
-    bg: "/images/tool-09.png",
+    bg: "/images/tool-09.webp",
     dark: false,
   },
   {
     name: "3D Creation",
     count: "3 models",
-    bg: "/images/tool-10.png",
+    bg: "/images/tool-10.webp",
     dark: false,
   },
   {
     name: "Training Tools",
     count: "3 models",
-    bg: "/images/tool-11.png",
+    bg: "/images/tool-11.webp",
     dark: false,
   },
 ];

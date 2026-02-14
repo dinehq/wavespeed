@@ -6,7 +6,7 @@ export function CTABanner() {
     <section className="relative h-[302px] overflow-hidden">
       <div className="absolute inset-0">
         <Image
-          src="/images/get-started-bg.jpg"
+          src="/images/get-started-bg.webp"
           alt=""
           fill
           className="object-cover"

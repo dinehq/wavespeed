@@ -41,7 +41,7 @@ const id = "text-[#191e2e]";
 const tx = "text-[#1b1b1b]";
 const fn = "text-[#5daff1]";
 const st = "text-[#ee560a]";
-const cm = "text-[#7f848e]";
+const cm = "text-[#5f6673]";
 const py_kw = "text-[#4b4bff]";
 const py_fn = "text-[#5daff1]";
 const py_st = "text-[#ee560a]";
@@ -887,7 +887,7 @@ export function HeroDemo() {
   return (
     <section className="relative w-full overflow-hidden">
       <div className="absolute inset-0">
-        <Image src="/images/hero-bg.jpg" alt="" fill className="object-cover" />
+        <Image src="/images/hero-bg.webp" alt="" fill className="object-cover" />
       </div>
 
       <div className="relative max-w-[960px] mx-auto py-8">
@@ -971,7 +971,7 @@ export function HeroDemo() {
               {/* Image preview */}
               {activeTab === "generate_image" && (
                 <Image
-                  src="/images/editor-image-preview.jpg"
+                  src="/images/editor-image-preview.webp"
                   alt="Generated output"
                   fill
                   className="object-cover pointer-events-none"
