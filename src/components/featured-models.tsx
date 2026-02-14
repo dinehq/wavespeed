@@ -125,9 +125,9 @@ const rightThumbs = Array.from(
 
 function StatusDots({ count }: { count: number }) {
   return (
-    <div className="flex gap-px items-center">
+    <div className="flex items-center gap-px">
       {Array.from({ length: count }).map((_, i) => (
-        <div key={i} className="w-1 h-3 bg-green" />
+        <div key={i} className="bg-green h-3 w-1" />
       ))}
     </div>
   );
@@ -135,8 +135,8 @@ function StatusDots({ count }: { count: number }) {
 
 function SpeedBar({ percent }: { percent: number }) {
   return (
-    <div className="bg-[#d9d9d9] h-[3px] w-[85px]">
-      <div className="bg-black h-full" style={{ width: `${percent}%` }} />
+    <div className="h-[3px] w-[85px] bg-[#d9d9d9]">
+      <div className="h-full bg-black" style={{ width: `${percent}%` }} />
     </div>
   );
 }
@@ -147,14 +147,14 @@ export function FeaturedModels() {
   return (
     <section className="bg-white py-20">
       {/* Header */}
-      <div className="mx-auto max-w-[1160px] flex flex-col items-center gap-10">
-        <div className="flex flex-col items-center gap-4 text-center max-w-[875px]">
-          <h2 className="text-[32px] md:text-[48px] font-medium leading-none tracking-[-1px] text-heading">
+      <div className="mx-auto flex max-w-[1160px] flex-col items-center gap-10">
+        <div className="flex max-w-[875px] flex-col items-center gap-4 text-center">
+          <h2 className="text-heading text-[32px] leading-none font-medium tracking-[-1px] text-balance md:text-[48px]">
             Featured Models
           </h2>
-          <p className="font-mono text-base leading-[1.3] text-subtle">
+          <p className="text-subtle font-mono text-base leading-[1.3] text-pretty">
             Access the world&apos;s most advanced multimodal models
-            <br />
+            <br className="hidden md:block" />
             through a single, unified API.
           </p>
         </div>
@@ -163,7 +163,7 @@ export function FeaturedModels() {
       {/* Full-width table area with edge-pinned thumbnails */}
       <div className="relative mt-10">
         {/* Left thumbnail strip */}
-        <div className="absolute left-0 top-0 hidden lg:flex flex-col items-start pointer-events-none">
+        <div className="pointer-events-none absolute top-0 left-0 hidden flex-col items-start lg:flex">
           {leftThumbs.map((src, i) => {
             const isActive = hoveredIndex === i;
             const size = isActive ? 120 : 80;
@@ -184,7 +184,7 @@ export function FeaturedModels() {
         </div>
 
         {/* Right thumbnail strip */}
-        <div className="absolute right-0 top-0 hidden lg:flex flex-col items-end pointer-events-none">
+        <div className="pointer-events-none absolute top-0 right-0 hidden flex-col items-end lg:flex">
           {rightThumbs.map((src, i) => {
             const isActive = hoveredIndex === i;
             const size = isActive ? 120 : 80;
@@ -212,37 +212,37 @@ export function FeaturedModels() {
                 key={i}
                 onMouseEnter={() => setHoveredIndex(i)}
                 onMouseLeave={() => setHoveredIndex(null)}
-                className={`grid grid-cols-2 md:grid-cols-12 gap-4 px-4 md:px-8 py-4 md:py-6 md:h-20 items-center border-b border-black/5 transition-colors duration-150 cursor-default ${
+                className={`grid cursor-default grid-cols-2 items-center gap-4 border-b border-black/5 px-4 py-4 transition-colors duration-150 md:h-20 md:grid-cols-12 md:px-8 md:py-6 ${
                   hoveredIndex === i ? "bg-surface" : ""
                 }`}
               >
                 <div className="col-span-1 md:col-span-3">
-                  <span className="font-mono text-sm text-black leading-5">
+                  <span className="font-mono text-sm leading-5 text-black">
                     {model.name}
                   </span>
                 </div>
-                <div className="hidden md:block col-span-2">
-                  <span className="font-mono text-sm text-black leading-5">
+                <div className="col-span-2 hidden md:block">
+                  <span className="font-mono text-sm leading-5 text-black">
                     {model.provider}
                   </span>
                 </div>
-                <div className="hidden md:block col-span-2">
-                  <span className="font-mono text-sm text-black leading-5">
+                <div className="col-span-2 hidden md:block">
+                  <span className="font-mono text-sm leading-5 text-black">
                     {model.type}
                   </span>
                 </div>
-                <div className="col-span-1 md:col-span-2 flex items-center gap-2 px-0.5 justify-end md:justify-start">
-                  <span className="font-mono text-sm text-black leading-5">
+                <div className="col-span-1 flex items-center justify-end gap-2 px-0.5 md:col-span-2 md:justify-start">
+                  <span className="font-mono text-sm leading-5 text-black">
                     {model.speed}
                   </span>
                   <SpeedBar percent={model.speedBar} />
                 </div>
-                <div className="hidden md:flex col-span-1 items-center">
-                  <span className="font-mono text-sm text-black uppercase leading-[15px]">
+                <div className="col-span-1 hidden items-center md:flex">
+                  <span className="font-mono text-sm leading-[15px] text-black uppercase">
                     {model.tps}
                   </span>
                 </div>
-                <div className="hidden md:flex col-span-1 items-center justify-end">
+                <div className="col-span-1 hidden items-center justify-end md:flex">
                   <StatusDots count={model.status} />
                 </div>
               </div>
@@ -252,10 +252,10 @@ export function FeaturedModels() {
       </div>
 
       {/* CTA button */}
-      <div className="mx-auto max-w-[1160px] flex justify-center mt-10">
+      <div className="mx-auto mt-10 flex max-w-[1160px] justify-center">
         <a
           href="#"
-          className="bg-black text-white rounded-xs px-4 py-3 font-mono text-sm font-medium tracking-[1.2px] transition-colors duration-150 hover:bg-black/80"
+          className="rounded-xs bg-black px-4 py-3 font-mono text-sm font-medium tracking-[1.2px] text-white transition-colors duration-150 hover:bg-black/80"
         >
           Explore all 1326 models
         </a>

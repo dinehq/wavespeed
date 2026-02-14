@@ -182,9 +182,9 @@ function ProviderCard({ card }: { card: ProviderCard }) {
   const hasGrid = isLarge && Array.isArray(card.models[0]);
 
   return (
-    <div className="relative h-[240px] md:h-[320px] overflow-hidden rounded-xs p-6 flex flex-col justify-between min-w-0 cursor-pointer group transition-all duration-200 hover:shadow-xl hover:scale-[1.02]">
+    <div className="group relative flex h-[240px] min-w-0 cursor-pointer flex-col justify-between overflow-hidden rounded-xs p-6 transition-all duration-200 hover:scale-[1.02] hover:shadow-xl md:h-[320px]">
       {/* Background image(s) */}
-      <div className="absolute inset-0 pointer-events-none">
+      <div className="pointer-events-none absolute inset-0">
         <div className="absolute inset-0 bg-[#f1f2f3]" />
         {bgs.map((bg, i) => (
           <Image
@@ -197,9 +197,9 @@ function ProviderCard({ card }: { card: ProviderCard }) {
         ))}
       </div>
       {/* Bottom gradient + blur with smooth fade-in via mask */}
-      <div className="absolute bottom-0 left-0 right-0 h-[160px] bg-gradient-to-b from-transparent to-black/40" />
+      <div className="absolute right-0 bottom-0 left-0 h-[160px] bg-linear-to-b from-transparent to-black/40" />
       <div
-        className="absolute bottom-0 left-0 right-0 h-[160px] backdrop-blur-[16px]"
+        className="absolute right-0 bottom-0 left-0 h-[160px] backdrop-blur-lg"
         style={{
           maskImage: "linear-gradient(to bottom, transparent, black)",
           WebkitMaskImage: "linear-gradient(to bottom, transparent, black)",
@@ -218,19 +218,19 @@ function ProviderCard({ card }: { card: ProviderCard }) {
 
       {/* Model list */}
       {hasGrid ? (
-        <div className="relative grid grid-cols-2 gap-x-4 gap-y-1 font-mono text-sm leading-[1.25] text-white/80">
+        <div className="relative grid grid-cols-2 gap-x-4 gap-y-1 font-mono text-sm leading-tight text-white/80">
           {(card.models as string[][]).map((pair, i) =>
             pair.map((model, j) => (
-              <p className="truncate" key={`${i}-${j}`}>
+              <p className="truncate text-pretty" key={`${i}-${j}`}>
                 {model}
               </p>
             )),
           )}
         </div>
       ) : (
-        <div className="relative flex flex-col gap-1 font-mono text-sm leading-[1.25] text-white/80">
+        <div className="relative flex flex-col gap-1 font-mono text-sm leading-tight text-white/80">
           {(card.models as string[]).map((model, i) => (
-            <p className="truncate" key={i}>
+            <p className="truncate text-pretty" key={i}>
               {model}
             </p>
           ))}
@@ -246,8 +246,8 @@ function CategoryCard({
   category: { name: string; count: string; bg: string; dark: boolean };
 }) {
   return (
-    <div className="relative h-[80px] md:h-[131px] overflow-hidden rounded-xs p-4 md:p-6 flex flex-col justify-between min-w-0 cursor-pointer group transition-all duration-200 hover:shadow-xl hover:scale-[1.02]">
-      <div className="absolute inset-0 pointer-events-none">
+    <div className="group relative flex h-[80px] min-w-0 cursor-pointer flex-col justify-between overflow-hidden rounded-xs p-4 transition-all duration-200 hover:scale-[1.02] hover:shadow-xl md:h-[131px] md:p-6">
+      <div className="pointer-events-none absolute inset-0">
         <Image
           src={category.bg}
           alt=""
@@ -256,14 +256,14 @@ function CategoryCard({
         />
       </div>
       <p
-        className={`relative font-medium text-base md:text-xl leading-6 md:leading-7 tracking-[-0.5px] truncate ${
+        className={`relative truncate text-base leading-6 font-medium tracking-[-0.5px] md:text-xl md:leading-7 ${
           category.dark ? "text-white" : "text-black"
         }`}
       >
         {category.name}
       </p>
       <p
-        className={`relative font-mono text-sm leading-[1.25] ${
+        className={`relative font-mono text-sm leading-tight ${
           category.dark ? "text-white/64" : "text-black/64"
         }`}
       >
@@ -275,15 +275,15 @@ function CategoryCard({
 
 export function ToolsSection() {
   return (
-    <section className="py-20 overflow-hidden">
+    <section className="overflow-hidden py-20">
       {/* Header */}
-      <div className="max-w-[976px] mx-auto px-6 md:px-20 text-center mb-10">
-        <h2 className="text-[32px] md:text-[48px] font-medium leading-none tracking-[-1px] text-heading mb-6">
+      <div className="mx-auto mb-10 max-w-[976px] px-6 text-center md:px-20">
+        <h2 className="text-heading mb-6 text-[32px] leading-none font-medium tracking-[-1px] text-balance md:text-[48px]">
           Get any tool you want
         </h2>
-        <p className="font-mono text-base leading-[1.3] text-subtle">
+        <p className="text-subtle font-mono text-base leading-[1.3] text-pretty">
           Transform your creative workflow with AI tools for
-          <br />
+          <br className="hidden md:block" />
           upscaling, editing, and generating images and videos.
         </p>
       </div>
@@ -291,32 +291,32 @@ export function ToolsSection() {
       {/* Cards area — full width, grid for even distribution */}
       <div className="flex flex-col gap-[18px] px-4">
         {/* Provider Row 1: large + 3 small */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr] gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr]">
           {providerRow1.map((card) => (
             <ProviderCard key={card.name} card={card} />
           ))}
         </div>
 
         {/* Provider Row 2: 3 small + large */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_2fr] gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_2fr]">
           {providerRow2.map((card) => (
             <ProviderCard key={card.name} card={card} />
           ))}
         </div>
 
         {/* Category Row 1 */}
-        <div className="flex gap-2 md:gap-4 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:grid lg:grid-cols-5">
+        <div className="flex gap-2 overflow-x-auto [scrollbar-width:none] md:gap-4 lg:grid lg:grid-cols-5 [&::-webkit-scrollbar]:hidden">
           {categoryRow1.map((cat) => (
-            <div key={cat.name} className="shrink-0 w-[160px] lg:w-auto">
+            <div key={cat.name} className="w-[160px] shrink-0 lg:w-auto">
               <CategoryCard category={cat} />
             </div>
           ))}
         </div>
 
         {/* Category Row 2 */}
-        <div className="flex gap-2 md:gap-4 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:grid lg:grid-cols-6">
+        <div className="flex gap-2 overflow-x-auto [scrollbar-width:none] md:gap-4 lg:grid lg:grid-cols-6 [&::-webkit-scrollbar]:hidden">
           {categoryRow2.map((cat) => (
-            <div key={cat.name + "2"} className="shrink-0 w-[160px] lg:w-auto">
+            <div key={cat.name + "2"} className="w-[160px] shrink-0 lg:w-auto">
               <CategoryCard category={cat} />
             </div>
           ))}

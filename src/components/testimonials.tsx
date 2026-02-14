@@ -63,8 +63,8 @@ export function Testimonials() {
 
   return (
     <section className="bg-surface py-20">
-      <div className="px-6 md:px-20 mb-12">
-        <h2 className="max-w-[1280px] mx-auto text-[32px] md:text-[48px] font-medium leading-none tracking-[-1px] text-heading">
+      <div className="mb-12 px-6 md:px-20">
+        <h2 className="text-heading mx-auto max-w-[1280px] text-[32px] leading-none font-medium tracking-[-1px] text-balance md:text-[48px]">
           What people are saying
         </h2>
       </div>
@@ -75,7 +75,7 @@ export function Testimonials() {
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
-        className="flex gap-6 overflow-x-auto cursor-grab select-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-8"
+        className="flex cursor-grab gap-6 overflow-x-auto pb-8 select-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         style={{
           paddingInline: "max(24px, calc((100vw - 1280px) / 2))",
         }}
@@ -83,21 +83,21 @@ export function Testimonials() {
         {testimonials.map((t) => (
           <div
             key={t.name}
-            className="group bg-white w-[300px] md:w-[511px] rounded-xs shrink-0 p-6 md:p-10 flex flex-col gap-4 relative overflow-hidden transition-shadow duration-300 hover:shadow-[0px_12px_24px_0px_rgba(0,0,0,0.08)]"
+            className="group relative flex w-[300px] shrink-0 flex-col gap-4 overflow-hidden rounded-xs bg-white p-6 transition-shadow duration-300 hover:shadow-[0px_12px_24px_0px_rgba(0,0,0,0.08)] md:w-[511px] md:p-10"
           >
             <Image
               src="/images/quote-bg.webp"
               alt=""
               fill
-              className="object-cover pointer-events-none opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+              className="pointer-events-none object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
             />
             <div className="relative h-6" style={{ width: t.logoWidth }}>
               <Image src={t.logo} alt="" fill className="object-contain" />
             </div>
-            <p className="relative text-lg leading-[1.5] text-[#191e2e]">
+            <p className="relative text-lg leading-normal text-pretty text-[#191e2e]">
               {t.quote}
             </p>
-            <div className="relative font-mono text-sm leading-[1.5] text-muted">
+            <div className="text-muted relative font-mono text-sm leading-normal">
               <p>{t.name}</p>
               <p>{t.title}</p>
             </div>
