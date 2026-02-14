@@ -16,28 +16,34 @@ type TabKey =
   | "generate_speech";
 type LangKey = "node" | "python" | "curl";
 
-const tabs: { key: TabKey; name: string; icon: string }[] = [
-  {
-    key: "generate_image",
-    name: "generate_image.ts",
-    icon: "/images/tab-icon-image.svg",
-  },
+const tabs: { key: TabKey; base: string; icon: string }[] = [
   {
     key: "create_video",
-    name: "create_video.ts",
+    base: "create_video",
     icon: "/images/tab-icon-video.svg",
   },
   {
+    key: "generate_image",
+    base: "generate_image",
+    icon: "/images/tab-icon-image.svg",
+  },
+  {
     key: "analyze_chat",
-    name: "analyze_chat.ts",
+    base: "analyze_chat",
     icon: "/images/tab-icon-chat.svg",
   },
   {
     key: "generate_speech",
-    name: "generate_speech.ts",
+    base: "generate_speech",
     icon: "/images/tab-icon-speech.svg",
   },
 ];
+
+const langExt: Record<LangKey, string> = {
+  node: ".ts",
+  python: ".py",
+  curl: ".sh",
+};
 
 const langTabs: LangKey[] = ["node", "python", "curl"];
 
@@ -887,7 +893,7 @@ const codeData: Record<
 const AUTO_ADVANCE_MS = 5000;
 
 export function HeroDemo() {
-  const [activeTab, setActiveTab] = useState<TabKey>("generate_image");
+  const [activeTab, setActiveTab] = useState<TabKey>("create_video");
   const [activeLang, setActiveLang] = useState<LangKey>("node");
   const timerRef = useRef<ReturnType<typeof setInterval>>(null);
 
@@ -960,7 +966,7 @@ export function HeroDemo() {
                     className="relative shrink-0"
                     unoptimized
                   />
-                  <span className="relative">{tab.name}</span>
+                  <span className="relative">{tab.base}{langExt[activeLang]}</span>
                 </button>
               ))}
             </div>
