@@ -1,21 +1,74 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #ffffff;
   --foreground: #1b1b1d;
+  --heading: #2a2a2a;
+  --subtle: #737373;
+  --muted: rgba(0, 0, 0, 0.64);
+  --faint: rgba(0, 0, 0, 0.4);
+  --surface: #f4f6fd;
+  --footer-label: #71717a;
+  --footer-text: #a1a1aa;
+  --footer-link: #a1a1aa;
+  --ink: #191e2e;
+  --panel: #f2f3f5;
+  --panel-alt: #ecedee;
+  --track: #d9d9d9;
+  --secondary: #7f848e;
+  --accent-light: #d3ddff;
+  --progress-track: #dee2e9;
+  --code-text: #1b1b1b;
+  --code-dark: #262626;
+}
+
+.dark {
+  --background: #09090b;
+  --foreground: #fafafa;
+  --heading: #f4f4f5;
+  --subtle: #a1a1aa;
+  --muted: rgba(255, 255, 255, 0.7);
+  --faint: rgba(255, 255, 255, 0.4);
+  --surface: #18181b;
+  --panel: #1c1c20;
+  --panel-alt: #222228;
+  --track: #3f3f46;
+  --secondary: #a1a1aa;
+  --ink: #fafafa;
+  --code-text: #e4e4e7;
+  --code-dark: #0e1017;
+  --accent-light: #1e1b4b;
+  --progress-track: #27272a;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-heading: #2a2a2a;
-  --color-subtle: #737373;
-  --color-muted: rgba(0, 0, 0, 0.64);
-  --color-faint: rgba(0, 0, 0, 0.4);
-  --color-surface: #f4f6fd;
+  --color-heading: var(--heading);
+  --color-subtle: var(--subtle);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-panel: var(--panel);
+  --color-panel-alt: var(--panel-alt);
+  --color-track: var(--track);
+  --color-secondary: var(--secondary);
+  --color-accent-light: var(--accent-light);
+  --color-progress-track: var(--progress-track);
+  --color-code-text: var(--code-text);
+  --color-code-dark: var(--code-dark);
+  --color-footer-label: var(--footer-label);
+  --color-footer-text: var(--footer-text);
+  --color-footer-link: var(--footer-link);
   --color-green: #a1e019;
-  --color-footer-label: #a1a1a1;
-  --color-footer-text: #525252;
+  --color-dark: #0e1017;
+  --color-syntax-keyword: #4b4bff;
+  --color-syntax-function: #5daff1;
+  --color-syntax-string: #ee560a;
+  --color-syntax-comment: #5f6673;
   --font-sans: var(--font-azeret);
   --font-mono: var(--font-azeret-semimono);
 }

@@ -68,7 +68,7 @@ export function Navbar() {
           aria-label="WaveSpeed home"
           className="inline-flex items-center transition-opacity duration-150 hover:opacity-70"
         >
-          <Logo className="h-6 w-auto text-black" />
+          <Logo className="text-foreground h-6 w-auto" />
         </Link>
       </div>
 
@@ -77,7 +77,7 @@ export function Navbar() {
           <a
             key={item}
             href="#"
-            className="text-foreground font-mono text-sm leading-4 tracking-[1.2px] transition-colors duration-150 hover:text-black/50"
+            className="text-foreground hover:text-foreground/50 font-mono text-sm leading-4 tracking-[1.2px] transition-colors duration-150"
           >
             {item}
           </a>
@@ -87,7 +87,7 @@ export function Navbar() {
           onMouseEnter={() => setResourcesOpen(true)}
           onMouseLeave={() => setResourcesOpen(false)}
         >
-          <button className="text-foreground flex cursor-pointer items-center gap-1 font-mono text-sm leading-4 tracking-[1.2px] transition-colors duration-150 hover:text-black/50">
+          <button className="text-foreground hover:text-foreground/50 flex cursor-pointer items-center gap-1 font-mono text-sm leading-4 tracking-[1.2px] transition-colors duration-150">
             Resources
             <ChevronDown
               className={`size-4 transition-transform duration-150 ${resourcesOpen ? "rotate-180" : ""}`}
@@ -95,22 +95,22 @@ export function Navbar() {
           </button>
           {resourcesOpen && (
             <div className="absolute top-full right-0 z-50 pt-4">
-              <div className="grid w-[420px] grid-cols-2 gap-6 rounded-xs border border-black/5 bg-white p-5 pt-3 shadow-lg">
+              <div className="border-foreground/5 bg-background grid w-[420px] grid-cols-2 gap-6 rounded-xs border p-5 pt-3 shadow-lg">
                 {resourceGroups.map((group) => (
                   <div key={group.label} className="flex flex-col gap-1">
-                    <p className="mb-1 font-mono text-[10px] tracking-[1.2px] text-black/40 uppercase">
+                    <p className="text-foreground/40 mb-1 font-mono text-[10px] tracking-[1.2px] uppercase">
                       {group.label}
                     </p>
                     {group.items.map((item) => (
                       <a
                         key={item.name}
                         href="#"
-                        className="rounded-xs px-2 py-1.5 transition-colors duration-150 hover:bg-black/5"
+                        className="hover:bg-foreground/5 rounded-xs px-2 py-1.5 transition-colors duration-150"
                       >
                         <p className="text-foreground font-mono text-xs leading-4 tracking-[1.2px]">
                           {item.name}
                         </p>
-                        <p className="font-mono text-[10px] leading-4 text-black/40">
+                        <p className="text-foreground/40 font-mono text-[10px] leading-4">
                           {item.desc}
                         </p>
                       </a>
@@ -131,7 +131,7 @@ export function Navbar() {
         >
           <button
             aria-label="Language"
-            className="bg-surface flex size-8 cursor-pointer items-center justify-center rounded-xs transition-colors duration-150 hover:bg-black/10"
+            className="bg-surface hover:bg-foreground/10 flex size-8 cursor-pointer items-center justify-center rounded-xs transition-colors duration-150"
           >
             <svg
               className="size-3"
@@ -156,7 +156,7 @@ export function Navbar() {
           </button>
           {langOpen && (
             <div className="absolute top-full right-0 z-50 pt-4">
-              <div className="flex w-[200px] flex-col rounded-xs border border-black/5 bg-white py-2 shadow-lg">
+              <div className="border-foreground/5 bg-background flex w-[200px] flex-col rounded-xs border py-2 shadow-lg">
                 {languages.map((lang) => (
                   <button
                     key={lang}
@@ -164,12 +164,12 @@ export function Navbar() {
                       setActiveLang(lang);
                       setLangOpen(false);
                     }}
-                    className="flex cursor-pointer items-center justify-between px-4 py-2 text-left font-mono text-sm text-black/80 transition-colors duration-150 hover:bg-black/5"
+                    className="text-foreground/80 hover:bg-foreground/5 flex cursor-pointer items-center justify-between px-4 py-2 text-left font-mono text-sm transition-colors duration-150"
                   >
                     {lang}
                     {activeLang === lang && (
                       <svg
-                        className="size-4 shrink-0 text-black"
+                        className="text-foreground size-4 shrink-0"
                         viewBox="0 0 16 16"
                         fill="none"
                         stroke="currentColor"
@@ -186,7 +186,7 @@ export function Navbar() {
             </div>
           )}
         </div>
-        <div className="bg-surface hidden items-center gap-2 rounded-xs px-2 py-2 transition-colors duration-150 hover:bg-black/10 md:flex">
+        <div className="bg-surface hover:bg-foreground/10 hidden items-center gap-2 rounded-xs px-2 py-1.5 transition-colors duration-150 md:flex">
           <SearchIcon className="size-[14px] opacity-40" />
           <input
             type="text"
@@ -196,7 +196,7 @@ export function Navbar() {
         </div>
         <a
           href="#"
-          className="flex items-center justify-center rounded-xs bg-black px-4 py-2 font-mono text-sm tracking-[1.2px] text-white uppercase transition-colors duration-150 hover:bg-black/80"
+          className="bg-foreground text-background hover:bg-foreground/80 flex items-center justify-center rounded-xs px-4 py-1.5 font-mono text-sm tracking-[1.2px] uppercase transition-colors duration-150"
         >
           Sign In
         </a>
@@ -233,19 +233,19 @@ export function Navbar() {
 
       {/* Mobile dropdown panel */}
       {menuOpen && (
-        <div className="absolute top-16 right-0 left-0 z-50 flex flex-col gap-4 border-t border-black/5 bg-white p-4 shadow-lg md:hidden">
+        <div className="border-foreground/5 bg-background absolute top-16 right-0 left-0 z-50 flex flex-col gap-4 border-t p-4 shadow-lg md:hidden">
           {["Explore", "Pricing", "Enterprise"].map((item) => (
             <a
               key={item}
               href="#"
-              className="text-foreground py-2 font-mono text-sm leading-4 tracking-[1.2px] transition-colors duration-150 hover:text-black/50"
+              className="text-foreground hover:text-foreground/50 py-2 font-mono text-sm leading-4 tracking-[1.2px] transition-colors duration-150"
             >
               {item}
             </a>
           ))}
           <button
             onClick={() => setResourcesOpen(!resourcesOpen)}
-            className="text-foreground flex cursor-pointer items-center gap-1 py-2 font-mono text-sm leading-4 tracking-[1.2px] transition-colors duration-150 hover:text-black/50"
+            className="text-foreground hover:text-foreground/50 flex cursor-pointer items-center gap-1 py-2 font-mono text-sm leading-4 tracking-[1.2px] transition-colors duration-150"
           >
             Resources
             <ChevronDown
@@ -256,14 +256,14 @@ export function Navbar() {
             <div className="grid grid-cols-2 gap-4 pl-2">
               {resourceGroups.map((group) => (
                 <div key={group.label} className="flex flex-col gap-1">
-                  <p className="mb-1 font-mono text-[10px] tracking-[1.2px] text-black/40 uppercase">
+                  <p className="text-foreground/40 mb-1 font-mono text-[10px] tracking-[1.2px] uppercase">
                     {group.label}
                   </p>
                   {group.items.map((item) => (
                     <a
                       key={item.name}
                       href="#"
-                      className="text-foreground py-1 font-mono text-xs leading-4 tracking-[1.2px] transition-colors duration-150 hover:text-black/50"
+                      className="text-foreground hover:text-foreground/50 py-1 font-mono text-xs leading-4 tracking-[1.2px] transition-colors duration-150"
                     >
                       {item.name}
                     </a>

@@ -185,7 +185,7 @@ function ProviderCard({ card }: { card: ProviderCard }) {
     <div className="group relative flex h-[240px] min-w-0 cursor-pointer flex-col justify-between overflow-hidden rounded-xs p-6 transition-all duration-200 hover:scale-[1.02] hover:shadow-xl md:h-[320px]">
       {/* Background image(s) */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-[#f1f2f3]" />
+        <div className="absolute inset-0 bg-panel" />
         {bgs.map((bg, i) => (
           <Image
             key={i}

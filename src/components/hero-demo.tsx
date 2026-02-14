@@ -44,16 +44,16 @@ const langExt: Record<LangKey, string> = {
 const langTabs: LangKey[] = ["node", "python", "curl"];
 
 // --- Syntax coloring helpers ---
-const kw = "text-[#4b4bff]";
-const id = "text-[#191e2e]";
-const tx = "text-[#1b1b1b]";
-const fn = "text-[#5daff1]";
-const st = "text-[#ee560a]";
-const cm = "text-[#5f6673]";
-const py_kw = "text-[#4b4bff]";
-const py_fn = "text-[#5daff1]";
-const py_st = "text-[#ee560a]";
-const sh_st = "text-[#ee560a]";
+const kw = "text-syntax-keyword";
+const id = "text-ink";
+const tx = "text-code-text";
+const fn = "text-syntax-function";
+const st = "text-syntax-string";
+const cm = "text-syntax-comment";
+const py_kw = "text-syntax-keyword";
+const py_fn = "text-syntax-function";
+const py_st = "text-syntax-string";
+const sh_st = "text-syntax-string";
 
 type CodeLine = { content: ReactNode };
 
@@ -931,7 +931,7 @@ export function HeroDemo() {
       </div>
 
       <div className="relative mx-auto max-w-[960px] px-4 py-4 md:px-0 md:py-12">
-        <div className="flex flex-col gap-2 rounded-[5px] bg-white p-2">
+        <div className="flex flex-col gap-2 rounded-[5px] bg-background p-2">
           {/* Tab bar */}
           <div className="flex flex-col items-start justify-between gap-2 sm:flex-row sm:items-center sm:gap-0">
             <div className="flex w-full gap-1 overflow-x-auto [scrollbar-width:none] sm:w-auto [&::-webkit-scrollbar]:hidden">
@@ -941,14 +941,14 @@ export function HeroDemo() {
                   onClick={() => handleTabClick(tab.key)}
                   className={`relative flex cursor-pointer items-center gap-1 rounded-[3px] px-4 py-2 font-mono text-xs transition-colors ${
                     activeTab === tab.key
-                      ? "bg-[#f2f3f5] text-[#191e2e]"
-                      : "bg-[#f2f3f5] text-[#191e2e]"
+                      ? "bg-panel text-ink"
+                      : "bg-panel text-ink"
                   }`}
                 >
                   {activeTab === tab.key && (
                     <div
                       key={activeTab}
-                      className="absolute inset-y-0 left-0 animate-[progress-fill_linear] rounded-[3px] bg-[#dee2e9]"
+                      className="absolute inset-y-0 left-0 animate-[progress-fill_linear] rounded-[3px] bg-progress-track"
                       style={{
                         animationDuration: `${AUTO_ADVANCE_MS}ms`,
                       }}
@@ -976,8 +976,8 @@ export function HeroDemo() {
                   onClick={() => setActiveLang(lang)}
                   className={`cursor-pointer rounded-[2px] px-2 py-1 font-mono text-xs transition-colors ${
                     activeLang === lang
-                      ? "bg-[#262626] text-white"
-                      : "text-[#191e2e]"
+                      ? "bg-code-dark text-white"
+                      : "text-ink"
                   }`}
                 >
                   {lang}
@@ -987,12 +987,12 @@ export function HeroDemo() {
           </div>
 
           {/* Editor content */}
-          <div className="flex flex-col overflow-hidden rounded-[3px] bg-[#ecedee] md:flex-row">
+          <div className="flex flex-col overflow-hidden rounded-[3px] bg-panel-alt md:flex-row">
             {/* Code panel */}
-            <div className="relative h-[260px] bg-[#f2f3f5] md:h-[348px] md:flex-1">
+            <div className="relative h-[260px] bg-panel md:h-[348px] md:flex-1">
               <div className="absolute top-10 left-6 flex">
                 {/* Line numbers */}
-                <div className="flex w-6 flex-col gap-1 font-mono text-[13px] leading-tight text-[#7f848e]">
+                <div className="flex w-6 flex-col gap-1 font-mono text-[13px] leading-tight text-secondary">
                   {current.lines.map((_, i) => (
                     <p key={i} className="opacity-40">
                       {i + 1}
@@ -1007,8 +1007,8 @@ export function HeroDemo() {
                 </div>
               </div>
               {/* Status */}
-              <div className="absolute bottom-3 left-6 flex items-center gap-2 rounded bg-white px-2 py-1 md:top-[308px] md:bottom-auto">
-                <span className="size-[6px] rounded-full bg-[#22c55e]" />
+              <div className="absolute bottom-3 left-6 flex items-center gap-2 rounded bg-background px-2 py-1 md:top-[308px] md:bottom-auto">
+                <span className="size-[6px] rounded-full bg-green" />
                 <span className="text-subtle font-mono text-xs leading-tight">
                   {current.status}
                 </span>
@@ -1041,32 +1041,32 @@ export function HeroDemo() {
 
               {/* Chat preview */}
               {activeTab === "chat" && (
-                <div className="absolute inset-0 flex flex-col overflow-hidden bg-[#f2f3f5] p-5">
-                  <p className="mb-3 font-mono text-[10px] tracking-[1px] text-pretty text-[#7f848e] uppercase">
+                <div className="absolute inset-0 flex flex-col overflow-hidden bg-panel p-5">
+                  <p className="mb-3 font-mono text-[10px] tracking-[1px] text-pretty text-secondary uppercase">
                     Response
                   </p>
-                  <div className="flex flex-col gap-2 font-mono text-[12px] leading-normal text-[#1b1b1b]">
+                  <div className="flex flex-col gap-2 font-mono text-[12px] leading-normal text-code-text">
                     <p>The conversation covered four key areas:</p>
                     <div className="flex flex-col gap-1.5 pl-1">
-                      <p className="text-pretty text-[#7f848e]">
-                        <span className="text-[#1b1b1b]">1.</span> Q3 revenue
+                      <p className="text-pretty text-secondary">
+                        <span className="text-code-text">1.</span> Q3 revenue
                         increased 23% year-over-year
                       </p>
-                      <p className="text-pretty text-[#7f848e]">
-                        <span className="text-[#1b1b1b]">2.</span> New API
+                      <p className="text-pretty text-secondary">
+                        <span className="text-code-text">2.</span> New API
                         launch scheduled for October
                       </p>
-                      <p className="text-pretty text-[#7f848e]">
-                        <span className="text-[#1b1b1b]">3.</span>{" "}
+                      <p className="text-pretty text-secondary">
+                        <span className="text-code-text">3.</span>{" "}
                         Infrastructure team hiring 5 engineers
                       </p>
-                      <p className="text-pretty text-[#7f848e]">
-                        <span className="text-[#1b1b1b]">4.</span> Partnership
+                      <p className="text-pretty text-secondary">
+                        <span className="text-code-text">4.</span> Partnership
                         agreement signed with Acme
                       </p>
                     </div>
-                    <div className="mt-2 border-t border-black/5 pt-2">
-                      <p className="text-[11px] text-pretty text-[#7f848e]">
+                    <div className="mt-2 border-t border-foreground/5 pt-2">
+                      <p className="text-[11px] text-pretty text-secondary">
                         Action item: Scale GPU cluster to 256 nodes by Q4,
                         targeting p99 latency &lt; 200ms.
                       </p>
@@ -1077,9 +1077,9 @@ export function HeroDemo() {
 
               {/* Audio preview */}
               {activeTab === "speech" && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 bg-[#f2f3f5] px-8">
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 bg-panel px-8">
                   <div className="flex w-full items-center gap-3">
-                    <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#1b1b1b]">
+                    <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-code-text">
                       <svg
                         width="10"
                         height="12"
@@ -1099,17 +1099,17 @@ export function HeroDemo() {
                       ].map((h, i) => (
                         <div
                           key={i}
-                          className="flex-1 rounded-full bg-[#1b1b1b]/20"
+                          className="flex-1 rounded-full bg-code-text/20"
                           style={{ height: `${h * 100}%` }}
                         />
                       ))}
                     </div>
                   </div>
-                  <div className="flex w-full justify-between font-mono text-[10px] text-[#7f848e]">
+                  <div className="flex w-full justify-between font-mono text-[10px] text-secondary">
                     <span>0:00</span>
                     <span>0:04</span>
                   </div>
-                  <p className="text-center font-mono text-[12px] leading-[1.4] text-pretty text-[#1b1b1b]/40">
+                  <p className="text-center font-mono text-[12px] leading-[1.4] text-pretty text-code-text/40">
                     &ldquo;Hello from WaveSpeed&rdquo;
                   </p>
                 </div>

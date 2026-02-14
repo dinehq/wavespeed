@@ -9,7 +9,7 @@ const features = [
 
 export function ForCreators() {
   return (
-    <section className="relative overflow-hidden bg-[#0c0e15]">
+    <section className="bg-dark dark:bg-dark relative overflow-hidden">
       <div className="px-6 pt-16 md:px-20 md:pt-[120px]">
         <div className="mx-auto max-w-[1280px]">
           {/* Section header: title left, description + CTA right */}

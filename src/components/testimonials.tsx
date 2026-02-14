@@ -105,7 +105,7 @@ export function Testimonials() {
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
-        className="flex cursor-grab gap-6 overflow-x-auto pb-8 select-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="flex cursor-grab gap-6 overflow-x-auto pt-2 pb-8 select-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         style={{
           paddingInline: "max(24px, calc((100vw - 1280px) / 2))",
         }}
@@ -113,13 +113,13 @@ export function Testimonials() {
         {testimonials.map((t) => (
           <div
             key={t.name}
-            className="group relative flex w-[300px] shrink-0 flex-col justify-between gap-4 overflow-hidden rounded-xs bg-white p-6 transition-shadow duration-300 hover:shadow-[0px_12px_24px_0px_rgba(0,0,0,0.08)] md:w-[480px] md:p-10"
+            className="group relative flex w-[300px] shrink-0 flex-col justify-between gap-4 overflow-hidden rounded-xs bg-background p-6 transition-shadow duration-300 hover:shadow-[0px_12px_24px_0px_rgba(0,0,0,0.08)] dark:bg-panel dark:hover:shadow-[0px_12px_24px_0px_rgba(0,0,0,0.3)] md:w-[480px] md:p-10"
           >
             <Image
               src="/images/quote-bg.webp"
               alt=""
               fill
-              className="pointer-events-none object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+              className="pointer-events-none object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100 dark:hidden"
             />
             <div className="relative flex flex-col gap-4">
               {t.logo && (
@@ -128,11 +128,11 @@ export function Testimonials() {
                     className="relative"
                     style={{ width: t.logoWidth, height: t.logoHeight ?? 24 }}
                   >
-                    <Image src={t.logo} alt="" fill className="object-contain object-left" />
+                    <Image src={t.logo} alt="" fill className="object-contain object-left dark:grayscale dark:invert" />
                   </div>
                 </div>
               )}
-              <p className="relative text-lg leading-normal text-pretty text-[#191e2e]">
+              <p className="relative text-lg leading-normal text-pretty text-ink">
                 {t.quote}
               </p>
             </div>

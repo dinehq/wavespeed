@@ -40,7 +40,7 @@ export function FeaturesSection() {
         <div ref={ref} className="flex flex-col gap-4">
           {/* Row 1: Vast Model Library (smaller) + Blazing Fast Inference (larger) */}
           <div className="flex flex-col gap-4 lg:flex-row">
-            <div className="bg-surface relative h-[320px] w-full shrink-0 overflow-hidden rounded-xs lg:h-[400px] lg:w-[45%]">
+            <div className="bg-surface relative h-[320px] w-full shrink-0 overflow-hidden rounded-xs lg:h-[420px] lg:w-[45%]">
               {/* Provider logos — drift in from left */}
               <div
                 className={`absolute top-[-38px] right-0 h-[220px] w-[600px] transition-all duration-1000 ease-out sm:h-[260px] md:h-[280px] lg:h-[287px] ${
@@ -59,7 +59,7 @@ export function FeaturesSection() {
 
               {/* Text */}
               <div className="absolute right-6 bottom-[24px] left-6">
-                <h3 className="mb-2 text-2xl leading-7 font-medium text-[#191e2e]">
+                <h3 className="mb-2 text-2xl leading-7 font-medium text-ink">
                   Vast Model Library
                 </h3>
                 <p className="text-muted w-auto font-mono text-sm text-pretty lg:w-[526px]">
@@ -72,7 +72,7 @@ export function FeaturesSection() {
             <div className="bg-surface relative h-[320px] w-full overflow-hidden rounded-xs lg:h-[420px] lg:flex-1">
               {/* Title + description */}
               <div className="absolute top-6 right-6 left-6 z-10 lg:w-[584px]">
-                <h3 className="mb-2 text-2xl leading-7 font-medium text-[#191e2e]">
+                <h3 className="mb-2 text-2xl leading-7 font-medium text-ink">
                   Blazing Fast Inference
                 </h3>
                 <p className="text-muted font-mono text-sm leading-tight text-pretty">
@@ -103,7 +103,7 @@ export function FeaturesSection() {
             <div className="bg-surface relative h-[320px] w-full shrink-0 overflow-hidden rounded-xs lg:h-[420px] lg:w-[55%]">
               {/* Title + description */}
               <div className="absolute top-6 right-6 left-6 z-10 lg:w-[642px]">
-                <h3 className="mb-2 text-2xl leading-7 font-medium text-[#191e2e]">
+                <h3 className="mb-2 text-2xl leading-7 font-medium text-ink">
                   Built for Scale
                 </h3>
                 <p className="text-muted max-w-[400px] font-mono text-sm text-pretty">
@@ -128,7 +128,7 @@ export function FeaturesSection() {
               </div>
             </div>
 
-            <div className="from-surface relative h-[320px] w-full overflow-hidden rounded-xs bg-linear-to-b to-[#d3ddff] lg:h-[420px] lg:flex-1">
+            <div className="from-surface relative h-[320px] w-full overflow-hidden rounded-xs bg-linear-to-b to-accent-light lg:h-[420px] lg:flex-1">
               {/* 3D box — drifts in from right */}
               <div
                 className={`absolute top-0 right-[-30px] h-[320px] w-[250px] transition-all duration-1000 ease-out lg:top-[-13px] lg:right-[-60px] lg:h-[480px] lg:w-[390px] ${
@@ -146,7 +146,7 @@ export function FeaturesSection() {
               </div>
               {/* Title + description */}
               <div className="absolute right-6 bottom-[24px] left-6 z-10 lg:w-[526px]">
-                <h3 className="mb-2 text-2xl leading-7 font-medium text-[#191e2e]">
+                <h3 className="mb-2 text-2xl leading-7 font-medium text-ink">
                   Security
                 </h3>
                 <p className="text-muted font-mono text-sm leading-tight text-pretty">

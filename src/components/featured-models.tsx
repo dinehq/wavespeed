@@ -135,8 +135,8 @@ function StatusDots({ count }: { count: number }) {
 
 function SpeedBar({ percent }: { percent: number }) {
   return (
-    <div className="h-[3px] w-[84px] bg-[#d9d9d9]">
-      <div className="h-full bg-black" style={{ width: `${percent}%` }} />
+    <div className="h-[3px] w-[84px] bg-track">
+      <div className="h-full bg-foreground" style={{ width: `${percent}%` }} />
     </div>
   );
 }
@@ -145,7 +145,7 @@ export function FeaturedModels() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
-    <section className="bg-white py-20">
+    <section className="bg-background py-20">
       {/* Header */}
       <div className="mx-auto flex max-w-[1160px] flex-col items-center gap-10">
         <div className="flex max-w-[876px] flex-col items-center gap-4 text-center">
@@ -213,33 +213,36 @@ export function FeaturedModels() {
                 href="#"
                 onMouseEnter={() => setHoveredIndex(i)}
                 onMouseLeave={() => setHoveredIndex(null)}
-                className={`grid grid-cols-2 items-center gap-4 border-b border-black/5 px-4 py-4 transition-colors duration-150 md:h-20 md:grid-cols-12 md:px-8 md:py-6 ${
+                className={`grid grid-cols-[40px_1fr_auto] items-center gap-3 border-b border-foreground/5 px-4 py-3 transition-colors duration-150 md:h-20 md:grid-cols-12 md:gap-4 md:px-8 md:py-6 xl:grid-cols-12 ${
                   hoveredIndex === i ? "bg-surface" : ""
                 }`}
               >
+                <div className="relative size-10 shrink-0 overflow-hidden rounded-xs xl:hidden">
+                  <Image src={leftThumbs[i]} alt="" fill className="object-cover" />
+                </div>
                 <div className="col-span-1 md:col-span-3">
-                  <span className="font-mono text-sm leading-5 text-black">
+                  <span className="font-mono text-sm leading-5 text-foreground">
                     {model.name}
                   </span>
                 </div>
                 <div className="col-span-2 hidden md:block">
-                  <span className="font-mono text-sm leading-5 text-black">
+                  <span className="font-mono text-sm leading-5 text-foreground">
                     {model.provider}
                   </span>
                 </div>
                 <div className="col-span-2 hidden md:block">
-                  <span className="font-mono text-sm leading-5 text-black">
+                  <span className="font-mono text-sm leading-5 text-foreground">
                     {model.type}
                   </span>
                 </div>
                 <div className="col-span-1 flex items-center justify-end gap-2 px-0.5 md:col-span-2 md:justify-start">
-                  <span className="font-mono text-sm leading-5 text-black">
+                  <span className="font-mono text-sm leading-5 text-foreground">
                     {model.speed}
                   </span>
                   <SpeedBar percent={model.speedBar} />
                 </div>
                 <div className="col-span-1 hidden items-center md:flex">
-                  <span className="font-mono text-sm leading-4 text-black uppercase">
+                  <span className="font-mono text-sm leading-4 text-foreground uppercase">
                     {model.tps}
                   </span>
                 </div>
@@ -256,7 +259,7 @@ export function FeaturedModels() {
       <div className="mx-auto mt-10 flex max-w-[1160px] justify-center">
         <a
           href="#"
-          className="rounded-xs bg-black px-4 py-3 font-mono text-sm font-medium tracking-[1.2px] text-white transition-colors duration-150 hover:bg-black/80"
+          className="rounded-xs bg-foreground px-4 py-3 font-mono text-sm font-medium tracking-[1.2px] text-background transition-colors duration-150 hover:bg-foreground/80"
         >
           Explore all 1326 models
         </a>
