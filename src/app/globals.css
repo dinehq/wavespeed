@@ -12,16 +12,16 @@
   --color-subtle: #737373;
   --color-muted: rgba(0, 0, 0, 0.64);
   --color-faint: rgba(0, 0, 0, 0.4);
-  --color-surface: #f2f4f5;
+  --color-surface: #f4f6fd;
   --color-green: #a1e019;
   --color-footer-label: #a1a1a1;
   --color-footer-text: #525252;
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-azeret);
+  --font-mono: var(--font-azeret-semimono);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), system-ui, sans-serif;
+  font-family: var(--font-azeret), sans-serif;
 }

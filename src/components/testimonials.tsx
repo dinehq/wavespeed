@@ -1,3 +1,6 @@
+"use client";
+
+import { useRef, useCallback } from "react";
 import Image from "next/image";
 
 const testimonials = [
@@ -28,38 +31,78 @@ const testimonials = [
 ];
 
 export function Testimonials() {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const dragging = useRef(false);
+  const startX = useRef(0);
+  const scrollStart = useRef(0);
+
+  const onPointerDown = useCallback((e: React.PointerEvent) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    dragging.current = true;
+    startX.current = e.pageX;
+    scrollStart.current = el.scrollLeft;
+    el.setPointerCapture(e.pointerId);
+    el.style.cursor = "grabbing";
+  }, []);
+
+  const onPointerMove = useCallback((e: React.PointerEvent) => {
+    if (!dragging.current) return;
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollLeft = scrollStart.current - (e.pageX - startX.current);
+  }, []);
+
+  const onPointerUp = useCallback((e: React.PointerEvent) => {
+    dragging.current = false;
+    const el = scrollRef.current;
+    if (!el) return;
+    el.releasePointerCapture(e.pointerId);
+    el.style.cursor = "grab";
+  }, []);
+
   return (
-    <section className="bg-surface px-20 py-20">
-      <div className="max-w-[1280px] mx-auto">
-        <h2 className="text-[48px] font-medium leading-none tracking-[-1px] text-heading mb-6">
+    <section className="bg-surface py-20">
+      <div className="px-20 mb-6">
+        <h2 className="max-w-[1280px] mx-auto text-[48px] font-medium leading-none tracking-[-1px] text-heading">
           What people are saying
         </h2>
+      </div>
 
-        <div className="grid grid-cols-3 gap-6">
-          {testimonials.map((t) => (
-            <div
-              key={t.name}
-              className="bg-white rounded-md p-10 flex flex-col gap-4 relative overflow-hidden transition-all duration-200 group hover:shadow-[0px_12px_24px_0px_rgba(0,0,0,0.08)] cursor-pointer hover:-translate-y-1"
-            >
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-                <Image
-                  src="/images/feedback-bg.png"
-                  alt=""
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="relative h-6" style={{ width: t.logoWidth }}>
-                <Image src={t.logo} alt="" fill className="object-contain" />
-              </div>
-              <p className="relative text-lg leading-[1.5] text-black">{t.quote}</p>
-              <div className="relative font-mono text-sm leading-[1.5] text-muted">
-                <p>{t.name}</p>
-                <p>{t.title}</p>
-              </div>
+      <div
+        ref={scrollRef}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+        className="flex gap-6 overflow-x-auto cursor-grab select-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-8"
+        style={{
+          paddingInline: "max(80px, calc((100vw - 1280px) / 2))",
+        }}
+      >
+        {testimonials.map((t) => (
+          <div
+            key={t.name}
+            className="group bg-white w-[511px] rounded-xs shrink-0 p-10 flex flex-col gap-4 relative overflow-hidden transition-shadow duration-300 hover:shadow-[0px_12px_24px_0px_rgba(0,0,0,0.08)]"
+          >
+            <Image
+              src="/images/quote-bg.jpg"
+              alt=""
+              fill
+              className="object-cover pointer-events-none opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+            />
+            <div className="relative h-6" style={{ width: t.logoWidth }}>
+              <Image src={t.logo} alt="" fill className="object-contain" />
             </div>
-          ))}
-        </div>
+            <p className="relative text-lg leading-[1.5] text-[#191e2e]">
+              {t.quote}
+            </p>
+            <div className="relative font-mono text-sm leading-[1.5] text-muted">
+              <p>{t.name}</p>
+              <p>{t.title}</p>
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );

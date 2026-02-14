@@ -1,138 +1,922 @@
+"use client";
+
 import Image from "next/image";
+import { useState, type ReactNode } from "react";
 
-const tabs = [
-  { name: "generate_image.ts", icon: "img", active: true },
-  { name: "create_video.ts", icon: "vid" },
-  { name: "analyze_chat.ts", icon: "chat" },
-  { name: "generate_speech.ts", icon: "speech" },
+type TabKey =
+  | "generate_image"
+  | "create_video"
+  | "analyze_chat"
+  | "generate_speech";
+type LangKey = "node" | "python" | "curl";
+
+const tabs: { key: TabKey; name: string; icon: string }[] = [
+  {
+    key: "generate_image",
+    name: "generate_image.ts",
+    icon: "/images/tab-icon-image.svg",
+  },
+  {
+    key: "create_video",
+    name: "create_video.ts",
+    icon: "/images/tab-icon-video.svg",
+  },
+  {
+    key: "analyze_chat",
+    name: "analyze_chat.ts",
+    icon: "/images/tab-icon-chat.svg",
+  },
+  {
+    key: "generate_speech",
+    name: "generate_speech.ts",
+    icon: "/images/tab-icon-speech.svg",
+  },
 ];
 
-const langTabs = ["node", "python", "curl"];
+const langTabs: LangKey[] = ["node", "python", "curl"];
 
-const codeLines = [
-  {
-    num: 1,
-    content: <span className="text-black/40">{"// Real-time Synthesis"}</span>,
+// --- Syntax coloring helpers ---
+const kw = "text-[#4b4bff]";
+const id = "text-[#191e2e]";
+const tx = "text-[#1b1b1b]";
+const fn = "text-[#5daff1]";
+const st = "text-[#ee560a]";
+const cm = "text-[#7f848e]";
+const py_kw = "text-[#4b4bff]";
+const py_fn = "text-[#5daff1]";
+const py_st = "text-[#ee560a]";
+const sh_st = "text-[#ee560a]";
+
+type CodeLine = { content: ReactNode };
+
+const codeData: Record<
+  TabKey,
+  Record<
+    LangKey,
+    { lines: CodeLine[]; status: string; output: string; meta: string }
+  >
+> = {
+  generate_image: {
+    node: {
+      lines: [
+        { content: <span className={cm}>{" // Real-time Synthesis"}</span> },
+        { content: <>&nbsp;</> },
+        {
+          content: (
+            <>
+              <span className={kw}>const</span>
+              <span className={tx}>{" output = "}</span>
+              <span className={kw}>{" await"}</span>
+              <span className={id}>{" wavespeed"}</span>
+              <span className={fn}>.run</span>
+              <span className={tx}>(</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={st}>{'  "wavespeed-ai/flux-dev"'}</span>
+              <span className={tx}>,</span>
+            </>
+          ),
+        },
+        { content: <span className={tx}>{"  {"}</span> },
+        {
+          content: (
+            <>
+              <span className={tx}>{"    prompt: "}</span>
+              <span className={st}>{'"A person running in the city"'}</span>
+              <span className={tx}>,</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"    aspect_ratio: "}</span>
+              <span className={st}>{'"16:9"'}</span>
+              <span className={tx}>,</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"    output_format: "}</span>
+              <span className={st}>{'"webp"'}</span>
+            </>
+          ),
+        },
+        { content: <span className={tx}>{"  }"}</span> },
+        { content: <span className={tx}>{");"}</span> },
+      ],
+      status: "Done (0.4s)",
+      output: "Generated output",
+      meta: "1024\u00d71024 \u00b7 PNG \u00b7 2.4MB",
+    },
+    python: {
+      lines: [
+        { content: <span className={cm}>{" # Real-time Synthesis"}</span> },
+        { content: <>&nbsp;</> },
+        {
+          content: (
+            <>
+              <span className={py_kw}>import</span>
+              <span className={tx}> wavespeed</span>
+            </>
+          ),
+        },
+        { content: <>&nbsp;</> },
+        {
+          content: (
+            <>
+              <span className={tx}>output = wavespeed.</span>
+              <span className={py_fn}>run</span>
+              <span className={tx}>(</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={py_st}>{'  "wavespeed-ai/flux-dev"'}</span>
+              <span className={tx}>,</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"  prompt="}</span>
+              <span className={py_st}>{'"A person running in the city"'}</span>
+              <span className={tx}>,</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"  aspect_ratio="}</span>
+              <span className={py_st}>{'"16:9"'}</span>
+              <span className={tx}>,</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"  output_format="}</span>
+              <span className={py_st}>{'"webp"'}</span>
+            </>
+          ),
+        },
+        { content: <span className={tx}>{")"}</span> },
+      ],
+      status: "Done (0.4s)",
+      output: "Generated output",
+      meta: "1024\u00d71024 \u00b7 PNG \u00b7 2.4MB",
+    },
+    curl: {
+      lines: [
+        { content: <span className={cm}>{" # Real-time Synthesis"}</span> },
+        { content: <>&nbsp;</> },
+        {
+          content: (
+            <>
+              <span className={tx}>curl -X POST \</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={sh_st}>
+                {'  "https://api.wavespeed.ai/v1/run"'}
+              </span>
+              <span className={tx}> \</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"  -H "}</span>
+              <span className={sh_st}>
+                {'"Authorization: Bearer $API_KEY"'}
+              </span>
+              <span className={tx}> \</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"  -H "}</span>
+              <span className={sh_st}>
+                {'"Content-Type: application/json"'}
+              </span>
+              <span className={tx}> \</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"  -d '{"}</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"    "}</span>
+              <span className={sh_st}>{'"model"'}</span>
+              <span className={tx}>{": "}</span>
+              <span className={sh_st}>{'"wavespeed-ai/flux-dev"'}</span>
+              <span className={tx}>,</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"    "}</span>
+              <span className={sh_st}>{'"prompt"'}</span>
+              <span className={tx}>{": "}</span>
+              <span className={sh_st}>{'"A person running in the city"'}</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"  }'"}</span>
+            </>
+          ),
+        },
+      ],
+      status: "Done (0.4s)",
+      output: "Generated output",
+      meta: "1024\u00d71024 \u00b7 PNG \u00b7 2.4MB",
+    },
   },
-  { num: 2, content: null },
-  {
-    num: 3,
-    content: (
-      <>
-        <span className="text-[#8B5CF6]">const</span>{" "}
-        <span className="text-black">output</span>{" "}
-        <span className="text-black">=</span>{" "}
-        <span className="text-[#8B5CF6]">await</span>{" "}
-        <span className="text-black">wavespeed</span>
-        <span className="text-black">.</span>
-        <span className="text-[#D97706]">run</span>
-        <span className="text-black">(</span>
-      </>
-    ),
+  create_video: {
+    node: {
+      lines: [
+        { content: <span className={cm}>{" // Video Generation"}</span> },
+        { content: <>&nbsp;</> },
+        {
+          content: (
+            <>
+              <span className={kw}>const</span>
+              <span className={tx}>{" video = "}</span>
+              <span className={kw}>{" await"}</span>
+              <span className={id}>{" wavespeed"}</span>
+              <span className={fn}>.run</span>
+              <span className={tx}>(</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={st}>{'  "wavespeed-ai/wan-2.6/t2v"'}</span>
+              <span className={tx}>,</span>
+            </>
+          ),
+        },
+        { content: <span className={tx}>{"  {"}</span> },
+        {
+          content: (
+            <>
+              <span className={tx}>{"    prompt: "}</span>
+              <span className={st}>{'"A timelapse of a sunset"'}</span>
+              <span className={tx}>,</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"    duration: "}</span>
+              <span className={id}>{"5"}</span>
+              <span className={tx}>,</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"    resolution: "}</span>
+              <span className={st}>{'"1080p"'}</span>
+            </>
+          ),
+        },
+        { content: <span className={tx}>{"  }"}</span> },
+        { content: <span className={tx}>{");"}</span> },
+      ],
+      status: "Done (3.2s)",
+      output: "Generated video",
+      meta: "1920\u00d71080 \u00b7 MP4 \u00b7 12.1MB",
+    },
+    python: {
+      lines: [
+        { content: <span className={cm}>{" # Video Generation"}</span> },
+        { content: <>&nbsp;</> },
+        {
+          content: (
+            <>
+              <span className={py_kw}>import</span>
+              <span className={tx}> wavespeed</span>
+            </>
+          ),
+        },
+        { content: <>&nbsp;</> },
+        {
+          content: (
+            <>
+              <span className={tx}>video = wavespeed.</span>
+              <span className={py_fn}>run</span>
+              <span className={tx}>(</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={py_st}>{'  "wavespeed-ai/wan-2.6/t2v"'}</span>
+              <span className={tx}>,</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"  prompt="}</span>
+              <span className={py_st}>{'"A timelapse of a sunset"'}</span>
+              <span className={tx}>,</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"  duration="}</span>
+              <span className={id}>{"5"}</span>
+              <span className={tx}>,</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"  resolution="}</span>
+              <span className={py_st}>{'"1080p"'}</span>
+            </>
+          ),
+        },
+        { content: <span className={tx}>{")"}</span> },
+      ],
+      status: "Done (3.2s)",
+      output: "Generated video",
+      meta: "1920\u00d71080 \u00b7 MP4 \u00b7 12.1MB",
+    },
+    curl: {
+      lines: [
+        { content: <span className={cm}>{" # Video Generation"}</span> },
+        { content: <>&nbsp;</> },
+        {
+          content: (
+            <>
+              <span className={tx}>curl -X POST \</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={sh_st}>
+                {'  "https://api.wavespeed.ai/v1/run"'}
+              </span>
+              <span className={tx}> \</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"  -H "}</span>
+              <span className={sh_st}>
+                {'"Authorization: Bearer $API_KEY"'}
+              </span>
+              <span className={tx}> \</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"  -H "}</span>
+              <span className={sh_st}>
+                {'"Content-Type: application/json"'}
+              </span>
+              <span className={tx}> \</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"  -d '{"}</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"    "}</span>
+              <span className={sh_st}>{'"model"'}</span>
+              <span className={tx}>{": "}</span>
+              <span className={sh_st}>{'"wavespeed-ai/wan-2.6/t2v"'}</span>
+              <span className={tx}>,</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"    "}</span>
+              <span className={sh_st}>{'"prompt"'}</span>
+              <span className={tx}>{": "}</span>
+              <span className={sh_st}>{'"A timelapse of a sunset"'}</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"  }'"}</span>
+            </>
+          ),
+        },
+      ],
+      status: "Done (3.2s)",
+      output: "Generated video",
+      meta: "1920\u00d71080 \u00b7 MP4 \u00b7 12.1MB",
+    },
   },
-  {
-    num: 4,
-    content: (
-      <>
-        {"  "}
-        <span className="text-[#DC2626]">{'"wavespeed-ai/flux-dev"'}</span>
-        <span className="text-black">,</span>
-      </>
-    ),
+  analyze_chat: {
+    node: {
+      lines: [
+        { content: <span className={cm}>{" // Chat Analysis"}</span> },
+        { content: <>&nbsp;</> },
+        {
+          content: (
+            <>
+              <span className={kw}>const</span>
+              <span className={tx}>{" result = "}</span>
+              <span className={kw}>{" await"}</span>
+              <span className={id}>{" wavespeed"}</span>
+              <span className={fn}>.run</span>
+              <span className={tx}>(</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={st}>{'  "wavespeed-ai/llama-4-scout"'}</span>
+              <span className={tx}>,</span>
+            </>
+          ),
+        },
+        { content: <span className={tx}>{"  {"}</span> },
+        {
+          content: (
+            <>
+              <span className={tx}>{"    prompt: "}</span>
+              <span className={st}>{'"Summarize this conversation"'}</span>
+              <span className={tx}>,</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"    max_tokens: "}</span>
+              <span className={id}>{"512"}</span>
+              <span className={tx}>,</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"    temperature: "}</span>
+              <span className={id}>{"0.7"}</span>
+            </>
+          ),
+        },
+        { content: <span className={tx}>{"  }"}</span> },
+        { content: <span className={tx}>{");"}</span> },
+      ],
+      status: "Done (1.1s)",
+      output: "Analysis result",
+      meta: "512 tokens \u00b7 JSON \u00b7 1.2KB",
+    },
+    python: {
+      lines: [
+        { content: <span className={cm}>{" # Chat Analysis"}</span> },
+        { content: <>&nbsp;</> },
+        {
+          content: (
+            <>
+              <span className={py_kw}>import</span>
+              <span className={tx}> wavespeed</span>
+            </>
+          ),
+        },
+        { content: <>&nbsp;</> },
+        {
+          content: (
+            <>
+              <span className={tx}>result = wavespeed.</span>
+              <span className={py_fn}>run</span>
+              <span className={tx}>(</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={py_st}>{'  "wavespeed-ai/llama-4-scout"'}</span>
+              <span className={tx}>,</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"  prompt="}</span>
+              <span className={py_st}>{'"Summarize this conversation"'}</span>
+              <span className={tx}>,</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"  max_tokens="}</span>
+              <span className={id}>{"512"}</span>
+              <span className={tx}>,</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"  temperature="}</span>
+              <span className={id}>{"0.7"}</span>
+            </>
+          ),
+        },
+        { content: <span className={tx}>{")"}</span> },
+      ],
+      status: "Done (1.1s)",
+      output: "Analysis result",
+      meta: "512 tokens \u00b7 JSON \u00b7 1.2KB",
+    },
+    curl: {
+      lines: [
+        { content: <span className={cm}>{" # Chat Analysis"}</span> },
+        { content: <>&nbsp;</> },
+        {
+          content: (
+            <>
+              <span className={tx}>curl -X POST \</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={sh_st}>
+                {'  "https://api.wavespeed.ai/v1/run"'}
+              </span>
+              <span className={tx}> \</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"  -H "}</span>
+              <span className={sh_st}>
+                {'"Authorization: Bearer $API_KEY"'}
+              </span>
+              <span className={tx}> \</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"  -H "}</span>
+              <span className={sh_st}>
+                {'"Content-Type: application/json"'}
+              </span>
+              <span className={tx}> \</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"  -d '{"}</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"    "}</span>
+              <span className={sh_st}>{'"model"'}</span>
+              <span className={tx}>{": "}</span>
+              <span className={sh_st}>{'"wavespeed-ai/llama-4-scout"'}</span>
+              <span className={tx}>,</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"    "}</span>
+              <span className={sh_st}>{'"prompt"'}</span>
+              <span className={tx}>{": "}</span>
+              <span className={sh_st}>{'"Summarize this conversation"'}</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"  }'"}</span>
+            </>
+          ),
+        },
+      ],
+      status: "Done (1.1s)",
+      output: "Analysis result",
+      meta: "512 tokens \u00b7 JSON \u00b7 1.2KB",
+    },
   },
-  {
-    num: 5,
-    content: (
-      <>
-        {"  "}
-        <span className="text-black">{"{"}</span>
-      </>
-    ),
+  generate_speech: {
+    node: {
+      lines: [
+        { content: <span className={cm}>{" // Speech Synthesis"}</span> },
+        { content: <>&nbsp;</> },
+        {
+          content: (
+            <>
+              <span className={kw}>const</span>
+              <span className={tx}>{" audio = "}</span>
+              <span className={kw}>{" await"}</span>
+              <span className={id}>{" wavespeed"}</span>
+              <span className={fn}>.run</span>
+              <span className={tx}>(</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={st}>{'  "wavespeed-ai/kokoro-tts"'}</span>
+              <span className={tx}>,</span>
+            </>
+          ),
+        },
+        { content: <span className={tx}>{"  {"}</span> },
+        {
+          content: (
+            <>
+              <span className={tx}>{"    text: "}</span>
+              <span className={st}>{'"Hello from WaveSpeed"'}</span>
+              <span className={tx}>,</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"    voice: "}</span>
+              <span className={st}>{'"alloy"'}</span>
+              <span className={tx}>,</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"    format: "}</span>
+              <span className={st}>{'"mp3"'}</span>
+            </>
+          ),
+        },
+        { content: <span className={tx}>{"  }"}</span> },
+        { content: <span className={tx}>{");"}</span> },
+      ],
+      status: "Done (0.8s)",
+      output: "Generated audio",
+      meta: "00:04 \u00b7 MP3 \u00b7 64KB",
+    },
+    python: {
+      lines: [
+        { content: <span className={cm}>{" # Speech Synthesis"}</span> },
+        { content: <>&nbsp;</> },
+        {
+          content: (
+            <>
+              <span className={py_kw}>import</span>
+              <span className={tx}> wavespeed</span>
+            </>
+          ),
+        },
+        { content: <>&nbsp;</> },
+        {
+          content: (
+            <>
+              <span className={tx}>audio = wavespeed.</span>
+              <span className={py_fn}>run</span>
+              <span className={tx}>(</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={py_st}>{'  "wavespeed-ai/kokoro-tts"'}</span>
+              <span className={tx}>,</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"  text="}</span>
+              <span className={py_st}>{'"Hello from WaveSpeed"'}</span>
+              <span className={tx}>,</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"  voice="}</span>
+              <span className={py_st}>{'"alloy"'}</span>
+              <span className={tx}>,</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"  format="}</span>
+              <span className={py_st}>{'"mp3"'}</span>
+            </>
+          ),
+        },
+        { content: <span className={tx}>{")"}</span> },
+      ],
+      status: "Done (0.8s)",
+      output: "Generated audio",
+      meta: "00:04 \u00b7 MP3 \u00b7 64KB",
+    },
+    curl: {
+      lines: [
+        { content: <span className={cm}>{" # Speech Synthesis"}</span> },
+        { content: <>&nbsp;</> },
+        {
+          content: (
+            <>
+              <span className={tx}>curl -X POST \</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={sh_st}>
+                {'  "https://api.wavespeed.ai/v1/run"'}
+              </span>
+              <span className={tx}> \</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"  -H "}</span>
+              <span className={sh_st}>
+                {'"Authorization: Bearer $API_KEY"'}
+              </span>
+              <span className={tx}> \</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"  -H "}</span>
+              <span className={sh_st}>
+                {'"Content-Type: application/json"'}
+              </span>
+              <span className={tx}> \</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"  -d '{"}</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"    "}</span>
+              <span className={sh_st}>{'"model"'}</span>
+              <span className={tx}>{": "}</span>
+              <span className={sh_st}>{'"wavespeed-ai/kokoro-tts"'}</span>
+              <span className={tx}>,</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"    "}</span>
+              <span className={sh_st}>{'"text"'}</span>
+              <span className={tx}>{": "}</span>
+              <span className={sh_st}>{'"Hello from WaveSpeed"'}</span>
+            </>
+          ),
+        },
+        {
+          content: (
+            <>
+              <span className={tx}>{"  }'"}</span>
+            </>
+          ),
+        },
+      ],
+      status: "Done (0.8s)",
+      output: "Generated audio",
+      meta: "00:04 \u00b7 MP3 \u00b7 64KB",
+    },
   },
-  {
-    num: 6,
-    content: (
-      <>
-        {"    "}
-        <span className="text-black">prompt:</span>
-        <span className="text-[#16A34A]">
-          {'"A person running in the city"'}
-        </span>
-        <span className="text-black">,</span>
-      </>
-    ),
-  },
-  {
-    num: 7,
-    content: (
-      <>
-        {"    "}
-        <span className="text-black">aspect_ratio:</span>
-        <span className="text-[#16A34A]">{'"16:9"'}</span>
-        <span className="text-black">,</span>
-      </>
-    ),
-  },
-  {
-    num: 8,
-    content: (
-      <>
-        {"    "}
-        <span className="text-black">output_format:</span>
-        <span className="text-[#16A34A]">{'"webp"'}</span>
-      </>
-    ),
-  },
-  {
-    num: 9,
-    content: (
-      <>
-        {"  "}
-        <span className="text-black">{"}"}</span>
-      </>
-    ),
-  },
-  {
-    num: 10,
-    content: <span className="text-black">{");"}</span>,
-  },
-];
+};
 
 export function HeroDemo() {
+  const [activeTab, setActiveTab] = useState<TabKey>("generate_image");
+  const [activeLang, setActiveLang] = useState<LangKey>("node");
+
+  const current = codeData[activeTab][activeLang];
+
   return (
     <section className="relative w-full overflow-hidden">
       <div className="absolute inset-0">
-        <Image
-          src="/images/hero-bg.png"
-          alt=""
-          fill
-          className="object-cover opacity-30"
-        />
+        <Image src="/images/hero-bg.jpg" alt="" fill className="object-cover" />
       </div>
 
       <div className="relative max-w-[960px] mx-auto py-8">
-        <div className="bg-white rounded-lg overflow-hidden">
-          <div className="flex items-center justify-between border-b border-black/5 px-4">
-            <div className="flex">
+        <div className="bg-white rounded-[5px] p-2 flex flex-col gap-2">
+          {/* Tab bar */}
+          <div className="flex items-center justify-between">
+            <div className="flex gap-1">
               {tabs.map((tab) => (
                 <button
-                  key={tab.name}
-                  className={`px-4 py-3 font-mono text-xs flex items-center gap-2 border-b-2 transition-colors duration-150 cursor-pointer ${
-                    tab.active
-                      ? "border-black text-black"
-                      : "border-transparent text-black/40 hover:text-black/70"
+                  key={tab.key}
+                  onClick={() => setActiveTab(tab.key)}
+                  className={`relative flex items-center gap-1 px-4 py-2 font-mono text-xs rounded-[3px] cursor-pointer transition-colors ${
+                    activeTab === tab.key
+                      ? "bg-[#f2f3f5] text-[#191e2e]"
+                      : "bg-[#f2f3f5] text-[#191e2e]"
                   }`}
                 >
-                  <span className="size-4 rounded bg-surface flex items-center justify-center text-[10px]">
-                    {tab.icon === "img"
-                      ? "\u{1f5bc}"
-                      : tab.icon === "vid"
-                        ? "\u{1f3ac}"
-                        : tab.icon === "chat"
-                          ? "\u{1f4ac}"
-                          : "\u{1f50a}"}
-                  </span>
-                  {tab.name}
+                  {activeTab === tab.key && (
+                    <div className="absolute inset-0 bg-[#dee2e9] rounded-[3px]" />
+                  )}
+                  <Image
+                    src={tab.icon}
+                    alt=""
+                    width={16}
+                    height={16}
+                    className="relative shrink-0"
+                    unoptimized
+                  />
+                  <span className="relative">{tab.name}</span>
                 </button>
               ))}
             </div>
@@ -140,8 +924,11 @@ export function HeroDemo() {
               {langTabs.map((lang) => (
                 <button
                   key={lang}
-                  className={`px-3 py-1 font-mono text-xs rounded transition-colors duration-150 cursor-pointer ${
-                    lang === "node" ? "bg-black text-white" : "text-black/40 hover:text-black/70 hover:bg-black/5"
+                  onClick={() => setActiveLang(lang)}
+                  className={`px-2 py-1 font-mono text-xs rounded-[2px] cursor-pointer transition-colors ${
+                    activeLang === lang
+                      ? "bg-[#262626] text-white"
+                      : "text-[#191e2e]"
                   }`}
                 >
                   {lang}
@@ -150,38 +937,142 @@ export function HeroDemo() {
             </div>
           </div>
 
-          {/* Code Area */}
-          <div className="flex">
-            <div className="flex-1 p-6 font-mono text-sm leading-[22px] min-h-[280px]">
-              {codeLines.map((line) => (
-                <div key={line.num} className="flex">
-                  <span className="w-8 text-right pr-4 text-black/20 select-none shrink-0">
-                    {line.num}
-                  </span>
-                  <span>{line.content}</span>
+          {/* Editor content */}
+          <div className="flex bg-[#ecedee] rounded-[3px] overflow-hidden">
+            {/* Code panel */}
+            <div className="flex-1 bg-[#f2f3f5] h-[348px] relative">
+              <div className="absolute left-6 top-10 flex">
+                {/* Line numbers */}
+                <div className="flex flex-col gap-1 font-mono text-[13px] leading-[1.25] text-[#7f848e] w-6">
+                  {current.lines.map((_, i) => (
+                    <p key={i} className="opacity-40">
+                      {i + 1}
+                    </p>
+                  ))}
                 </div>
-              ))}
-              <div className="flex items-center gap-2 mt-6">
-                <span className="size-2 rounded-full bg-green" />
-                <span className="font-mono text-sm text-black/60">
-                  Done (0.4s)
+                {/* Code */}
+                <div className="flex flex-col gap-1 font-mono text-[13px] leading-[1.25]">
+                  {current.lines.map((line, i) => (
+                    <p key={i}>{line.content}</p>
+                  ))}
+                </div>
+              </div>
+              {/* Status */}
+              <div className="absolute left-6 top-[308px] flex items-center gap-2 bg-white px-2 py-1 rounded">
+                <span className="size-[6px] rounded-full bg-[#22c55e]" />
+                <span className="font-mono text-xs text-[#737373] leading-[1.25]">
+                  {current.status}
                 </span>
               </div>
             </div>
-            <div className="w-[320px] p-6 flex items-center justify-center">
-              <div className="relative w-full aspect-square rounded-lg overflow-hidden bg-surface group cursor-pointer">
+
+            {/* Preview panel */}
+            <div className="flex-1 h-[348px] relative overflow-hidden flex flex-col items-center justify-end p-2">
+              {/* Image preview */}
+              {activeTab === "generate_image" && (
                 <Image
-                  src="/images/hero-banner.png"
+                  src="/images/editor-image-preview.jpg"
                   alt="Generated output"
                   fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="object-cover pointer-events-none"
                 />
-                <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-3">
-                  <p className="text-white text-xs font-mono font-medium">
-                    Generated output
+              )}
+
+              {/* Video preview */}
+              {activeTab === "create_video" && (
+                <video
+                  src="https://d1q70pf5vjeyhc.wavespeed.ai/media/videos/1753847917474064981_X4mifEAx.mp4"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="absolute inset-0 size-full object-cover pointer-events-none"
+                />
+              )}
+
+              {/* Chat preview */}
+              {activeTab === "analyze_chat" && (
+                <div className="absolute inset-0 bg-[#f2f3f5] p-5 flex flex-col overflow-hidden">
+                  <p className="font-mono text-[10px] text-[#7f848e] uppercase tracking-[1px] mb-3">
+                    Response
                   </p>
-                  <p className="text-white/50 text-[10px] font-mono">
-                    1024&times;1024 &middot; PNG &middot; 2.4MB
+                  <div className="flex flex-col gap-2 font-mono text-[12px] leading-[1.5] text-[#1b1b1b]">
+                    <p>The conversation covered four key areas:</p>
+                    <div className="flex flex-col gap-1.5 pl-1">
+                      <p className="text-[#7f848e]">
+                        <span className="text-[#1b1b1b]">1.</span> Q3 revenue
+                        increased 23% year-over-year
+                      </p>
+                      <p className="text-[#7f848e]">
+                        <span className="text-[#1b1b1b]">2.</span> New API
+                        launch scheduled for October
+                      </p>
+                      <p className="text-[#7f848e]">
+                        <span className="text-[#1b1b1b]">3.</span>{" "}
+                        Infrastructure team hiring 5 engineers
+                      </p>
+                      <p className="text-[#7f848e]">
+                        <span className="text-[#1b1b1b]">4.</span> Partnership
+                        agreement signed with Acme
+                      </p>
+                    </div>
+                    <div className="mt-2 pt-2 border-t border-black/5">
+                      <p className="text-[11px] text-[#7f848e]">
+                        Action item: Scale GPU cluster to 256 nodes by Q4,
+                        targeting p99 latency &lt; 200ms.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Audio preview */}
+              {activeTab === "generate_speech" && (
+                <div className="absolute inset-0 bg-[#f2f3f5] flex flex-col items-center justify-center gap-5 px-8">
+                  <div className="flex items-center gap-3 w-full">
+                    <div className="size-8 rounded-full bg-[#1b1b1b] flex items-center justify-center shrink-0">
+                      <svg
+                        width="10"
+                        height="12"
+                        viewBox="0 0 10 12"
+                        fill="none"
+                      >
+                        <path d="M1 1L9 6L1 11V1Z" fill="white" />
+                      </svg>
+                    </div>
+                    <div className="flex-1 flex items-end gap-[2px] h-10">
+                      {[
+                        0.3, 0.5, 0.8, 0.6, 1, 0.7, 0.4, 0.9, 0.5, 0.3, 0.7,
+                        0.85, 0.6, 0.4, 0.9, 1, 0.7, 0.5, 0.3, 0.6, 0.8, 0.5,
+                        0.7, 0.4, 0.6, 0.9, 0.5, 0.3, 0.7, 0.8, 0.6, 0.4, 0.5,
+                        0.7, 0.3, 0.6, 0.8, 0.5, 0.9, 0.4, 0.6, 0.8, 0.5, 0.3,
+                        0.7, 0.9, 0.4, 0.6,
+                      ].map((h, i) => (
+                        <div
+                          key={i}
+                          className="flex-1 rounded-full bg-[#1b1b1b]/20"
+                          style={{ height: `${h * 100}%` }}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                  <div className="flex justify-between w-full font-mono text-[10px] text-[#7f848e]">
+                    <span>0:00</span>
+                    <span>0:04</span>
+                  </div>
+                  <p className="font-mono text-[12px] text-[#1b1b1b]/40 text-center leading-[1.4]">
+                    &ldquo;Hello from WaveSpeed&rdquo;
+                  </p>
+                </div>
+              )}
+
+              <div className="relative flex items-center gap-3 w-full h-[52px] px-[9px] py-px bg-black/80 backdrop-blur-[10px] border border-white/10 rounded-[2px]">
+                <div className="flex flex-col">
+                  <p className="font-sans text-xs text-white leading-4">
+                    {current.output}
+                  </p>
+                  <p className="font-mono text-[10px] text-[#a1a1a1] leading-[15px]">
+                    {current.meta}
                   </p>
                 </div>
               </div>

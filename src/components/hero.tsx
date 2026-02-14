@@ -17,7 +17,7 @@ export function Hero() {
       <div className="relative flex items-start gap-2">
         <a
           href="#"
-          className="bg-black text-white rounded-sm px-[30px] py-4 flex items-center gap-3 transition-colors duration-150 hover:bg-black/80"
+          className="bg-black text-white rounded-xs px-[30px] py-4 flex items-center gap-3 transition-colors duration-150 hover:bg-black/80"
         >
           <span className="font-mono text-sm font-medium tracking-[1.2px] uppercase leading-4">
             Start Building
@@ -26,7 +26,7 @@ export function Hero() {
         </a>
         <a
           href="#"
-          className="bg-surface text-black rounded-sm px-[33px] py-4 flex items-center justify-center transition-colors duration-150 hover:bg-black/10"
+          className="bg-surface text-black rounded-xs px-[33px] py-4 flex items-center justify-center transition-colors duration-150 hover:bg-black/10"
         >
           <span className="font-mono text-sm font-medium tracking-[1.2px] uppercase leading-4">
             Documentation

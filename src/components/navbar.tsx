@@ -7,7 +7,10 @@ export function Navbar() {
   return (
     <nav className="flex items-center justify-between px-4 h-16 w-full">
       <div className="flex-1">
-        <Link href="/" className="flex items-center transition-opacity duration-150 hover:opacity-70">
+        <Link
+          href="/"
+          className="flex items-center transition-opacity duration-150 hover:opacity-70"
+        >
           <Logo className="h-6 w-auto text-black" />
         </Link>
       </div>
@@ -32,7 +35,7 @@ export function Navbar() {
       </div>
 
       <div className="flex-1 flex items-center justify-end gap-2">
-        <button className="bg-surface rounded-sm size-8 flex items-center justify-center transition-colors duration-150 hover:bg-black/10 cursor-pointer">
+        <button className="bg-surface rounded-xs size-8 flex items-center justify-center transition-colors duration-150 hover:bg-black/10 cursor-pointer">
           <svg
             className="size-3"
             viewBox="0 0 16 16"
@@ -54,7 +57,7 @@ export function Navbar() {
             />
           </svg>
         </button>
-        <div className="bg-surface rounded-sm px-2 py-2 flex items-center gap-2 transition-colors duration-150 hover:bg-black/10">
+        <div className="bg-surface rounded-xs px-2 py-2 flex items-center gap-2 transition-colors duration-150 hover:bg-black/10">
           <SearchIcon className="size-[14px] opacity-40" />
           <input
             type="text"
@@ -64,7 +67,7 @@ export function Navbar() {
         </div>
         <a
           href="#"
-          className="bg-black text-white rounded-sm px-4 py-2 font-mono text-sm tracking-[1.2px] uppercase flex items-center justify-center transition-colors duration-150 hover:bg-black/80"
+          className="bg-black text-white rounded-xs px-4 py-2 font-mono text-sm tracking-[1.2px] uppercase flex items-center justify-center transition-colors duration-150 hover:bg-black/80"
         >
           Sign In
         </a>
