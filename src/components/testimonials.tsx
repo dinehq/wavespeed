@@ -5,28 +5,58 @@ import Image from "next/image";
 
 const testimonials = [
   {
-    logo: "/images/freepik-logo.svg",
-    logoWidth: 87,
+    logo: "/images/freepik.png",
+    logoWidth: 109,
+    logoHeight: 16,
     quote:
       "Everyone wants faster, cheaper, and their way to use AI image and video generation services? Partnering with WaveSpeedAI has helped us stay competitive in AI media generation.",
     name: "Alejandro Palma",
     title: "Cloud Architect at Freepik",
   },
   {
-    logo: "/images/novita-vector.svg",
-    logoWidth: 88,
+    logo: "/images/novita.png",
+    logoWidth: 105,
+    logoHeight: 19,
     quote:
       "WaveSpeedAI has significantly improved our inference efficiency and helped us cut video generation costs by up to 67%. With faster and more reliable video processing, we\u2019re able to deliver an exceptional user experience at scale.",
     name: "Junyu Huang",
     title: "Novita AI COO",
   },
   {
-    logo: "/images/socialbook-logo.svg",
-    logoWidth: 131,
+    logo: "/images/socialbook.png",
+    logoWidth: 121,
+    logoHeight: 22,
     quote:
       "Wavespeed lives up to its name \u2014 the model is fast, and their team\u2019s response time is even faster. We recently switched from FAL to Wavespeed, and the difference is night and day.",
     name: "Chen",
     title: "CTO@SocialBook",
+  },
+  {
+    logo: "/images/minimax.png",
+    logoWidth: 122,
+    logoHeight: 28,
+    quote:
+      "WaveSpeedAI demonstrates extremely powerful capabilities in reasoning and acceleration optimization. MiniMax\u2019s Hailuo\u201102 video model and Speech\u201102 voice model represent the cutting edge of multimodal AI. We deeply value our collaboration, as it enables more users to experience MiniMax\u2019s speech and video large models.",
+    name: "Yan Li",
+    title: "Manager of MiniMax platform",
+  },
+  {
+    logo: "/images/drawthings.png",
+    logoWidth: 138,
+    logoHeight: 32,
+    quote:
+      "Many of our users praise the WaveSpeedAI integration \u2018The FLUX result is the same, but now it is under 3 seconds\u2019 \u2018these are nice guys at wavespeed, beyond helpful\u2019. WaveSpeedAI integration allows us to do one-stop integration to catch up the latest close-source models, it is very important in this competitive environment.",
+    name: "Liu Liu",
+    title: "Draw Things",
+  },
+  {
+    logo: "/images/imperialvision.png",
+    logoWidth: 93,
+    logoHeight: 36,
+    quote:
+      "WaveSpeed helped us strike the perfect balance between content generation speed and quality.",
+    name: "QinQuan Gao",
+    title: "CEO/Co-Founder of Imperial Vision",
   },
 ];
 
@@ -83,7 +113,7 @@ export function Testimonials() {
         {testimonials.map((t) => (
           <div
             key={t.name}
-            className="group relative flex w-[300px] shrink-0 flex-col gap-4 overflow-hidden rounded-xs bg-white p-6 transition-shadow duration-300 hover:shadow-[0px_12px_24px_0px_rgba(0,0,0,0.08)] md:w-[511px] md:p-10"
+            className="group relative flex w-[300px] shrink-0 flex-col justify-between gap-4 overflow-hidden rounded-xs bg-white p-6 transition-shadow duration-300 hover:shadow-[0px_12px_24px_0px_rgba(0,0,0,0.08)] md:w-[511px] md:p-10"
           >
             <Image
               src="/images/quote-bg.webp"
@@ -91,12 +121,21 @@ export function Testimonials() {
               fill
               className="pointer-events-none object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
             />
-            <div className="relative h-6" style={{ width: t.logoWidth }}>
-              <Image src={t.logo} alt="" fill className="object-contain" />
+            <div className="relative flex flex-col gap-4">
+              {t.logo && (
+                <div className="flex h-9 items-center">
+                  <div
+                    className="relative"
+                    style={{ width: t.logoWidth, height: t.logoHeight ?? 24 }}
+                  >
+                    <Image src={t.logo} alt="" fill className="object-contain object-left" />
+                  </div>
+                </div>
+              )}
+              <p className="relative text-lg leading-normal text-pretty text-[#191e2e]">
+                {t.quote}
+              </p>
             </div>
-            <p className="relative text-lg leading-normal text-pretty text-[#191e2e]">
-              {t.quote}
-            </p>
             <div className="text-muted relative font-mono text-sm leading-normal">
               <p>{t.name}</p>
               <p>{t.title}</p>

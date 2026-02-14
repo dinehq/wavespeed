@@ -208,11 +208,12 @@ export function FeaturedModels() {
         <div className="mx-auto max-w-[1160px]">
           <div className="flex flex-col">
             {models.map((model, i) => (
-              <div
+              <a
                 key={i}
+                href="#"
                 onMouseEnter={() => setHoveredIndex(i)}
                 onMouseLeave={() => setHoveredIndex(null)}
-                className={`grid cursor-default grid-cols-2 items-center gap-4 border-b border-black/5 px-4 py-4 transition-colors duration-150 md:h-20 md:grid-cols-12 md:px-8 md:py-6 ${
+                className={`grid grid-cols-2 items-center gap-4 border-b border-black/5 px-4 py-4 transition-colors duration-150 md:h-20 md:grid-cols-12 md:px-8 md:py-6 ${
                   hoveredIndex === i ? "bg-surface" : ""
                 }`}
               >
@@ -245,7 +246,7 @@ export function FeaturedModels() {
                 <div className="col-span-1 hidden items-center justify-end md:flex">
                   <StatusDots count={model.status} />
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         </div>

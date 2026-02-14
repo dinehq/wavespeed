@@ -1,21 +1,10 @@
 import Image from "next/image";
 
-const featureTabs = [
-  {
-    title: "Easy to use",
-    description:
-      "We know the pain of complex integrations. That's why we built WaveSpeed to be the most developer-friendly AI infrastructure on the planet.",
-  },
-  {
-    title: "Vast Model Library",
-    description:
-      "We know the pain of complex integrations. That's why we built WaveSpeed to be the most developer-friendly AI infrastructure on the planet.",
-  },
-  {
-    title: "Reusable workflows",
-    description:
-      "We know the pain of complex integrations. That's why we built WaveSpeed to be the most developer-friendly AI infrastructure on the planet.",
-  },
+const features = [
+  { label: "1M+", detail: "Desktop installs" },
+  { label: "50M+", detail: "On-device generations" },
+  { label: "4.9/5", detail: "Privacy-first rating" },
+  { label: "2s", detail: "Median local render time" },
 ];
 
 export function ForCreators() {
@@ -54,18 +43,15 @@ export function ForCreators() {
             </div>
           </div>
 
-          {/* Feature tabs */}
-          <div className="flex flex-col gap-8 md:flex-row">
-            {featureTabs.map((tab) => (
-              <div
-                key={tab.title}
-                className="flex-1 border-t border-white/16 py-4"
-              >
-                <h3 className="mb-2 font-mono text-base font-medium text-white">
-                  {tab.title}
-                </h3>
-                <p className="font-mono text-sm text-pretty text-white/50">
-                  {tab.description}
+          {/* Feature highlights */}
+          <div className="grid grid-cols-2 gap-y-4 border-t border-white/10 pt-6 md:grid-cols-4">
+            {features.map((f) => (
+              <div key={f.label}>
+                <p className="font-mono text-2xl font-medium text-white">
+                  {f.label}
+                </p>
+                <p className="font-mono text-xs tracking-[1px] text-white/40 uppercase">
+                  {f.detail}
                 </p>
               </div>
             ))}

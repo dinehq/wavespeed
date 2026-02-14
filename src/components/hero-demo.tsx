@@ -9,32 +9,28 @@ import {
   type ReactNode,
 } from "react";
 
-type TabKey =
-  | "generate_image"
-  | "create_video"
-  | "analyze_chat"
-  | "generate_speech";
+type TabKey = "image" | "video" | "chat" | "speech";
 type LangKey = "node" | "python" | "curl";
 
 const tabs: { key: TabKey; base: string; icon: string }[] = [
   {
-    key: "create_video",
-    base: "create_video",
+    key: "video",
+    base: "video",
     icon: "/images/tab-icon-video.svg",
   },
   {
-    key: "generate_image",
-    base: "generate_image",
+    key: "image",
+    base: "image",
     icon: "/images/tab-icon-image.svg",
   },
   {
-    key: "analyze_chat",
-    base: "analyze_chat",
+    key: "chat",
+    base: "chat",
     icon: "/images/tab-icon-chat.svg",
   },
   {
-    key: "generate_speech",
-    base: "generate_speech",
+    key: "speech",
+    base: "speech",
     icon: "/images/tab-icon-speech.svg",
   },
 ];
@@ -68,7 +64,7 @@ const codeData: Record<
     { lines: CodeLine[]; status: string; output: string; meta: string }
   >
 > = {
-  generate_image: {
+  image: {
     node: {
       lines: [
         { content: <span className={cm}>{" // Real-time Synthesis"}</span> },
@@ -273,7 +269,7 @@ const codeData: Record<
       meta: "1024\u00d71024 \u00b7 PNG \u00b7 2.4MB",
     },
   },
-  create_video: {
+  video: {
     node: {
       lines: [
         { content: <span className={cm}>{" // Video Generation"}</span> },
@@ -478,7 +474,7 @@ const codeData: Record<
       meta: "1920\u00d71080 \u00b7 MP4 \u00b7 12.1MB",
     },
   },
-  analyze_chat: {
+  chat: {
     node: {
       lines: [
         { content: <span className={cm}>{" // Chat Analysis"}</span> },
@@ -683,7 +679,7 @@ const codeData: Record<
       meta: "512 tokens \u00b7 JSON \u00b7 1.2KB",
     },
   },
-  generate_speech: {
+  speech: {
     node: {
       lines: [
         { content: <span className={cm}>{" // Speech Synthesis"}</span> },
@@ -893,7 +889,7 @@ const codeData: Record<
 const AUTO_ADVANCE_MS = 5000;
 
 export function HeroDemo() {
-  const [activeTab, setActiveTab] = useState<TabKey>("create_video");
+  const [activeTab, setActiveTab] = useState<TabKey>("video");
   const [activeLang, setActiveLang] = useState<LangKey>("node");
   const timerRef = useRef<ReturnType<typeof setInterval>>(null);
 
@@ -966,7 +962,10 @@ export function HeroDemo() {
                     className="relative shrink-0"
                     unoptimized
                   />
-                  <span className="relative">{tab.base}{langExt[activeLang]}</span>
+                  <span className="relative">
+                    {tab.base}
+                    {langExt[activeLang]}
+                  </span>
                 </button>
               ))}
             </div>
@@ -1019,7 +1018,7 @@ export function HeroDemo() {
             {/* Preview panel */}
             <div className="relative flex h-[260px] flex-col items-center justify-end overflow-hidden p-2 md:h-[348px] md:flex-1">
               {/* Image preview */}
-              {activeTab === "generate_image" && (
+              {activeTab === "image" && (
                 <Image
                   src="/images/editor-image-preview.webp"
                   alt="Generated output"
@@ -1029,7 +1028,7 @@ export function HeroDemo() {
               )}
 
               {/* Video preview */}
-              {activeTab === "create_video" && (
+              {activeTab === "video" && (
                 <video
                   src="https://d1q70pf5vjeyhc.wavespeed.ai/media/videos/1753847917474064981_X4mifEAx.mp4"
                   autoPlay
@@ -1041,7 +1040,7 @@ export function HeroDemo() {
               )}
 
               {/* Chat preview */}
-              {activeTab === "analyze_chat" && (
+              {activeTab === "chat" && (
                 <div className="absolute inset-0 flex flex-col overflow-hidden bg-[#f2f3f5] p-5">
                   <p className="mb-3 font-mono text-[10px] tracking-[1px] text-pretty text-[#7f848e] uppercase">
                     Response
@@ -1077,7 +1076,7 @@ export function HeroDemo() {
               )}
 
               {/* Audio preview */}
-              {activeTab === "generate_speech" && (
+              {activeTab === "speech" && (
                 <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 bg-[#f2f3f5] px-8">
                   <div className="flex w-full items-center gap-3">
                     <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#1b1b1b]">
