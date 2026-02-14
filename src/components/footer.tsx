@@ -1,8 +1,14 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import Logo from "@/images/logo.svg";
+
+const subscribe = () => () => {};
+const getSnapshot = () => true;
+const getServerSnapshot = () => false;
+const useMounted = () =>
+  useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
 const learnMoreLinks = [
   "Explore",
@@ -24,14 +30,10 @@ const legalLinks = ["Terms of Service", "Privacy Policy", "Security"];
 
 export function Footer() {
   const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useMounted();
 
   return (
-    <footer className="border-t border-white/10 bg-dark px-6 pt-12 pb-12 md:px-20 md:pt-20">
+    <footer className="bg-dark border-t border-white/10 px-6 pt-12 pb-12 md:px-20 md:pt-20">
       <div className="mx-auto max-w-[1280px]">
         <div className="mb-10 flex flex-col gap-10 md:flex-row md:justify-between md:gap-0">
           {/* Logo + status */}
@@ -57,7 +59,7 @@ export function Footer() {
                   <a
                     key={link}
                     href="#"
-                    className="font-mono text-xs leading-4 text-footer-link transition-colors hover:text-white"
+                    className="text-footer-link font-mono text-xs leading-4 transition-colors hover:text-white"
                   >
                     {link}
                   </a>
@@ -75,7 +77,7 @@ export function Footer() {
                   <a
                     key={link}
                     href="#"
-                    className="font-mono text-xs leading-4 text-footer-link transition-colors hover:text-white"
+                    className="text-footer-link font-mono text-xs leading-4 transition-colors hover:text-white"
                   >
                     {link}
                   </a>
@@ -93,7 +95,7 @@ export function Footer() {
                   <a
                     key={link}
                     href="#"
-                    className="font-mono text-xs leading-4 text-footer-link transition-colors hover:text-white"
+                    className="text-footer-link font-mono text-xs leading-4 transition-colors hover:text-white"
                   >
                     {link}
                   </a>
@@ -111,7 +113,7 @@ export function Footer() {
                   <a
                     key={link}
                     href="#"
-                    className="font-mono text-xs leading-4 text-footer-link transition-colors hover:text-white"
+                    className="text-footer-link font-mono text-xs leading-4 transition-colors hover:text-white"
                   >
                     {link}
                   </a>
@@ -141,66 +143,72 @@ export function Footer() {
               }
               className="flex cursor-pointer items-center gap-1.5 font-mono text-[10px] tracking-[1px] text-white/40 uppercase transition-colors hover:text-white"
             >
-              {mounted && theme === "dark" ? (<>
-                <svg
-                  className="size-4"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                >
-                  <path
-                    d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+              {mounted && theme === "dark" ? (
+                <>
+                  <svg
+                    className="size-4"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  >
+                    <path
+                      d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+                      fill="currentColor"
+                      stroke="none"
+                    />
+                    <line x1="19" y1="2" x2="19" y2="5" />
+                    <line x1="17.5" y1="3.5" x2="20.5" y2="3.5" />
+                  </svg>
+                  Dark
+                </>
+              ) : mounted && theme === "light" ? (
+                <>
+                  <svg
+                    className="size-4"
+                    viewBox="0 0 24 24"
                     fill="currentColor"
-                    stroke="none"
-                  />
-                  <line x1="19" y1="2" x2="19" y2="5" />
-                  <line x1="17.5" y1="3.5" x2="20.5" y2="3.5" />
-                </svg>
-                Dark
-              </>) : mounted && theme === "light" ? (<>
-                <svg
-                  className="size-4"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                >
-                  <circle cx="12" cy="12" r="5" stroke="none" />
-                  <line x1="12" y1="1" x2="12" y2="4" />
-                  <line x1="12" y1="20" x2="12" y2="23" />
-                  <line x1="1" y1="12" x2="4" y2="12" />
-                  <line x1="20" y1="12" x2="23" y2="12" />
-                  <line x1="4.22" y1="4.22" x2="6.34" y2="6.34" />
-                  <line x1="17.66" y1="17.66" x2="19.78" y2="19.78" />
-                  <line x1="4.22" y1="19.78" x2="6.34" y2="17.66" />
-                  <line x1="17.66" y1="6.34" x2="19.78" y2="4.22" />
-                </svg>
-                Light
-              </>) : (<>
-                <svg
-                  className="size-4"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <rect
-                    x="2"
-                    y="3"
-                    width="20"
-                    height="14"
-                    rx="2"
-                    fill="currentColor"
-                    stroke="none"
-                  />
-                  <line x1="8" y1="21" x2="16" y2="21" />
-                  <line x1="12" y1="17" x2="12" y2="21" />
-                </svg>
-                System
-              </>)}
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  >
+                    <circle cx="12" cy="12" r="5" stroke="none" />
+                    <line x1="12" y1="1" x2="12" y2="4" />
+                    <line x1="12" y1="20" x2="12" y2="23" />
+                    <line x1="1" y1="12" x2="4" y2="12" />
+                    <line x1="20" y1="12" x2="23" y2="12" />
+                    <line x1="4.22" y1="4.22" x2="6.34" y2="6.34" />
+                    <line x1="17.66" y1="17.66" x2="19.78" y2="19.78" />
+                    <line x1="4.22" y1="19.78" x2="6.34" y2="17.66" />
+                    <line x1="17.66" y1="6.34" x2="19.78" y2="4.22" />
+                  </svg>
+                  Light
+                </>
+              ) : (
+                <>
+                  <svg
+                    className="size-4"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <rect
+                      x="2"
+                      y="3"
+                      width="20"
+                      height="14"
+                      rx="2"
+                      fill="currentColor"
+                      stroke="none"
+                    />
+                    <line x1="8" y1="21" x2="16" y2="21" />
+                    <line x1="12" y1="17" x2="12" y2="21" />
+                  </svg>
+                  System
+                </>
+              )}
             </button>
             {/* GitHub */}
             <a

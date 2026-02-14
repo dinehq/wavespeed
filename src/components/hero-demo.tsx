@@ -931,7 +931,7 @@ export function HeroDemo() {
       </div>
 
       <div className="relative mx-auto max-w-[960px] px-4 py-4 md:px-0 md:py-12">
-        <div className="flex flex-col gap-2 rounded-[5px] bg-background p-2">
+        <div className="bg-background flex flex-col gap-2 rounded-[5px] p-2">
           {/* Tab bar */}
           <div className="flex flex-col items-start justify-between gap-2 sm:flex-row sm:items-center sm:gap-0">
             <div className="flex w-full gap-1 overflow-x-auto [scrollbar-width:none] sm:w-auto [&::-webkit-scrollbar]:hidden">
@@ -948,7 +948,7 @@ export function HeroDemo() {
                   {activeTab === tab.key && (
                     <div
                       key={activeTab}
-                      className="absolute inset-y-0 left-0 animate-[progress-fill_linear] rounded-[3px] bg-progress-track"
+                      className="bg-progress-track absolute inset-y-0 left-0 animate-[progress-fill_linear] rounded-[3px]"
                       style={{
                         animationDuration: `${AUTO_ADVANCE_MS}ms`,
                       }}
@@ -975,9 +975,7 @@ export function HeroDemo() {
                   key={lang}
                   onClick={() => setActiveLang(lang)}
                   className={`cursor-pointer rounded-[2px] px-2 py-1 font-mono text-xs transition-colors ${
-                    activeLang === lang
-                      ? "bg-code-dark text-white"
-                      : "text-ink"
+                    activeLang === lang ? "bg-code-dark text-white" : "text-ink"
                   }`}
                 >
                   {lang}
@@ -987,12 +985,12 @@ export function HeroDemo() {
           </div>
 
           {/* Editor content */}
-          <div className="flex flex-col overflow-hidden rounded-[3px] bg-panel-alt md:flex-row">
+          <div className="bg-panel-alt flex flex-col overflow-hidden rounded-[3px] md:flex-row">
             {/* Code panel */}
-            <div className="relative h-[260px] bg-panel md:h-[348px] md:flex-1">
+            <div className="bg-panel relative h-[260px] md:h-[348px] md:flex-1">
               <div className="absolute top-10 left-6 flex">
                 {/* Line numbers */}
-                <div className="flex w-6 flex-col gap-1 font-mono text-[13px] leading-tight text-secondary">
+                <div className="text-secondary flex w-6 flex-col gap-1 font-mono text-[13px] leading-tight">
                   {current.lines.map((_, i) => (
                     <p key={i} className="opacity-40">
                       {i + 1}
@@ -1007,8 +1005,8 @@ export function HeroDemo() {
                 </div>
               </div>
               {/* Status */}
-              <div className="absolute bottom-3 left-6 flex items-center gap-2 rounded bg-background px-2 py-1 md:top-[308px] md:bottom-auto">
-                <span className="size-[6px] rounded-full bg-green" />
+              <div className="bg-background absolute bottom-3 left-6 flex items-center gap-2 rounded px-2 py-1 md:top-[308px] md:bottom-auto">
+                <span className="bg-green size-[6px] rounded-full" />
                 <span className="text-subtle font-mono text-xs leading-tight">
                   {current.status}
                 </span>
@@ -1041,32 +1039,32 @@ export function HeroDemo() {
 
               {/* Chat preview */}
               {activeTab === "chat" && (
-                <div className="absolute inset-0 flex flex-col overflow-hidden bg-panel p-5">
-                  <p className="mb-3 font-mono text-[10px] tracking-[1px] text-pretty text-secondary uppercase">
+                <div className="bg-panel absolute inset-0 flex flex-col overflow-hidden p-5">
+                  <p className="text-secondary mb-3 font-mono text-[10px] tracking-[1px] text-pretty uppercase">
                     Response
                   </p>
-                  <div className="flex flex-col gap-2 font-mono text-[12px] leading-normal text-code-text">
+                  <div className="text-code-text flex flex-col gap-2 font-mono text-[12px] leading-normal">
                     <p>The conversation covered four key areas:</p>
                     <div className="flex flex-col gap-1.5 pl-1">
-                      <p className="text-pretty text-secondary">
+                      <p className="text-secondary text-pretty">
                         <span className="text-code-text">1.</span> Q3 revenue
                         increased 23% year-over-year
                       </p>
-                      <p className="text-pretty text-secondary">
+                      <p className="text-secondary text-pretty">
                         <span className="text-code-text">2.</span> New API
                         launch scheduled for October
                       </p>
-                      <p className="text-pretty text-secondary">
+                      <p className="text-secondary text-pretty">
                         <span className="text-code-text">3.</span>{" "}
                         Infrastructure team hiring 5 engineers
                       </p>
-                      <p className="text-pretty text-secondary">
+                      <p className="text-secondary text-pretty">
                         <span className="text-code-text">4.</span> Partnership
                         agreement signed with Acme
                       </p>
                     </div>
-                    <div className="mt-2 border-t border-foreground/5 pt-2">
-                      <p className="text-[11px] text-pretty text-secondary">
+                    <div className="border-foreground/5 mt-2 border-t pt-2">
+                      <p className="text-secondary text-[11px] text-pretty">
                         Action item: Scale GPU cluster to 256 nodes by Q4,
                         targeting p99 latency &lt; 200ms.
                       </p>
@@ -1077,9 +1075,9 @@ export function HeroDemo() {
 
               {/* Audio preview */}
               {activeTab === "speech" && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 bg-panel px-8">
+                <div className="bg-panel absolute inset-0 flex flex-col items-center justify-center gap-5 px-8">
                   <div className="flex w-full items-center gap-3">
-                    <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-code-text">
+                    <div className="bg-code-text flex size-8 shrink-0 items-center justify-center rounded-full">
                       <svg
                         width="10"
                         height="12"
@@ -1099,17 +1097,17 @@ export function HeroDemo() {
                       ].map((h, i) => (
                         <div
                           key={i}
-                          className="flex-1 rounded-full bg-code-text/20"
+                          className="bg-code-text/20 flex-1 rounded-full"
                           style={{ height: `${h * 100}%` }}
                         />
                       ))}
                     </div>
                   </div>
-                  <div className="flex w-full justify-between font-mono text-[10px] text-secondary">
+                  <div className="text-secondary flex w-full justify-between font-mono text-[10px]">
                     <span>0:00</span>
                     <span>0:04</span>
                   </div>
-                  <p className="text-center font-mono text-[12px] leading-[1.4] text-pretty text-code-text/40">
+                  <p className="text-code-text/40 text-center font-mono text-[12px] leading-[1.4] text-pretty">
                     &ldquo;Hello from WaveSpeed&rdquo;
                   </p>
                 </div>

@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "fix": "prettier --write . --log-level warn && eslint . --fix"
   },
   "dependencies": {
     "agentation": "^2.2.0",

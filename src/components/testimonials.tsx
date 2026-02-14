@@ -113,7 +113,7 @@ export function Testimonials() {
         {testimonials.map((t) => (
           <div
             key={t.name}
-            className="group relative flex w-[300px] shrink-0 flex-col justify-between gap-4 overflow-hidden rounded-xs bg-background p-6 transition-shadow duration-300 hover:shadow-[0px_12px_24px_0px_rgba(0,0,0,0.08)] dark:bg-panel dark:hover:shadow-[0px_12px_24px_0px_rgba(0,0,0,0.3)] md:w-[480px] md:p-10"
+            className="group bg-background dark:bg-panel relative flex w-[300px] shrink-0 flex-col justify-between gap-4 overflow-hidden rounded-xs p-6 transition-shadow duration-300 hover:shadow-[0px_12px_24px_0px_rgba(0,0,0,0.08)] md:w-[480px] md:p-10 dark:hover:shadow-[0px_12px_24px_0px_rgba(0,0,0,0.3)]"
           >
             <Image
               src="/images/quote-bg.webp"
@@ -128,11 +128,16 @@ export function Testimonials() {
                     className="relative"
                     style={{ width: t.logoWidth, height: t.logoHeight ?? 24 }}
                   >
-                    <Image src={t.logo} alt="" fill className="object-contain object-left dark:grayscale dark:invert" />
+                    <Image
+                      src={t.logo}
+                      alt=""
+                      fill
+                      className="object-contain object-left dark:grayscale dark:invert"
+                    />
                   </div>
                 </div>
               )}
-              <p className="relative text-lg leading-normal text-pretty text-ink">
+              <p className="text-ink relative text-lg leading-normal text-pretty">
                 {t.quote}
               </p>
             </div>

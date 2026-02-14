@@ -59,7 +59,7 @@ export function FeaturesSection() {
 
               {/* Text */}
               <div className="absolute right-6 bottom-[24px] left-6">
-                <h3 className="mb-2 text-2xl leading-7 font-medium text-ink">
+                <h3 className="text-ink mb-2 text-2xl leading-7 font-medium">
                   Vast Model Library
                 </h3>
                 <p className="text-muted w-auto font-mono text-sm text-pretty lg:w-[526px]">
@@ -72,7 +72,7 @@ export function FeaturesSection() {
             <div className="bg-surface relative h-[320px] w-full overflow-hidden rounded-xs lg:h-[420px] lg:flex-1">
               {/* Title + description */}
               <div className="absolute top-6 right-6 left-6 z-10 lg:w-[584px]">
-                <h3 className="mb-2 text-2xl leading-7 font-medium text-ink">
+                <h3 className="text-ink mb-2 text-2xl leading-7 font-medium">
                   Blazing Fast Inference
                 </h3>
                 <p className="text-muted font-mono text-sm leading-tight text-pretty">
@@ -103,7 +103,7 @@ export function FeaturesSection() {
             <div className="bg-surface relative h-[320px] w-full shrink-0 overflow-hidden rounded-xs lg:h-[420px] lg:w-[55%]">
               {/* Title + description */}
               <div className="absolute top-6 right-6 left-6 z-10 lg:w-[642px]">
-                <h3 className="mb-2 text-2xl leading-7 font-medium text-ink">
+                <h3 className="text-ink mb-2 text-2xl leading-7 font-medium">
                   Built for Scale
                 </h3>
                 <p className="text-muted max-w-[400px] font-mono text-sm text-pretty">
@@ -128,7 +128,7 @@ export function FeaturesSection() {
               </div>
             </div>
 
-            <div className="from-surface relative h-[320px] w-full overflow-hidden rounded-xs bg-linear-to-b to-accent-light lg:h-[420px] lg:flex-1">
+            <div className="from-surface to-accent-light relative h-[320px] w-full overflow-hidden rounded-xs bg-linear-to-b lg:h-[420px] lg:flex-1">
               {/* 3D box — drifts in from right */}
               <div
                 className={`absolute top-0 right-[-30px] h-[320px] w-[250px] transition-all duration-1000 ease-out lg:top-[-13px] lg:right-[-60px] lg:h-[480px] lg:w-[390px] ${
@@ -146,7 +146,7 @@ export function FeaturesSection() {
               </div>
               {/* Title + description */}
               <div className="absolute right-6 bottom-[24px] left-6 z-10 lg:w-[526px]">
-                <h3 className="mb-2 text-2xl leading-7 font-medium text-ink">
+                <h3 className="text-ink mb-2 text-2xl leading-7 font-medium">
                   Security
                 </h3>
                 <p className="text-muted font-mono text-sm leading-tight text-pretty">
