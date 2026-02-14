@@ -1,6 +1,28 @@
+"use client";
+
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 
 export function FeaturesSection() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [entered, setEntered] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setEntered(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section className="px-6 py-12 md:px-20 md:py-20">
       <div className="mx-auto max-w-[1280px]">
@@ -15,12 +37,18 @@ export function FeaturesSection() {
           </p>
         </div>
 
-        <div className="flex flex-col gap-4">
+        <div ref={ref} className="flex flex-col gap-4">
           {/* Row 1: Vast Model Library (smaller) + Blazing Fast Inference (larger) */}
           <div className="flex flex-col gap-4 md:flex-row">
             <div className="bg-surface relative h-[280px] w-full shrink-0 overflow-hidden rounded-xs md:h-[360px] md:w-[574px]">
-              {/* Provider logos — extends past right edge, clipped by overflow */}
-              <div className="absolute top-[-38px] left-[40px] h-[180px] w-[600px] md:h-[287px]">
+              {/* Provider logos — drift in from left */}
+              <div
+                className={`absolute top-[-38px] left-[40px] h-[180px] w-[600px] transition-all duration-1000 ease-out md:h-[287px] ${
+                  entered
+                    ? "translate-x-0 opacity-100"
+                    : "-translate-x-8 opacity-0"
+                }`}
+              >
                 <Image
                   src="/images/logos.webp"
                   alt=""
@@ -52,8 +80,14 @@ export function FeaturesSection() {
                   generation for LLMs and sub-second rendering for image models.
                 </p>
               </div>
-              {/* Speed chart image */}
-              <div className="absolute right-0 bottom-0 left-0 h-[180px] md:h-[260px]">
+              {/* Speed chart — rises from bottom */}
+              <div
+                className={`absolute right-0 bottom-0 left-0 h-[180px] transition-all duration-1000 ease-out md:h-[260px] ${
+                  entered
+                    ? "translate-y-0 opacity-100"
+                    : "translate-y-6 opacity-0"
+                }`}
+              >
                 <Image
                   src="/images/speed.webp"
                   alt=""
@@ -77,8 +111,14 @@ export function FeaturesSection() {
                   dedicated throughput for high-volume applications.
                 </p>
               </div>
-              {/* Wave lines image — bleeds right for responsive feel */}
-              <div className="absolute top-0 left-0 h-full w-[150%]">
+              {/* Wave lines — drift in from left */}
+              <div
+                className={`absolute top-0 left-0 h-full w-[150%] transition-all duration-1000 ease-out ${
+                  entered
+                    ? "translate-x-0 opacity-100"
+                    : "-translate-x-10 opacity-0"
+                }`}
+              >
                 <Image
                   src="/images/scale.webp"
                   alt=""
@@ -89,8 +129,14 @@ export function FeaturesSection() {
             </div>
 
             <div className="from-surface relative h-[280px] w-full overflow-hidden rounded-xs bg-linear-to-b to-[#d3ddff] md:h-[360px] md:flex-1">
-              {/* 3D box image — positioned right, bleeding off edge */}
-              <div className="absolute top-0 right-[-30px] h-[280px] w-[250px] md:top-[-13px] md:right-[-60px] md:h-[425px] md:w-[390px]">
+              {/* 3D box — drifts in from right */}
+              <div
+                className={`absolute top-0 right-[-30px] h-[280px] w-[250px] transition-all duration-1000 ease-out md:top-[-13px] md:right-[-60px] md:h-[425px] md:w-[390px] ${
+                  entered
+                    ? "translate-x-0 opacity-100"
+                    : "translate-x-8 opacity-0"
+                }`}
+              >
                 <Image
                   src="/images/security.webp"
                   alt=""
