@@ -281,7 +281,7 @@ export function ToolsSection() {
         <h2 className="text-heading mb-6 text-[32px] leading-none font-medium tracking-[-1px] text-balance md:text-[48px]">
           Get <em className="italic">any</em> tool you want
         </h2>
-        <p className="text-subtle font-mono text-base leading-[1.3] text-pretty">
+        <p className="text-subtle font-mono text-base text-pretty">
           Transform your creative workflow with AI tools for
           <br className="hidden md:block" />
           upscaling, editing, and generating images and videos.

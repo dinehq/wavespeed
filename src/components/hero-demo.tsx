@@ -930,7 +930,7 @@ export function HeroDemo() {
         />
       </div>
 
-      <div className="relative mx-auto max-w-[960px] px-4 py-8 md:px-0">
+      <div className="relative mx-auto max-w-[960px] px-4 py-4 md:px-0 md:py-12">
         <div className="flex flex-col gap-2 rounded-[5px] bg-white p-2">
           {/* Tab bar */}
           <div className="flex flex-col items-start justify-between gap-2 sm:flex-row sm:items-center sm:gap-0">
@@ -1120,7 +1120,7 @@ export function HeroDemo() {
                   <p className="font-sans text-xs leading-4 text-pretty text-white">
                     {current.output}
                   </p>
-                  <p className="text-footer-label font-mono text-[10px] leading-[15px] text-pretty">
+                  <p className="text-footer-label font-mono text-[10px] leading-4 text-pretty">
                     {current.meta}
                   </p>
                 </div>

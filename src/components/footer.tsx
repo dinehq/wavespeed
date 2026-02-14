@@ -28,7 +28,7 @@ export function Footer() {
             <Logo className="h-6 w-auto self-start text-white" />
             <div className="flex items-center gap-2">
               <span className="size-2 rounded-full bg-green-400" />
-              <span className="font-mono text-[10px] leading-[15px] tracking-[1px] text-white/40 uppercase">
+              <span className="font-mono text-[10px] leading-4 tracking-[1px] text-white/40 uppercase">
                 All Service Online
               </span>
             </div>
@@ -112,7 +112,7 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="flex flex-col items-center justify-between gap-4 border-t border-white/20 pt-4 sm:flex-row sm:items-end sm:gap-0">
-          <p className="font-mono text-[10px] leading-[15px] tracking-[1px] text-pretty text-white/40 uppercase">
+          <p className="font-mono text-[10px] leading-4 tracking-[1px] text-pretty text-white/40 uppercase">
             &copy; 2026 WAVESPEED
           </p>
           <div className="flex items-center gap-6">

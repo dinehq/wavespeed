@@ -135,7 +135,7 @@ function StatusDots({ count }: { count: number }) {
 
 function SpeedBar({ percent }: { percent: number }) {
   return (
-    <div className="h-[3px] w-[85px] bg-[#d9d9d9]">
+    <div className="h-[3px] w-[84px] bg-[#d9d9d9]">
       <div className="h-full bg-black" style={{ width: `${percent}%` }} />
     </div>
   );
@@ -148,11 +148,11 @@ export function FeaturedModels() {
     <section className="bg-white py-20">
       {/* Header */}
       <div className="mx-auto flex max-w-[1160px] flex-col items-center gap-10">
-        <div className="flex max-w-[875px] flex-col items-center gap-4 text-center">
+        <div className="flex max-w-[876px] flex-col items-center gap-4 text-center">
           <h2 className="text-heading text-[32px] leading-none font-medium tracking-[-1px] text-balance md:text-[48px]">
             Featured Models
           </h2>
-          <p className="text-subtle font-mono text-base leading-[1.3] text-pretty">
+          <p className="text-subtle font-mono text-base text-pretty">
             Access the world&apos;s most advanced multimodal models
             <br className="hidden md:block" />
             through a single, unified API.
@@ -239,7 +239,7 @@ export function FeaturedModels() {
                   <SpeedBar percent={model.speedBar} />
                 </div>
                 <div className="col-span-1 hidden items-center md:flex">
-                  <span className="font-mono text-sm leading-[15px] text-black uppercase">
+                  <span className="font-mono text-sm leading-4 text-black uppercase">
                     {model.tps}
                   </span>
                 </div>

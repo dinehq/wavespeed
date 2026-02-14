@@ -26,11 +26,11 @@ export function FeaturesSection() {
   return (
     <section className="px-6 py-12 md:px-20 md:py-20">
       <div className="mx-auto max-w-[1280px]">
-        <div className="mb-10 flex max-w-[875px] flex-col gap-4">
+        <div className="mb-10 flex max-w-[876px] flex-col gap-4">
           <h2 className="text-heading text-[32px] leading-none font-medium tracking-[-1px] text-balance md:text-[48px]">
             Engineered for <em className="italic">Velocity</em>
           </h2>
-          <p className="text-subtle font-mono text-base leading-[1.3] text-pretty">
+          <p className="text-subtle font-mono text-base text-pretty">
             WaveSpeed is a purpose-built inference engine
             <br className="hidden md:block" />
             designed to minimize latency and maximize throughput.
@@ -40,7 +40,7 @@ export function FeaturesSection() {
         <div ref={ref} className="flex flex-col gap-4">
           {/* Row 1: Vast Model Library (smaller) + Blazing Fast Inference (larger) */}
           <div className="flex flex-col gap-4 lg:flex-row">
-            <div className="bg-surface relative h-[320px] w-full shrink-0 overflow-hidden rounded-xs lg:h-[420px] lg:w-[45%]">
+            <div className="bg-surface relative h-[320px] w-full shrink-0 overflow-hidden rounded-xs lg:h-[400px] lg:w-[45%]">
               {/* Provider logos — drift in from left */}
               <div
                 className={`absolute top-[-38px] right-0 h-[220px] w-[600px] transition-all duration-1000 ease-out sm:h-[260px] md:h-[280px] lg:h-[287px] ${
@@ -62,7 +62,7 @@ export function FeaturesSection() {
                 <h3 className="mb-2 text-2xl leading-7 font-medium text-[#191e2e]">
                   Vast Model Library
                 </h3>
-                <p className="text-muted w-auto font-mono text-sm leading-tight text-pretty lg:w-[526px]">
+                <p className="text-muted w-auto font-mono text-sm text-pretty lg:w-[526px]">
                   Access the entire HuggingFace hub and top proprietary models
                   with a single unified API key.
                 </p>
@@ -106,7 +106,7 @@ export function FeaturesSection() {
                 <h3 className="mb-2 text-2xl leading-7 font-medium text-[#191e2e]">
                   Built for Scale
                 </h3>
-                <p className="text-muted max-w-[400px] font-mono text-sm leading-tight text-pretty">
+                <p className="text-muted max-w-[400px] font-mono text-sm text-pretty">
                   Enterprise-grade reliability with 99.99% uptime guarantees and
                   dedicated throughput for high-volume applications.
                 </p>

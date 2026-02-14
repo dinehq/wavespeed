@@ -17,7 +17,7 @@ export function Hero() {
       <div className="relative flex w-full flex-col items-stretch gap-2 sm:w-auto sm:flex-row sm:items-start">
         <a
           href="#"
-          className="flex items-center justify-center gap-3 rounded-xs bg-black px-[30px] py-4 text-white transition-colors duration-150 hover:bg-black/80"
+          className="flex items-center justify-center gap-3 rounded-xs bg-black px-8 py-4 text-white transition-colors duration-150 hover:bg-black/80"
         >
           <span className="font-mono text-sm leading-4 font-medium tracking-[1.2px] uppercase">
             Start Building
@@ -26,7 +26,7 @@ export function Hero() {
         </a>
         <a
           href="#"
-          className="bg-surface flex items-center justify-center rounded-xs px-[33px] py-4 text-black transition-colors duration-150 hover:bg-black/10"
+          className="bg-surface flex items-center justify-center rounded-xs px-8 py-4 text-black transition-colors duration-150 hover:bg-black/10"
         >
           <span className="font-mono text-sm leading-4 font-medium tracking-[1.2px] uppercase">
             Documentation

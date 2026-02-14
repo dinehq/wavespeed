@@ -113,7 +113,7 @@ export function Testimonials() {
         {testimonials.map((t) => (
           <div
             key={t.name}
-            className="group relative flex w-[300px] shrink-0 flex-col justify-between gap-4 overflow-hidden rounded-xs bg-white p-6 transition-shadow duration-300 hover:shadow-[0px_12px_24px_0px_rgba(0,0,0,0.08)] md:w-[511px] md:p-10"
+            className="group relative flex w-[300px] shrink-0 flex-col justify-between gap-4 overflow-hidden rounded-xs bg-white p-6 transition-shadow duration-300 hover:shadow-[0px_12px_24px_0px_rgba(0,0,0,0.08)] md:w-[480px] md:p-10"
           >
             <Image
               src="/images/quote-bg.webp"

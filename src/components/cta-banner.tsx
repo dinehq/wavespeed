@@ -20,7 +20,7 @@ export function CTABanner() {
 
         <a
           href="#"
-          className="flex items-center gap-3 rounded-xs bg-black px-[30px] py-4 text-white transition-colors duration-150 hover:bg-black/80"
+          className="flex items-center gap-3 rounded-xs bg-black px-8 py-4 text-white transition-colors duration-150 hover:bg-black/80"
         >
           <span className="font-mono text-sm leading-4 font-medium tracking-[1.2px] uppercase">
             Start Building
