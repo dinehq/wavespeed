@@ -4,9 +4,8 @@ export function Hero() {
   return (
     <section className="relative flex flex-col items-center gap-10 overflow-hidden px-6 pt-16 pb-16 md:px-20 md:pt-24">
       <div className="relative flex max-w-[788px] flex-col items-center gap-4 text-center">
-        <h1 className="text-heading text-[36px] leading-none font-semibold tracking-[-1px] text-balance md:text-[72px]">
-          The <em className="italic">All-in-One</em>
-          <br className="hidden md:block" /> API for Inference.
+        <h1 className="text-heading text-4xl leading-none font-semibold tracking-[-1px] text-balance md:text-7xl">
+          The Ultimate AI Media Generation Platform
         </h1>
         <p className="text-subtle font-mono text-[18px] leading-tight text-pretty">
           Build multimodal applications with a single high-speed interface.

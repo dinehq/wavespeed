@@ -52,7 +52,7 @@ const azeretSemiMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "WaveSpeed - The All-in-One API for Inference",
+  title: "WaveSpeed - The Ultimate AI Media Generation Platform",
   description:
     "Build multimodal applications with a single high-speed interface.",
 };
