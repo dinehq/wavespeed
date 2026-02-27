@@ -2,8 +2,6 @@
 
 import Image from "next/image";
 import logosImg from "@/images/logos.webp";
-import speedImg from "@/images/speed.webp";
-import scaleImg from "@/images/scale.webp";
 import securityImg from "@/images/security.webp";
 import { useEffect, useRef, useState } from "react";
 
@@ -47,7 +45,7 @@ export function FeaturesSection() {
             <div className="bg-surface relative h-[320px] w-full shrink-0 overflow-hidden rounded-xs lg:h-[420px] lg:w-[45%]">
               {/* Provider logos — drift in from left */}
               <div
-                className={`absolute top-[-38px] right-0 h-[220px] w-[600px] transition-all duration-1000 ease-out sm:h-[260px] md:h-[280px] lg:h-[287px] ${
+                className={`absolute top-[10px] right-[0px] h-[220px] w-[600px] transition-all duration-1000 ease-out sm:h-[260px] md:h-[280px] lg:h-[287px] ${
                   entered
                     ? "translate-x-0 opacity-100"
                     : "-translate-x-8 opacity-0"
@@ -86,17 +84,14 @@ export function FeaturesSection() {
               </div>
               {/* Speed chart — rises from bottom */}
               <div
-                className={`absolute right-0 bottom-0 left-0 h-[180px] transition-all duration-1000 ease-out lg:h-[300px] ${
-                  entered
-                    ? "translate-y-0 opacity-100"
-                    : "translate-y-6 opacity-0"
-                }`}
+                className="absolute right-0 bottom-0 left-0 h-[180px] lg:h-[300px]"
               >
-                <Image
-                  src={speedImg}
-                  alt=""
-                  fill
-                  className="object-contain object-bottom"
+                <video
+                  src="/videos/speed.mp4"
+                  autoPlay
+                  muted
+                  playsInline
+                  className="size-full object-contain object-bottom"
                 />
               </div>
             </div>
@@ -117,36 +112,35 @@ export function FeaturesSection() {
               </div>
               {/* Wave lines — drift in from left */}
               <div
-                className={`absolute top-0 left-0 h-full w-[150%] transition-all duration-1000 ease-out ${
-                  entered
-                    ? "translate-x-0 opacity-100"
-                    : "-translate-x-10 opacity-0"
-                }`}
+                className="absolute top-0 left-0 h-full w-[150%]"
               >
-                <Image
-                  src={scaleImg}
-                  alt=""
-                  fill
-                  className="object-cover object-top-left"
+                <video
+                  src="/videos/scale.mp4"
+                  autoPlay
+                  muted
+                  playsInline
+                  className="size-full object-cover object-top-left"
                 />
               </div>
             </div>
 
             <div className="from-surface to-accent-light relative h-[320px] w-full overflow-hidden rounded-xs bg-linear-to-b lg:h-[420px] lg:flex-1">
-              {/* 3D box — drifts in from right */}
+              {/* 3D box — rises from bottom */}
               <div
-                className={`absolute top-0 right-[-30px] h-[320px] w-[250px] transition-all duration-1000 ease-out lg:top-[-13px] lg:right-[-60px] lg:h-[480px] lg:w-[390px] ${
+                className={`absolute top-0 right-[-30px] h-[320px] w-[250px] transition-all duration-1000 ease-out lg:top-[-13px] lg:right-[0px] lg:h-[480px] lg:w-[390px] ${
                   entered
-                    ? "translate-x-0 opacity-100"
-                    : "translate-x-8 opacity-0"
+                    ? "translate-y-0 opacity-100"
+                    : "translate-y-8 opacity-0"
                 }`}
               >
-                <Image
-                  src={securityImg}
-                  alt=""
-                  fill
-                  className="object-contain"
-                />
+                <div className={`relative size-full ${entered ? "animate-[breathe_4s_ease-in-out_infinite_1s]" : ""}`}>
+                  <Image
+                    src={securityImg}
+                    alt=""
+                    fill
+                    className="object-contain"
+                  />
+                </div>
               </div>
               {/* Title + description */}
               <div className="absolute right-6 bottom-[24px] left-6 z-10 lg:w-[526px]">

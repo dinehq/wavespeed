@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import heroBg from "@/images/hero-bg.webp";
 import editorPreview from "@/images/editor-image-preview.webp";
 import {
   useCallback,
@@ -924,11 +923,13 @@ export function HeroDemo() {
   return (
     <section className="relative w-full overflow-hidden">
       <div className="absolute inset-0">
-        <Image
-          src={heroBg}
-          alt=""
-          fill
-          className="object-cover"
+        <video
+          src="/videos/hero-bg.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="size-full scale-105 object-cover blur-sm"
         />
       </div>
 

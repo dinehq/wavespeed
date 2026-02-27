@@ -79,6 +79,15 @@ body {
   font-family: var(--font-azeret), sans-serif;
 }
 
+@keyframes breathe {
+  0%, 100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -8px;
+  }
+}
+
 @keyframes progress-fill {
   from {
     width: 0%;
