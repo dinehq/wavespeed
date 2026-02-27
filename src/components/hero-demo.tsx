@@ -2,6 +2,10 @@
 
 import Image from "next/image";
 import editorPreview from "@/images/editor-image-preview.webp";
+import TabIconVideo from "@/images/tab-icon-video.svg";
+import TabIconImage from "@/images/tab-icon-image.svg";
+import TabIconChat from "@/images/tab-icon-chat.svg";
+import TabIconSpeech from "@/images/tab-icon-speech.svg";
 import {
   useCallback,
   useEffect,
@@ -10,29 +14,31 @@ import {
   type ReactNode,
 } from "react";
 
+import type { FC, SVGProps } from "react";
+
 type TabKey = "image" | "video" | "chat" | "speech";
 type LangKey = "node" | "python" | "curl";
 
-const tabs: { key: TabKey; base: string; icon: string }[] = [
+const tabs: { key: TabKey; base: string; icon: FC<SVGProps<SVGSVGElement>> }[] = [
   {
     key: "video",
     base: "video",
-    icon: "/images/tab-icon-video.svg",
+    icon: TabIconVideo,
   },
   {
     key: "image",
     base: "image",
-    icon: "/images/tab-icon-image.svg",
+    icon: TabIconImage,
   },
   {
     key: "chat",
     base: "chat",
-    icon: "/images/tab-icon-chat.svg",
+    icon: TabIconChat,
   },
   {
     key: "speech",
     base: "speech",
-    icon: "/images/tab-icon-speech.svg",
+    icon: TabIconSpeech,
   },
 ];
 
@@ -958,14 +964,7 @@ export function HeroDemo() {
                       }}
                     />
                   )}
-                  <Image
-                    src={tab.icon}
-                    alt=""
-                    width={16}
-                    height={16}
-                    className="relative shrink-0"
-                    unoptimized
-                  />
+                  <tab.icon className="relative size-4 shrink-0" />
                   <span className="relative">
                     {tab.base}
                     {langExt[activeLang]}

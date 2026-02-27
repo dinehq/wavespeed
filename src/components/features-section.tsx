@@ -84,14 +84,16 @@ export function FeaturesSection() {
               </div>
               {/* Speed chart — rises from bottom */}
               <div
-                className="absolute right-0 bottom-0 left-0 h-[180px] lg:h-[300px]"
+                className="absolute right-0 bottom-0 left-0"
               >
                 <video
                   src="/videos/speed.mp4"
+                  width={850}
+                  height={360}
                   autoPlay
                   muted
                   playsInline
-                  className="size-full object-contain object-bottom"
+                  className="w-full scale-105"
                 />
               </div>
             </div>
@@ -112,14 +114,16 @@ export function FeaturesSection() {
               </div>
               {/* Wave lines — drift in from left */}
               <div
-                className="absolute top-0 left-0 h-full w-[150%]"
+                className="absolute bottom-0 left-0"
               >
                 <video
                   src="/videos/scale.mp4"
+                  width={1024}
+                  height={360}
                   autoPlay
                   muted
                   playsInline
-                  className="size-full object-cover object-top-left"
+                  className="scale-105"
                 />
               </div>
             </div>

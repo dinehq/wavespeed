@@ -1,4 +1,13 @@
 import Image, { type StaticImageData } from "next/image";
+import type { FC, SVGProps } from "react";
+import Lab1 from "@/images/lab-1.svg";
+import Lab2 from "@/images/lab-2.svg";
+import Lab3 from "@/images/lab-3.svg";
+import Lab4 from "@/images/lab-4.svg";
+import Lab5 from "@/images/lab-5.svg";
+import Lab6 from "@/images/lab-6.svg";
+import Lab7 from "@/images/lab-7.svg";
+import Lab8 from "@/images/lab-8.svg";
 import toolsBflBg from "@/images/tools-bfl-bg.webp";
 import toolsWanBg from "@/images/tools-wan-bg.webp";
 import toolsOpenaiBg from "@/images/tools-openai-bg.webp";
@@ -23,7 +32,7 @@ import tool11 from "@/images/tool-11.webp";
 const providerRow1 = [
   {
     name: "Black Forest Labs",
-    logo: "/images/lab-1.svg",
+    logo: Lab1,
     size: "large" as const,
     bg: toolsBflBg,
     models: [
@@ -35,7 +44,7 @@ const providerRow1 = [
   },
   {
     name: "Wan",
-    logo: "/images/lab-2.svg",
+    logo: Lab2,
     size: "small" as const,
     bg: toolsWanBg,
     models: [
@@ -47,7 +56,7 @@ const providerRow1 = [
   },
   {
     name: "OpenAI",
-    logo: "/images/lab-3.svg",
+    logo: Lab3,
     size: "small" as const,
     bg: toolsOpenaiBg,
     models: [
@@ -59,7 +68,7 @@ const providerRow1 = [
   },
   {
     name: "ByteDance | Seedance",
-    logo: "/images/lab-4.svg",
+    logo: Lab4,
     size: "small" as const,
     bg: [toolsBytedanceBg, toolsBytedanceBg2],
     models: [
@@ -73,7 +82,7 @@ const providerRow1 = [
 const providerRow2 = [
   {
     name: "runway",
-    logo: "/images/lab-5.svg",
+    logo: Lab5,
     size: "small" as const,
     bg: toolsRunwayBg,
     models: [
@@ -86,7 +95,7 @@ const providerRow2 = [
   },
   {
     name: "KlingAI",
-    logo: "/images/lab-6.svg",
+    logo: Lab6,
     size: "small" as const,
     bg: toolsKlingBg,
     models: [
@@ -98,7 +107,7 @@ const providerRow2 = [
   },
   {
     name: "RecCraft",
-    logo: "/images/lab-7.svg",
+    logo: Lab7,
     size: "small" as const,
     bg: toolsReccraftBg,
     models: [
@@ -110,7 +119,7 @@ const providerRow2 = [
   },
   {
     name: "Google",
-    logo: "/images/lab-8.svg",
+    logo: Lab8,
     size: "large" as const,
     bg: toolsGoogleBg,
     models: [
@@ -227,14 +236,7 @@ function ProviderCard({ card }: { card: ProviderCard }) {
       />
 
       {/* Logo */}
-      <Image
-        src={card.logo}
-        alt={card.name}
-        width={0}
-        height={0}
-        className="relative h-8 w-auto self-start"
-        unoptimized
-      />
+      <card.logo className="relative h-8 w-auto self-start" />
 
       {/* Model list */}
       {hasGrid ? (
