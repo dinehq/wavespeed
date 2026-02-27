@@ -925,6 +925,7 @@ export function HeroDemo() {
       <div className="absolute inset-0">
         <video
           src="/videos/hero-bg.mp4"
+          poster="/videos/hero-bg_poster.webp"
           autoPlay
           loop
           muted

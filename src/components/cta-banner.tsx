@@ -6,6 +6,7 @@ export function CTABanner() {
       <div className="absolute inset-0">
         <video
           src="/videos/get-started-bg.mp4"
+          poster="/videos/get-started-bg_poster.webp"
           autoPlay
           loop
           muted
