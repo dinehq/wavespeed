@@ -1,6 +1,0 @@
-ignoredBuiltDependencies:
-  - sharp
-  - unrs-resolver
-
-patchedDependencies:
-  agentation: patches/agentation.patch

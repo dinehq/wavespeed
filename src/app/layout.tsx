@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { ThemeProvider } from "next-themes";
-import { Agentation } from "agentation";
 import "./globals.css";
 
 const azeret = localFont({
@@ -71,7 +70,6 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
         </ThemeProvider>
-        {process.env.NODE_ENV === "development" && <Agentation />}
       </body>
     </html>
   );
