@@ -1,5 +1,4 @@
 import Image, { type StaticImageData } from "next/image";
-import type { FC, SVGProps } from "react";
 import Lab1 from "@/images/lab-1.svg";
 import Lab2 from "@/images/lab-2.svg";
 import Lab3 from "@/images/lab-3.svg";
@@ -236,7 +235,7 @@ function ProviderCard({ card }: { card: ProviderCard }) {
       />
 
       {/* Logo */}
-      <card.logo className="relative h-8 w-auto self-start" />
+      <card.logo className="relative self-start" />
 
       {/* Model list */}
       {hasGrid ? (
