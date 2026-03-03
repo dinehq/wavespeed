@@ -91,7 +91,7 @@ export function FeaturesSection() {
                   autoPlay
                   muted
                   playsInline
-                  className="w-full scale-105"
+                  className="w-full scale-105 dark:mix-blend-screen dark:filter-[invert(1)_contrast(1.2)_hue-rotate(180deg)]"
                 />
               </div>
             </div>
@@ -119,7 +119,7 @@ export function FeaturesSection() {
                   autoPlay
                   muted
                   playsInline
-                  className="scale-105"
+                  className="scale-105 dark:mix-blend-screen dark:filter-[invert(1)_contrast(1.2)_hue-rotate(180deg)]"
                 />
               </div>
             </div>
@@ -140,7 +140,7 @@ export function FeaturesSection() {
                     src={securityImg}
                     alt=""
                     fill
-                    className="object-contain"
+                    className="object-contain dark:mix-blend-screen dark:filter-[invert(1)_contrast(1.2)_hue-rotate(180deg)]"
                   />
                 </div>
               </div>
