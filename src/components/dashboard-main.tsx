@@ -20,12 +20,37 @@ const apiTasks = [
 ];
 
 const modelCards = [
-  { name: "flux-pro/kontext", type: "Text to image", badge: "Fast", image: thumb1 },
-  { name: "wan-2.6/t2v", type: "Text to video", badge: "Stable", image: thumb2 },
+  {
+    name: "flux-pro/kontext",
+    type: "Text to image",
+    badge: "Fast",
+    image: thumb1,
+  },
+  {
+    name: "wan-2.6/t2v",
+    type: "Text to video",
+    badge: "Stable",
+    image: thumb2,
+  },
   { name: "veo-3.1", type: "Video generation", badge: "New", image: thumb3 },
-  { name: "gpt-image-1", type: "Image generation", badge: "Reliable", image: thumb4 },
-  { name: "kling-v2.6", type: "Text to video", badge: "Popular", image: thumb5 },
-  { name: "pixverse-v5.6", type: "Video tools", badge: "Creator", image: thumb6 },
+  {
+    name: "gpt-image-1",
+    type: "Image generation",
+    badge: "Reliable",
+    image: thumb4,
+  },
+  {
+    name: "kling-v2.6",
+    type: "Text to video",
+    badge: "Popular",
+    image: thumb5,
+  },
+  {
+    name: "pixverse-v5.6",
+    type: "Video tools",
+    badge: "Creator",
+    image: thumb6,
+  },
 ];
 
 const requests = [
@@ -90,9 +115,14 @@ function MetricCard({
 }
 
 export function DashboardMain() {
-  const totalRequests = usagePerModel.reduce((sum, item) => sum + item.requests, 0);
+  const totalRequests = usagePerModel.reduce(
+    (sum, item) => sum + item.requests,
+    0,
+  );
   const totalCost = usagePerModel.reduce((sum, item) => sum + item.cost, 0);
-  const maxBreakdownValue = Math.max(...usageBreakdown.map((item) => item.value));
+  const maxBreakdownValue = Math.max(
+    ...usageBreakdown.map((item) => item.value),
+  );
 
   return (
     <section className="bg-background px-4 py-6 md:px-8 md:py-8">
@@ -112,7 +142,7 @@ export function DashboardMain() {
                   >
                     {tab}
                     {isActive && (
-                      <span className="bg-[#3f74ff] absolute right-0 bottom-0 left-0 h-[2px]" />
+                      <span className="absolute right-0 bottom-0 left-0 h-[2px] bg-[#3f74ff]" />
                     )}
                   </button>
                 </li>
@@ -180,7 +210,9 @@ export function DashboardMain() {
                     <span className="text-foreground/50 font-mono text-[10px] tracking-[1px] uppercase">
                       {String(index + 1).padStart(2, "0")}
                     </span>
-                    <span className="text-foreground line-clamp-1 text-sm">{task.label}</span>
+                    <span className="text-foreground line-clamp-1 text-sm">
+                      {task.label}
+                    </span>
                   </div>
                   <button className="bg-surface text-foreground hover:bg-foreground/10 shrink-0 rounded-xs px-2.5 py-1.5 font-mono text-[10px] tracking-[1px] uppercase transition-colors duration-150">
                     {task.action} {"->"}
@@ -248,7 +280,8 @@ export function DashboardMain() {
               <div className="mb-3 flex items-start justify-between gap-2">
                 <h3 className="text-foreground font-medium">Usage per model</h3>
                 <p className="text-foreground/70 font-mono text-[10px] tracking-[1px] uppercase">
-                  Total {totalRequests} predictions, cost ${totalCost.toFixed(2)}
+                  Total {totalRequests} predictions, cost $
+                  {totalCost.toFixed(2)}
                 </p>
               </div>
               <div className="overflow-x-auto">
@@ -256,14 +289,21 @@ export function DashboardMain() {
                   <thead>
                     <tr className="text-foreground/70 border-foreground/10 border-b font-mono text-[10px] tracking-[1px] uppercase">
                       <th className="py-2 text-left font-medium">Model</th>
-                      <th className="py-2 text-left font-medium">Request Count</th>
+                      <th className="py-2 text-left font-medium">
+                        Request Count
+                      </th>
                       <th className="py-2 text-right font-medium">Cost</th>
                     </tr>
                   </thead>
                   <tbody>
                     {usagePerModel.map((item) => (
-                      <tr key={item.model} className="border-foreground/10 border-b last:border-b-0">
-                        <td className="py-2.5 pr-2 font-mono text-xs">{item.model}</td>
+                      <tr
+                        key={item.model}
+                        className="border-foreground/10 border-b last:border-b-0"
+                      >
+                        <td className="py-2.5 pr-2 font-mono text-xs">
+                          {item.model}
+                        </td>
                         <td className="py-2.5 text-xs">{item.requests}</td>
                         <td className="py-2.5 text-right font-mono text-xs">
                           ${item.cost.toFixed(2)}
@@ -276,7 +316,9 @@ export function DashboardMain() {
             </div>
 
             <div className="bg-surface rounded-xs p-4 md:min-h-[290px]">
-              <h3 className="text-foreground mb-4 font-medium">Usage breakdown</h3>
+              <h3 className="text-foreground mb-4 font-medium">
+                Usage breakdown
+              </h3>
               <div className="space-y-3">
                 {usageBreakdown.map((item) => (
                   <div key={item.label} className="space-y-1.5">
@@ -339,7 +381,9 @@ export function DashboardMain() {
                   <p className="text-foreground line-clamp-1 font-mono text-xs">
                     {model.name}
                   </p>
-                  <p className="text-foreground/50 mt-1 text-[11px]">{model.type}</p>
+                  <p className="text-foreground/50 mt-1 text-[11px]">
+                    {model.type}
+                  </p>
                 </div>
               </div>
             ))}
@@ -375,8 +419,12 @@ export function DashboardMain() {
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <p className="text-foreground font-mono text-xs">{request.id}</p>
-                      <p className="text-foreground mt-1 text-sm">{request.model}</p>
+                      <p className="text-foreground font-mono text-xs">
+                        {request.id}
+                      </p>
+                      <p className="text-foreground mt-1 text-sm">
+                        {request.model}
+                      </p>
                     </div>
                     <span
                       className={`inline-flex rounded-xs px-2 py-1 font-mono text-[10px] tracking-[1px] uppercase ${
@@ -389,8 +437,12 @@ export function DashboardMain() {
                     </span>
                   </div>
                   <div className="mt-3 flex items-center justify-between text-xs">
-                    <span className="text-foreground/70">Output: {request.output}</span>
-                    <span className="text-foreground/60">{request.createdAt}</span>
+                    <span className="text-foreground/70">
+                      Output: {request.output}
+                    </span>
+                    <span className="text-foreground/60">
+                      {request.createdAt}
+                    </span>
                   </div>
                 </article>
               ))}
@@ -414,8 +466,12 @@ export function DashboardMain() {
                       key={request.id}
                       className="border-foreground/10 hover:bg-surface border-b text-sm"
                     >
-                      <td className="px-2 py-3 font-mono text-xs">{request.id}</td>
-                      <td className="px-2 py-3 font-mono text-xs">{request.model}</td>
+                      <td className="px-2 py-3 font-mono text-xs">
+                        {request.id}
+                      </td>
+                      <td className="px-2 py-3 font-mono text-xs">
+                        {request.model}
+                      </td>
                       <td className="px-2 py-3">
                         <span
                           className={`inline-flex rounded-xs px-2 py-1 font-mono text-[10px] tracking-[1px] uppercase ${
