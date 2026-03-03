@@ -1,3 +1,4 @@
-<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 10.755 10.755" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path id="Vector" d="M5.3775 10.1575C8.01742 10.1575 10.1575 8.01742 10.1575 5.3775C10.1575 2.73758 8.01742 0.5975 5.3775 0.5975C2.73758 0.5975 0.5975 2.73758 0.5975 5.3775C0.5975 8.01742 2.73758 10.1575 5.3775 10.1575Z" stroke="var(--stroke-0, #1B1B1D)" style="stroke:#1B1B1D;stroke:color(display-p3 0.1048 0.1048 0.1130);stroke-opacity:1;" stroke-width="1.195" stroke-linecap="round" stroke-linejoin="round"/>
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M7.57248 12.1804C10.2124 12.1804 12.3525 10.0403 12.3525 7.40036C12.3525 4.76044 10.2124 2.62036 7.57248 2.62036C4.93256 2.62036 2.79248 4.76044 2.79248 7.40036C2.79248 10.0403 4.93256 12.1804 7.57248 12.1804Z" stroke="#1B1B1D" stroke-width="1.195" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M13.5482 13.3761L10.9783 10.8062" stroke="#1B1B1D" stroke-width="1.195" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

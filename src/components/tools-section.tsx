@@ -296,7 +296,7 @@ function CategoryCard({
 
 export function ToolsSection() {
   return (
-    <section className="overflow-hidden pt-20">
+    <section className="overflow-hidden pt-20 md:pt-[120px]">
       {/* Header */}
       <div className="mx-auto mb-10 max-w-[976px] px-6 text-center md:px-20">
         <h2 className="text-heading mb-6 text-[32px] leading-none font-medium tracking-[-1px] text-balance md:text-[48px]">

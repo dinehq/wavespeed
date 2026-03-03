@@ -19,28 +19,29 @@ import type { FC, SVGProps } from "react";
 type TabKey = "image" | "video" | "chat" | "speech";
 type LangKey = "node" | "python" | "curl";
 
-const tabs: { key: TabKey; base: string; icon: FC<SVGProps<SVGSVGElement>> }[] = [
-  {
-    key: "video",
-    base: "video",
-    icon: TabIconVideo,
-  },
-  {
-    key: "image",
-    base: "image",
-    icon: TabIconImage,
-  },
-  {
-    key: "chat",
-    base: "chat",
-    icon: TabIconChat,
-  },
-  {
-    key: "speech",
-    base: "speech",
-    icon: TabIconSpeech,
-  },
-];
+const tabs: { key: TabKey; base: string; icon: FC<SVGProps<SVGSVGElement>> }[] =
+  [
+    {
+      key: "video",
+      base: "video",
+      icon: TabIconVideo,
+    },
+    {
+      key: "image",
+      base: "image",
+      icon: TabIconImage,
+    },
+    {
+      key: "chat",
+      base: "chat",
+      icon: TabIconChat,
+    },
+    {
+      key: "speech",
+      base: "speech",
+      icon: TabIconSpeech,
+    },
+  ];
 
 const langExt: Record<LangKey, string> = {
   node: ".ts",
@@ -972,7 +973,7 @@ export function HeroDemo() {
                 </button>
               ))}
             </div>
-            <div className="flex gap-1">
+            <div className="hidden gap-1 sm:flex">
               {langTabs.map((lang) => (
                 <button
                   key={lang}

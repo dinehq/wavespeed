@@ -187,7 +187,7 @@ export function Navbar() {
           )}
         </div>
         <div className="bg-surface hover:bg-foreground/10 hidden items-center gap-2 rounded-xs px-2 py-1.5 transition-colors duration-150 md:flex">
-          <SearchIcon className="size-[14px] opacity-40" />
+          <SearchIcon className="opacity-40" />
           <input
             type="text"
             placeholder="SEARCH MODEL..."
@@ -273,7 +273,7 @@ export function Navbar() {
             </div>
           )}
           <div className="bg-surface flex items-center gap-2 rounded-xs px-2 py-2">
-            <SearchIcon className="size-[14px] opacity-40" />
+            <SearchIcon className="opacity-40" />
             <input
               type="text"
               placeholder="SEARCH MODEL..."
