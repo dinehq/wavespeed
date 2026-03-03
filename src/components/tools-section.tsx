@@ -123,7 +123,7 @@ const providerRow2 = [
     bg: toolsGoogleBg,
     models: [
       ["nano-banana-pro/edit", "veo3.1/reference-to-video"],
-      ["veo3.1/text-to-video", "eo extend"],
+      ["veo3.1/text-to-video", "veo extend"],
       ["veo3.1-fast/text-to-video", "nano-banana-pro/text-to image nutriti"],
       ["veo3.1-fast/image-to-video", "nano-banana-pro/text-to. image-ultra"],
     ],
@@ -242,7 +242,7 @@ function ProviderCard({ card }: { card: ProviderCard }) {
         <div className="relative grid grid-cols-2 gap-x-4 gap-y-1 font-mono text-sm leading-tight text-white/80">
           {(card.models as string[][]).map((pair, i) =>
             pair.map((model, j) => (
-              <p className="truncate text-pretty" key={`${i}-${j}`}>
+              <p className="truncate" key={`${i}-${j}`}>
                 {model}
               </p>
             )),
@@ -251,7 +251,7 @@ function ProviderCard({ card }: { card: ProviderCard }) {
       ) : (
         <div className="relative flex flex-col gap-1 font-mono text-sm leading-tight text-white/80">
           {(card.models as string[]).map((model, i) => (
-            <p className="truncate text-pretty" key={i}>
+            <p className="truncate" key={i}>
               {model}
             </p>
           ))}
@@ -296,7 +296,7 @@ function CategoryCard({
 
 export function ToolsSection() {
   return (
-    <section className="overflow-hidden py-20">
+    <section className="overflow-hidden pt-20">
       {/* Header */}
       <div className="mx-auto mb-10 max-w-[976px] px-6 text-center md:px-20">
         <h2 className="text-heading mb-6 text-[32px] leading-none font-medium tracking-[-1px] text-balance md:text-[48px]">
@@ -326,18 +326,18 @@ export function ToolsSection() {
         </div>
 
         {/* Category Row 1 */}
-        <div className="flex gap-2 overflow-x-auto [scrollbar-width:none] md:gap-4 lg:grid lg:grid-cols-5 [&::-webkit-scrollbar]:hidden">
+        <div className="flex gap-2 max-lg:overflow-x-auto max-lg:[scrollbar-width:none] md:gap-4 lg:grid lg:grid-cols-5 max-lg:[&::-webkit-scrollbar]:hidden">
           {categoryRow1.map((cat) => (
-            <div key={cat.name} className="w-[160px] shrink-0 lg:w-auto">
+            <div key={cat.name} className="w-[200px] shrink-0 lg:w-auto">
               <CategoryCard category={cat} />
             </div>
           ))}
         </div>
 
         {/* Category Row 2 */}
-        <div className="flex gap-2 overflow-x-auto [scrollbar-width:none] md:gap-4 lg:grid lg:grid-cols-6 [&::-webkit-scrollbar]:hidden">
+        <div className="flex gap-2 max-lg:overflow-x-auto max-lg:[scrollbar-width:none] md:gap-4 lg:grid lg:grid-cols-6 max-lg:[&::-webkit-scrollbar]:hidden">
           {categoryRow2.map((cat) => (
-            <div key={cat.name + "2"} className="w-[160px] shrink-0 lg:w-auto">
+            <div key={cat.name + "2"} className="w-[200px] shrink-0 lg:w-auto">
               <CategoryCard category={cat} />
             </div>
           ))}

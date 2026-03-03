@@ -33,11 +33,11 @@ export function Footer() {
   const mounted = useMounted();
 
   return (
-    <footer className="bg-dark border-t border-white/10 px-6 pt-12 pb-12 md:px-20 md:pt-20">
+    <footer className="bg-dark border-t border-white/10 px-6 py-16 md:px-20 md:pt-20">
       <div className="mx-auto max-w-[1280px]">
-        <div className="mb-10 flex flex-col gap-10 md:flex-row md:justify-between md:gap-0">
+        <div className="mb-10 flex flex-col gap-10 lg:flex-row lg:justify-between">
           {/* Logo + status */}
-          <div className="flex w-auto flex-col gap-6 md:h-[216px] md:w-[174px] md:justify-between">
+          <div className="flex w-auto flex-col gap-6 lg:h-[216px] lg:w-[174px] lg:justify-between">
             <Logo className="h-6 w-auto self-start text-white" />
             <div className="flex items-center gap-2">
               <span className="size-2 rounded-full bg-green-400" />
@@ -48,9 +48,9 @@ export function Footer() {
           </div>
 
           {/* Link columns */}
-          <div className="grid grid-cols-2 gap-8 md:flex md:gap-4">
+          <div className="grid grid-cols-2 gap-8 lg:flex lg:gap-16">
             {/* Learn More */}
-            <div className="flex w-auto flex-col gap-6 md:w-[200px]">
+            <div className="flex w-auto flex-col gap-6 lg:min-w-[140px]">
               <h2 className="text-footer-label font-mono text-xs leading-4 tracking-[1.2px] text-balance uppercase">
                 Learn More
               </h2>
@@ -68,7 +68,7 @@ export function Footer() {
             </div>
 
             {/* Platform */}
-            <div className="flex w-auto flex-col gap-6 md:w-[200px]">
+            <div className="flex w-auto flex-col gap-6 lg:min-w-[140px]">
               <h2 className="text-footer-label font-mono text-xs leading-4 tracking-[1.2px] text-balance uppercase">
                 Platform
               </h2>
@@ -86,7 +86,7 @@ export function Footer() {
             </div>
 
             {/* Resources */}
-            <div className="flex w-auto flex-col gap-6 md:w-[200px]">
+            <div className="flex w-auto flex-col gap-6 lg:min-w-[140px]">
               <h2 className="text-footer-label font-mono text-xs leading-4 tracking-[1.2px] text-balance uppercase">
                 Resources
               </h2>
@@ -104,7 +104,7 @@ export function Footer() {
             </div>
 
             {/* Legal */}
-            <div className="flex w-auto flex-col gap-6 md:w-[200px]">
+            <div className="flex w-auto flex-col gap-6 lg:min-w-[140px]">
               <h2 className="text-footer-label font-mono text-xs leading-4 tracking-[1.2px] text-balance uppercase">
                 Legal
               </h2>

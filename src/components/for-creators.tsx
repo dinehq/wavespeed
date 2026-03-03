@@ -19,7 +19,7 @@ export function ForCreators() {
               <h2 className="text-[32px] leading-none font-medium tracking-[-1px] text-balance text-white md:text-[48px]">
                 Built for <em className="italic">Creators</em>
               </h2>
-              <div className="flex items-center gap-3">
+              <div className="flex shrink-0 items-center gap-3">
                 <a
                   href="https://wavespeed.ai/studio/"
                   className="inline-flex items-center gap-2 rounded-xs bg-white px-5 py-2.5 font-mono text-sm tracking-[1.2px] text-black uppercase transition-colors duration-150 hover:bg-white/90"

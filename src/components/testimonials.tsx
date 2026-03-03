@@ -100,8 +100,8 @@ export function Testimonials() {
   }, []);
 
   return (
-    <section className="bg-surface py-20">
-      <div className="mb-12 px-6 md:px-20">
+    <section className="bg-surface pt-16 pb-8 [--section-pad:24px] md:py-20 md:[--section-pad:80px]">
+      <div className="mb-8 px-6 md:mb-12 md:px-20">
         <h2 className="text-heading mx-auto max-w-[1280px] text-[32px] leading-none font-medium tracking-[-1px] text-balance md:text-[48px]">
           What people are saying
         </h2>
@@ -115,7 +115,7 @@ export function Testimonials() {
         onPointerCancel={onPointerUp}
         className="flex cursor-grab gap-6 overflow-x-auto pt-2 pb-8 select-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         style={{
-          paddingInline: "max(24px, calc((100vw - 1280px) / 2))",
+          paddingInline: "max(var(--section-pad), calc((100vw - 1280px) / 2))",
         }}
       >
         {testimonials.map((t) => (

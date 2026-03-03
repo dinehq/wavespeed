@@ -139,8 +139,34 @@ const models = [
   },
 ];
 
-const leftThumbs = [thumb1, thumb2, thumb3, thumb4, thumb5, thumb6, thumb7, thumb8, thumb9, thumb10, thumb11, thumb12];
-const rightThumbs = [thumbR1, thumbR2, thumbR3, thumbR4, thumbR5, thumbR6, thumbR7, thumbR8, thumbR9, thumbR10, thumbR11, thumbR12];
+const leftThumbs = [
+  thumb1,
+  thumb2,
+  thumb3,
+  thumb4,
+  thumb5,
+  thumb6,
+  thumb7,
+  thumb8,
+  thumb9,
+  thumb10,
+  thumb11,
+  thumb12,
+];
+const rightThumbs = [
+  thumbR1,
+  thumbR2,
+  thumbR3,
+  thumbR4,
+  thumbR5,
+  thumbR6,
+  thumbR7,
+  thumbR8,
+  thumbR9,
+  thumbR10,
+  thumbR11,
+  thumbR12,
+];
 
 function StatusDots({ count }: { count: number }) {
   return (
@@ -164,7 +190,7 @@ export function FeaturedModels() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
-    <section className="bg-background py-20">
+    <section className="bg-background pt-20">
       {/* Header */}
       <div className="mx-auto flex max-w-[1160px] flex-col items-center gap-10">
         <div className="flex max-w-[876px] flex-col items-center gap-4 text-center">

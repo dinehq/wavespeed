@@ -26,7 +26,7 @@ export function FeaturesSection() {
   }, []);
 
   return (
-    <section className="px-6 py-12 md:px-20 md:py-20">
+    <section className="px-6 py-16 md:px-20 md:py-20">
       <div className="mx-auto max-w-[1280px]">
         <div className="mb-10 flex max-w-[876px] flex-col gap-4">
           <h2 className="text-heading text-[32px] leading-none font-medium tracking-[-1px] text-balance md:text-[48px]">
@@ -42,7 +42,7 @@ export function FeaturesSection() {
         <div ref={ref} className="flex flex-col gap-4">
           {/* Row 1: Vast Model Library (smaller) + Blazing Fast Inference (larger) */}
           <div className="flex flex-col gap-4 lg:flex-row">
-            <div className="bg-surface relative h-[320px] w-full shrink-0 overflow-hidden rounded-xs lg:h-[420px] lg:w-[45%]">
+            <div className="bg-surface relative h-[380px] w-full shrink-0 overflow-hidden rounded-xs lg:h-[420px] lg:w-[45%]">
               {/* Provider logos — drift in from left */}
               <div
                 className={`absolute top-[10px] right-0 h-[220px] w-[600px] transition-all duration-1000 ease-out sm:h-[260px] md:h-[280px] lg:h-[287px] ${
@@ -71,7 +71,7 @@ export function FeaturesSection() {
               </div>
             </div>
 
-            <div className="bg-surface relative h-[320px] w-full overflow-hidden rounded-xs lg:h-[420px] lg:flex-1">
+            <div className="bg-surface relative h-[380px] w-full overflow-hidden rounded-xs lg:h-[420px] lg:flex-1">
               {/* Title + description */}
               <div className="absolute top-6 right-6 left-6 z-10 lg:w-[584px]">
                 <h3 className="text-ink mb-2 text-2xl leading-7 font-medium">
@@ -99,7 +99,7 @@ export function FeaturesSection() {
 
           {/* Row 2: Built for Scale (larger) + Enterprise Security (smaller) */}
           <div className="flex flex-col gap-4 lg:flex-row">
-            <div className="bg-surface relative h-[320px] w-full shrink-0 overflow-hidden rounded-xs lg:h-[420px] lg:w-[55%]">
+            <div className="bg-surface relative h-[380px] w-full shrink-0 overflow-hidden rounded-xs lg:h-[420px] lg:w-[55%]">
               {/* Title + description */}
               <div className="absolute top-6 right-6 left-6 z-10 lg:w-[642px]">
                 <h3 className="text-ink mb-2 text-2xl leading-7 font-medium">
@@ -124,10 +124,10 @@ export function FeaturesSection() {
               </div>
             </div>
 
-            <div className="from-surface to-accent-light relative h-[320px] w-full overflow-hidden rounded-xs bg-linear-to-b lg:h-[420px] lg:flex-1">
+            <div className="from-surface to-accent-light relative h-[380px] w-full overflow-hidden rounded-xs bg-linear-to-b lg:h-[420px] lg:flex-1">
               {/* 3D box — rises from bottom */}
               <div
-                className={`absolute top-0 right-[-30px] h-[320px] w-[250px] transition-all duration-1000 ease-out lg:top-[-13px] lg:right-0 lg:h-[480px] lg:w-[390px] ${
+                className={`absolute top-0 right-[-30px] h-[380px] w-[250px] transition-all duration-1000 ease-out lg:top-[-13px] lg:right-0 lg:h-[480px] lg:w-[390px] ${
                   entered
                     ? "translate-y-0 opacity-100"
                     : "translate-y-8 opacity-0"
