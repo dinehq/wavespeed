@@ -1,4 +1,32 @@
 import Image from "next/image";
+import { ArrowRight, Check } from "lucide-react";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import thumb1 from "@/images/thumb-1.webp";
 import thumb2 from "@/images/thumb-2.webp";
 import thumb3 from "@/images/thumb-3.webp";
@@ -7,9 +35,14 @@ import thumb5 from "@/images/thumb-5.webp";
 import thumb6 from "@/images/thumb-6.webp";
 
 const setupTasks = [
-  { label: "Create an account", action: "Add now", tone: "primary" },
-  { label: "Add credits", action: "Top up", tone: "secondary" },
-  { label: "Generate your first media", action: "Start", tone: "secondary" },
+  { label: "Create an account", action: "Add now", tone: "primary", done: true },
+  { label: "Add credits", action: "Top up", tone: "secondary", done: false },
+  {
+    label: "Generate your first media",
+    action: "Start",
+    tone: "secondary",
+    done: false,
+  },
 ];
 
 const apiTasks = [
@@ -23,34 +56,35 @@ const modelCards = [
   {
     name: "flux-pro/kontext",
     type: "Text to image",
-    badge: "Fast",
     image: thumb1,
   },
   {
     name: "wan-2.6/t2v",
     type: "Text to video",
-    badge: "Stable",
     image: thumb2,
   },
-  { name: "veo-3.1", type: "Video generation", badge: "New", image: thumb3 },
+  { name: "veo-3.1", type: "Video generation", image: thumb3 },
   {
     name: "gpt-image-1",
     type: "Image generation",
-    badge: "Reliable",
     image: thumb4,
   },
   {
     name: "kling-v2.6",
     type: "Text to video",
-    badge: "Popular",
     image: thumb5,
   },
   {
     name: "pixverse-v5.6",
     type: "Video tools",
-    badge: "Creator",
     image: thumb6,
   },
+];
+
+const favoriteModelCards = [
+  modelCards[0],
+  modelCards[2],
+  modelCards[3],
 ];
 
 const requests = [
@@ -80,7 +114,7 @@ const usagePerModel = [
 
 const usageBreakdown = [
   { label: "Text to image", value: 86.55, color: "bg-[#3f74ff]" },
-  { label: "Text to video", value: 64.9, color: "bg-[#6d4aff]" },
+  { label: "Text to video", value: 64.9, color: "bg-[#8b5cf6]" },
   { label: "Image generation", value: 17.4, color: "bg-[#16a34a]" },
   { label: "Video generation", value: 25.92, color: "bg-[#f59e0b]" },
 ];
@@ -99,18 +133,27 @@ const dashboardTabs = [
 
 function MetricCard({
   title,
+  description,
   children,
 }: {
   title: string;
+  description: string;
   children: React.ReactNode;
 }) {
   return (
-    <article className="border-foreground/10 bg-background flex h-full flex-col rounded-xs border p-4 md:p-5">
-      <h3 className="text-foreground mb-4 font-mono text-[11px] tracking-[1.2px] uppercase">
-        {title}
-      </h3>
-      {children}
-    </article>
+    <Card className="border-foreground/10 bg-background h-full gap-0 rounded-xs py-0 shadow-none">
+      <CardHeader className="px-4 pt-4 pb-0 md:px-5 md:pt-5">
+        <CardTitle className="text-foreground font-mono text-sm tracking-[0.4px]">
+          {title}
+        </CardTitle>
+        <CardDescription className="text-subtle mt-1.5 text-sm leading-5">
+          {description}
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="mt-auto px-4 pt-4 pb-4 md:px-5 md:pb-5">
+        {children}
+      </CardContent>
+    </Card>
   );
 }
 
@@ -125,86 +168,112 @@ export function DashboardMain() {
   );
 
   return (
-    <section className="bg-background px-4 py-6 md:px-8 md:py-8">
-      <div className="mx-auto flex w-full max-w-[1160px] flex-col gap-8">
-        <nav className="border-foreground/10 overflow-x-auto border-b">
-          <ul className="flex min-w-max items-center gap-2 md:gap-4">
-            {dashboardTabs.map((tab) => {
-              const isActive = tab === "Dashboard";
-              return (
-                <li key={tab}>
-                  <button
-                    className={`relative cursor-pointer px-2 py-2.5 font-mono text-xs tracking-[1.2px] whitespace-nowrap transition-colors md:px-3 ${
-                      isActive
-                        ? "text-[#3f74ff]"
-                        : "text-foreground/70 hover:text-foreground"
-                    }`}
-                  >
-                    {tab}
-                    {isActive && (
-                      <span className="absolute right-0 bottom-0 left-0 h-[2px] bg-[#3f74ff]" />
-                    )}
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
+    <section className="bg-background pb-6 md:pb-8">
+      <Tabs defaultValue="Dashboard" className="w-full">
+        <TabsList
+          variant="line"
+          className="border-foreground/10 group-data-[orientation=horizontal]/tabs:h-12 w-full justify-start gap-2 overflow-x-auto rounded-none border-t border-b px-4"
+        >
+          {dashboardTabs.map((tab) => (
+            <TabsTrigger
+              key={tab}
+              value={tab}
+              className="h-12 flex-none rounded-none px-2 py-0 font-mono text-xs tracking-[1.2px] whitespace-nowrap after:bg-transparent data-[state=active]:text-[#3f74ff] data-[state=active]:after:bg-[#3f74ff]"
+            >
+              {tab}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
+
+      <div className="mx-auto flex w-full max-w-[1160px] flex-col gap-8 px-4 pt-6 md:px-8 md:pt-8">
 
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-          <div>
-            <p className="text-foreground/40 font-mono text-[10px] tracking-[1px] uppercase">
-              Dashboard
-            </p>
-            <h1 className="text-heading mt-1 text-3xl leading-none font-semibold tracking-[-0.8px]">
-              Workspace Overview
-            </h1>
-          </div>
+          <h1 className="text-heading text-3xl leading-none font-semibold tracking-[-0.8px]">
+            Dashboard
+          </h1>
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-            <button className="bg-surface text-foreground hover:bg-foreground/10 rounded-xs px-3 py-2 font-mono text-xs tracking-[1.2px] uppercase transition-colors duration-150">
+            <Button
+              variant="outline"
+              className="bg-surface hover:bg-foreground/10 rounded-xs font-mono text-xs tracking-[1.2px] uppercase shadow-none"
+            >
               New API Key
-            </button>
-            <button className="bg-foreground text-background hover:bg-foreground/80 rounded-xs px-3 py-2 font-mono text-xs tracking-[1.2px] uppercase transition-colors duration-150">
+            </Button>
+            <Button className="bg-foreground text-background hover:bg-foreground/80 rounded-xs font-mono text-xs tracking-[1.2px] uppercase">
               Build App with API
-            </button>
+            </Button>
           </div>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-3">
-          <MetricCard title="Welcome to WaveSpeed">
-            <p className="text-subtle mb-4 text-sm leading-5">
-              Complete setup to unlock the full speed of your account.
-            </p>
-            <ul className="mt-auto space-y-2">
+        <article className="space-y-4">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <h2 className="text-foreground text-lg font-semibold tracking-tight">
+              Getting started
+            </h2>
+            <Button
+              variant="ghost"
+              className="text-foreground/60 hover:text-foreground h-auto p-0 font-mono text-[10px] tracking-[1px] uppercase"
+            >
+              Don&apos;t show this
+            </Button>
+          </div>
+          <div className="grid gap-4 md:grid-cols-3">
+          <MetricCard
+            title="Welcome to WaveSpeed"
+            description="Complete setup to unlock the full speed of your account."
+          >
+            <ul className="divide-foreground/5 divide-y">
               {setupTasks.map((task) => (
                 <li
                   key={task.label}
-                  className="border-foreground/10 flex items-center justify-between gap-2 rounded-xs border px-3 py-2"
+                  className="flex items-center justify-between gap-2 py-2.5"
                 >
-                  <span className="text-foreground text-sm">{task.label}</span>
-                  <button
-                    className={`shrink-0 rounded-xs px-2.5 py-1.5 font-mono text-[10px] tracking-[1px] uppercase transition-colors ${
-                      task.tone === "primary"
-                        ? "bg-foreground text-background hover:bg-foreground/80"
-                        : "bg-surface text-foreground hover:bg-foreground/10"
-                    }`}
-                  >
-                    {task.action}
-                  </button>
+                  <div className="flex min-w-0 items-center gap-2">
+                    <span
+                      className={`flex size-4 shrink-0 items-center justify-center rounded-[2px] border ${
+                        task.done
+                          ? "border-[#16a34a] bg-[#16a34a]/10 text-[#16a34a]"
+                          : "border-foreground/20 text-transparent"
+                      }`}
+                    >
+                      <Check className="size-3" />
+                    </span>
+                    <span
+                      className={`text-sm ${
+                        task.done
+                          ? "text-foreground/50 line-through"
+                          : "text-foreground"
+                      }`}
+                    >
+                      {task.label}
+                    </span>
+                  </div>
+                  {!task.done ? (
+                    <Button
+                      size="xs"
+                      className={`shrink-0 rounded-xs font-mono text-[10px] tracking-[1px] uppercase ${
+                        task.tone === "primary"
+                          ? "bg-foreground text-background hover:bg-foreground/80"
+                          : "bg-surface text-foreground hover:bg-foreground/10 border-0"
+                      }`}
+                    >
+                      {task.action}
+                    </Button>
+                  ) : null}
                 </li>
               ))}
             </ul>
           </MetricCard>
 
-          <MetricCard title="Create Something with API">
-            <p className="text-subtle mb-4 text-sm leading-5">
-              Follow these steps to get the most out of your experience.
-            </p>
-            <ul className="mt-auto space-y-2">
+          <MetricCard
+            title="Create Something with API"
+            description="Follow these steps to get the most out of your experience."
+          >
+            <ul className="divide-foreground/5 divide-y">
               {apiTasks.map((task, index) => (
                 <li
                   key={task.label}
-                  className="border-foreground/10 flex items-center justify-between gap-2 rounded-xs border px-3 py-2"
+                  className="flex items-center justify-between gap-2 py-2.5"
                 >
                   <div className="flex min-w-0 items-center gap-2">
                     <span className="text-foreground/50 font-mono text-[10px] tracking-[1px] uppercase">
@@ -214,26 +283,215 @@ export function DashboardMain() {
                       {task.label}
                     </span>
                   </div>
-                  <button className="bg-surface text-foreground hover:bg-foreground/10 shrink-0 rounded-xs px-2.5 py-1.5 font-mono text-[10px] tracking-[1px] uppercase transition-colors duration-150">
-                    {task.action} {"->"}
-                  </button>
+                  <Button
+                    variant="outline"
+                    size="xs"
+                    className="bg-surface hover:bg-foreground/10 shrink-0 rounded-xs border-0 font-mono text-[10px] tracking-[1px] uppercase shadow-none"
+                  >
+                    {task.action}
+                    <ArrowRight className="size-3.5" />
+                  </Button>
                 </li>
               ))}
             </ul>
           </MetricCard>
 
-          <MetricCard title="Explore Models">
-            <p className="text-subtle mb-4 text-sm leading-5">
-              Recommended models your team can ship with today.
-            </p>
-            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-              {modelCards.map((model) => (
-                <article
+          <MetricCard
+            title="Explore Models"
+            description="Recommended models your team can ship with today."
+          >
+            <div className="flex flex-col gap-3">
+              {modelCards.slice(0, 3).map((model) => (
+                <Card
                   key={model.name}
-                  className="border-foreground/10 bg-surface/60 rounded-xs border p-2.5"
+                  className="border-foreground/10 bg-surface/60 gap-0 rounded-xs py-2.5 shadow-none"
                 >
-                  <div className="flex items-start gap-2">
-                    <div className="relative size-8 shrink-0 overflow-hidden rounded-xs">
+                  <CardContent className="px-2.5">
+                    <div className="flex items-start gap-2">
+                      <div className="relative size-8 shrink-0 overflow-hidden rounded-xs">
+                        <Image
+                          src={model.image}
+                          alt={model.name}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-foreground font-mono text-xs">
+                          {model.name}
+                        </p>
+                        <p className="text-foreground/50 mt-1 text-[11px]">
+                          {model.type}
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+            <Button
+              variant="ghost"
+              className="text-foreground/60 hover:text-foreground mt-3 h-auto w-fit p-0 font-mono text-[10px] tracking-[1px] uppercase"
+            >
+              Explore all models
+              <ArrowRight className="size-3.5" />
+            </Button>
+          </MetricCard>
+          </div>
+        </article>
+
+        <article className="space-y-3">
+          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <div className="flex flex-col gap-1.5">
+              <h2 className="text-foreground text-lg font-semibold tracking-tight">
+                Usage
+              </h2>
+              <p className="text-subtle text-sm">
+                View usage data for the selected time range
+              </p>
+            </div>
+            <Select defaultValue="last-3-days">
+              <SelectTrigger className="border-foreground/10 text-foreground/80 w-full rounded-xs font-mono text-xs tracking-[1px] md:w-[240px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="bg-background rounded-xs border-0 shadow-sm">
+                <SelectItem value="last-3-days" className="rounded-xs font-mono text-xs">
+                  Mar 01, 2026 - Mar 03, 2026
+                </SelectItem>
+                <SelectItem value="last-7-days" className="rounded-xs font-mono text-xs">
+                  Last 7 days
+                </SelectItem>
+                <SelectItem value="last-30-days" className="rounded-xs font-mono text-xs">
+                  Last 30 days
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="grid gap-3 md:grid-cols-2">
+            <Card className="bg-surface border-0 gap-0 rounded-xs py-0 shadow-none md:min-h-[290px]">
+              <CardHeader className="flex-row items-start justify-between gap-2 px-4 pt-4 pb-0">
+                <CardTitle className="text-foreground font-mono text-sm tracking-[0.4px]">
+                  Usage per model
+                </CardTitle>
+                <CardDescription className="text-foreground/70 font-mono text-[10px] tracking-[1px] uppercase">
+                  Total {totalRequests} predictions, cost $
+                  {totalCost.toFixed(2)}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="px-4 pt-3 pb-4">
+                <Table className="min-w-[430px]">
+                  <TableHeader>
+                    <TableRow className="border-foreground/10 hover:bg-transparent">
+                      <TableHead className="text-foreground/70 font-mono text-[10px] tracking-[1px] uppercase">
+                        Model
+                      </TableHead>
+                      <TableHead className="text-foreground/70 font-mono text-[10px] tracking-[1px] uppercase">
+                        Request Count
+                      </TableHead>
+                      <TableHead className="text-foreground/70 text-right font-mono text-[10px] tracking-[1px] uppercase">
+                        Cost
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {usagePerModel.map((item) => (
+                      <TableRow
+                        key={item.model}
+                        className="border-foreground/10 hover:bg-transparent"
+                      >
+                        <TableCell className="font-mono text-xs">
+                          {item.model}
+                        </TableCell>
+                        <TableCell className="text-xs">
+                          {item.requests}
+                        </TableCell>
+                        <TableCell className="text-right font-mono text-xs">
+                          ${item.cost.toFixed(2)}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-surface border-0 gap-0 rounded-xs py-0 shadow-none md:min-h-[290px]">
+              <CardHeader className="px-4 pt-4 pb-0">
+                <CardTitle className="text-foreground font-mono text-sm tracking-[0.4px]">
+                  Usage breakdown
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="px-4 pt-4 pb-4">
+                <div className="space-y-3">
+                  {usageBreakdown.map((item) => (
+                    <div key={item.label} className="space-y-1.5">
+                      <div className="flex items-center justify-between">
+                        <p className="text-foreground text-sm">{item.label}</p>
+                        <p className="text-foreground/70 font-mono text-xs">
+                          ${item.value.toFixed(2)}
+                        </p>
+                      </div>
+                      <div className="bg-background h-1 w-full overflow-hidden">
+                        <div
+                          className={`${item.color} h-full`}
+                          style={{
+                            width: `${(item.value / maxBreakdownValue) * 100}%`,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="border-foreground/10 mt-5 border-t pt-3">
+                  <p className="text-foreground/70 font-mono text-[10px] tracking-[1px] uppercase">
+                    Breakdown total: $
+                    {usageBreakdown
+                      .reduce((sum, item) => sum + item.value, 0)
+                      .toFixed(2)}
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </article>
+
+        <Tabs defaultValue="latest-models" className="gap-0">
+          <div className="flex items-center justify-between gap-3">
+            <TabsList
+              variant="line"
+              className="h-auto w-full justify-start rounded-none bg-transparent px-0"
+            >
+              <TabsTrigger
+                value="latest-models"
+                className="h-10 flex-none rounded-none px-2.5 font-semibold whitespace-nowrap data-[state=active]:text-foreground data-[state=active]:after:bg-foreground"
+              >
+                Latest models
+              </TabsTrigger>
+              <TabsTrigger
+                value="favorite-models"
+                className="h-10 flex-none rounded-none px-2.5 font-semibold whitespace-nowrap data-[state=active]:text-foreground data-[state=active]:after:bg-foreground"
+              >
+                Favorite models
+              </TabsTrigger>
+            </TabsList>
+            <Button
+              variant="link"
+              className="text-foreground/60 h-auto shrink-0 p-0 font-mono text-[10px] tracking-[1px] uppercase"
+            >
+              View all models
+            </Button>
+          </div>
+
+          <TabsContent value="latest-models" className="mt-4">
+            <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+              {modelCards.map((model) => (
+                <Card
+                  key={`latest-${model.name}`}
+                  className="border-foreground/10 hover:bg-surface gap-0 rounded-xs py-2.5 shadow-none transition-colors"
+                >
+                  <CardContent className="flex items-center gap-2 px-2.5">
+                    <div className="relative size-9 shrink-0 overflow-hidden rounded-xs">
                       <Image
                         src={model.image}
                         alt={model.name}
@@ -249,254 +507,203 @@ export function DashboardMain() {
                         {model.type}
                       </p>
                     </div>
-                  </div>
-                  <span className="bg-background text-foreground/60 mt-2 inline-flex rounded-xs px-1.5 py-0.5 font-mono text-[9px] tracking-[1px] uppercase">
-                    {model.badge}
-                  </span>
-                </article>
+                  </CardContent>
+                </Card>
               ))}
             </div>
-          </MetricCard>
-        </div>
+          </TabsContent>
 
-        <article className="space-y-3">
-          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-            <div className="flex flex-col gap-1.5">
-              <h2 className="text-foreground font-mono text-[11px] tracking-[1.2px] uppercase">
-                Usage
-              </h2>
-              <p className="text-subtle text-sm">
-                View usage data for the selected time range
-              </p>
-            </div>
-            <button className="border-foreground/10 text-foreground/80 flex w-full items-center justify-between gap-4 rounded-xs border px-3 py-2 font-mono text-xs tracking-[1px] md:w-auto">
-              <span>Mar 01, 2026 - Mar 03, 2026</span>
-              <span className="text-foreground/50">x</span>
-            </button>
-          </div>
-
-          <div className="grid gap-3 md:grid-cols-2">
-            <div className="bg-surface rounded-xs p-4 md:min-h-[290px]">
-              <div className="mb-3 flex items-start justify-between gap-2">
-                <h3 className="text-foreground font-medium">Usage per model</h3>
-                <p className="text-foreground/70 font-mono text-[10px] tracking-[1px] uppercase">
-                  Total {totalRequests} predictions, cost $
-                  {totalCost.toFixed(2)}
-                </p>
-              </div>
-              <div className="overflow-x-auto">
-                <table className="w-full min-w-[430px]">
-                  <thead>
-                    <tr className="text-foreground/70 border-foreground/10 border-b font-mono text-[10px] tracking-[1px] uppercase">
-                      <th className="py-2 text-left font-medium">Model</th>
-                      <th className="py-2 text-left font-medium">
-                        Request Count
-                      </th>
-                      <th className="py-2 text-right font-medium">Cost</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {usagePerModel.map((item) => (
-                      <tr
-                        key={item.model}
-                        className="border-foreground/10 border-b last:border-b-0"
-                      >
-                        <td className="py-2.5 pr-2 font-mono text-xs">
-                          {item.model}
-                        </td>
-                        <td className="py-2.5 text-xs">{item.requests}</td>
-                        <td className="py-2.5 text-right font-mono text-xs">
-                          ${item.cost.toFixed(2)}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <div className="bg-surface rounded-xs p-4 md:min-h-[290px]">
-              <h3 className="text-foreground mb-4 font-medium">
-                Usage breakdown
-              </h3>
-              <div className="space-y-3">
-                {usageBreakdown.map((item) => (
-                  <div key={item.label} className="space-y-1.5">
-                    <div className="flex items-center justify-between">
-                      <p className="text-foreground text-sm">{item.label}</p>
-                      <p className="text-foreground/70 font-mono text-xs">
-                        ${item.value.toFixed(2)}
-                      </p>
-                    </div>
-                    <div className="bg-background h-2 w-full overflow-hidden rounded-full">
-                      <div
-                        className={`${item.color} h-full rounded-full`}
-                        style={{
-                          width: `${(item.value / maxBreakdownValue) * 100}%`,
-                        }}
+          <TabsContent value="favorite-models" className="mt-4">
+            <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+              {favoriteModelCards.map((model) => (
+                <Card
+                  key={`favorite-${model.name}`}
+                  className="border-foreground/10 hover:bg-surface gap-0 rounded-xs py-2.5 shadow-none transition-colors"
+                >
+                  <CardContent className="flex items-center gap-2 px-2.5">
+                    <div className="relative size-9 shrink-0 overflow-hidden rounded-xs">
+                      <Image
+                        src={model.image}
+                        alt={model.name}
+                        fill
+                        className="object-cover"
                       />
                     </div>
-                  </div>
-                ))}
-              </div>
-              <div className="border-foreground/10 mt-5 border-t pt-3">
-                <p className="text-foreground/70 font-mono text-[10px] tracking-[1px] uppercase">
-                  Breakdown total: $
-                  {usageBreakdown
-                    .reduce((sum, item) => sum + item.value, 0)
-                    .toFixed(2)}
-                </p>
-              </div>
+                    <div className="min-w-0">
+                      <p className="text-foreground line-clamp-1 font-mono text-xs">
+                        {model.name}
+                      </p>
+                      <p className="text-foreground/50 mt-1 text-[11px]">
+                        {model.type}
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
-          </div>
-        </article>
+          </TabsContent>
+        </Tabs>
 
-        <article className="border-foreground/10 bg-background rounded-xs border p-4 md:p-5">
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-foreground font-mono text-[11px] tracking-[1.2px] uppercase">
-              Latest Models
-            </h2>
-            <a
-              href="#"
-              className="text-foreground/60 hover:text-foreground font-mono text-[10px] tracking-[1px] uppercase transition-colors"
+        <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
+          <CardHeader className="border-foreground/10 border-b px-4 pt-4 pb-4 md:px-5 md:pt-5 md:pb-5">
+            <Badge
+              variant="outline"
+              className="bg-surface text-foreground w-fit rounded-xs border-0 px-2 py-1 font-mono text-[10px] tracking-[1px] uppercase"
             >
-              View all models
-            </a>
-          </div>
-          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-            {modelCards.map((model) => (
-              <div
-                key={`latest-${model.name}`}
-                className="border-foreground/10 hover:bg-surface flex items-center gap-2 rounded-xs border p-2.5 transition-colors"
-              >
-                <div className="relative size-9 shrink-0 overflow-hidden rounded-xs">
-                  <Image
-                    src={model.image}
-                    alt={model.name}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-foreground line-clamp-1 font-mono text-xs">
-                    {model.name}
-                  </p>
-                  <p className="text-foreground/50 mt-1 text-[11px]">
-                    {model.type}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </article>
-
-        <article className="border-foreground/10 bg-background rounded-xs border">
-          <div className="border-foreground/10 border-b p-4 md:p-5">
-            <p className="bg-surface text-foreground inline-flex rounded-xs px-2 py-1 font-mono text-[10px] tracking-[1px] uppercase">
               Reminder: add at least 20 credits to keep your API services active
-            </p>
-          </div>
-          <div className="p-4 md:p-5">
+            </Badge>
+          </CardHeader>
+          <CardContent className="px-4 pt-4 pb-4 md:px-5 md:pb-5">
             <div className="mb-4 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-              <h2 className="text-heading text-2xl leading-none font-semibold tracking-[-0.6px]">
+              <h2 className="text-foreground text-lg font-semibold tracking-tight">
                 Requests
               </h2>
-              <div className="flex flex-col gap-2 sm:flex-row">
-                <button className="bg-surface text-foreground rounded-xs px-3 py-2 font-mono text-xs tracking-[1.2px] uppercase">
+              <div className="flex w-full flex-col gap-2 sm:flex-row md:w-auto">
+                <Input
+                  placeholder="Search request ID..."
+                  className="h-9 rounded-xs text-sm sm:w-[220px]"
+                />
+                <Select defaultValue="all">
+                  <SelectTrigger className="border-foreground/10 text-foreground/80 bg-background hover:bg-foreground/5 h-9 w-full rounded-xs font-mono text-xs tracking-[1px] sm:w-[140px]">
+                    <SelectValue placeholder="Status" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-background rounded-xs border-0 shadow-sm">
+                    <SelectItem value="all" className="rounded-xs font-mono text-xs">
+                      All status
+                    </SelectItem>
+                    <SelectItem
+                      value="succeeded"
+                      className="rounded-xs font-mono text-xs"
+                    >
+                      Succeeded
+                    </SelectItem>
+                    <SelectItem value="running" className="rounded-xs font-mono text-xs">
+                      Running
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+                <Button
+                  variant="outline"
+                  className="bg-surface rounded-xs border-0 font-mono text-xs tracking-[1.2px] uppercase shadow-none"
+                >
                   Show all
-                </button>
-                <button className="bg-foreground text-background rounded-xs px-3 py-2 font-mono text-xs tracking-[1.2px] uppercase">
+                </Button>
+                <Button className="bg-foreground text-background hover:bg-foreground/80 rounded-xs font-mono text-xs tracking-[1.2px] uppercase">
                   Submit
-                </button>
+                </Button>
               </div>
             </div>
 
             <div className="space-y-2 md:hidden">
               {requests.map((request) => (
-                <article
+                <Card
                   key={`mobile-${request.id}`}
-                  className="border-foreground/10 rounded-xs border p-3"
+                  className="border-foreground/10 gap-0 rounded-xs py-3 shadow-none"
                 >
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <p className="text-foreground font-mono text-xs">
-                        {request.id}
-                      </p>
-                      <p className="text-foreground mt-1 text-sm">
-                        {request.model}
-                      </p>
+                  <CardContent className="px-3">
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <p className="text-foreground font-mono text-xs">
+                          {request.id}
+                        </p>
+                        <p className="text-foreground mt-1 text-sm">
+                          {request.model}
+                        </p>
+                      </div>
+                      <Badge
+                        variant="outline"
+                        className={`rounded-xs border-0 px-2 py-1 font-mono text-[10px] tracking-[1px] uppercase ${
+                          request.status === "Succeeded"
+                            ? "bg-green/20 text-foreground"
+                            : "bg-surface text-foreground/70"
+                        }`}
+                      >
+                        {request.status}
+                      </Badge>
                     </div>
-                    <span
-                      className={`inline-flex rounded-xs px-2 py-1 font-mono text-[10px] tracking-[1px] uppercase ${
-                        request.status === "Succeeded"
-                          ? "bg-green/20 text-foreground"
-                          : "bg-surface text-foreground/70"
-                      }`}
-                    >
-                      {request.status}
-                    </span>
-                  </div>
-                  <div className="mt-3 flex items-center justify-between text-xs">
-                    <span className="text-foreground/70">
-                      Output: {request.output}
-                    </span>
-                    <span className="text-foreground/60">
-                      {request.createdAt}
-                    </span>
-                  </div>
-                </article>
+                    <div className="mt-3 flex items-center justify-between text-xs">
+                      <span className="text-foreground/70">
+                        Output: {request.output}
+                      </span>
+                      <span className="text-foreground/60">
+                        {request.createdAt}
+                      </span>
+                    </div>
+                  </CardContent>
+                </Card>
               ))}
             </div>
 
-            <div className="hidden overflow-x-auto md:block">
-              <table className="w-full min-w-[680px]">
-                <thead>
-                  <tr className="text-foreground/50 border-foreground/10 border-b font-mono text-[10px] tracking-[1px] uppercase">
-                    <th className="px-2 py-2 text-left font-medium">ID</th>
-                    <th className="px-2 py-2 text-left font-medium">Model</th>
-                    <th className="px-2 py-2 text-left font-medium">Status</th>
-                    <th className="px-2 py-2 text-left font-medium">Output</th>
-                    <th className="px-2 py-2 text-left font-medium">Created</th>
-                    <th className="px-2 py-2 text-left font-medium">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
+            <div className="hidden md:block">
+              <Table className="min-w-[680px]">
+                <TableHeader>
+                  <TableRow className="border-foreground/10 hover:bg-transparent">
+                    <TableHead className="text-foreground/50 font-mono text-[10px] tracking-[1px] uppercase">
+                      ID
+                    </TableHead>
+                    <TableHead className="text-foreground/50 font-mono text-[10px] tracking-[1px] uppercase">
+                      Model
+                    </TableHead>
+                    <TableHead className="text-foreground/50 font-mono text-[10px] tracking-[1px] uppercase">
+                      Status
+                    </TableHead>
+                    <TableHead className="text-foreground/50 font-mono text-[10px] tracking-[1px] uppercase">
+                      Output
+                    </TableHead>
+                    <TableHead className="text-foreground/50 font-mono text-[10px] tracking-[1px] uppercase">
+                      Created
+                    </TableHead>
+                    <TableHead className="text-foreground/50 font-mono text-[10px] tracking-[1px] uppercase">
+                      Action
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
                   {requests.map((request) => (
-                    <tr
+                    <TableRow
                       key={request.id}
-                      className="border-foreground/10 hover:bg-surface border-b text-sm"
+                      className="border-foreground/10 hover:bg-surface"
                     >
-                      <td className="px-2 py-3 font-mono text-xs">
+                      <TableCell className="font-mono text-xs">
                         {request.id}
-                      </td>
-                      <td className="px-2 py-3 font-mono text-xs">
+                      </TableCell>
+                      <TableCell className="font-mono text-xs">
                         {request.model}
-                      </td>
-                      <td className="px-2 py-3">
-                        <span
-                          className={`inline-flex rounded-xs px-2 py-1 font-mono text-[10px] tracking-[1px] uppercase ${
+                      </TableCell>
+                      <TableCell>
+                        <Badge
+                          variant="outline"
+                          className={`rounded-xs border-0 px-2 py-1 font-mono text-[10px] tracking-[1px] uppercase ${
                             request.status === "Succeeded"
                               ? "bg-green/20 text-foreground"
                               : "bg-surface text-foreground/70"
                           }`}
                         >
                           {request.status}
-                        </span>
-                      </td>
-                      <td className="px-2 py-3 text-xs">{request.output}</td>
-                      <td className="px-2 py-3 text-xs">{request.createdAt}</td>
-                      <td className="px-2 py-3">
-                        <button className="text-foreground/60 hover:text-foreground font-mono text-[10px] tracking-[1px] uppercase">
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-xs">
+                        {request.output}
+                      </TableCell>
+                      <TableCell className="text-xs">
+                        {request.createdAt}
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          variant="ghost"
+                          size="xs"
+                          className="text-foreground/60 hover:text-foreground font-mono text-[10px] tracking-[1px] uppercase"
+                        >
                           Details
-                        </button>
-                      </td>
-                    </tr>
+                        </Button>
+                      </TableCell>
+                    </TableRow>
                   ))}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
-          </div>
-        </article>
+          </CardContent>
+        </Card>
       </div>
     </section>
   );
