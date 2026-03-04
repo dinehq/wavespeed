@@ -67,7 +67,7 @@ export function Navbar({ mode = "default" }: NavbarProps) {
 
   return (
     <nav className="relative flex h-16 w-full items-center justify-between px-4">
-      <div className="flex-1">
+      <div className="flex flex-1 items-center">
         <Link
           href="/"
           aria-label="WaveSpeed home"
