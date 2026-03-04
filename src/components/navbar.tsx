@@ -210,7 +210,13 @@ export function Navbar({ mode = "default" }: NavbarProps) {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <circle cx="8" cy="5.2" r="2.2" stroke="currentColor" strokeWidth="1.2" />
+              <circle
+                cx="8"
+                cy="5.2"
+                r="2.2"
+                stroke="currentColor"
+                strokeWidth="1.2"
+              />
               <path
                 d="M3.5 12.8c0-2.1 2-3.4 4.5-3.4s4.5 1.3 4.5 3.4"
                 stroke="currentColor"
