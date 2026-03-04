@@ -66,13 +66,7 @@ export function Navbar({ mode = "default" }: NavbarProps) {
   const [activeLang, setActiveLang] = useState("English");
 
   return (
-    <nav
-      className={`relative flex h-16 w-full items-center justify-between px-4 ${
-        isDashboardMode
-          ? "border-foreground/10 bg-background/95 sticky top-0 z-50 border-b backdrop-blur supports-backdrop-filter:bg-background/80"
-          : ""
-      }`}
-    >
+    <nav className="relative flex h-16 w-full items-center justify-between px-4">
       <div className="flex-1">
         <Link
           href="/"
@@ -83,123 +77,58 @@ export function Navbar({ mode = "default" }: NavbarProps) {
         </Link>
       </div>
 
-      <div
-        className={`hidden items-center md:flex ${isDashboardMode ? "gap-2" : "gap-8"}`}
-      >
-        {!isDashboardMode &&
-          ["Explore", "Pricing", "Enterprise"].map((item) => (
-            <a
-              key={item}
-              href="#"
-              className="text-foreground hover:text-foreground/50 font-mono text-sm leading-4 tracking-[1.2px] transition-colors duration-150"
-            >
-              {item}
-            </a>
-          ))}
-        {!isDashboardMode && (
-          <div
-            className="group relative"
-            onMouseEnter={() => setResourcesOpen(true)}
-            onMouseLeave={() => setResourcesOpen(false)}
+      <div className="hidden items-center gap-8 md:flex">
+        {["Explore", "Pricing", "Enterprise"].map((item) => (
+          <a
+            key={item}
+            href="#"
+            className="text-foreground hover:text-foreground/50 font-mono text-sm leading-4 tracking-[1.2px] transition-colors duration-150"
           >
-            <button className="text-foreground hover:text-foreground/50 flex cursor-pointer items-center gap-1 font-mono text-sm leading-4 tracking-[1.2px] transition-colors duration-150">
-              Resources
-              <ChevronDown
-                className={`size-4 transition-transform duration-150 ${resourcesOpen ? "rotate-180" : ""}`}
-              />
-            </button>
-            {resourcesOpen && (
-              <div className="absolute top-full right-0 z-50 pt-4">
-                <div className="border-foreground/5 bg-background grid w-[420px] grid-cols-2 gap-6 rounded-xs border p-5 pt-3 shadow-lg">
-                  {resourceGroups.map((group) => (
-                    <div key={group.label} className="flex flex-col gap-1">
-                      <p className="text-foreground/40 mb-1 font-mono text-[10px] tracking-[1.2px]">
-                        {group.label}
-                      </p>
-                      {group.items.map((item) => (
-                        <a
-                          key={item.name}
-                          href="#"
-                          className="hover:bg-foreground/5 rounded-xs px-2 py-1.5 transition-colors duration-150"
-                        >
-                          <p className="text-foreground font-mono text-xs leading-4 tracking-[1.2px]">
-                            {item.name}
-                          </p>
-                          <p className="text-foreground/40 font-mono text-[10px] leading-4">
-                            {item.desc}
-                          </p>
-                        </a>
-                      ))}
-                    </div>
-                  ))}
-                </div>
+            {item}
+          </a>
+        ))}
+        <div
+          className="group relative"
+          onMouseEnter={() => setResourcesOpen(true)}
+          onMouseLeave={() => setResourcesOpen(false)}
+        >
+          <button className="text-foreground hover:text-foreground/50 flex cursor-pointer items-center gap-1 font-mono text-sm leading-4 tracking-[1.2px] transition-colors duration-150">
+            Resources
+            <ChevronDown
+              className={`size-4 transition-transform duration-150 ${resourcesOpen ? "rotate-180" : ""}`}
+            />
+          </button>
+          {resourcesOpen && (
+            <div className="absolute top-full right-0 z-50 pt-4">
+              <div className="border-foreground/5 bg-background grid w-[420px] grid-cols-2 gap-6 rounded-xs border p-5 pt-3 shadow-lg">
+                {resourceGroups.map((group) => (
+                  <div key={group.label} className="flex flex-col gap-1">
+                    <p className="text-foreground/40 mb-1 font-mono text-[10px] tracking-[1.2px]">
+                      {group.label}
+                    </p>
+                    {group.items.map((item) => (
+                      <a
+                        key={item.name}
+                        href="#"
+                        className="hover:bg-foreground/5 rounded-xs px-2 py-1.5 transition-colors duration-150"
+                      >
+                        <p className="text-foreground font-mono text-xs leading-4 tracking-[1.2px]">
+                          {item.name}
+                        </p>
+                        <p className="text-foreground/40 font-mono text-[10px] leading-4">
+                          {item.desc}
+                        </p>
+                      </a>
+                    ))}
+                  </div>
+                ))}
               </div>
-            )}
-          </div>
-        )}
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="flex flex-1 items-center justify-end gap-2">
-        {isDashboardMode && (
-          <div
-            className="relative hidden md:flex"
-            onMouseEnter={() => setResourcesOpen(true)}
-            onMouseLeave={() => setResourcesOpen(false)}
-          >
-            <button
-              aria-label="Resources"
-              className="bg-surface hover:bg-foreground/10 flex size-8 cursor-pointer items-center justify-center rounded-xs transition-colors duration-150"
-            >
-              <svg
-                className="size-3.5"
-                viewBox="0 0 16 16"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 2.5h5l3 3v8H4z"
-                  stroke="currentColor"
-                  strokeWidth="1.2"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M9 2.5v3h3M6 8h4M6 10.5h4"
-                  stroke="currentColor"
-                  strokeWidth="1.2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
-            {resourcesOpen && (
-              <div className="absolute top-full right-0 z-50 pt-4">
-                <div className="border-foreground/5 bg-background grid w-[420px] grid-cols-2 gap-6 rounded-xs border p-5 pt-3 shadow-lg">
-                  {resourceGroups.map((group) => (
-                    <div key={group.label} className="flex flex-col gap-1">
-                      <p className="text-foreground/40 mb-1 font-mono text-[10px] tracking-[1.2px]">
-                        {group.label}
-                      </p>
-                      {group.items.map((item) => (
-                        <a
-                          key={item.name}
-                          href="#"
-                          className="hover:bg-foreground/5 rounded-xs px-2 py-1.5 transition-colors duration-150"
-                        >
-                          <p className="text-foreground font-mono text-xs leading-4 tracking-[1.2px]">
-                            {item.name}
-                          </p>
-                          <p className="text-foreground/40 font-mono text-[10px] leading-4">
-                            {item.desc}
-                          </p>
-                        </a>
-                      ))}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        )}
         <div
           className="relative hidden md:flex"
           onMouseEnter={() => setLangOpen(true)}

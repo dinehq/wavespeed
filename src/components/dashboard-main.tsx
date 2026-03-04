@@ -270,7 +270,6 @@ const dashboardTabs = [
   "History",
   "LLM",
   "Serverless",
-  "Desktop App",
   "API Keys",
   "Billing",
   "Settings",
@@ -313,6 +312,7 @@ export function DashboardMain() {
   const [isIdSearchOpen, setIsIdSearchOpen] = useState(false);
   const [idSearchQuery, setIdSearchQuery] = useState("");
   const [showApiRequests, setShowApiRequests] = useState(true);
+  const [isGettingStartedVisible, setIsGettingStartedVisible] = useState(true);
   const filteredModelOptions = requestModelOptions.filter((model) =>
     model.toLowerCase().includes(modelFilterQuery.toLowerCase()),
   );
@@ -340,13 +340,15 @@ export function DashboardMain() {
   };
   const toggleSelectAllRequests = () => {
     setSelectedRequestIds((prev) =>
-      prev.length === requests.length ? [] : requests.map((request) => request.id),
+      prev.length === requests.length
+        ? []
+        : requests.map((request) => request.id),
     );
   };
 
   return (
     <section className="bg-background pb-6 md:pb-8">
-      <div className="border-foreground/10 bg-background/95 supports-backdrop-filter:bg-background/80 sticky top-16 z-40 border-b px-4 backdrop-blur">
+      <div className="border-foreground/10 bg-background/95 supports-backdrop-filter:bg-background/80 sticky top-0 z-40 border-t border-b px-4 backdrop-blur">
         <div className="w-full">
           <Tabs defaultValue="Dashboard" className="w-full">
             <TabsList
@@ -367,795 +369,730 @@ export function DashboardMain() {
         </div>
       </div>
 
-      <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-8 px-6 pt-6 md:px-20 md:pt-8">
-        <div className="border-foreground/10 flex flex-col gap-3 border-b pb-5 md:flex-row md:items-end md:justify-between">
-          <div>
-            <h1 className="text-heading text-3xl leading-none font-semibold tracking-[-0.8px]">
-              Dashboard
-            </h1>
-          </div>
-          <div className="flex items-center gap-2 self-start md:self-auto">
-            <span className="text-foreground text-sm">I want to</span>
-            <Select defaultValue="build-with-api">
-              <SelectTrigger className="border-foreground/10 bg-background h-9 min-w-[170px] rounded-xs text-sm">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="bg-background rounded-xs border-0 shadow-sm">
-                <SelectItem
-                  value="create-with-ai"
-                  className="rounded-xs text-sm"
-                >
-                  create with AI
-                </SelectItem>
-                <SelectItem
-                  value="build-with-api"
-                  className="rounded-xs text-sm"
-                >
-                  build app with API
-                </SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-
-        <article className="space-y-4">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <h2 className="text-foreground text-xl font-semibold tracking-tight">
-              Getting started
-            </h2>
-            <Button
-              variant="outline"
-              size="sm"
-              className="border-foreground/10 text-foreground/80 hover:bg-foreground/5 rounded-xs text-[11px] tracking-[0.8px] shadow-xs"
-            >
-              Don&apos;t show this
-            </Button>
-          </div>
-          <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
-            <CardContent className="p-0">
-              <div className="divide-foreground/10 grid divide-y md:grid-cols-3 md:divide-x md:divide-y-0">
-                <section className="flex h-full flex-col px-4 py-4 md:px-5 md:py-5">
-                  <div className="mb-4">
-                    <CardTitle className="text-foreground text-base tracking-[0.3px]">
-                      Welcome to WaveSpeed
-                    </CardTitle>
-                    <CardDescription className="text-subtle mt-1.5 text-sm leading-5">
-                      Finish setup in 2 minutes to start generating immediately.
-                    </CardDescription>
-                  </div>
-                  <ul className="divide-foreground/10 mt-auto divide-y">
-                    {setupTasks.map((task) => (
-                      <li
-                        key={task.label}
-                        className="flex items-center justify-between gap-2 py-2.5"
-                      >
-                        <div className="flex min-w-0 items-center gap-2">
-                          <span
-                            className={`flex size-4 shrink-0 items-center justify-center rounded-[2px] border ${
-                              task.done
-                                ? "border-[#16a34a] bg-[#16a34a]/10 text-[#16a34a]"
-                                : "border-foreground/20 text-transparent"
-                            }`}
-                          >
-                            <Check className="size-3" />
-                          </span>
-                          <span
-                            className={`text-sm ${
-                              task.done
-                                ? "text-foreground/50 line-through"
-                                : "text-foreground"
-                            }`}
-                          >
-                            {task.label}
-                          </span>
-                        </div>
-                        <span
-                          className={`text-[10px] tracking-[0.8px] uppercase ${
-                            task.done ? "text-[#16a34a]" : "text-foreground/55"
-                          }`}
-                        >
-                          {task.done ? "Done" : "Pending"}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="mt-4 space-y-2">
-                    <Button
-                      size="sm"
-                      className="w-full rounded-xs text-[11px] tracking-[0.8px]"
-                    >
-                      {setupCompletedCount === setupTotalCount
-                        ? "Launch Creator"
-                        : "Continue"}
-                    </Button>
-                  </div>
-                </section>
-
-                <section className="flex h-full flex-col px-4 py-4 md:px-5 md:py-5">
-                  <div className="mb-4">
-                    <CardTitle className="text-foreground text-base tracking-[0.3px]">
-                      Build with API
-                    </CardTitle>
-                    <CardDescription className="text-subtle mt-1.5 text-sm leading-5">
-                      Ship your first integration in a few guided steps.
-                    </CardDescription>
-                  </div>
-                  <ul className="divide-foreground/5 mt-auto divide-y">
-                    {apiTasks.map((task, index) => (
-                      <li key={task.label}>
-                        <button
-                          type="button"
-                          className="hover:bg-foreground/5 group -mx-1 flex w-[calc(100%+0.5rem)] items-center justify-between gap-2 rounded-xs px-1 py-2.5 transition-colors"
-                        >
-                          <div className="flex min-w-0 flex-1 items-center gap-2">
-                            <span className="text-foreground/50 w-5 shrink-0 text-[10px] tracking-[1px]">
-                              {String(index + 1).padStart(2, "0")}
-                            </span>
-                            <span className="text-foreground block min-w-0 flex-1 truncate text-left text-sm">
-                              {task.label}
-                            </span>
-                          </div>
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="border-foreground/15 text-foreground/80 hover:bg-foreground/5 mt-4 w-full rounded-xs text-[11px] tracking-[0.8px]"
+      <div className="px-6 md:px-20">
+        <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-8 pt-6 md:pt-8">
+          <div className="border-foreground/10 flex flex-col gap-3 border-b pb-5 md:flex-row md:items-end md:justify-between">
+            <div>
+              <h1 className="text-heading text-3xl leading-none font-semibold tracking-[-0.8px]">
+                Dashboard
+              </h1>
+            </div>
+            <div className="flex items-center gap-2 self-start md:self-auto">
+              <span className="text-foreground text-sm">I want to</span>
+              <Select defaultValue="build-with-api">
+                <SelectTrigger className="border-foreground/10 bg-background h-9 min-w-[170px] rounded-xs text-sm">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="bg-background rounded-xs border-0 shadow-sm">
+                  <SelectItem
+                    value="create-with-ai"
+                    className="rounded-xs text-sm"
                   >
-                    Open API quickstart
-                  </Button>
-                </section>
+                    create with AI
+                  </SelectItem>
+                  <SelectItem
+                    value="build-with-api"
+                    className="rounded-xs text-sm"
+                  >
+                    build app with API
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
 
-                <section className="flex h-full flex-col px-4 py-4 md:px-5 md:py-5">
-                  <div className="mb-4">
-                    <CardTitle className="text-foreground text-base tracking-[0.3px]">
-                      Explore Models
-                    </CardTitle>
-                    <CardDescription className="text-subtle mt-1.5 text-sm leading-5">
-                      Recommended models your team can ship with today.
-                    </CardDescription>
-                  </div>
-                  <ul className="divide-foreground/5 mt-auto divide-y">
-                    {modelCards.slice(0, 3).map((model) => (
-                      <li
-                        key={model.name}
-                        className="flex items-center justify-between gap-2 py-2.5"
-                      >
-                        <div className="flex min-w-0 items-center gap-2">
-                          <div className="relative size-9 shrink-0 overflow-hidden rounded-xs">
-                            <Image
-                              src={model.image}
-                              alt={model.name}
-                              fill
-                              className="object-cover"
-                            />
-                          </div>
-                          <div className="min-w-0">
-                            <p className="text-foreground line-clamp-1 text-sm">
-                              {model.name}
-                            </p>
-                            <p className="text-foreground/50 mt-0.5 text-[11px]">
-                              {model.type}
-                            </p>
-                          </div>
-                        </div>
-                      </li>
-                    ))}
-                    <li>
+          <article className="space-y-4">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <h2 className="text-foreground text-xl font-semibold tracking-tight">
+                Getting started
+              </h2>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() =>
+                  setIsGettingStartedVisible((prevVisible) => !prevVisible)
+                }
+                className="border-foreground/10 text-foreground/80 hover:bg-foreground/5 rounded-xs text-[11px] tracking-[0.8px] shadow-xs"
+              >
+                {isGettingStartedVisible ? "Hide this" : "Show More"}
+              </Button>
+            </div>
+            {isGettingStartedVisible ? (
+              <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none xl:min-h-[360px]">
+                <CardContent className="p-0">
+                  <div className="divide-foreground/10 grid divide-y md:grid-cols-3 md:divide-x md:divide-y-0">
+                    <section className="flex h-full flex-col px-4 py-4 md:px-5 md:py-5 xl:px-6 xl:py-6">
+                      <div className="mb-4">
+                        <CardTitle className="text-foreground text-base tracking-[0.3px]">
+                          Welcome to WaveSpeed
+                        </CardTitle>
+                        <CardDescription className="text-subtle mt-1.5 text-sm leading-5">
+                          Finish setup in 2 minutes to start generating
+                          immediately.
+                        </CardDescription>
+                      </div>
+                      <ul className="divide-foreground/10 mt-auto divide-y">
+                        {setupTasks.map((task) => (
+                          <li
+                            key={task.label}
+                            className="flex items-center justify-between gap-2 py-2.5"
+                          >
+                            <div className="flex min-w-0 items-center gap-2">
+                              <span
+                                className={`flex size-4 shrink-0 items-center justify-center rounded-[2px] border ${
+                                  task.done
+                                    ? "border-[#16a34a] bg-[#16a34a]/10 text-[#16a34a]"
+                                    : "border-foreground/20 text-transparent"
+                                }`}
+                              >
+                                <Check className="size-3" />
+                              </span>
+                              <span
+                                className={`text-sm ${
+                                  task.done
+                                    ? "text-foreground/50 line-through"
+                                    : "text-foreground"
+                                }`}
+                              >
+                                {task.label}
+                              </span>
+                            </div>
+                            <span
+                              className={`text-[10px] tracking-[0.8px] uppercase ${
+                                task.done
+                                  ? "text-[#16a34a]"
+                                  : "text-foreground/55"
+                              }`}
+                            >
+                              {task.done ? "Done" : "Pending"}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                      <div className="mt-4 space-y-2">
+                        <Button
+                          size="sm"
+                          className="w-full rounded-xs text-[11px] tracking-[0.8px]"
+                        >
+                          {setupCompletedCount === setupTotalCount
+                            ? "Launch Creator"
+                            : "Continue"}
+                        </Button>
+                      </div>
+                    </section>
+
+                    <section className="flex h-full flex-col px-4 py-4 md:px-5 md:py-5 xl:px-6 xl:py-6">
+                      <div className="mb-4">
+                        <CardTitle className="text-foreground text-base tracking-[0.3px]">
+                          Build with API
+                        </CardTitle>
+                        <CardDescription className="text-subtle mt-1.5 text-sm leading-5">
+                          Ship your first integration in a few guided steps.
+                        </CardDescription>
+                      </div>
+                      <ul className="divide-foreground/5 mt-auto divide-y">
+                        {apiTasks.map((task, index) => (
+                          <li key={task.label}>
+                            <button
+                              type="button"
+                              className="hover:bg-foreground/5 group -mx-1 flex w-[calc(100%+0.5rem)] items-center justify-between gap-2 rounded-xs px-1 py-2.5 transition-colors"
+                            >
+                              <div className="flex min-w-0 flex-1 items-center gap-2">
+                                <span className="text-foreground/50 w-5 shrink-0 text-[10px] tracking-[1px]">
+                                  {String(index + 1).padStart(2, "0")}
+                                </span>
+                                <span className="text-foreground block min-w-0 flex-1 truncate text-left text-sm">
+                                  {task.label}
+                                </span>
+                              </div>
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
                       <Button
                         variant="outline"
                         size="sm"
-                        className="border-foreground/15 text-foreground/80 hover:bg-foreground/5 mt-2 w-full rounded-xs text-[11px] tracking-[0.8px]"
+                        className="border-foreground/15 text-foreground/80 hover:bg-foreground/5 mt-4 w-full rounded-xs text-[11px] tracking-[0.8px]"
                       >
-                        Explore all models
+                        Open API quickstart
                       </Button>
-                    </li>
-                  </ul>
-                </section>
+                    </section>
+
+                    <section className="flex h-full flex-col px-4 py-4 md:px-5 md:py-5 xl:px-6 xl:py-6">
+                      <div className="mb-4">
+                        <CardTitle className="text-foreground text-base tracking-[0.3px]">
+                          Explore Models
+                        </CardTitle>
+                        <CardDescription className="text-subtle mt-1.5 text-sm leading-5">
+                          Recommended models your team can ship with today.
+                        </CardDescription>
+                      </div>
+                      <ul className="divide-foreground/5 mt-auto divide-y">
+                        {modelCards.slice(0, 3).map((model) => (
+                          <li
+                            key={model.name}
+                            className="flex items-center justify-between gap-2 py-2.5"
+                          >
+                            <div className="flex min-w-0 items-center gap-2">
+                              <div className="relative size-9 shrink-0 overflow-hidden rounded-xs">
+                                <Image
+                                  src={model.image}
+                                  alt={model.name}
+                                  fill
+                                  className="object-cover"
+                                />
+                              </div>
+                              <div className="min-w-0">
+                                <p className="text-foreground line-clamp-1 text-sm">
+                                  {model.name}
+                                </p>
+                                <p className="text-foreground/50 mt-0.5 text-[11px]">
+                                  {model.type}
+                                </p>
+                              </div>
+                            </div>
+                          </li>
+                        ))}
+                        <li>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="border-foreground/15 text-foreground/80 hover:bg-foreground/5 mt-2 w-full rounded-xs text-[11px] tracking-[0.8px]"
+                          >
+                            Explore all models
+                          </Button>
+                        </li>
+                      </ul>
+                    </section>
+                  </div>
+                </CardContent>
+              </Card>
+            ) : null}
+          </article>
+
+          <article className="space-y-3">
+            <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+              <div className="flex flex-col gap-1.5">
+                <h2 className="text-foreground text-xl font-semibold tracking-tight">
+                  Usage
+                </h2>
+                <p className="text-subtle text-sm">
+                  View usage data for the selected time range
+                </p>
               </div>
-            </CardContent>
-          </Card>
-        </article>
-
-        <article className="space-y-3">
-          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-            <div className="flex flex-col gap-1.5">
-              <h2 className="text-foreground text-xl font-semibold tracking-tight">
-                Usage
-              </h2>
-              <p className="text-subtle text-sm">
-                View usage data for the selected time range
-              </p>
-            </div>
-            <div className="flex items-center gap-1.5 self-start md:self-auto">
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    data-empty={!usageDateRange?.from}
-                    className="border-foreground/10 text-foreground/80 data-[empty=true]:text-muted-foreground h-8 w-auto max-w-full min-w-0 justify-start gap-1.5 rounded-xs px-2.5 text-left text-xs font-normal tracking-[1px]"
-                  >
-                    <CalendarIcon className="size-3.5" />
-                    <span>{usageDateRangeLabel}</span>
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent
-                  className="bg-background w-auto rounded-xs border-0 p-0 shadow-sm"
-                  align="end"
-                >
-                  <DateCalendar
-                    mode="range"
-                    defaultMonth={usageDateRange?.from}
-                    selected={usageDateRange}
-                    onSelect={(nextRange) => {
-                      setUsageDateRange(nextRange);
-                      setUsageQuickRange(null);
-                    }}
-                    numberOfMonths={2}
-                    className="text-xs"
-                  />
-                </PopoverContent>
-              </Popover>
-              {[
-                { label: "1d", days: 1 },
-                { label: "7d", days: 7 },
-                { label: "30d", days: 30 },
-              ].map((item) => (
-                <Button
-                  key={item.label}
-                  type="button"
-                  size="xs"
-                  variant={
-                    usageQuickRange === item.label ? "default" : "outline"
-                  }
-                  onClick={() =>
-                    applyUsageQuickRange(
-                      item.days,
-                      item.label as "1d" | "7d" | "30d",
-                    )
-                  }
-                  className="h-8 rounded-xs px-2 text-[11px] tracking-[0.8px]"
-                >
-                  {item.label}
-                </Button>
-              ))}
-            </div>
-          </div>
-
-          <div className="grid gap-3 md:grid-cols-2">
-            <Card className="bg-surface gap-0 rounded-xs border-0 py-0 shadow-none md:min-h-[290px]">
-              <CardHeader className="px-4 pt-4 pb-0">
-                <CardTitle className="text-foreground text-sm tracking-[0.4px]">
-                  Usage per model
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="px-4 pt-3 pb-4">
-                <Table className="min-w-[430px]">
-                  <TableHeader>
-                    <TableRow className="border-foreground/10 hover:bg-transparent">
-                      <TableHead className="text-foreground/70 text-[10px] tracking-[1px]">
-                        Model
-                      </TableHead>
-                      <TableHead className="text-foreground/70 text-[10px] tracking-[1px]">
-                        Request Count
-                      </TableHead>
-                      <TableHead className="text-foreground/70 text-right text-[10px] tracking-[1px]">
-                        Cost
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {usagePerModel.map((item) => (
-                      <TableRow
-                        key={item.model}
-                        className="border-foreground/10 hover:bg-transparent"
-                      >
-                        <TableCell className="text-xs">{item.model}</TableCell>
-                        <TableCell className="text-xs">
-                          {item.requests}
-                        </TableCell>
-                        <TableCell className="text-right text-xs">
-                          ${item.cost.toFixed(2)}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                    <TableRow className="border-foreground/10 hover:bg-transparent">
-                      <TableCell className="text-xs">Total</TableCell>
-                      <TableCell className="text-xs">
-                        {totalRequests} predictions
-                      </TableCell>
-                      <TableCell className="text-right text-xs">
-                        ${totalCost.toFixed(3)}
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-surface gap-0 rounded-xs border-0 py-0 shadow-none md:min-h-[290px]">
-              <CardHeader className="px-4 pt-4 pb-0">
-                <CardTitle className="text-foreground text-sm tracking-[0.4px]">
-                  Usage breakdown
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="px-4 pt-3 pb-4">
-                <ChartContainer
-                  config={usageBreakdownChartConfig}
-                  className="h-[230px] w-full"
-                >
-                  <BarChart
-                    accessibilityLayer
-                    data={usageBreakdown}
-                    margin={{ left: 0, right: 8, top: 8, bottom: 0 }}
-                  >
-                    <CartesianGrid vertical={false} strokeDasharray="0" />
-                    <YAxis
-                      axisLine={false}
-                      tickLine={false}
-                      width={44}
-                      tickMargin={6}
-                      tick={{ fontSize: 9 }}
-                      domain={[0, usageBreakdownMax]}
-                      ticks={[0, 0.02, 0.04, 0.06, 0.08]}
-                      tickFormatter={(value) =>
-                        value === 0 ? "0" : Number(value).toFixed(2)
-                      }
-                    />
-                    <XAxis
-                      dataKey="date"
-                      axisLine={false}
-                      tickLine={false}
-                      tickMargin={8}
-                      tick={{ fontSize: 10 }}
-                    />
-                    <ChartTooltip
-                      cursor={false}
-                      content={
-                        <ChartTooltipContent
-                          indicator="line"
-                          labelFormatter={(label) => `${label}`}
-                          formatter={(value) => `$${Number(value).toFixed(3)}`}
-                        />
-                      }
-                    />
-                    <Bar
-                      stackId="usage"
-                      dataKey="nanoBanana"
-                      name="google/nano-banana-2/text-to-image"
-                      fill="var(--color-nanoBanana)"
-                      stroke="none"
-                      strokeWidth={0}
-                      radius={[0, 0, 0, 0]}
-                      maxBarSize={54}
-                    />
-                    <Bar
-                      stackId="usage"
-                      dataKey="fluxKontext"
-                      name="flux-pro/kontext"
-                      fill="var(--color-fluxKontext)"
-                      stroke="none"
-                      strokeWidth={0}
-                      radius={[0, 0, 0, 0]}
-                      maxBarSize={54}
-                    />
-                    <Bar
-                      stackId="usage"
-                      dataKey="wanT2v"
-                      name="wan-2.6/t2v"
-                      fill="var(--color-wanT2v)"
-                      stroke="none"
-                      strokeWidth={0}
-                      radius={[0, 0, 0, 0]}
-                      maxBarSize={54}
-                    />
-                  </BarChart>
-                </ChartContainer>
-              </CardContent>
-            </Card>
-          </div>
-        </article>
-
-        <Tabs defaultValue="latest-models" className="gap-0">
-          <div className="flex items-center justify-between gap-3">
-            <TabsList
-              variant="line"
-              className="h-auto w-full justify-start gap-3 rounded-none bg-transparent px-0"
-            >
-              <TabsTrigger
-                value="latest-models"
-                className="data-[state=active]:text-foreground data-[state=active]:after:bg-foreground group-data-[orientation=horizontal]/tabs:after:h-px h-10 flex-none rounded-none px-1.5 font-semibold whitespace-nowrap"
-              >
-                Latest models
-              </TabsTrigger>
-              <TabsTrigger
-                value="favorite-models"
-                className="data-[state=active]:text-foreground data-[state=active]:after:bg-foreground group-data-[orientation=horizontal]/tabs:after:h-px h-10 flex-none rounded-none px-1.5 font-semibold whitespace-nowrap"
-              >
-                Favorite models
-              </TabsTrigger>
-            </TabsList>
-            <Button
-              variant="outline"
-              size="sm"
-              className="border-foreground/10 text-foreground/80 hover:bg-foreground/5 h-8 shrink-0 rounded-xs px-2.5 text-[11px] tracking-[0.8px] shadow-xs"
-            >
-              View all models
-            </Button>
-          </div>
-
-          <TabsContent value="latest-models" className="mt-4">
-            <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-              {modelCards.map((model) => (
-                <Card
-                  key={`latest-${model.name}`}
-                  className="border-foreground/10 hover:bg-surface gap-0 rounded-xs py-0 shadow-none transition-colors"
-                >
-                  <CardContent className="flex items-center gap-2.5 p-2">
-                    <div className="relative size-10 shrink-0 overflow-hidden rounded-xs">
-                      <Image
-                        src={model.image}
-                        alt={model.name}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-foreground line-clamp-1 text-xs">
-                        {model.name}
-                      </p>
-                      <p className="text-foreground/50 mt-0.5 text-[11px] leading-tight">
-                        {model.type}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
-
-          <TabsContent value="favorite-models" className="mt-4">
-            <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-              {favoriteModelCards.map((model) => (
-                <Card
-                  key={`favorite-${model.name}`}
-                  className="border-foreground/10 hover:bg-surface gap-0 rounded-xs py-0 shadow-none transition-colors"
-                >
-                  <CardContent className="flex items-center gap-2.5 p-2">
-                    <div className="relative size-10 shrink-0 overflow-hidden rounded-xs">
-                      <Image
-                        src={model.image}
-                        alt={model.name}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-foreground line-clamp-1 text-xs">
-                        {model.name}
-                      </p>
-                      <p className="text-foreground/50 mt-0.5 text-[11px] leading-tight">
-                        {model.type}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
-        </Tabs>
-
-        <section>
-          <div className="mb-4 flex flex-col gap-2">
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <h2 className="text-foreground text-2xl font-semibold tracking-tight">
-                Requests
-              </h2>
-              <div className="flex items-center gap-2">
-                <div className="flex h-8 items-center gap-2 rounded-xs px-1.5">
-                  <span className="text-foreground/80 text-[11px]">
-                    Show API requests
-                  </span>
-                  <button
-                    type="button"
-                    role="switch"
-                    aria-checked={showApiRequests}
-                    onClick={() => setShowApiRequests((prev) => !prev)}
-                    className={`relative inline-flex h-4.5 w-8 items-center rounded-full p-0.5 transition-colors ${
-                      showApiRequests ? "bg-foreground/25" : "bg-foreground/15"
-                    }`}
-                  >
-                    <span
-                      className={`block size-3.5 rounded-full transition-all ${
-                        showApiRequests
-                          ? "bg-foreground ml-auto"
-                          : "bg-foreground/55 ml-0"
-                      }`}
-                    />
-                  </button>
-                </div>
-                <Popover
-                  open={isModelFilterOpen}
-                  onOpenChange={(open) => {
-                    setIsModelFilterOpen(open);
-                    if (!open) {
-                      setModelFilterQuery("");
-                    }
-                  }}
-                >
+              <div className="flex items-center gap-1.5 self-start md:self-auto">
+                <Popover>
                   <PopoverTrigger asChild>
                     <Button
                       variant="outline"
-                      className="border-foreground/10 text-foreground/80 bg-background hover:bg-foreground/5 h-8 min-w-[104px] justify-between rounded-xs px-2 text-[11px] tracking-[0.8px] shadow-xs"
+                      data-empty={!usageDateRange?.from}
+                      className="border-foreground/10 text-foreground/80 data-[empty=true]:text-muted-foreground h-8 w-auto max-w-full min-w-0 justify-start gap-1.5 rounded-xs px-2.5 text-left text-xs font-normal tracking-[1px]"
                     >
-                      <span
-                        className={`truncate ${
-                          modelFilterValue === "all-models"
-                            ? "text-foreground/60"
-                            : "text-foreground/80"
-                        }`}
-                      >
-                        {modelFilterValue === "all-models"
-                          ? "All models"
-                          : modelFilterValue}
-                      </span>
-                      <ChevronDown className="text-foreground/50 size-3.5 shrink-0" />
+                      <CalendarIcon className="size-3.5" />
+                      <span>{usageDateRangeLabel}</span>
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent
-                    className="bg-background w-[248px] rounded-xs border-0 p-2 shadow-sm"
+                    className="bg-background w-auto rounded-xs border-0 p-0 shadow-sm"
                     align="end"
                   >
-                    <Input
-                      value={modelFilterQuery}
-                      onChange={(event) => setModelFilterQuery(event.target.value)}
-                      placeholder="Search models..."
-                      className="border-foreground/10 h-8 rounded-xs text-xs"
+                    <DateCalendar
+                      mode="range"
+                      defaultMonth={usageDateRange?.from}
+                      selected={usageDateRange}
+                      onSelect={(nextRange) => {
+                        setUsageDateRange(nextRange);
+                        setUsageQuickRange(null);
+                      }}
+                      numberOfMonths={2}
+                      className="text-xs"
                     />
-                    <div className="mt-2 max-h-56 space-y-1 overflow-y-auto">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setModelFilterValue("all-models");
-                          setIsModelFilterOpen(false);
-                          setModelFilterQuery("");
-                        }}
-                        className={`hover:bg-foreground/5 flex w-full items-center rounded-xs px-2 py-1.5 text-left text-xs ${
-                          modelFilterValue === "all-models"
-                            ? "bg-foreground/5 text-foreground"
-                            : "text-foreground/80"
-                        }`}
-                      >
-                        All models
-                      </button>
-                      {filteredModelOptions.length > 0 ? (
-                        filteredModelOptions.map((model) => (
-                          <button
-                            key={model}
-                            type="button"
-                            onClick={() => {
-                              setModelFilterValue(model);
-                              setIsModelFilterOpen(false);
-                              setModelFilterQuery("");
-                            }}
-                            className={`hover:bg-foreground/5 flex w-full items-center rounded-xs px-2 py-1.5 text-left text-xs ${
-                              modelFilterValue === model
-                                ? "bg-foreground/5 text-foreground"
-                                : "text-foreground/80"
-                            }`}
-                          >
-                            {model}
-                          </button>
-                        ))
-                      ) : (
-                        <p className="text-foreground/50 px-2 py-1.5 text-xs">
-                          No models found
-                        </p>
-                      )}
-                    </div>
                   </PopoverContent>
                 </Popover>
-                <Select>
-                  <SelectTrigger
-                    size="sm"
-                    className="border-foreground/10 text-foreground/80 bg-background hover:bg-foreground/5 min-w-[92px] rounded-xs text-[11px] tracking-[0.8px] shadow-xs"
-                  >
-                    <SelectValue placeholder="Status" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-background rounded-xs border-0 shadow-sm">
-                    <SelectItem value="all" className="rounded-xs text-xs">
-                      All
-                    </SelectItem>
-                    <SelectItem value="succeeded" className="rounded-xs text-xs">
-                      Succeeded
-                    </SelectItem>
-                    <SelectItem value="running" className="rounded-xs text-xs">
-                      Running
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-                {isIdSearchOpen ? (
-                  <div className="flex items-center gap-1.5">
-                    <Input
-                      value={idSearchQuery}
-                      onChange={(event) => setIdSearchQuery(event.target.value)}
-                      autoFocus
-                      placeholder="Search ID"
-                      className="border-foreground/10 h-8 w-[120px] rounded-xs text-[11px] md:text-[11px] tracking-[0.8px] shadow-xs"
-                    />
-                    <Button
-                      variant="outline"
-                      size="icon-sm"
-                      aria-label="Close ID search"
-                      onClick={() => {
-                        setIsIdSearchOpen(false);
-                        setIdSearchQuery("");
-                      }}
-                      className="border-foreground/10 text-foreground/70 bg-background hover:bg-foreground/5 rounded-xs shadow-xs"
-                    >
-                      <X className="size-3.5" />
-                    </Button>
-                  </div>
-                ) : (
+                {[
+                  { label: "1d", days: 1 },
+                  { label: "7d", days: 7 },
+                  { label: "30d", days: 30 },
+                ].map((item) => (
                   <Button
-                    variant="outline"
-                    size="icon-sm"
-                    aria-label="Search by ID"
-                    onClick={() => setIsIdSearchOpen(true)}
-                    className="border-foreground/10 text-foreground/70 bg-background hover:bg-foreground/5 rounded-xs shadow-xs"
+                    key={item.label}
+                    type="button"
+                    size="xs"
+                    variant={
+                      usageQuickRange === item.label ? "default" : "outline"
+                    }
+                    onClick={() =>
+                      applyUsageQuickRange(
+                        item.days,
+                        item.label as "1d" | "7d" | "30d",
+                      )
+                    }
+                    className="h-8 rounded-xs px-2 text-[11px] tracking-[0.8px]"
                   >
-                    <Search className="size-3.5" />
+                    {item.label}
                   </Button>
-                )}
+                ))}
               </div>
             </div>
-          </div>
 
-          <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
-            <CardContent className="bg-surface/40 flex items-center gap-1.5 pl-2.5 pr-4 py-2.5 md:pr-5">
-              <AlertCircle className="text-foreground/60 size-3.5 shrink-0" />
-              <div>
-                <p className="text-foreground/70 text-xs leading-[1.35]">
-                  Your outputs are stored for 7 days only. Download and save
-                  important files before they expire.
-                </p>
-              </div>
-            </CardContent>
-
-            <div className="border-foreground/10 border-t">
-              {selectedRequestCount > 0 ? (
-                <div className="border-foreground/10 flex items-center justify-between border-b px-2 py-2">
-                  <span className="text-foreground/60 text-[11px] tracking-[0.3px]">
-                    {selectedItemsLabel}
-                  </span>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="border-foreground/10 h-8 rounded-xs px-2.5 text-[11px]"
-                    >
-                      <Download className="size-3.5" />
-                      Download
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="destructive"
-                      className="h-8 rounded-xs px-2.5 text-[11px]"
-                    >
-                      <Trash2 className="size-3.5" />
-                      Delete
-                    </Button>
-                  </div>
-                </div>
-              ) : null}
-              <div className="space-y-2 p-2 md:hidden">
-                {requests.map((request) => (
-                  <Card
-                    key={`mobile-${request.id}`}
-                    className="border-foreground/10 gap-0 rounded-xs py-3 shadow-none"
-                  >
-                    <CardContent className="px-3">
-                      <div className="flex items-start justify-between gap-3">
-                        <div>
-                          <p className="text-foreground font-mono text-xs">
-                            {request.id}
-                          </p>
-                          <p className="text-foreground mt-1 text-sm">
-                            {request.model}
-                          </p>
-                        </div>
-                        <Badge
-                          variant="outline"
-                          className={`rounded-xs border-0 px-2 py-1 text-[10px] tracking-[1px] ${
-                            request.status === "Succeeded"
-                              ? "bg-green/20 text-foreground"
-                              : "bg-surface text-foreground/70"
-                          }`}
+            <div className="grid gap-3 md:grid-cols-2">
+              <Card className="bg-surface gap-0 rounded-xs border-0 py-0 shadow-none md:min-h-[290px]">
+                <CardHeader className="px-4 pt-4 pb-0">
+                  <CardTitle className="text-foreground text-sm tracking-[0.4px]">
+                    Usage per model
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="px-4 pt-3 pb-4">
+                  <Table className="min-w-[430px]">
+                    <TableHeader>
+                      <TableRow className="border-foreground/10 hover:bg-transparent">
+                        <TableHead className="text-foreground/70 text-[10px] tracking-[1px]">
+                          Model
+                        </TableHead>
+                        <TableHead className="text-foreground/70 text-[10px] tracking-[1px]">
+                          Request Count
+                        </TableHead>
+                        <TableHead className="text-foreground/70 text-right text-[10px] tracking-[1px]">
+                          Cost
+                        </TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {usagePerModel.map((item) => (
+                        <TableRow
+                          key={item.model}
+                          className="border-foreground/10 hover:bg-transparent"
                         >
-                          {request.status}
-                        </Badge>
+                          <TableCell className="text-xs">
+                            {item.model}
+                          </TableCell>
+                          <TableCell className="text-xs">
+                            {item.requests}
+                          </TableCell>
+                          <TableCell className="text-right text-xs">
+                            ${item.cost.toFixed(2)}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                      <TableRow className="border-foreground/10 hover:bg-transparent">
+                        <TableCell className="text-xs">Total</TableCell>
+                        <TableCell className="text-xs">
+                          {totalRequests} predictions
+                        </TableCell>
+                        <TableCell className="text-right text-xs">
+                          ${totalCost.toFixed(3)}
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-surface gap-0 rounded-xs border-0 py-0 shadow-none md:min-h-[290px]">
+                <CardHeader className="px-4 pt-4 pb-0">
+                  <CardTitle className="text-foreground text-sm tracking-[0.4px]">
+                    Usage breakdown
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="px-4 pt-3 pb-4">
+                  <ChartContainer
+                    config={usageBreakdownChartConfig}
+                    className="h-[230px] w-full"
+                  >
+                    <BarChart
+                      accessibilityLayer
+                      data={usageBreakdown}
+                      margin={{ left: 0, right: 8, top: 8, bottom: 0 }}
+                    >
+                      <CartesianGrid vertical={false} strokeDasharray="0" />
+                      <YAxis
+                        axisLine={false}
+                        tickLine={false}
+                        width={44}
+                        tickMargin={6}
+                        tick={{ fontSize: 9 }}
+                        domain={[0, usageBreakdownMax]}
+                        ticks={[0, 0.02, 0.04, 0.06, 0.08]}
+                        tickFormatter={(value) =>
+                          value === 0 ? "0" : Number(value).toFixed(2)
+                        }
+                      />
+                      <XAxis
+                        dataKey="date"
+                        axisLine={false}
+                        tickLine={false}
+                        tickMargin={8}
+                        tick={{ fontSize: 10 }}
+                      />
+                      <ChartTooltip
+                        cursor={false}
+                        content={
+                          <ChartTooltipContent
+                            indicator="line"
+                            labelFormatter={(label) => `${label}`}
+                            formatter={(value) =>
+                              `$${Number(value).toFixed(3)}`
+                            }
+                          />
+                        }
+                      />
+                      <Bar
+                        stackId="usage"
+                        dataKey="nanoBanana"
+                        name="google/nano-banana-2/text-to-image"
+                        fill="var(--color-nanoBanana)"
+                        stroke="none"
+                        strokeWidth={0}
+                        radius={[0, 0, 0, 0]}
+                        maxBarSize={54}
+                      />
+                      <Bar
+                        stackId="usage"
+                        dataKey="fluxKontext"
+                        name="flux-pro/kontext"
+                        fill="var(--color-fluxKontext)"
+                        stroke="none"
+                        strokeWidth={0}
+                        radius={[0, 0, 0, 0]}
+                        maxBarSize={54}
+                      />
+                      <Bar
+                        stackId="usage"
+                        dataKey="wanT2v"
+                        name="wan-2.6/t2v"
+                        fill="var(--color-wanT2v)"
+                        stroke="none"
+                        strokeWidth={0}
+                        radius={[0, 0, 0, 0]}
+                        maxBarSize={54}
+                      />
+                    </BarChart>
+                  </ChartContainer>
+                </CardContent>
+              </Card>
+            </div>
+          </article>
+
+          <Tabs defaultValue="latest-models" className="gap-0">
+            <div className="flex items-center justify-between gap-3">
+              <TabsList
+                variant="line"
+                className="h-auto w-full justify-start gap-3 rounded-none bg-transparent px-0"
+              >
+                <TabsTrigger
+                  value="latest-models"
+                  className="data-[state=active]:text-foreground data-[state=active]:after:bg-foreground h-10 flex-none rounded-none px-1.5 font-semibold whitespace-nowrap group-data-[orientation=horizontal]/tabs:after:h-px"
+                >
+                  Latest models
+                </TabsTrigger>
+                <TabsTrigger
+                  value="favorite-models"
+                  className="data-[state=active]:text-foreground data-[state=active]:after:bg-foreground h-10 flex-none rounded-none px-1.5 font-semibold whitespace-nowrap group-data-[orientation=horizontal]/tabs:after:h-px"
+                >
+                  Favorite models
+                </TabsTrigger>
+              </TabsList>
+              <Button
+                variant="outline"
+                size="sm"
+                className="border-foreground/10 text-foreground/80 hover:bg-foreground/5 h-8 shrink-0 rounded-xs px-2.5 text-[11px] tracking-[0.8px] shadow-xs"
+              >
+                View all models
+              </Button>
+            </div>
+
+            <TabsContent value="latest-models" className="mt-4">
+              <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+                {modelCards.map((model) => (
+                  <Card
+                    key={`latest-${model.name}`}
+                    className="border-foreground/10 hover:bg-surface gap-0 rounded-xs py-0 shadow-none transition-colors"
+                  >
+                    <CardContent className="flex items-center gap-2.5 p-2">
+                      <div className="relative size-10 shrink-0 overflow-hidden rounded-xs">
+                        <Image
+                          src={model.image}
+                          alt={model.name}
+                          fill
+                          className="object-cover"
+                        />
                       </div>
-                      <div className="mt-3 flex items-center justify-between text-xs">
-                        <div className="text-foreground/70 flex items-center gap-2">
-                          <div className="border-foreground/10 bg-surface relative size-9 overflow-hidden rounded-[3px] border">
-                            <Image
-                              src={request.outputPreview}
-                              alt={`${request.model} output`}
-                              fill
-                              className="object-cover"
-                            />
-                          </div>
-                        </div>
-                        <span className="text-foreground/60">
-                          {request.createdAt}
-                        </span>
+                      <div className="min-w-0">
+                        <p className="text-foreground line-clamp-1 text-xs">
+                          {model.name}
+                        </p>
+                        <p className="text-foreground/50 mt-0.5 text-[11px] leading-tight">
+                          {model.type}
+                        </p>
                       </div>
                     </CardContent>
                   </Card>
                 ))}
               </div>
+            </TabsContent>
 
-              <div className="hidden md:block">
-                <Table className="min-w-[680px]">
-                  <TableHeader>
-                    <TableRow className="border-foreground/10 hover:bg-transparent">
-                      <TableHead className="w-10 text-center">
-                        <input
-                          type="checkbox"
-                          checked={areAllRequestsSelected}
-                          onChange={toggleSelectAllRequests}
-                          className="border-foreground/30 size-3.5 rounded-[2px] border accent-[#3f74ff]"
+            <TabsContent value="favorite-models" className="mt-4">
+              <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                {favoriteModelCards.map((model) => (
+                  <Card
+                    key={`favorite-${model.name}`}
+                    className="border-foreground/10 hover:bg-surface gap-0 rounded-xs py-0 shadow-none transition-colors"
+                  >
+                    <CardContent className="flex items-center gap-2.5 p-2">
+                      <div className="relative size-10 shrink-0 overflow-hidden rounded-xs">
+                        <Image
+                          src={model.image}
+                          alt={model.name}
+                          fill
+                          className="object-cover"
                         />
-                      </TableHead>
-                      <TableHead className="text-foreground/50 w-20 text-[10px] tracking-[1px]">
-                        Output
-                      </TableHead>
-                      <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
-                        ID
-                      </TableHead>
-                      <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
-                        Model
-                      </TableHead>
-                      <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
-                        Status
-                      </TableHead>
-                      <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
-                        Created
-                      </TableHead>
-                      <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
-                        Action
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {requests.map((request) => (
-                      <TableRow
-                        key={request.id}
-                        className="border-foreground/10 hover:bg-surface"
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-foreground line-clamp-1 text-xs">
+                          {model.name}
+                        </p>
+                        <p className="text-foreground/50 mt-0.5 text-[11px] leading-tight">
+                          {model.type}
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+          </Tabs>
+
+          <section>
+            <div className="mb-4 flex flex-col gap-2">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <h2 className="text-foreground text-2xl font-semibold tracking-tight">
+                  Requests
+                </h2>
+                <div className="flex items-center gap-2">
+                  <div className="flex h-8 items-center gap-2 rounded-xs px-1.5">
+                    <span className="text-foreground/80 text-[11px]">
+                      Show API requests
+                    </span>
+                    <button
+                      type="button"
+                      role="switch"
+                      aria-checked={showApiRequests}
+                      onClick={() => setShowApiRequests((prev) => !prev)}
+                      className={`relative inline-flex h-4.5 w-8 items-center rounded-full p-0.5 transition-colors ${
+                        showApiRequests
+                          ? "bg-foreground/25"
+                          : "bg-foreground/15"
+                      }`}
+                    >
+                      <span
+                        className={`block size-3.5 rounded-full transition-all ${
+                          showApiRequests
+                            ? "bg-foreground ml-auto"
+                            : "bg-foreground/55 ml-0"
+                        }`}
+                      />
+                    </button>
+                  </div>
+                  <Popover
+                    open={isModelFilterOpen}
+                    onOpenChange={(open) => {
+                      setIsModelFilterOpen(open);
+                      if (!open) {
+                        setModelFilterQuery("");
+                      }
+                    }}
+                  >
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className="border-foreground/10 text-foreground/80 bg-background hover:bg-foreground/5 h-8 min-w-[104px] justify-between rounded-xs px-2 text-[11px] tracking-[0.8px] shadow-xs"
                       >
-                        <TableCell className="text-center">
-                          <input
-                            type="checkbox"
-                            checked={selectedRequestIds.includes(request.id)}
-                            onChange={() => toggleRequestSelection(request.id)}
-                            className="border-foreground/30 size-3.5 rounded-[2px] border accent-[#3f74ff]"
-                          />
-                        </TableCell>
-                        <TableCell className="text-xs">
-                          <div className="border-foreground/10 bg-surface relative size-9 overflow-hidden rounded-[3px] border">
-                            <Image
-                              src={request.outputPreview}
-                              alt={`${request.model} output preview`}
-                              fill
-                              className="object-cover"
-                            />
+                        <span
+                          className={`truncate ${
+                            modelFilterValue === "all-models"
+                              ? "text-foreground/60"
+                              : "text-foreground/80"
+                          }`}
+                        >
+                          {modelFilterValue === "all-models"
+                            ? "All models"
+                            : modelFilterValue}
+                        </span>
+                        <ChevronDown className="text-foreground/50 size-3.5 shrink-0" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent
+                      className="bg-background w-[248px] rounded-xs border-0 p-2 shadow-sm"
+                      align="end"
+                    >
+                      <Input
+                        value={modelFilterQuery}
+                        onChange={(event) =>
+                          setModelFilterQuery(event.target.value)
+                        }
+                        placeholder="Search models..."
+                        className="border-foreground/10 h-8 rounded-xs text-xs"
+                      />
+                      <div className="mt-2 max-h-56 space-y-1 overflow-y-auto">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setModelFilterValue("all-models");
+                            setIsModelFilterOpen(false);
+                            setModelFilterQuery("");
+                          }}
+                          className={`hover:bg-foreground/5 flex w-full items-center rounded-xs px-2 py-1.5 text-left text-xs ${
+                            modelFilterValue === "all-models"
+                              ? "bg-foreground/5 text-foreground"
+                              : "text-foreground/80"
+                          }`}
+                        >
+                          All models
+                        </button>
+                        {filteredModelOptions.length > 0 ? (
+                          filteredModelOptions.map((model) => (
+                            <button
+                              key={model}
+                              type="button"
+                              onClick={() => {
+                                setModelFilterValue(model);
+                                setIsModelFilterOpen(false);
+                                setModelFilterQuery("");
+                              }}
+                              className={`hover:bg-foreground/5 flex w-full items-center rounded-xs px-2 py-1.5 text-left text-xs ${
+                                modelFilterValue === model
+                                  ? "bg-foreground/5 text-foreground"
+                                  : "text-foreground/80"
+                              }`}
+                            >
+                              {model}
+                            </button>
+                          ))
+                        ) : (
+                          <p className="text-foreground/50 px-2 py-1.5 text-xs">
+                            No models found
+                          </p>
+                        )}
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                  <Select>
+                    <SelectTrigger
+                      size="sm"
+                      className="border-foreground/10 text-foreground/80 bg-background hover:bg-foreground/5 min-w-[92px] rounded-xs text-[11px] tracking-[0.8px] shadow-xs"
+                    >
+                      <SelectValue placeholder="Status" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-background rounded-xs border-0 shadow-sm">
+                      <SelectItem value="all" className="rounded-xs text-xs">
+                        All
+                      </SelectItem>
+                      <SelectItem
+                        value="succeeded"
+                        className="rounded-xs text-xs"
+                      >
+                        Succeeded
+                      </SelectItem>
+                      <SelectItem
+                        value="running"
+                        className="rounded-xs text-xs"
+                      >
+                        Running
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                  {isIdSearchOpen ? (
+                    <div className="flex items-center gap-1.5">
+                      <Input
+                        value={idSearchQuery}
+                        onChange={(event) =>
+                          setIdSearchQuery(event.target.value)
+                        }
+                        autoFocus
+                        placeholder="Search ID"
+                        className="border-foreground/10 h-8 w-[120px] rounded-xs text-[11px] tracking-[0.8px] shadow-xs md:text-[11px]"
+                      />
+                      <Button
+                        variant="outline"
+                        size="icon-sm"
+                        aria-label="Close ID search"
+                        onClick={() => {
+                          setIsIdSearchOpen(false);
+                          setIdSearchQuery("");
+                        }}
+                        className="border-foreground/10 text-foreground/70 bg-background hover:bg-foreground/5 rounded-xs shadow-xs"
+                      >
+                        <X className="size-3.5" />
+                      </Button>
+                    </div>
+                  ) : (
+                    <Button
+                      variant="outline"
+                      size="icon-sm"
+                      aria-label="Search by ID"
+                      onClick={() => setIsIdSearchOpen(true)}
+                      className="border-foreground/10 text-foreground/70 bg-background hover:bg-foreground/5 rounded-xs shadow-xs"
+                    >
+                      <Search className="size-3.5" />
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
+              <CardContent className="bg-surface/40 flex items-center gap-1.5 py-2.5 pr-4 pl-2.5 md:pr-5">
+                <AlertCircle className="text-foreground/60 size-3.5 shrink-0" />
+                <div>
+                  <p className="text-foreground/70 text-xs leading-[1.35]">
+                    Your outputs are stored for 7 days only. Download and save
+                    important files before they expire.
+                  </p>
+                </div>
+              </CardContent>
+
+              <div className="border-foreground/10 border-t">
+                {selectedRequestCount > 0 ? (
+                  <div className="border-foreground/10 flex items-center justify-between border-b px-2 py-2">
+                    <span className="text-foreground/60 text-[11px] tracking-[0.3px]">
+                      {selectedItemsLabel}
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="border-foreground/10 h-8 rounded-xs px-2.5 text-[11px]"
+                      >
+                        <Download className="size-3.5" />
+                        Download
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="destructive"
+                        className="h-8 rounded-xs px-2.5 text-[11px]"
+                      >
+                        <Trash2 className="size-3.5" />
+                        Delete
+                      </Button>
+                    </div>
+                  </div>
+                ) : null}
+                <div className="space-y-2 p-2 md:hidden">
+                  {requests.map((request) => (
+                    <Card
+                      key={`mobile-${request.id}`}
+                      className="border-foreground/10 gap-0 rounded-xs py-3 shadow-none"
+                    >
+                      <CardContent className="px-3">
+                        <div className="flex items-start justify-between gap-3">
+                          <div>
+                            <p className="text-foreground font-mono text-xs">
+                              {request.id}
+                            </p>
+                            <p className="text-foreground mt-1 text-sm">
+                              {request.model}
+                            </p>
                           </div>
-                        </TableCell>
-                        <TableCell className="text-xs">{request.id}</TableCell>
-                        <TableCell className="text-xs">{request.model}</TableCell>
-                        <TableCell>
                           <Badge
                             variant="outline"
                             className={`rounded-xs border-0 px-2 py-1 text-[10px] tracking-[1px] ${
@@ -1166,43 +1103,140 @@ export function DashboardMain() {
                           >
                             {request.status}
                           </Badge>
-                        </TableCell>
-                        <TableCell className="text-xs">
-                          {request.createdAt}
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-1">
-                            <Button
-                              variant="ghost"
-                              size="icon-xs"
-                              className="text-foreground/60 hover:text-foreground"
-                            >
-                              <ExternalLink className="size-3.5" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="icon-xs"
-                              className="text-foreground/60 hover:text-foreground"
-                            >
-                              <Download className="size-3.5" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="icon-xs"
-                              className="text-foreground/60 hover:text-red-500"
-                            >
-                              <Trash2 className="size-3.5" />
-                            </Button>
+                        </div>
+                        <div className="mt-3 flex items-center justify-between text-xs">
+                          <div className="text-foreground/70 flex items-center gap-2">
+                            <div className="border-foreground/10 bg-surface relative size-9 overflow-hidden rounded-[3px] border">
+                              <Image
+                                src={request.outputPreview}
+                                alt={`${request.model} output`}
+                                fill
+                                className="object-cover"
+                              />
+                            </div>
                           </div>
-                        </TableCell>
+                          <span className="text-foreground/60">
+                            {request.createdAt}
+                          </span>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+
+                <div className="hidden md:block">
+                  <Table className="min-w-[680px]">
+                    <TableHeader>
+                      <TableRow className="border-foreground/10 hover:bg-transparent">
+                        <TableHead className="w-10 text-center">
+                          <input
+                            type="checkbox"
+                            checked={areAllRequestsSelected}
+                            onChange={toggleSelectAllRequests}
+                            className="border-foreground/30 size-3.5 rounded-[2px] border accent-[#3f74ff]"
+                          />
+                        </TableHead>
+                        <TableHead className="text-foreground/50 w-20 text-[10px] tracking-[1px]">
+                          Output
+                        </TableHead>
+                        <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                          ID
+                        </TableHead>
+                        <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                          Model
+                        </TableHead>
+                        <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                          Status
+                        </TableHead>
+                        <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                          Created
+                        </TableHead>
+                        <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                          Action
+                        </TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                    </TableHeader>
+                    <TableBody>
+                      {requests.map((request) => (
+                        <TableRow
+                          key={request.id}
+                          className="border-foreground/10 hover:bg-surface"
+                        >
+                          <TableCell className="text-center">
+                            <input
+                              type="checkbox"
+                              checked={selectedRequestIds.includes(request.id)}
+                              onChange={() =>
+                                toggleRequestSelection(request.id)
+                              }
+                              className="border-foreground/30 size-3.5 rounded-[2px] border accent-[#3f74ff]"
+                            />
+                          </TableCell>
+                          <TableCell className="text-xs">
+                            <div className="border-foreground/10 bg-surface relative size-9 overflow-hidden rounded-[3px] border">
+                              <Image
+                                src={request.outputPreview}
+                                alt={`${request.model} output preview`}
+                                fill
+                                className="object-cover"
+                              />
+                            </div>
+                          </TableCell>
+                          <TableCell className="text-xs">
+                            {request.id}
+                          </TableCell>
+                          <TableCell className="text-xs">
+                            {request.model}
+                          </TableCell>
+                          <TableCell>
+                            <Badge
+                              variant="outline"
+                              className={`rounded-xs border-0 px-2 py-1 text-[10px] tracking-[1px] ${
+                                request.status === "Succeeded"
+                                  ? "bg-green/20 text-foreground"
+                                  : "bg-surface text-foreground/70"
+                              }`}
+                            >
+                              {request.status}
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="text-xs">
+                            {request.createdAt}
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center gap-1">
+                              <Button
+                                variant="ghost"
+                                size="icon-xs"
+                                className="text-foreground/60 hover:text-foreground"
+                              >
+                                <ExternalLink className="size-3.5" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon-xs"
+                                className="text-foreground/60 hover:text-foreground"
+                              >
+                                <Download className="size-3.5" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon-xs"
+                                className="text-foreground/60 hover:text-red-500"
+                              >
+                                <Trash2 className="size-3.5" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
               </div>
-            </div>
-          </Card>
-        </section>
+            </Card>
+          </section>
+        </div>
       </div>
     </section>
   );
