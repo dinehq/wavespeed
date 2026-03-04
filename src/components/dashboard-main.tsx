@@ -35,7 +35,12 @@ import thumb5 from "@/images/thumb-5.webp";
 import thumb6 from "@/images/thumb-6.webp";
 
 const setupTasks = [
-  { label: "Create an account", action: "Add now", tone: "primary", done: true },
+  {
+    label: "Create an account",
+    action: "Add now",
+    tone: "primary",
+    done: true,
+  },
   { label: "Add credits", action: "Top up", tone: "secondary", done: false },
   {
     label: "Generate your first media",
@@ -81,11 +86,7 @@ const modelCards = [
   },
 ];
 
-const favoriteModelCards = [
-  modelCards[0],
-  modelCards[2],
-  modelCards[3],
-];
+const favoriteModelCards = [modelCards[0], modelCards[2], modelCards[3]];
 
 const requests = [
   {
@@ -172,7 +173,7 @@ export function DashboardMain() {
       <Tabs defaultValue="Dashboard" className="w-full">
         <TabsList
           variant="line"
-          className="border-foreground/10 group-data-[orientation=horizontal]/tabs:h-12 w-full justify-start gap-2 overflow-x-auto rounded-none border-t border-b px-4"
+          className="border-foreground/10 w-full justify-start gap-2 overflow-x-auto rounded-none border-t border-b px-4 group-data-[orientation=horizontal]/tabs:h-12"
         >
           {dashboardTabs.map((tab) => (
             <TabsTrigger
@@ -187,7 +188,6 @@ export function DashboardMain() {
       </Tabs>
 
       <div className="mx-auto flex w-full max-w-[1160px] flex-col gap-8 px-4 pt-6 md:px-8 md:pt-8">
-
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <h1 className="text-heading text-3xl leading-none font-semibold tracking-[-0.8px]">
             Dashboard
@@ -218,125 +218,125 @@ export function DashboardMain() {
             </Button>
           </div>
           <div className="grid gap-4 md:grid-cols-3">
-          <MetricCard
-            title="Welcome to WaveSpeed"
-            description="Complete setup to unlock the full speed of your account."
-          >
-            <ul className="divide-foreground/5 divide-y">
-              {setupTasks.map((task) => (
-                <li
-                  key={task.label}
-                  className="flex items-center justify-between gap-2 py-2.5"
-                >
-                  <div className="flex min-w-0 items-center gap-2">
-                    <span
-                      className={`flex size-4 shrink-0 items-center justify-center rounded-[2px] border ${
-                        task.done
-                          ? "border-[#16a34a] bg-[#16a34a]/10 text-[#16a34a]"
-                          : "border-foreground/20 text-transparent"
-                      }`}
-                    >
-                      <Check className="size-3" />
-                    </span>
-                    <span
-                      className={`text-sm ${
-                        task.done
-                          ? "text-foreground/50 line-through"
-                          : "text-foreground"
-                      }`}
-                    >
-                      {task.label}
-                    </span>
-                  </div>
-                  {!task.done ? (
+            <MetricCard
+              title="Welcome to WaveSpeed"
+              description="Complete setup to unlock the full speed of your account."
+            >
+              <ul className="divide-foreground/5 divide-y">
+                {setupTasks.map((task) => (
+                  <li
+                    key={task.label}
+                    className="flex items-center justify-between gap-2 py-2.5"
+                  >
+                    <div className="flex min-w-0 items-center gap-2">
+                      <span
+                        className={`flex size-4 shrink-0 items-center justify-center rounded-[2px] border ${
+                          task.done
+                            ? "border-[#16a34a] bg-[#16a34a]/10 text-[#16a34a]"
+                            : "border-foreground/20 text-transparent"
+                        }`}
+                      >
+                        <Check className="size-3" />
+                      </span>
+                      <span
+                        className={`text-sm ${
+                          task.done
+                            ? "text-foreground/50 line-through"
+                            : "text-foreground"
+                        }`}
+                      >
+                        {task.label}
+                      </span>
+                    </div>
+                    {!task.done ? (
+                      <Button
+                        size="xs"
+                        className={`shrink-0 rounded-xs font-mono text-[10px] tracking-[1px] uppercase ${
+                          task.tone === "primary"
+                            ? "bg-foreground text-background hover:bg-foreground/80"
+                            : "bg-surface text-foreground hover:bg-foreground/10 border-0"
+                        }`}
+                      >
+                        {task.action}
+                      </Button>
+                    ) : null}
+                  </li>
+                ))}
+              </ul>
+            </MetricCard>
+
+            <MetricCard
+              title="Create Something with API"
+              description="Follow these steps to get the most out of your experience."
+            >
+              <ul className="divide-foreground/5 divide-y">
+                {apiTasks.map((task, index) => (
+                  <li
+                    key={task.label}
+                    className="flex items-center justify-between gap-2 py-2.5"
+                  >
+                    <div className="flex min-w-0 items-center gap-2">
+                      <span className="text-foreground/50 font-mono text-[10px] tracking-[1px] uppercase">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <span className="text-foreground line-clamp-1 text-sm">
+                        {task.label}
+                      </span>
+                    </div>
                     <Button
+                      variant="outline"
                       size="xs"
-                      className={`shrink-0 rounded-xs font-mono text-[10px] tracking-[1px] uppercase ${
-                        task.tone === "primary"
-                          ? "bg-foreground text-background hover:bg-foreground/80"
-                          : "bg-surface text-foreground hover:bg-foreground/10 border-0"
-                      }`}
+                      className="bg-surface hover:bg-foreground/10 shrink-0 rounded-xs border-0 font-mono text-[10px] tracking-[1px] uppercase shadow-none"
                     >
                       {task.action}
+                      <ArrowRight className="size-3.5" />
                     </Button>
-                  ) : null}
-                </li>
-              ))}
-            </ul>
-          </MetricCard>
+                  </li>
+                ))}
+              </ul>
+            </MetricCard>
 
-          <MetricCard
-            title="Create Something with API"
-            description="Follow these steps to get the most out of your experience."
-          >
-            <ul className="divide-foreground/5 divide-y">
-              {apiTasks.map((task, index) => (
-                <li
-                  key={task.label}
-                  className="flex items-center justify-between gap-2 py-2.5"
-                >
-                  <div className="flex min-w-0 items-center gap-2">
-                    <span className="text-foreground/50 font-mono text-[10px] tracking-[1px] uppercase">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <span className="text-foreground line-clamp-1 text-sm">
-                      {task.label}
-                    </span>
-                  </div>
-                  <Button
-                    variant="outline"
-                    size="xs"
-                    className="bg-surface hover:bg-foreground/10 shrink-0 rounded-xs border-0 font-mono text-[10px] tracking-[1px] uppercase shadow-none"
-                  >
-                    {task.action}
-                    <ArrowRight className="size-3.5" />
-                  </Button>
-                </li>
-              ))}
-            </ul>
-          </MetricCard>
-
-          <MetricCard
-            title="Explore Models"
-            description="Recommended models your team can ship with today."
-          >
-            <div className="flex flex-col gap-3">
-              {modelCards.slice(0, 3).map((model) => (
-                <Card
-                  key={model.name}
-                  className="border-foreground/10 bg-surface/60 gap-0 rounded-xs py-2.5 shadow-none"
-                >
-                  <CardContent className="px-2.5">
-                    <div className="flex items-start gap-2">
-                      <div className="relative size-8 shrink-0 overflow-hidden rounded-xs">
-                        <Image
-                          src={model.image}
-                          alt={model.name}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                      <div className="min-w-0">
-                        <p className="text-foreground font-mono text-xs">
-                          {model.name}
-                        </p>
-                        <p className="text-foreground/50 mt-1 text-[11px]">
-                          {model.type}
-                        </p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-            <Button
-              variant="ghost"
-              className="text-foreground/60 hover:text-foreground mt-3 h-auto w-fit p-0 font-mono text-[10px] tracking-[1px] uppercase"
+            <MetricCard
+              title="Explore Models"
+              description="Recommended models your team can ship with today."
             >
-              Explore all models
-              <ArrowRight className="size-3.5" />
-            </Button>
-          </MetricCard>
+              <div className="flex flex-col gap-3">
+                {modelCards.slice(0, 3).map((model) => (
+                  <Card
+                    key={model.name}
+                    className="border-foreground/10 bg-surface/60 gap-0 rounded-xs py-2.5 shadow-none"
+                  >
+                    <CardContent className="px-2.5">
+                      <div className="flex items-start gap-2">
+                        <div className="relative size-8 shrink-0 overflow-hidden rounded-xs">
+                          <Image
+                            src={model.image}
+                            alt={model.name}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-foreground font-mono text-xs">
+                            {model.name}
+                          </p>
+                          <p className="text-foreground/50 mt-1 text-[11px]">
+                            {model.type}
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+              <Button
+                variant="ghost"
+                className="text-foreground/60 hover:text-foreground mt-3 h-auto w-fit p-0 font-mono text-[10px] tracking-[1px] uppercase"
+              >
+                Explore all models
+                <ArrowRight className="size-3.5" />
+              </Button>
+            </MetricCard>
           </div>
         </article>
 
@@ -355,13 +355,22 @@ export function DashboardMain() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="bg-background rounded-xs border-0 shadow-sm">
-                <SelectItem value="last-3-days" className="rounded-xs font-mono text-xs">
+                <SelectItem
+                  value="last-3-days"
+                  className="rounded-xs font-mono text-xs"
+                >
                   Mar 01, 2026 - Mar 03, 2026
                 </SelectItem>
-                <SelectItem value="last-7-days" className="rounded-xs font-mono text-xs">
+                <SelectItem
+                  value="last-7-days"
+                  className="rounded-xs font-mono text-xs"
+                >
                   Last 7 days
                 </SelectItem>
-                <SelectItem value="last-30-days" className="rounded-xs font-mono text-xs">
+                <SelectItem
+                  value="last-30-days"
+                  className="rounded-xs font-mono text-xs"
+                >
                   Last 30 days
                 </SelectItem>
               </SelectContent>
@@ -369,7 +378,7 @@ export function DashboardMain() {
           </div>
 
           <div className="grid gap-3 md:grid-cols-2">
-            <Card className="bg-surface border-0 gap-0 rounded-xs py-0 shadow-none md:min-h-[290px]">
+            <Card className="bg-surface gap-0 rounded-xs border-0 py-0 shadow-none md:min-h-[290px]">
               <CardHeader className="flex-row items-start justify-between gap-2 px-4 pt-4 pb-0">
                 <CardTitle className="text-foreground font-mono text-sm tracking-[0.4px]">
                   Usage per model
@@ -416,7 +425,7 @@ export function DashboardMain() {
               </CardContent>
             </Card>
 
-            <Card className="bg-surface border-0 gap-0 rounded-xs py-0 shadow-none md:min-h-[290px]">
+            <Card className="bg-surface gap-0 rounded-xs border-0 py-0 shadow-none md:min-h-[290px]">
               <CardHeader className="px-4 pt-4 pb-0">
                 <CardTitle className="text-foreground font-mono text-sm tracking-[0.4px]">
                   Usage breakdown
@@ -464,13 +473,13 @@ export function DashboardMain() {
             >
               <TabsTrigger
                 value="latest-models"
-                className="h-10 flex-none rounded-none px-2.5 font-semibold whitespace-nowrap data-[state=active]:text-foreground data-[state=active]:after:bg-foreground"
+                className="data-[state=active]:text-foreground data-[state=active]:after:bg-foreground h-10 flex-none rounded-none px-2.5 font-semibold whitespace-nowrap"
               >
                 Latest models
               </TabsTrigger>
               <TabsTrigger
                 value="favorite-models"
-                className="h-10 flex-none rounded-none px-2.5 font-semibold whitespace-nowrap data-[state=active]:text-foreground data-[state=active]:after:bg-foreground"
+                className="data-[state=active]:text-foreground data-[state=active]:after:bg-foreground h-10 flex-none rounded-none px-2.5 font-semibold whitespace-nowrap"
               >
                 Favorite models
               </TabsTrigger>
@@ -568,7 +577,10 @@ export function DashboardMain() {
                     <SelectValue placeholder="Status" />
                   </SelectTrigger>
                   <SelectContent className="bg-background rounded-xs border-0 shadow-sm">
-                    <SelectItem value="all" className="rounded-xs font-mono text-xs">
+                    <SelectItem
+                      value="all"
+                      className="rounded-xs font-mono text-xs"
+                    >
                       All status
                     </SelectItem>
                     <SelectItem
@@ -577,7 +589,10 @@ export function DashboardMain() {
                     >
                       Succeeded
                     </SelectItem>
-                    <SelectItem value="running" className="rounded-xs font-mono text-xs">
+                    <SelectItem
+                      value="running"
+                      className="rounded-xs font-mono text-xs"
+                    >
                       Running
                     </SelectItem>
                   </SelectContent>
