@@ -414,11 +414,11 @@ export function DashboardMain() {
                 }
                 className="border-foreground/10 text-foreground/80 hover:bg-foreground/5 rounded-xs text-[11px] tracking-[0.8px] shadow-xs"
               >
-                {isGettingStartedVisible ? "Hide this" : "Show More"}
+                {isGettingStartedVisible ? "Hide" : "Show More"}
               </Button>
             </div>
             {isGettingStartedVisible ? (
-              <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none xl:min-h-[360px]">
+              <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
                 <CardContent className="p-0">
                   <div className="divide-foreground/10 grid divide-y md:grid-cols-3 md:divide-x md:divide-y-0">
                     <section className="flex h-full flex-col px-4 py-4 md:px-5 md:py-5 xl:px-6 xl:py-6">
