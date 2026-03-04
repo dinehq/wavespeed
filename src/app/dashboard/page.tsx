@@ -5,7 +5,7 @@ import { Footer } from "@/components/footer";
 export default function DashboardPage() {
   return (
     <main>
-      <Navbar />
+      <Navbar mode="dashboard" />
       <DashboardMain />
       <Footer />
     </main>

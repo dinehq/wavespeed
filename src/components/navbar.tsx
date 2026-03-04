@@ -54,14 +54,25 @@ const languages = [
   "繁體中文",
 ];
 
-export function Navbar() {
+type NavbarProps = {
+  mode?: "default" | "dashboard";
+};
+
+export function Navbar({ mode = "default" }: NavbarProps) {
+  const isDashboardMode = mode === "dashboard";
   const [menuOpen, setMenuOpen] = useState(false);
   const [resourcesOpen, setResourcesOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const [activeLang, setActiveLang] = useState("English");
 
   return (
-    <nav className="relative flex h-16 w-full items-center justify-between px-4">
+    <nav
+      className={`relative flex h-16 w-full items-center justify-between px-4 ${
+        isDashboardMode
+          ? "border-foreground/10 bg-background/95 sticky top-0 z-50 border-b backdrop-blur supports-backdrop-filter:bg-background/80"
+          : ""
+      }`}
+    >
       <div className="flex-1">
         <Link
           href="/"
@@ -72,58 +83,123 @@ export function Navbar() {
         </Link>
       </div>
 
-      <div className="hidden items-center gap-8 md:flex">
-        {["Explore", "Pricing", "Enterprise"].map((item) => (
-          <a
-            key={item}
-            href="#"
-            className="text-foreground hover:text-foreground/50 font-mono text-sm leading-4 tracking-[1.2px] transition-colors duration-150"
+      <div
+        className={`hidden items-center md:flex ${isDashboardMode ? "gap-2" : "gap-8"}`}
+      >
+        {!isDashboardMode &&
+          ["Explore", "Pricing", "Enterprise"].map((item) => (
+            <a
+              key={item}
+              href="#"
+              className="text-foreground hover:text-foreground/50 font-mono text-sm leading-4 tracking-[1.2px] transition-colors duration-150"
+            >
+              {item}
+            </a>
+          ))}
+        {!isDashboardMode && (
+          <div
+            className="group relative"
+            onMouseEnter={() => setResourcesOpen(true)}
+            onMouseLeave={() => setResourcesOpen(false)}
           >
-            {item}
-          </a>
-        ))}
-        <div
-          className="group relative"
-          onMouseEnter={() => setResourcesOpen(true)}
-          onMouseLeave={() => setResourcesOpen(false)}
-        >
-          <button className="text-foreground hover:text-foreground/50 flex cursor-pointer items-center gap-1 font-mono text-sm leading-4 tracking-[1.2px] transition-colors duration-150">
-            Resources
-            <ChevronDown
-              className={`size-4 transition-transform duration-150 ${resourcesOpen ? "rotate-180" : ""}`}
-            />
-          </button>
-          {resourcesOpen && (
-            <div className="absolute top-full right-0 z-50 pt-4">
-              <div className="border-foreground/5 bg-background grid w-[420px] grid-cols-2 gap-6 rounded-xs border p-5 pt-3 shadow-lg">
-                {resourceGroups.map((group) => (
-                  <div key={group.label} className="flex flex-col gap-1">
-                    <p className="text-foreground/40 mb-1 font-mono text-[10px] tracking-[1.2px] uppercase">
-                      {group.label}
-                    </p>
-                    {group.items.map((item) => (
-                      <a
-                        key={item.name}
-                        href="#"
-                        className="hover:bg-foreground/5 rounded-xs px-2 py-1.5 transition-colors duration-150"
-                      >
-                        <p className="text-foreground font-mono text-xs leading-4 tracking-[1.2px]">
-                          {item.name}
-                        </p>
-                        <p className="text-foreground/40 font-mono text-[10px] leading-4">
-                          {item.desc}
-                        </p>
-                      </a>
-                    ))}
-                  </div>
-                ))}
+            <button className="text-foreground hover:text-foreground/50 flex cursor-pointer items-center gap-1 font-mono text-sm leading-4 tracking-[1.2px] transition-colors duration-150">
+              Resources
+              <ChevronDown
+                className={`size-4 transition-transform duration-150 ${resourcesOpen ? "rotate-180" : ""}`}
+              />
+            </button>
+            {resourcesOpen && (
+              <div className="absolute top-full right-0 z-50 pt-4">
+                <div className="border-foreground/5 bg-background grid w-[420px] grid-cols-2 gap-6 rounded-xs border p-5 pt-3 shadow-lg">
+                  {resourceGroups.map((group) => (
+                    <div key={group.label} className="flex flex-col gap-1">
+                      <p className="text-foreground/40 mb-1 font-mono text-[10px] tracking-[1.2px]">
+                        {group.label}
+                      </p>
+                      {group.items.map((item) => (
+                        <a
+                          key={item.name}
+                          href="#"
+                          className="hover:bg-foreground/5 rounded-xs px-2 py-1.5 transition-colors duration-150"
+                        >
+                          <p className="text-foreground font-mono text-xs leading-4 tracking-[1.2px]">
+                            {item.name}
+                          </p>
+                          <p className="text-foreground/40 font-mono text-[10px] leading-4">
+                            {item.desc}
+                          </p>
+                        </a>
+                      ))}
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        )}
       </div>
 
       <div className="flex flex-1 items-center justify-end gap-2">
+        {isDashboardMode && (
+          <div
+            className="relative hidden md:flex"
+            onMouseEnter={() => setResourcesOpen(true)}
+            onMouseLeave={() => setResourcesOpen(false)}
+          >
+            <button
+              aria-label="Resources"
+              className="bg-surface hover:bg-foreground/10 flex size-8 cursor-pointer items-center justify-center rounded-xs transition-colors duration-150"
+            >
+              <svg
+                className="size-3.5"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4 2.5h5l3 3v8H4z"
+                  stroke="currentColor"
+                  strokeWidth="1.2"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M9 2.5v3h3M6 8h4M6 10.5h4"
+                  stroke="currentColor"
+                  strokeWidth="1.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+            {resourcesOpen && (
+              <div className="absolute top-full right-0 z-50 pt-4">
+                <div className="border-foreground/5 bg-background grid w-[420px] grid-cols-2 gap-6 rounded-xs border p-5 pt-3 shadow-lg">
+                  {resourceGroups.map((group) => (
+                    <div key={group.label} className="flex flex-col gap-1">
+                      <p className="text-foreground/40 mb-1 font-mono text-[10px] tracking-[1.2px]">
+                        {group.label}
+                      </p>
+                      {group.items.map((item) => (
+                        <a
+                          key={item.name}
+                          href="#"
+                          className="hover:bg-foreground/5 rounded-xs px-2 py-1.5 transition-colors duration-150"
+                        >
+                          <p className="text-foreground font-mono text-xs leading-4 tracking-[1.2px]">
+                            {item.name}
+                          </p>
+                          <p className="text-foreground/40 font-mono text-[10px] leading-4">
+                            {item.desc}
+                          </p>
+                        </a>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
         <div
           className="relative hidden md:flex"
           onMouseEnter={() => setLangOpen(true)}
@@ -190,16 +266,38 @@ export function Navbar() {
           <SearchIcon className="opacity-40" />
           <input
             type="text"
-            placeholder="SEARCH MODEL..."
-            className="text-foreground placeholder:text-faint w-[140px] bg-transparent font-mono text-sm tracking-[1.2px] uppercase outline-none"
+            placeholder="Search model..."
+            className="text-foreground placeholder:text-faint w-[140px] bg-transparent font-mono text-sm tracking-[1.2px] outline-none"
           />
         </div>
-        <a
-          href="#"
-          className="bg-foreground text-background hover:bg-foreground/80 flex items-center justify-center rounded-xs px-4 py-1.5 font-mono text-sm tracking-[1.2px] uppercase transition-colors duration-150"
-        >
-          Sign In
-        </a>
+        {isDashboardMode ? (
+          <button
+            aria-label="User profile"
+            className="border-foreground/10 bg-surface hover:bg-foreground/10 flex size-9 cursor-pointer items-center justify-center rounded-full border transition-colors duration-150"
+          >
+            <svg
+              className="text-foreground size-4"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle cx="8" cy="5.2" r="2.2" stroke="currentColor" strokeWidth="1.2" />
+              <path
+                d="M3.5 12.8c0-2.1 2-3.4 4.5-3.4s4.5 1.3 4.5 3.4"
+                stroke="currentColor"
+                strokeWidth="1.2"
+                strokeLinecap="round"
+              />
+            </svg>
+          </button>
+        ) : (
+          <a
+            href="#"
+            className="bg-foreground text-background hover:bg-foreground/80 flex items-center justify-center rounded-xs px-4 py-1.5 font-mono text-sm tracking-[1.2px] transition-colors duration-150"
+          >
+            Sign In
+          </a>
+        )}
 
         {/* Hamburger button — mobile only */}
         <button
@@ -234,15 +332,16 @@ export function Navbar() {
       {/* Mobile dropdown panel */}
       {menuOpen && (
         <div className="border-foreground/5 bg-background absolute top-16 right-0 left-0 z-50 flex flex-col gap-4 border-t p-4 shadow-lg md:hidden">
-          {["Explore", "Pricing", "Enterprise"].map((item) => (
-            <a
-              key={item}
-              href="#"
-              className="text-foreground hover:text-foreground/50 py-2 font-mono text-sm leading-4 tracking-[1.2px] transition-colors duration-150"
-            >
-              {item}
-            </a>
-          ))}
+          {!isDashboardMode &&
+            ["Explore", "Pricing", "Enterprise"].map((item) => (
+              <a
+                key={item}
+                href="#"
+                className="text-foreground hover:text-foreground/50 py-2 font-mono text-sm leading-4 tracking-[1.2px] transition-colors duration-150"
+              >
+                {item}
+              </a>
+            ))}
           <button
             onClick={() => setResourcesOpen(!resourcesOpen)}
             className="text-foreground hover:text-foreground/50 flex cursor-pointer items-center gap-1 py-2 font-mono text-sm leading-4 tracking-[1.2px] transition-colors duration-150"
@@ -256,7 +355,7 @@ export function Navbar() {
             <div className="grid grid-cols-2 gap-4 pl-2">
               {resourceGroups.map((group) => (
                 <div key={group.label} className="flex flex-col gap-1">
-                  <p className="text-foreground/40 mb-1 font-mono text-[10px] tracking-[1.2px] uppercase">
+                  <p className="text-foreground/40 mb-1 font-mono text-[10px] tracking-[1.2px]">
                     {group.label}
                   </p>
                   {group.items.map((item) => (
@@ -276,8 +375,8 @@ export function Navbar() {
             <SearchIcon className="opacity-40" />
             <input
               type="text"
-              placeholder="SEARCH MODEL..."
-              className="text-foreground placeholder:text-faint flex-1 bg-transparent font-mono text-sm tracking-[1.2px] uppercase outline-none"
+              placeholder="Search model..."
+              className="text-foreground placeholder:text-faint flex-1 bg-transparent font-mono text-sm tracking-[1.2px] outline-none"
             />
           </div>
         </div>
