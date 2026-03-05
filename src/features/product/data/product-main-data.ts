@@ -197,8 +197,8 @@ export const requests = [
 
 export const dashboardSummaryCards = [
   {
-    label: "Total Cost",
-    value: "$0.0940",
+    label: "Current credit balance",
+    value: "$6.186",
     icon: DollarSign,
     actions: [
       {
@@ -228,17 +228,21 @@ export const dashboardSummaryCards = [
 ] as const;
 
 export const usageTabSummaryCards = [
-  dashboardSummaryCards[0],
-  dashboardSummaryCards[1],
   {
-    ...dashboardSummaryCards[2],
+    label: "Current credit balance",
+    value: "$6.186",
     actions: [
       {
-        label: "Usage per model",
-        scrollTarget: "usage-per-model",
-        variant: "outline",
+        label: "Manage credits",
+        href: "/billing?billingTab=top-up",
+        variant: "default",
       },
     ],
+  },
+  {
+    label: "Total Cost",
+    value: "$0.0940",
+    actions: [],
   },
 ] as const;
 

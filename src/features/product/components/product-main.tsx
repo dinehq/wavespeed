@@ -111,7 +111,11 @@ const controlButtonXsClass = `${controlButtonClass} h-7 rounded-xs px-2`;
 const controlSelectTriggerClass =
   "border-foreground/10 bg-background text-foreground/80 hover:bg-foreground/5 rounded-xs text-xs shadow-xs";
 const controlSelectTriggerCompactClass = `${controlSelectTriggerClass} h-7 justify-start gap-1 pr-1.5 pl-2.5`;
-const controlSelectTriggerFilterClass = `${controlSelectTriggerClass} min-w-[92px] tracking-[0.8px]`;
+const requestFilterTriggerClass =
+  "inline-flex h-8 w-fit min-w-0 shrink-0 items-center justify-start gap-1 rounded-xs border pr-1.5 pl-2.5 text-xs font-normal whitespace-nowrap tracking-[0.8px]";
+const requestFilterTriggerIconClass =
+  "[&_svg]:!size-3.5 [&_svg]:!text-foreground/50 [&_svg]:!opacity-100";
+const controlSelectTriggerFilterClass = `${controlSelectTriggerClass} ${requestFilterTriggerClass} data-[placeholder]:text-foreground/80 ${requestFilterTriggerIconClass}`;
 const controlIconButtonClass =
   "border-foreground/10 text-foreground/70 bg-background hover:bg-foreground/5 rounded-xs shadow-xs";
 
@@ -153,7 +157,8 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
   const requestedTab = searchParams.get("tab");
   const requestedBillingTab = searchParams.get("billingTab");
   const requestedScrollTarget = searchParams.get("scrollTo");
-  const resolvedMainTabFromPathname = resolveProductMainTabFromPathname(pathname);
+  const resolvedMainTabFromPathname =
+    resolveProductMainTabFromPathname(pathname);
   const resolvedMainTab =
     forcedMainTab ??
     resolvedMainTabFromPathname ??
@@ -272,6 +277,12 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
         : requests.map((request) => request.id),
     );
   };
+  const getRequestCheckboxClassName = (checked: boolean) =>
+    `inline-flex size-3.5 items-center justify-center rounded-[2px] border transition-colors ${
+      checked
+        ? "border-[#8ea8ff] bg-[#e9efff] text-[#5f7dff]"
+        : "border-foreground/15 bg-background hover:bg-foreground/[0.03] text-transparent"
+    }`;
   const copyRequestId = async (requestId: string) => {
     try {
       await navigator.clipboard.writeText(requestId);
@@ -298,7 +309,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
           title="Requests"
           titleClassName={
             headerLevel === "secondary"
-              ? "text-foreground text-2xl font-semibold tracking-tight"
+              ? "text-foreground text-xl font-semibold tracking-tight"
               : undefined
           }
           bottomPaddingClassName="pb-0"
@@ -338,23 +349,17 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                 }}
               >
                 <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className={`${controlButtonClass} bg-background h-8 min-w-[104px] justify-between rounded-xs px-2`}
+                  <button
+                    type="button"
+                    className={controlSelectTriggerFilterClass}
                   >
-                    <span
-                      className={`truncate ${
-                        modelFilterValue === "all-models"
-                          ? "text-foreground/60"
-                          : "text-foreground/80"
-                      }`}
-                    >
+                    <span>
                       {modelFilterValue === "all-models"
                         ? "All models"
                         : modelFilterValue}
                     </span>
-                    <ChevronDown className="text-foreground/50 size-3.5 shrink-0" />
-                  </Button>
+                    <ChevronDown />
+                  </button>
                 </PopoverTrigger>
                 <PopoverContent
                   className="bg-background w-[248px] rounded-xs border-0 p-2 shadow-sm"
@@ -480,9 +485,15 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
         </CardContent>
 
         <div className="border-foreground/10 border-t">
-          {selectedRequestCount > 0 ? (
-            <div className="border-foreground/10 flex items-center justify-between border-b px-2 py-2">
-              <span className="text-foreground/60 text-[11px] tracking-[0.3px]">
+          <div
+            className={`border-foreground/10 overflow-hidden border-b transition-all duration-200 ease-out ${
+              selectedRequestCount > 0
+                ? "max-h-14 translate-y-0 opacity-100"
+                : "max-h-0 -translate-y-1 opacity-0"
+            }`}
+          >
+            <div className="flex items-center justify-between px-2 py-2">
+              <span className="text-foreground/60 ml-2 text-[11px] tracking-[0.3px]">
                 {selectedItemsLabel}
               </span>
               <div className="flex items-center gap-2">
@@ -504,7 +515,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                 </Button>
               </div>
             </div>
-          ) : null}
+          </div>
           <div className="space-y-2 p-2 md:hidden">
             {requests.map((request) => (
               <Card
@@ -549,7 +560,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                   </div>
                   <div className="mt-3 flex items-center justify-between text-xs">
                     <div className="text-foreground/70 flex items-center gap-2">
-                      <div className="border-foreground/10 bg-surface relative size-9 overflow-hidden rounded-[3px] border">
+                      <div className="bg-surface relative size-9 overflow-hidden rounded-xs">
                         <Image
                           src={request.outputPreview}
                           alt={`${request.model} output`}
@@ -571,13 +582,36 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
             <Table className="min-w-[680px]">
               <TableHeader>
                 <TableRow className="border-foreground/10 hover:bg-transparent">
-                  <TableHead className="w-10 text-center">
-                    <input
-                      type="checkbox"
-                      checked={areAllRequestsSelected}
-                      onChange={toggleSelectAllRequests}
-                      className="border-foreground/30 size-3.5 rounded-[2px] border accent-[#3f74ff]"
-                    />
+                  <TableHead className="w-10 p-0 align-middle">
+                    <div className="flex items-center justify-center">
+                      <button
+                        type="button"
+                        role="checkbox"
+                        aria-label="Select all requests"
+                        aria-checked={areAllRequestsSelected}
+                        onClick={toggleSelectAllRequests}
+                        className={getRequestCheckboxClassName(
+                          areAllRequestsSelected,
+                        )}
+                      >
+                        {areAllRequestsSelected ? (
+                          <svg
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            className="size-2.5"
+                            aria-hidden="true"
+                          >
+                            <path
+                              d="M3.5 8.5L6.5 11.5L12.5 4.8"
+                              stroke="currentColor"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        ) : null}
+                      </button>
+                    </div>
                   </TableHead>
                   <TableHead className="text-foreground/50 w-20 text-[10px] tracking-[1px]">
                     Output
@@ -605,16 +639,39 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                     key={request.id}
                     className="border-foreground/10 hover:bg-surface"
                   >
-                    <TableCell className="text-center">
-                      <input
-                        type="checkbox"
-                        checked={selectedRequestIds.includes(request.id)}
-                        onChange={() => toggleRequestSelection(request.id)}
-                        className="border-foreground/30 size-3.5 rounded-[2px] border accent-[#3f74ff]"
-                      />
+                    <TableCell className="p-0 align-middle">
+                      <div className="flex items-center justify-center py-2">
+                        <button
+                          type="button"
+                          role="checkbox"
+                          aria-label={`Select request ${request.id}`}
+                          aria-checked={selectedRequestIds.includes(request.id)}
+                          onClick={() => toggleRequestSelection(request.id)}
+                          className={getRequestCheckboxClassName(
+                            selectedRequestIds.includes(request.id),
+                          )}
+                        >
+                          {selectedRequestIds.includes(request.id) ? (
+                            <svg
+                              viewBox="0 0 16 16"
+                              fill="none"
+                              className="size-2.5"
+                              aria-hidden="true"
+                            >
+                              <path
+                                d="M3.5 8.5L6.5 11.5L12.5 4.8"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                          ) : null}
+                        </button>
+                      </div>
                     </TableCell>
                     <TableCell className="text-xs">
-                      <div className="border-foreground/10 bg-surface relative size-9 overflow-hidden rounded-[3px] border">
+                      <div className="bg-surface relative size-9 overflow-hidden rounded-xs">
                         <Image
                           src={request.outputPreview}
                           alt={`${request.model} output preview`}

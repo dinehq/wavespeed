@@ -12,13 +12,26 @@ import {
 import { ProductSectionHeader } from "@/features/product/components/product-section-header";
 import type { DashboardIntent } from "@/features/product/types/product-main";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 type ProductDashboardTabProps = {
   showGettingStarted: boolean;
-  setShowGettingStarted: (value: boolean | ((prev: boolean) => boolean)) => void;
+  setShowGettingStarted: (
+    value: boolean | ((prev: boolean) => boolean),
+  ) => void;
   dashboardIntent: DashboardIntent;
   setDashboardIntent: (value: DashboardIntent) => void;
   currentGettingStartedContent: {
@@ -60,7 +73,9 @@ export function ProductDashboardTab({
               onClick={() => setShowGettingStarted((prev) => !prev)}
               className="text-subtle hover:text-foreground mt-2 cursor-pointer text-sm transition-colors"
             >
-              {showGettingStarted ? "Hide getting started guide" : "Show getting started guide"}
+              {showGettingStarted
+                ? "Hide getting started guide"
+                : "Show getting started guide"}
             </button>
           }
           actions={
@@ -68,16 +83,27 @@ export function ProductDashboardTab({
               <span className="text-foreground/60 text-xs">I want to</span>
               <Select
                 value={dashboardIntent}
-                onValueChange={(value) => setDashboardIntent(value as DashboardIntent)}
+                onValueChange={(value) =>
+                  setDashboardIntent(value as DashboardIntent)
+                }
               >
-                <SelectTrigger size="sm" className={controlSelectTriggerCompactClass}>
+                <SelectTrigger
+                  size="sm"
+                  className={controlSelectTriggerCompactClass}
+                >
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="bg-background rounded-xs border-0 shadow-sm">
-                  <SelectItem value="create-with-ai" className="rounded-xs text-xs">
+                  <SelectItem
+                    value="create-with-ai"
+                    className="rounded-xs text-xs"
+                  >
                     create with AI
                   </SelectItem>
-                  <SelectItem value="build-with-api" className="rounded-xs text-xs">
+                  <SelectItem
+                    value="build-with-api"
+                    className="rounded-xs text-xs"
+                  >
                     build app with API
                   </SelectItem>
                 </SelectContent>
@@ -89,7 +115,9 @@ export function ProductDashboardTab({
         {showGettingStarted ? (
           <article className="mb-6 space-y-4">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <h2 className="text-foreground text-xl font-semibold tracking-tight">Getting started</h2>
+              <h2 className="text-foreground text-xl font-semibold tracking-tight">
+                Getting started
+              </h2>
               <Button
                 variant="outline"
                 size="sm"
@@ -104,25 +132,34 @@ export function ProductDashboardTab({
                 <div className="divide-foreground/10 grid divide-y md:grid-cols-3 md:divide-x md:divide-y-0">
                   <section className="flex h-full flex-col px-4 pt-4 pb-1 md:min-h-[320px] md:px-5 md:pt-5 md:pb-2">
                     <div className="mb-4">
-                      <CardTitle className="text-foreground text-base tracking-[0.3px]">Welcome to WaveSpeed</CardTitle>
+                      <CardTitle className="text-foreground text-base tracking-[0.3px]">
+                        Welcome to WaveSpeed
+                      </CardTitle>
                       <CardDescription className="text-subtle mt-1.5 text-sm leading-5">
                         Complete setup to unlock the full speed of your account.
                       </CardDescription>
                     </div>
                     <ul className="mt-auto">
                       {setupTasks.map((task) => (
-                        <li key={task.label} className="flex h-11 items-center justify-between gap-2">
+                        <li
+                          key={task.label}
+                          className="flex h-11 items-center justify-between gap-2"
+                        >
                           <div className="flex min-w-0 flex-1 items-center gap-2">
                             <span
                               className={`flex size-4 shrink-0 items-center justify-center rounded-full ${
-                                task.done ? "bg-[#16a34a] text-white" : "bg-foreground/20 text-transparent"
+                                task.done
+                                  ? "bg-[#16a34a] text-white"
+                                  : "bg-foreground/20 text-transparent"
                               }`}
                             >
                               <Check className="size-3" />
                             </span>
                             <span
                               className={`block min-w-0 truncate text-sm ${
-                                task.done ? "text-foreground/50 line-through" : "text-foreground"
+                                task.done
+                                  ? "text-foreground/50 line-through"
+                                  : "text-foreground"
                               }`}
                             >
                               {task.label}
@@ -131,8 +168,12 @@ export function ProductDashboardTab({
                           {!task.done ? (
                             <Button
                               size="sm"
-                              variant={task.tone === "primary" ? "default" : "outline"}
-                              onClick={() => navigateFromGettingStarted(task.href)}
+                              variant={
+                                task.tone === "primary" ? "default" : "outline"
+                              }
+                              onClick={() =>
+                                navigateFromGettingStarted(task.href)
+                              }
                               className={`h-8 shrink-0 rounded-xs px-3 text-xs ${
                                 task.tone === "primary"
                                   ? "bg-foreground text-background hover:bg-foreground/80 tracking-[0.8px] shadow-xs"
@@ -161,7 +202,9 @@ export function ProductDashboardTab({
                         <li key={task.label}>
                           <button
                             type="button"
-                            onClick={() => navigateFromGettingStarted(task.href)}
+                            onClick={() =>
+                              navigateFromGettingStarted(task.href)
+                            }
                             className="hover:bg-foreground/5 group -mx-2 flex h-11 w-[calc(100%+1rem)] cursor-pointer items-center justify-between gap-2 rounded-xs px-2 transition-colors"
                           >
                             <div className="flex min-w-0 flex-1 items-center gap-2">
@@ -175,7 +218,9 @@ export function ProductDashboardTab({
                               </span>
                             </div>
                             <span className="text-foreground/60 group-hover:text-foreground inline-flex shrink-0 items-center gap-1 text-[11px]">
-                              <span className="tracking-[0.5px]">{task.action}</span>
+                              <span className="tracking-[0.5px]">
+                                {task.action}
+                              </span>
                               <ArrowRight className="size-3.5" />
                             </span>
                           </button>
@@ -198,16 +243,27 @@ export function ProductDashboardTab({
                         <li key={model.name}>
                           <button
                             type="button"
-                            onClick={() => navigateFromGettingStarted("/product/explore")}
+                            onClick={() =>
+                              navigateFromGettingStarted("/product/explore")
+                            }
                             className="hover:bg-foreground/5 group -mx-2 flex h-11 w-[calc(100%+1rem)] cursor-pointer items-center justify-between gap-2 rounded-xs px-2 text-left transition-colors"
                           >
                             <div className="flex min-w-0 items-center gap-1.5">
                               <div className="relative size-8 shrink-0 overflow-hidden rounded-xs">
-                                <Image src={model.image} alt={model.name} fill className="object-cover" />
+                                <Image
+                                  src={model.image}
+                                  alt={model.name}
+                                  fill
+                                  className="object-cover"
+                                />
                               </div>
                               <div className="min-w-0">
-                                <p className="text-foreground line-clamp-1 text-sm">{model.name}</p>
-                                <p className="text-foreground/50 text-[11px] leading-tight">{model.type}</p>
+                                <p className="text-foreground line-clamp-1 text-sm">
+                                  {model.name}
+                                </p>
+                                <p className="text-foreground/50 text-[11px] leading-tight">
+                                  {model.type}
+                                </p>
                               </div>
                             </div>
                             <span className="text-foreground/60 group-hover:text-foreground inline-flex shrink-0 items-center">
@@ -219,14 +275,18 @@ export function ProductDashboardTab({
                       <li>
                         <button
                           type="button"
-                          onClick={() => navigateFromGettingStarted("/product/explore")}
+                          onClick={() =>
+                            navigateFromGettingStarted("/product/explore")
+                          }
                           className="hover:bg-foreground/5 group -mx-2 flex h-11 w-[calc(100%+1rem)] cursor-pointer items-center justify-between gap-2 rounded-xs px-2 text-left transition-colors"
                         >
                           <div className="flex min-w-0 items-center gap-1.5">
                             <span className="bg-surface text-foreground/70 inline-flex size-8 shrink-0 items-center justify-center rounded-xs">
                               <LayoutGrid className="size-3" />
                             </span>
-                            <span className="text-foreground line-clamp-1 text-sm">Explore all models</span>
+                            <span className="text-foreground line-clamp-1 text-sm">
+                              Explore all models
+                            </span>
                           </div>
                           <span className="text-foreground/60 group-hover:text-foreground inline-flex shrink-0 items-center">
                             <ArrowRight className="size-3.5" />
@@ -244,16 +304,21 @@ export function ProductDashboardTab({
         <article className="mb-6 space-y-3 md:mb-8">
           <div className="grid gap-3 md:grid-cols-3">
             {dashboardSummaryCards.map((item) => (
-              <Card key={`dashboard-${item.label}`} className="bg-surface gap-0 rounded-xs border-0 py-0 shadow-none">
-                <CardContent className="px-4 py-4">
+              <Card
+                key={`dashboard-${item.label}`}
+                className="bg-surface gap-0 rounded-xs border-0 py-0 shadow-none"
+              >
+                <CardContent className="flex min-h-[144px] flex-col px-4 py-4">
                   <div>
-                    <p className="text-foreground/60 text-xs tracking-[0.5px]">{item.label}</p>
-                    <p className="text-foreground mt-1 text-[30px] leading-none font-semibold tracking-tight">
+                    <p className="text-foreground/60 text-xs tracking-[0.5px]">
+                      {item.label}
+                    </p>
+                    <p className="text-foreground mt-1 text-2xl leading-none font-medium tracking-tight">
                       {item.value}
                     </p>
                   </div>
                   {item.actions.length > 0 ? (
-                    <div className="mt-4 flex flex-wrap items-center gap-2">
+                    <div className="mt-auto flex flex-wrap items-center gap-2 pt-4">
                       {item.actions.map((action) => (
                         <Button
                           key={`dashboard-${item.label}-${action.label}`}
@@ -261,7 +326,9 @@ export function ProductDashboardTab({
                           variant={action.variant}
                           onClick={() => router.push(action.href)}
                           className={`h-8 rounded-xs px-3 text-xs tracking-[0.5px] ${
-                            action.variant === "default" ? "" : controlButtonClass
+                            action.variant === "default"
+                              ? ""
+                              : controlButtonClass
                           }`}
                         >
                           {action.label}
@@ -275,20 +342,30 @@ export function ProductDashboardTab({
           </div>
         </article>
 
-        <Tabs defaultValue="latest-models" className="gap-0">
+        <Tabs defaultValue="latest-models" className="gap-0 pb-4 md:pb-6">
           <div className="flex items-center justify-between gap-3">
             <TabsList
               variant="line"
               className="h-auto w-full justify-start gap-3 rounded-none bg-transparent px-0"
             >
-              <TabsTrigger value="latest-models" className="data-[state=active]:text-foreground data-[state=active]:after:bg-foreground h-10 flex-none rounded-none px-1.5 font-semibold whitespace-nowrap group-data-[orientation=horizontal]/tabs:after:h-px">
+              <TabsTrigger
+                value="latest-models"
+                className="data-[state=active]:text-foreground data-[state=active]:after:bg-foreground h-10 flex-none rounded-none px-1.5 font-semibold whitespace-nowrap group-data-[orientation=horizontal]/tabs:after:h-px"
+              >
                 Latest models
               </TabsTrigger>
-              <TabsTrigger value="favorite-models" className="data-[state=active]:text-foreground data-[state=active]:after:bg-foreground h-10 flex-none rounded-none px-1.5 font-semibold whitespace-nowrap group-data-[orientation=horizontal]/tabs:after:h-px">
+              <TabsTrigger
+                value="favorite-models"
+                className="data-[state=active]:text-foreground data-[state=active]:after:bg-foreground h-10 flex-none rounded-none px-1.5 font-semibold whitespace-nowrap group-data-[orientation=horizontal]/tabs:after:h-px"
+              >
                 Favorite models
               </TabsTrigger>
             </TabsList>
-            <Button variant="outline" size="sm" className={`${controlButtonSmClass} h-8 shrink-0`}>
+            <Button
+              variant="outline"
+              size="sm"
+              className={`${controlButtonSmClass} h-8 shrink-0`}
+            >
               View all models
             </Button>
           </div>
@@ -296,14 +373,26 @@ export function ProductDashboardTab({
           <TabsContent value="latest-models" className="mt-4">
             <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
               {modelCards.map((model) => (
-                <Card key={`latest-${model.name}`} className="border-foreground/10 hover:bg-surface gap-0 rounded-xs py-0 shadow-none transition-colors">
+                <Card
+                  key={`latest-${model.name}`}
+                  className="border-foreground/10 hover:bg-surface gap-0 rounded-xs py-0 shadow-none transition-colors"
+                >
                   <CardContent className="flex items-center gap-2.5 p-2">
                     <div className="relative size-10 shrink-0 overflow-hidden rounded-xs">
-                      <Image src={model.image} alt={model.name} fill className="object-cover" />
+                      <Image
+                        src={model.image}
+                        alt={model.name}
+                        fill
+                        className="object-cover"
+                      />
                     </div>
                     <div className="min-w-0">
-                      <p className="text-foreground line-clamp-1 text-xs">{model.name}</p>
-                      <p className="text-foreground/50 mt-0.5 text-[11px] leading-tight">{model.type}</p>
+                      <p className="text-foreground line-clamp-1 text-xs">
+                        {model.name}
+                      </p>
+                      <p className="text-foreground/50 mt-0.5 text-[11px] leading-tight">
+                        {model.type}
+                      </p>
                     </div>
                   </CardContent>
                 </Card>
@@ -314,14 +403,26 @@ export function ProductDashboardTab({
           <TabsContent value="favorite-models" className="mt-4">
             <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
               {favoriteModelCards.map((model) => (
-                <Card key={`favorite-${model.name}`} className="border-foreground/10 hover:bg-surface gap-0 rounded-xs py-0 shadow-none transition-colors">
+                <Card
+                  key={`favorite-${model.name}`}
+                  className="border-foreground/10 hover:bg-surface gap-0 rounded-xs py-0 shadow-none transition-colors"
+                >
                   <CardContent className="flex items-center gap-2.5 p-2">
                     <div className="relative size-10 shrink-0 overflow-hidden rounded-xs">
-                      <Image src={model.image} alt={model.name} fill className="object-cover" />
+                      <Image
+                        src={model.image}
+                        alt={model.name}
+                        fill
+                        className="object-cover"
+                      />
                     </div>
                     <div className="min-w-0">
-                      <p className="text-foreground line-clamp-1 text-xs">{model.name}</p>
-                      <p className="text-foreground/50 mt-0.5 text-[11px] leading-tight">{model.type}</p>
+                      <p className="text-foreground line-clamp-1 text-xs">
+                        {model.name}
+                      </p>
+                      <p className="text-foreground/50 mt-0.5 text-[11px] leading-tight">
+                        {model.type}
+                      </p>
                     </div>
                   </CardContent>
                 </Card>

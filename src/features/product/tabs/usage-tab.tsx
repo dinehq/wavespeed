@@ -10,14 +10,28 @@ import {
   usageTabSummaryCards,
 } from "@/features/product/data/product-main-data";
 import { ProductSectionHeader } from "@/features/product/components/product-section-header";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar as DateCalendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
 import type { DateRange } from "react-day-picker";
 
 type ProductUsageTabProps = {
@@ -47,6 +61,21 @@ export function ProductUsageTab({
   controlButtonClass,
   controlButtonSmClass,
 }: ProductUsageTabProps) {
+  const usageTableContainerClass = "overflow-hidden rounded-xs";
+  const usageTableHeaderRowClass = "border-foreground/10 hover:bg-transparent";
+  const usageTableHeadClass = "text-foreground/70 text-[10px] tracking-[1px]";
+  const usageTableBodyRowClass =
+    "border-foreground/8 hover:bg-foreground/[0.02]";
+  const usageTableCellClass = "text-xs";
+  const usagePerModelTotalPredictions = usageTabPerModel.reduce(
+    (sum, item) => sum + item.requestCount,
+    0,
+  );
+  const usagePerModelTotalCost = usageTabPerModel.reduce(
+    (sum, item) => sum + item.cost,
+    0,
+  );
+
   return (
     <div className="px-6 pt-6 md:px-20 md:pt-8">
       <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-4">
@@ -55,7 +84,11 @@ export function ProductUsageTab({
           description="View usage data for the selected time range"
           actions={
             <>
-              <Button variant="outline" size="sm" className={controlButtonSmClass}>
+              <Button
+                variant="outline"
+                size="sm"
+                className={controlButtonSmClass}
+              >
                 <Download className="size-3.5" />
                 Export
               </Button>
@@ -70,7 +103,10 @@ export function ProductUsageTab({
                     <span>{usageDateRangeLabel}</span>
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="bg-background w-auto rounded-xs border-0 p-0 shadow-sm" align="end">
+                <PopoverContent
+                  className="bg-background w-auto rounded-xs border-0 p-0 shadow-sm"
+                  align="end"
+                >
                   <DateCalendar
                     mode="range"
                     defaultMonth={usageDateRange?.from}
@@ -95,7 +131,10 @@ export function ProductUsageTab({
                   size="xs"
                   variant="outline"
                   onClick={() =>
-                    applyUsageQuickRange(item.days, item.label as "1d" | "7d" | "30d")
+                    applyUsageQuickRange(
+                      item.days,
+                      item.label as "1d" | "7d" | "30d",
+                    )
                   }
                   className={`h-8 min-w-[38px] rounded-xs px-2 text-xs tracking-[0.8px] ${
                     usageQuickRange === item.label
@@ -110,25 +149,37 @@ export function ProductUsageTab({
           }
         />
 
-        <div className="grid gap-3 md:grid-cols-3">
+        <div className="grid gap-3 md:grid-cols-2">
           {usageTabSummaryCards.map((item) => (
-            <Card key={item.label} className="bg-surface gap-0 rounded-xs border-0 py-0 shadow-none">
-              <CardContent className="px-4 py-4">
-                <div>
-                  <p className="text-foreground/60 text-xs tracking-[0.5px]">{item.label}</p>
-                  <p className="text-foreground mt-1 text-[30px] leading-none font-semibold tracking-tight">
+            <Card
+              key={item.label}
+              className="bg-surface gap-0 rounded-xs border-0 py-0 shadow-none"
+            >
+              <CardContent className="flex min-h-[144px] flex-col px-4 py-4">
+                <p className="text-foreground/60 text-xs tracking-[0.5px]">
+                  {item.label}
+                </p>
+                {item.actions.length > 0 ? (
+                  <p className="text-foreground mt-1 text-2xl leading-none font-medium tracking-tight">
                     {item.value}
                   </p>
-                </div>
+                ) : (
+                  <p className="text-foreground mt-auto text-2xl leading-none font-medium tracking-tight">
+                    {item.value}
+                  </p>
+                )}
                 {item.actions.length > 0 ? (
-                  <div className="mt-4 flex flex-wrap items-center gap-2">
+                  <div className="mt-auto flex flex-wrap items-center gap-2 pt-4">
                     {item.actions.map((action) => (
                       <Button
                         key={`${item.label}-${action.label}`}
                         size="sm"
                         variant={action.variant}
                         onClick={() => {
-                          if ("scrollTarget" in action && action.scrollTarget === "usage-per-model") {
+                          if (
+                            "scrollTarget" in action &&
+                            action.scrollTarget === "usage-per-model"
+                          ) {
                             scrollToUsagePerModelSection();
                             return;
                           }
@@ -157,8 +208,15 @@ export function ProductUsageTab({
             </CardTitle>
           </CardHeader>
           <CardContent className="px-4 pt-3 pb-4">
-            <ChartContainer config={usageTabBreakdownChartConfig} className="h-[300px] w-full">
-              <BarChart accessibilityLayer data={usageTabBreakdown} margin={{ left: 0, right: 8, top: 8, bottom: 0 }}>
+            <ChartContainer
+              config={usageTabBreakdownChartConfig}
+              className="h-[300px] w-full"
+            >
+              <BarChart
+                accessibilityLayer
+                data={usageTabBreakdown}
+                margin={{ left: 0, right: 8, top: 8, bottom: 0 }}
+              >
                 <CartesianGrid vertical={false} strokeDasharray="0" />
                 <YAxis
                   axisLine={false}
@@ -174,9 +232,17 @@ export function ProductUsageTab({
                     position: "insideLeft",
                     style: { textAnchor: "middle", fontSize: 10 },
                   }}
-                  tickFormatter={(value) => (value === 0 ? "0" : Number(value).toFixed(2))}
+                  tickFormatter={(value) =>
+                    value === 0 ? "0" : Number(value).toFixed(2)
+                  }
                 />
-                <XAxis dataKey="date" axisLine={false} tickLine={false} tickMargin={8} tick={{ fontSize: 10 }} />
+                <XAxis
+                  dataKey="date"
+                  axisLine={false}
+                  tickLine={false}
+                  tickMargin={8}
+                  tick={{ fontSize: 10 }}
+                />
                 <ChartTooltip
                   cursor={false}
                   content={
@@ -187,8 +253,24 @@ export function ProductUsageTab({
                     />
                   }
                 />
-                <Bar dataKey="nanoBanana" name="google/nano-banana-2/text-to-image" fill="var(--color-nanoBanana)" stroke="none" strokeWidth={0} radius={[0, 0, 0, 0]} maxBarSize={24} />
-                <Bar dataKey="qwenEdit" name="wavespeed-ai/qwen-image-2.0/edit" fill="var(--color-qwenEdit)" stroke="none" strokeWidth={0} radius={[0, 0, 0, 0]} maxBarSize={24} />
+                <Bar
+                  dataKey="nanoBanana"
+                  name="google/nano-banana-2/text-to-image"
+                  fill="var(--color-nanoBanana)"
+                  stroke="none"
+                  strokeWidth={0}
+                  radius={[0, 0, 0, 0]}
+                  maxBarSize={24}
+                />
+                <Bar
+                  dataKey="qwenEdit"
+                  name="wavespeed-ai/qwen-image-2.0/edit"
+                  fill="var(--color-qwenEdit)"
+                  stroke="none"
+                  strokeWidth={0}
+                  radius={[0, 0, 0, 0]}
+                  maxBarSize={24}
+                />
               </BarChart>
             </ChartContainer>
           </CardContent>
@@ -197,62 +279,139 @@ export function ProductUsageTab({
         <div ref={usagePerModelSectionRef} className="scroll-mt-24">
           <Card className="bg-surface gap-0 rounded-xs border-0 py-0 shadow-none">
             <CardHeader className="px-4 pt-4 pb-0">
-              <CardTitle className="text-foreground text-sm tracking-[0.4px]">Usage per model</CardTitle>
+              <CardTitle className="text-foreground text-sm tracking-[0.4px]">
+                Usage per model
+              </CardTitle>
             </CardHeader>
             <CardContent className="px-4 pt-3 pb-4">
-              <div className="border-foreground/10 overflow-hidden rounded-xs border">
+              <div className={usageTableContainerClass}>
                 <Table>
                   <TableHeader>
-                    <TableRow className="border-foreground/10 hover:bg-transparent">
-                      <TableHead className="text-foreground/70 w-10 text-[10px] tracking-[1px]">#</TableHead>
-                      <TableHead className="text-foreground/70 text-[10px] tracking-[1px]">Model</TableHead>
-                      <TableHead className="text-foreground/70 text-right text-[10px] tracking-[1px]">Request Count</TableHead>
-                      <TableHead className="text-foreground/70 text-right text-[10px] tracking-[1px]">Avg Cost</TableHead>
-                      <TableHead className="text-foreground/70 text-right text-[10px] tracking-[1px]">Cost</TableHead>
+                    <TableRow className={usageTableHeaderRowClass}>
+                      <TableHead className={`${usageTableHeadClass} w-10`}>
+                        #
+                      </TableHead>
+                      <TableHead className={usageTableHeadClass}>
+                        Model
+                      </TableHead>
+                      <TableHead
+                        className={`${usageTableHeadClass} text-right`}
+                      >
+                        Request Count
+                      </TableHead>
+                      <TableHead
+                        className={`${usageTableHeadClass} text-right`}
+                      >
+                        Avg Cost
+                      </TableHead>
+                      <TableHead
+                        className={`${usageTableHeadClass} text-right`}
+                      >
+                        Cost
+                      </TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {usageTabPerModel.map((item, index) => (
-                      <TableRow key={item.model} className="border-foreground/10 hover:bg-transparent">
-                        <TableCell className="text-xs">{index + 1}</TableCell>
-                        <TableCell className="text-xs">{item.model}</TableCell>
-                        <TableCell className="text-right text-xs">{item.requestCount}</TableCell>
-                        <TableCell className="text-right text-xs">${item.avgCost.toFixed(4)}</TableCell>
-                        <TableCell className="text-right text-xs">${item.cost.toFixed(4)}</TableCell>
+                      <TableRow
+                        key={item.model}
+                        className={usageTableBodyRowClass}
+                      >
+                        <TableCell className={usageTableCellClass}>
+                          {index + 1}
+                        </TableCell>
+                        <TableCell className={usageTableCellClass}>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              router.push(
+                                `/explore?model=${encodeURIComponent(item.model)}`,
+                              )
+                            }
+                            className="text-foreground cursor-pointer underline-offset-2 hover:text-[#3f74ff] hover:underline"
+                          >
+                            {item.model}
+                          </button>
+                        </TableCell>
+                        <TableCell
+                          className={`${usageTableCellClass} text-right`}
+                        >
+                          {item.requestCount}
+                        </TableCell>
+                        <TableCell
+                          className={`${usageTableCellClass} text-right`}
+                        >
+                          ${item.avgCost.toFixed(4)}
+                        </TableCell>
+                        <TableCell
+                          className={`${usageTableCellClass} text-right`}
+                        >
+                          ${item.cost.toFixed(4)}
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
               </div>
-              <p className="text-foreground/60 mt-3 text-right text-xs">
-                Total {usageTabPerModel.length} predictions, cost 0.0940
-              </p>
+              <div className="border-foreground/10 flex items-center justify-between border-t pt-3">
+                <p className="text-foreground/70 text-xs tracking-[0.3px]">
+                  Total {usagePerModelTotalPredictions} predictions
+                </p>
+                <p className="text-foreground text-base font-semibold tracking-tight">
+                  ${usagePerModelTotalCost.toFixed(4)}
+                </p>
+              </div>
             </CardContent>
           </Card>
         </div>
 
         <Card className="bg-surface gap-0 rounded-xs border-0 py-0 shadow-none">
           <CardHeader className="px-4 pt-4 pb-0">
-            <CardTitle className="text-foreground text-sm tracking-[0.4px]">Daily Usage</CardTitle>
+            <CardTitle className="text-foreground text-sm tracking-[0.4px]">
+              Daily Usage
+            </CardTitle>
           </CardHeader>
           <CardContent className="px-4 pt-3 pb-4">
-            <div className="border-foreground/10 overflow-hidden rounded-xs border">
+            <div className={usageTableContainerClass}>
               <Table>
                 <TableHeader>
-                  <TableRow className="border-foreground/10 hover:bg-transparent">
-                    <TableHead className="text-foreground/70 text-[10px] tracking-[1px]">Date</TableHead>
-                    <TableHead className="text-foreground/70 text-right text-[10px] tracking-[1px]">Cost</TableHead>
-                    <TableHead className="text-foreground/70 text-right text-[10px] tracking-[1px]">Request Count</TableHead>
-                    <TableHead className="text-foreground/70 text-right text-[10px] tracking-[1px]">Models Used</TableHead>
+                  <TableRow className={usageTableHeaderRowClass}>
+                    <TableHead className={usageTableHeadClass}>Date</TableHead>
+                    <TableHead className={`${usageTableHeadClass} text-right`}>
+                      Cost
+                    </TableHead>
+                    <TableHead className={`${usageTableHeadClass} text-right`}>
+                      Request Count
+                    </TableHead>
+                    <TableHead className={`${usageTableHeadClass} text-right`}>
+                      Models Used
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {usageTabDailyUsage.map((item) => (
-                    <TableRow key={item.date} className="border-foreground/10 hover:bg-transparent">
-                      <TableCell className="text-xs">{item.date}</TableCell>
-                      <TableCell className="text-right text-xs">${item.cost.toFixed(4)}</TableCell>
-                      <TableCell className="text-right text-xs">{item.requestCount}</TableCell>
-                      <TableCell className="text-right text-xs">{item.modelsUsed}</TableCell>
+                    <TableRow
+                      key={item.date}
+                      className={usageTableBodyRowClass}
+                    >
+                      <TableCell className={usageTableCellClass}>
+                        {item.date}
+                      </TableCell>
+                      <TableCell
+                        className={`${usageTableCellClass} text-right`}
+                      >
+                        ${item.cost.toFixed(4)}
+                      </TableCell>
+                      <TableCell
+                        className={`${usageTableCellClass} text-right`}
+                      >
+                        {item.requestCount}
+                      </TableCell>
+                      <TableCell
+                        className={`${usageTableCellClass} text-right`}
+                      >
+                        {item.modelsUsed}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
