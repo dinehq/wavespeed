@@ -200,31 +200,57 @@ export function Navbar({ mode = "default" }: NavbarProps) {
           />
         </div>
         {isDashboardMode ? (
-          <button
-            aria-label="User profile"
-            className="border-foreground/10 bg-surface hover:bg-foreground/10 flex size-9 cursor-pointer items-center justify-center rounded-full border transition-colors duration-150"
-          >
-            <svg
-              className="text-foreground size-4"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+          <>
+            <Link
+              href="/dashboard?tab=Billing"
+              aria-label="Billing"
+              className="group hidden h-8 items-center gap-px md:inline-flex"
             >
-              <circle
-                cx="8"
-                cy="5.2"
-                r="2.2"
-                stroke="currentColor"
-                strokeWidth="1.2"
-              />
-              <path
-                d="M3.5 12.8c0-2.1 2-3.4 4.5-3.4s4.5 1.3 4.5 3.4"
-                stroke="currentColor"
-                strokeWidth="1.2"
-                strokeLinecap="round"
-              />
-            </svg>
-          </button>
+              <span className="bg-surface group-hover:bg-foreground/10 text-foreground inline-flex h-8 items-center rounded-xs px-2 font-mono text-sm tracking-[0.6px] transition-colors duration-150">
+                $6.186
+              </span>
+              <span className="bg-surface group-hover:bg-foreground/10 text-foreground/70 inline-flex size-8 items-center justify-center rounded-xs transition-colors duration-150">
+                <svg
+                  className="size-3"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M8 3.5v9M3.5 8h9"
+                    stroke="currentColor"
+                    strokeWidth="1.2"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </span>
+            </Link>
+            <button
+              aria-label="User profile"
+              className="bg-surface hover:bg-foreground/10 flex size-8 cursor-pointer items-center justify-center rounded-xs transition-colors duration-150"
+            >
+              <svg
+                className="text-foreground size-4"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle
+                  cx="8"
+                  cy="5.2"
+                  r="2.2"
+                  stroke="currentColor"
+                  strokeWidth="1.2"
+                />
+                <path
+                  d="M3.5 12.8c0-2.1 2-3.4 4.5-3.4s4.5 1.3 4.5 3.4"
+                  stroke="currentColor"
+                  strokeWidth="1.2"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </button>
+          </>
         ) : (
           <a
             href="#"
