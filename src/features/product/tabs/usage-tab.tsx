@@ -149,7 +149,7 @@ export function ProductUsageTab({
           }
         />
 
-        <div className="grid gap-3 md:grid-cols-2">
+        <div className="grid gap-3 md:grid-cols-4">
           {usageTabSummaryCards.map((item) => (
             <Card
               key={item.label}
