@@ -14,62 +14,62 @@ export const setupTasks = [
     action: "Add now",
     tone: "primary",
     done: true,
-    href: "/product/settings",
+    href: "/settings",
   },
   {
     label: "Add credits",
     action: "Add credits",
     tone: "primary",
     done: false,
-    href: "/product/billing",
+    href: "/billing",
   },
   {
     label: "Generate your first media",
     action: "Start",
     tone: "secondary",
     done: false,
-    href: "/product/explore",
+    href: "/explore",
   },
 ];
 
 export const apiTasks = [
-  { label: "Get an API key", action: "Get", href: "/product/api-keys" },
+  { label: "Get an API key", action: "Get", href: "/api-keys" },
   {
     label: "Quick start guide",
     action: "Check",
-    href: "/product/serverless",
+    href: "/serverless",
   },
   {
     label: "How to use in Python SDK",
     action: "Check",
-    href: "/product/llm",
+    href: "/llm",
   },
   {
     label: "Check documentation",
     action: "Check",
-    href: "/product/settings",
+    href: "/settings",
   },
 ];
 
 export const createWithAiTasks = [
-  { label: "Desktop app", action: "Download", href: "/product/explore" },
-  { label: "Studio", action: "Open", href: "/product/explore" },
+  { label: "Desktop app", action: "Download", href: "/explore" },
+  { label: "Studio", action: "Open", href: "/explore" },
   {
     label: "Affiliate program",
     action: "Join",
-    href: "/product/settings",
+    href: "/settings",
   },
   {
     label: "Become a collaborator",
     action: "Apply",
-    href: "/product/settings",
+    href: "/settings",
   },
   {
     label: "Get inspiration",
     action: "Explore",
-    href: "/product/explore",
+    href: "/explore",
   },
-  { label: "API Keys", action: "Manage", href: "/product/api-keys" },
+  { label: "API Keys", action: "Manage", href: "/api-keys" },
 ];
 
 export const gettingStartedContentByIntent: Record<
@@ -203,12 +203,12 @@ export const dashboardSummaryCards = [
     actions: [
       {
         label: "Manage credits",
-        href: "/product/billing?billingTab=top-up",
+        href: "/billing?billingTab=top-up",
         variant: "default",
       },
       {
         label: "Billing",
-        href: "/product/billing?billingTab=billing&scrollTo=billing-records",
+        href: "/billing?billingTab=billing&scrollTo=billing-records",
         variant: "outline",
       },
     ],
@@ -217,13 +217,13 @@ export const dashboardSummaryCards = [
     label: "Requests in last 7 days",
     value: "2",
     icon: Activity,
-    actions: [{ label: "Check history", href: "/product/history", variant: "outline" }],
+    actions: [{ label: "Check history", href: "/history", variant: "outline" }],
   },
   {
     label: "Models Used",
     value: "2",
     icon: Layers,
-    actions: [{ label: "Check usage", href: "/product/usage", variant: "outline" }],
+    actions: [{ label: "Check usage", href: "/usage", variant: "outline" }],
   },
 ] as const;
 

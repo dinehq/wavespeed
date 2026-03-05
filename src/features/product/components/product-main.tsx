@@ -180,13 +180,13 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
     params.set("tab", nextTab);
     params.delete("billingTab");
     params.delete("scrollTo");
-    router.push(`/product/dashboard?${params.toString()}`);
+    router.push(`/dashboard?${params.toString()}`);
   };
   const navigateToBillingSubTab = (nextTab: string) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("billingTab", nextTab);
     params.delete("tab");
-    router.replace(`/product/billing?${params.toString()}`, { scroll: false });
+    router.replace(`/billing?${params.toString()}`, { scroll: false });
   };
   const scrollToElementWithMainTabOffset = (element: HTMLDivElement | null) => {
     if (!element) {
@@ -226,7 +226,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
     const params = new URLSearchParams(searchParams.toString());
     params.delete("scrollTo");
     const query = params.toString();
-    router.replace(query ? `/product/billing?${query}` : "/product/billing", {
+    router.replace(query ? `/billing?${query}` : "/billing", {
       scroll: false,
     });
 
@@ -287,7 +287,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
     }
   };
   const openRequestDetail = (requestId: string) => {
-    router.push(`/product/requests/${requestId}`);
+    router.push(`/requests/${requestId}`);
   };
   const renderRequestsSection = (
     headerLevel: "primary" | "secondary" = "secondary",

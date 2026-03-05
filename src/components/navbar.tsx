@@ -202,7 +202,7 @@ export function Navbar({ mode = "default" }: NavbarProps) {
         {isDashboardMode ? (
           <>
             <Link
-              href="/product/billing"
+              href="/billing"
               aria-label="Billing"
               className="group hidden h-8 items-center gap-px md:inline-flex"
             >

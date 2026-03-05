@@ -87,7 +87,7 @@ export function ProductDashboardTab({
         />
 
         {showGettingStarted ? (
-          <article className="mb-3 space-y-4">
+          <article className="mb-6 space-y-4">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <h2 className="text-foreground text-xl font-semibold tracking-tight">Getting started</h2>
               <Button
@@ -102,14 +102,14 @@ export function ProductDashboardTab({
             <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
               <CardContent className="p-0">
                 <div className="divide-foreground/10 grid divide-y md:grid-cols-3 md:divide-x md:divide-y-0">
-                  <section className="flex h-full flex-col px-4 py-4 md:min-h-[320px] md:px-5 md:py-5">
+                  <section className="flex h-full flex-col px-4 pt-4 pb-1 md:min-h-[320px] md:px-5 md:pt-5 md:pb-2">
                     <div className="mb-4">
                       <CardTitle className="text-foreground text-base tracking-[0.3px]">Welcome to WaveSpeed</CardTitle>
                       <CardDescription className="text-subtle mt-1.5 text-sm leading-5">
                         Complete setup to unlock the full speed of your account.
                       </CardDescription>
                     </div>
-                    <ul className="divide-foreground/5 mt-auto divide-y">
+                    <ul className="mt-auto">
                       {setupTasks.map((task) => (
                         <li key={task.label} className="flex h-11 items-center justify-between gap-2">
                           <div className="flex min-w-0 flex-1 items-center gap-2">
@@ -130,12 +130,13 @@ export function ProductDashboardTab({
                           </div>
                           {!task.done ? (
                             <Button
-                              size="xs"
+                              size="sm"
+                              variant={task.tone === "primary" ? "default" : "outline"}
                               onClick={() => navigateFromGettingStarted(task.href)}
-                              className={`h-8 shrink-0 rounded-xs px-3 text-xs tracking-[0.8px] shadow-xs ${
+                              className={`h-8 shrink-0 rounded-xs px-3 text-xs ${
                                 task.tone === "primary"
-                                  ? "bg-foreground text-background hover:bg-foreground/80"
-                                  : "bg-surface text-foreground hover:bg-foreground/10 border-0"
+                                  ? "bg-foreground text-background hover:bg-foreground/80 tracking-[0.8px] shadow-xs"
+                                  : `tracking-[0.5px] ${controlButtonClass}`
                               }`}
                             >
                               {task.action}
@@ -146,7 +147,7 @@ export function ProductDashboardTab({
                     </ul>
                   </section>
 
-                  <section className="flex h-full flex-col px-4 py-4 md:min-h-[320px] md:px-5 md:py-5">
+                  <section className="flex h-full flex-col px-4 pt-4 pb-1 md:min-h-[320px] md:px-5 md:pt-5 md:pb-2">
                     <div className="mb-4">
                       <CardTitle className="text-foreground text-base tracking-[0.3px]">
                         {currentGettingStartedContent.title}
@@ -183,7 +184,7 @@ export function ProductDashboardTab({
                     </ul>
                   </section>
 
-                  <section className="flex h-full flex-col px-4 py-4 md:min-h-[320px] md:px-5 md:py-5">
+                  <section className="flex h-full flex-col px-4 pt-4 pb-1 md:min-h-[320px] md:px-5 md:pt-5 md:pb-2">
                     <div className="mb-4">
                       <CardTitle className="text-foreground text-base tracking-[0.3px]">
                         Explore Models
@@ -240,7 +241,7 @@ export function ProductDashboardTab({
           </article>
         ) : null}
 
-        <article className="space-y-3">
+        <article className="mb-6 space-y-3 md:mb-8">
           <div className="grid gap-3 md:grid-cols-3">
             {dashboardSummaryCards.map((item) => (
               <Card key={`dashboard-${item.label}`} className="bg-surface gap-0 rounded-xs border-0 py-0 shadow-none">

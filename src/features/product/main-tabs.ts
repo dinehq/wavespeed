@@ -16,38 +16,38 @@ export const isProductMainTab = (value: string): value is ProductMainTab =>
   (productMainTabs as readonly string[]).includes(value);
 
 export const productMainTabRoutes: Partial<Record<ProductMainTab, string>> = {
-  Dashboard: "/product/dashboard",
-  Explore: "/product/explore",
-  Usage: "/product/usage",
-  History: "/product/history",
-  LLM: "/product/llm",
-  Serverless: "/product/serverless",
-  "API Keys": "/product/api-keys",
-  Billing: "/product/billing",
-  Settings: "/product/settings",
+  Dashboard: "/dashboard",
+  Explore: "/explore",
+  Usage: "/usage",
+  History: "/history",
+  LLM: "/llm",
+  Serverless: "/serverless",
+  "API Keys": "/api-keys",
+  Billing: "/billing",
+  Settings: "/settings",
 };
 
 export const resolveProductMainTabFromPathname = (
   pathname: string,
 ): ProductMainTab | null => {
   switch (pathname) {
-    case "/product/dashboard":
+    case "/dashboard":
       return "Dashboard";
-    case "/product/explore":
+    case "/explore":
       return "Explore";
-    case "/product/usage":
+    case "/usage":
       return "Usage";
-    case "/product/history":
+    case "/history":
       return "History";
-    case "/product/llm":
+    case "/llm":
       return "LLM";
-    case "/product/serverless":
+    case "/serverless":
       return "Serverless";
-    case "/product/api-keys":
+    case "/api-keys":
       return "API Keys";
-    case "/product/billing":
+    case "/billing":
       return "Billing";
-    case "/product/settings":
+    case "/settings":
       return "Settings";
     default:
       return null;
