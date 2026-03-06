@@ -102,7 +102,7 @@ export function Testimonials() {
   return (
     <section className="bg-surface pt-16 [--section-pad:24px] md:pt-[80px] md:pb-[32px] md:[--section-pad:80px]">
       <div className="mb-8 px-6 md:mb-12 md:px-20">
-        <h2 className="text-heading mx-auto max-w-[1280px] text-[32px] leading-none font-medium tracking-[-1px] text-balance md:text-[48px]">
+        <h2 className="text-heading font-display mx-auto max-w-[1280px] text-[32px] leading-none font-medium tracking-[-1px] text-balance md:text-[48px]">
           What people are saying
         </h2>
       </div>
@@ -149,7 +149,7 @@ export function Testimonials() {
                 {t.quote}
               </p>
             </div>
-            <div className="text-muted relative font-mono text-sm leading-normal">
+            <div className="text-foreground/60 relative font-mono text-sm leading-normal">
               <p>{t.name}</p>
               <p>{t.title}</p>
             </div>

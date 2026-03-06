@@ -116,16 +116,16 @@ export function ProductDashboardTab({
             <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
               <CardContent className="p-0">
                 <div className="divide-foreground/10 grid divide-y md:grid-cols-3 md:divide-x md:divide-y-0">
-                  <section className="flex h-full flex-col px-4 pt-4 pb-1 md:min-h-[320px] md:px-5 md:pt-5 md:pb-2">
+                  <section className="flex h-full flex-col px-4 pt-4 pb-1 md:px-5 md:pt-5 md:pb-2">
                     <div className="mb-4">
-                      <CardTitle className="text-foreground text-base tracking-[0.3px]">
+                      <CardTitle className="text-foreground font-display text-base tracking-[0.3px]">
                         Welcome to WaveSpeed
                       </CardTitle>
                       <CardDescription className="text-subtle mt-1.5 text-sm leading-5">
                         Complete setup to unlock the full speed of your account.
                       </CardDescription>
                     </div>
-                    <ul className="mt-auto">
+                    <ul>
                       {setupTasks.map((task) => (
                         <li
                           key={task.label}
@@ -174,16 +174,16 @@ export function ProductDashboardTab({
                     </ul>
                   </section>
 
-                  <section className="flex h-full flex-col px-4 pt-4 pb-1 md:min-h-[320px] md:px-5 md:pt-5 md:pb-2">
+                  <section className="flex h-full flex-col px-4 pt-4 pb-1 md:px-5 md:pt-5 md:pb-2">
                     <div className="mb-4">
-                      <CardTitle className="text-foreground text-base tracking-[0.3px]">
+                      <CardTitle className="text-foreground font-display text-base tracking-[0.3px]">
                         {currentGettingStartedContent.title}
                       </CardTitle>
                       <CardDescription className="text-subtle mt-1.5 text-sm leading-5">
                         {currentGettingStartedContent.description}
                       </CardDescription>
                     </div>
-                    <ul className="divide-foreground/5 mt-auto divide-y">
+                    <ul className="divide-foreground/5 divide-y">
                       {currentGettingStartedContent.tasks.map((task, index) => (
                         <li key={task.label}>
                           <button
@@ -215,16 +215,16 @@ export function ProductDashboardTab({
                     </ul>
                   </section>
 
-                  <section className="flex h-full flex-col px-4 pt-4 pb-1 md:min-h-[320px] md:px-5 md:pt-5 md:pb-2">
+                  <section className="flex h-full flex-col px-4 pt-4 pb-1 md:px-5 md:pt-5 md:pb-2">
                     <div className="mb-4">
-                      <CardTitle className="text-foreground text-base tracking-[0.3px]">
+                      <CardTitle className="text-foreground font-display text-base tracking-[0.3px]">
                         Explore Models
                       </CardTitle>
                       <CardDescription className="text-subtle mt-1.5 text-sm leading-5">
                         Recommended models your team can ship with today.
                       </CardDescription>
                     </div>
-                    <ul className="divide-foreground/5 mt-auto divide-y">
+                    <ul className="divide-foreground/5 divide-y">
                       {modelCards.slice(0, 3).map((model) => (
                         <li key={model.name}>
                           <button
@@ -373,7 +373,7 @@ export function ProductDashboardTab({
                       />
                     </div>
                     <div className="min-w-0">
-                      <p className="text-foreground line-clamp-1 text-xs">
+                      <p className="text-foreground line-clamp-1 text-sm">
                         {model.name}
                       </p>
                       <p className="text-foreground/50 mt-0.5 text-xs leading-tight">
@@ -403,7 +403,7 @@ export function ProductDashboardTab({
                       />
                     </div>
                     <div className="min-w-0">
-                      <p className="text-foreground line-clamp-1 text-xs">
+                      <p className="text-foreground line-clamp-1 text-sm">
                         {model.name}
                       </p>
                       <p className="text-foreground/50 mt-0.5 text-xs leading-tight">

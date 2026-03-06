@@ -316,7 +316,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
           title="Requests"
           titleClassName={
             headerLevel === "secondary"
-              ? "text-foreground text-xl font-semibold tracking-tight"
+              ? "text-foreground font-display text-xl font-semibold tracking-tight"
               : undefined
           }
           bottomPaddingClassName="pb-0"
@@ -773,14 +773,24 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
               className="flex h-12 w-full items-center justify-start gap-2 overflow-x-auto rounded-none px-0"
               aria-hidden
             >
-              {dashboardTabs.map((tab) => (
-                <span
-                  key={tab}
-                  className="flex-none rounded-none px-2 py-0 text-sm tracking-[1.2px] whitespace-nowrap text-foreground/60"
-                >
-                  {tab}
-                </span>
-              ))}
+              {dashboardTabs.map((tab) => {
+                const isActive = tab === resolvedMainTab;
+                return (
+                  <span
+                    key={tab}
+                    className={`relative flex h-12 flex-none items-center rounded-none px-2 py-0 text-sm tracking-[1.2px] whitespace-nowrap ${
+                      isActive
+                        ? "text-[#3f74ff]"
+                        : "text-foreground/60"
+                    }`}
+                  >
+                    {tab}
+                    {isActive && (
+                      <span className="absolute right-0 bottom-0 left-0 h-[2px] bg-[#3f74ff]" />
+                    )}
+                  </span>
+                );
+              })}
             </div>
           </div>
         </div>

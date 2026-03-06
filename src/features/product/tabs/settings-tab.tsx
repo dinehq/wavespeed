@@ -15,7 +15,7 @@ export function ProductSettingsTab() {
         />
 
         <section className="space-y-2">
-          <h2 className="text-foreground text-xl font-semibold tracking-tight">Basic Info</h2>
+          <h2 className="text-foreground font-display text-xl font-semibold tracking-tight">Basic Info</h2>
           <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
             <CardContent className="space-y-4 p-4">
               <div className="grid gap-4 md:grid-cols-2">
@@ -50,7 +50,7 @@ export function ProductSettingsTab() {
         </section>
 
         <section className="space-y-2">
-          <h2 className="text-foreground text-xl font-semibold tracking-tight">My Team</h2>
+          <h2 className="text-foreground font-display text-xl font-semibold tracking-tight">My Team</h2>
           <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
             <CardContent className="divide-foreground/10 divide-y p-0">
               {settingsTeamMembers.map((member) => (
@@ -70,7 +70,7 @@ export function ProductSettingsTab() {
 
         <section className="space-y-2">
           <div className="flex items-center justify-between gap-2">
-            <h2 className="text-foreground text-xl font-semibold tracking-tight">Account Level</h2>
+            <h2 className="text-foreground font-display text-xl font-semibold tracking-tight">Account Level</h2>
             <Badge
               variant="outline"
               className="rounded-xs border-[#3f74ff]/30 bg-[#3f74ff]/8 px-2 py-0.5 text-[10px] tracking-[0.8px] text-[#3f74ff] uppercase"

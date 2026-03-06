@@ -127,6 +127,7 @@
   --color-syntax-string: #ee560a;
   --color-syntax-comment: #5f6673;
   --font-sans: var(--font-inter);
+  --font-display: var(--font-azeret);
   --font-mono: var(--font-azeret-semimono);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);

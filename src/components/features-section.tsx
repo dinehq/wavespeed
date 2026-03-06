@@ -32,7 +32,7 @@ export function FeaturesSection() {
           <h2 className="text-heading text-[32px] leading-none font-medium tracking-[-1px] text-balance md:text-[48px]">
             Engineered for <em className="italic">Velocity</em>
           </h2>
-          <p className="text-subtle font-mono text-base text-pretty">
+          <p className="text-foreground/60 font-mono text-base text-pretty">
             WaveSpeed is a purpose-built inference engine
             <br className="hidden md:block" />
             designed to minimize latency and maximize throughput.
@@ -61,10 +61,10 @@ export function FeaturesSection() {
 
               {/* Text */}
               <div className="absolute right-6 bottom-[24px] left-6">
-                <h3 className="text-ink mb-2 text-2xl leading-7 font-medium">
+                <h3 className="text-ink font-display mb-2 text-2xl leading-7 font-medium">
                   Vast Model Library
                 </h3>
-                <p className="text-muted w-auto font-mono text-sm text-pretty lg:w-[526px]">
+                <p className="text-foreground/60 w-auto font-mono text-sm text-pretty lg:w-[526px]">
                   Access the entire HuggingFace hub and top proprietary models
                   with a single unified API key.
                 </p>
@@ -74,10 +74,10 @@ export function FeaturesSection() {
             <div className="bg-surface relative h-[380px] w-full overflow-hidden rounded-xs lg:h-[420px] lg:flex-1">
               {/* Title + description */}
               <div className="absolute top-6 right-6 left-6 z-10 lg:w-[584px]">
-                <h3 className="text-ink mb-2 text-2xl leading-7 font-medium">
+                <h3 className="text-ink font-display mb-2 text-2xl leading-7 font-medium">
                   Blazing Fast Inference
                 </h3>
-                <p className="text-muted font-mono text-sm leading-tight text-pretty">
+                <p className="text-foreground/60 font-mono text-sm leading-tight text-pretty">
                   Optimized GPU clusters deliver up to 4x faster token
                   generation for LLMs and sub-second rendering for image models.
                 </p>
@@ -102,10 +102,10 @@ export function FeaturesSection() {
             <div className="bg-surface relative h-[380px] w-full shrink-0 overflow-hidden rounded-xs lg:h-[420px] lg:w-[55%]">
               {/* Title + description */}
               <div className="absolute top-6 right-6 left-6 z-10 lg:w-[642px]">
-                <h3 className="text-ink mb-2 text-2xl leading-7 font-medium">
+                <h3 className="text-ink font-display mb-2 text-2xl leading-7 font-medium">
                   Built for Scale
                 </h3>
-                <p className="text-muted max-w-[400px] font-mono text-sm text-pretty">
+                <p className="text-foreground/60 max-w-[400px] font-mono text-sm text-pretty">
                   Enterprise-grade reliability with 99.99% uptime guarantees and
                   dedicated throughput for high-volume applications.
                 </p>
@@ -146,10 +146,10 @@ export function FeaturesSection() {
               </div>
               {/* Title + description */}
               <div className="absolute right-6 bottom-[24px] left-6 z-10 lg:w-[526px]">
-                <h3 className="text-ink mb-2 text-2xl leading-7 font-medium">
+                <h3 className="text-ink font-display mb-2 text-2xl leading-7 font-medium">
                   Security
                 </h3>
-                <p className="text-muted font-mono text-sm leading-tight text-pretty">
+                <p className="text-foreground/60 font-mono text-sm leading-tight text-pretty">
                   SOC 2 Type II compliant with end-to-end encryption and private
                   VPC deployment options.
                 </p>

@@ -60,7 +60,7 @@ export function ProductBillingTab({
         <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
           <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
             <CardHeader className="px-4 pt-4 pb-3">
-              <CardTitle className="text-foreground text-xl font-semibold tracking-tight">
+              <CardTitle className="text-foreground font-display text-xl font-semibold tracking-tight">
                 Top Up
               </CardTitle>
             </CardHeader>
@@ -130,7 +130,7 @@ export function ProductBillingTab({
 
           <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
             <CardHeader className="px-4 pt-4 pb-0">
-              <CardTitle className="text-foreground text-xl font-semibold tracking-tight">
+              <CardTitle className="text-foreground font-display text-xl font-semibold tracking-tight">
                 My Account
               </CardTitle>
             </CardHeader>

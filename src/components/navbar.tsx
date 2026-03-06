@@ -103,7 +103,7 @@ export function Navbar({ mode = "default" }: NavbarProps) {
               <div className="border-foreground/5 bg-background grid w-[420px] grid-cols-2 gap-6 rounded-xs border p-5 pt-3 shadow-lg">
                 {resourceGroups.map((group) => (
                   <div key={group.label} className="flex flex-col gap-1">
-                    <p className="text-foreground/40 mb-1 font-mono text-[10px] tracking-[1.2px]">
+                    <p className="text-foreground/60 mb-1 font-mono text-[10px] tracking-[1.2px]">
                       {group.label}
                     </p>
                     {group.items.map((item) => (
@@ -115,7 +115,7 @@ export function Navbar({ mode = "default" }: NavbarProps) {
                         <p className="text-foreground font-mono text-xs leading-4 tracking-[1.2px]">
                           {item.name}
                         </p>
-                        <p className="text-foreground/40 font-mono text-[10px] leading-4">
+                        <p className="text-foreground/60 font-mono text-[10px] leading-4">
                           {item.desc}
                         </p>
                       </a>
@@ -316,7 +316,7 @@ export function Navbar({ mode = "default" }: NavbarProps) {
             <div className="grid grid-cols-2 gap-4 pl-2">
               {resourceGroups.map((group) => (
                 <div key={group.label} className="flex flex-col gap-1">
-                  <p className="text-foreground/40 mb-1 font-mono text-[10px] tracking-[1.2px]">
+                  <p className="text-foreground/60 mb-1 font-mono text-[10px] tracking-[1.2px]">
                     {group.label}
                   </p>
                   {group.items.map((item) => (
