@@ -7,15 +7,10 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { DateRange } from "react-day-picker";
 import {
   AlertCircle,
-  ArrowRight,
-  CalendarIcon,
   ChevronDown,
-  Check,
   Copy,
   Download,
-  EyeOff,
   ExternalLink,
-  LayoutGrid,
   Search,
   Trash2,
   X,
@@ -23,14 +18,8 @@ import {
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Calendar as DateCalendar } from "@/components/ui/calendar";
+import { Card, CardContent } from "@/components/ui/card";
+
 import { Input } from "@/components/ui/input";
 import {
   Popover,
@@ -52,32 +41,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
-import {
-  accountLevels,
-  apiKeyRecords,
-  billingTopUpRecords,
-  billingUsageRecords,
-  currentAccountLevel,
-  dashboardSummaryCards,
-  favoriteModelCards,
   gettingStartedContentByIntent,
-  modelCards,
   requests,
-  settingsBasicInfo,
-  settingsTeamMembers,
-  setupTasks,
-  topUpAmountOptions,
-  usageTabBreakdown,
-  usageTabBreakdownChartConfig,
-  usageTabDailyUsage,
-  usageTabPerModel,
-  usageTabSummaryCards,
 } from "@/features/product/data/product-main-data";
 import { ProductSectionHeader } from "@/features/product/components/product-section-header";
 import {
@@ -95,7 +63,6 @@ import { ProductDashboardTab } from "@/features/product/tabs/dashboard-tab";
 import { ProductSettingsTab } from "@/features/product/tabs/settings-tab";
 import { ProductUsageTab } from "@/features/product/tabs/usage-tab";
 import type { DashboardIntent } from "@/features/product/types/product-main";
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
 type ProductMainProps = {
   forcedMainTab?: ProductMainTab;
@@ -481,12 +448,12 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
       </div>
 
       <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
-        <CardContent className="flex items-center gap-1.5 bg-amber-500/6 py-2.5 pr-4 pl-3 dark:bg-amber-400/8 md:pr-5">
+        <CardContent className="flex items-center gap-1.5 bg-amber-500/6 py-2.5 pr-4 pl-3 md:pr-5 dark:bg-amber-400/8">
           <AlertCircle className="size-3.5 shrink-0 text-amber-600 dark:text-amber-400" />
           <div>
             <p className="text-xs leading-[1.35] text-amber-900/70 dark:text-amber-200/80">
-              Your outputs are stored for <strong>7 days only</strong>.
-              Download and save important files before they expire.
+              Your outputs are stored for <strong>7 days only</strong>. Download
+              and save important files before they expire.
             </p>
           </div>
         </CardContent>
@@ -779,9 +746,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                   <span
                     key={tab}
                     className={`relative flex h-12 flex-none items-center rounded-none px-2 py-0 text-sm tracking-[1.2px] whitespace-nowrap ${
-                      isActive
-                        ? "text-[#3f74ff]"
-                        : "text-foreground/60"
+                      isActive ? "text-[#3f74ff]" : "text-foreground/60"
                     }`}
                   >
                     {tab}

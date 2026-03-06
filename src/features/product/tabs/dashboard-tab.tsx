@@ -116,7 +116,7 @@ export function ProductDashboardTab({
             <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
               <CardContent className="p-0">
                 <div className="divide-foreground/10 grid divide-y md:grid-cols-3 md:divide-x md:divide-y-0">
-                  <section className="flex h-full flex-col px-4 pt-4 pb-1 md:px-5 md:pt-5 md:pb-2">
+                  <section className="flex h-full flex-col justify-between px-4 pt-4 pb-1 md:px-5 md:pt-5 md:pb-2">
                     <div className="mb-4">
                       <CardTitle className="text-foreground font-display text-base tracking-[0.3px]">
                         Welcome to WaveSpeed
@@ -174,7 +174,7 @@ export function ProductDashboardTab({
                     </ul>
                   </section>
 
-                  <section className="flex h-full flex-col px-4 pt-4 pb-1 md:px-5 md:pt-5 md:pb-2">
+                  <section className="flex h-full flex-col justify-between px-4 pt-4 pb-1 md:px-5 md:pt-5 md:pb-2">
                     <div className="mb-4">
                       <CardTitle className="text-foreground font-display text-base tracking-[0.3px]">
                         {currentGettingStartedContent.title}
@@ -215,7 +215,7 @@ export function ProductDashboardTab({
                     </ul>
                   </section>
 
-                  <section className="flex h-full flex-col px-4 pt-4 pb-1 md:px-5 md:pt-5 md:pb-2">
+                  <section className="flex h-full flex-col justify-between px-4 pt-4 pb-1 md:px-5 md:pt-5 md:pb-2">
                     <div className="mb-4">
                       <CardTitle className="text-foreground font-display text-base tracking-[0.3px]">
                         Explore Models
