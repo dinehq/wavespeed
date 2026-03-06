@@ -180,4 +180,3 @@ function ChartTooltipContent({
 }
 
 export { ChartContainer, ChartTooltip, ChartTooltipContent };
-export type { ChartConfig };

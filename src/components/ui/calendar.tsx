@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
-import { DayPicker } from "react-day-picker"
+import * as React from "react";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { DayPicker } from "react-day-picker";
 
-import { cn } from "@/lib/utils"
-import { buttonVariants } from "@/components/ui/button"
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
 
 function Calendar({
   className,
@@ -26,11 +26,11 @@ function Calendar({
         nav: "absolute inset-x-0 top-0 flex items-center justify-between",
         button_previous: cn(
           buttonVariants({ variant: "outline", size: "icon-sm" }),
-          "border-foreground/10 text-foreground/70 hover:bg-foreground/5 size-7 rounded-xs bg-transparent p-0 opacity-100 shadow-none"
+          "border-foreground/10 text-foreground/70 hover:bg-foreground/5 size-7 rounded-xs bg-transparent p-0 opacity-100 shadow-none",
         ),
         button_next: cn(
           buttonVariants({ variant: "outline", size: "icon-sm" }),
-          "border-foreground/10 text-foreground/70 hover:bg-foreground/5 size-7 rounded-xs bg-transparent p-0 opacity-100 shadow-none"
+          "border-foreground/10 text-foreground/70 hover:bg-foreground/5 size-7 rounded-xs bg-transparent p-0 opacity-100 shadow-none",
         ),
         month_grid: "w-full border-collapse",
         weekdays: "flex",
@@ -40,7 +40,7 @@ function Calendar({
         day: "relative size-9 p-0 text-center text-sm",
         day_button: cn(
           buttonVariants({ variant: "ghost", size: "icon-sm" }),
-          "size-9 rounded-none p-0 font-normal aria-selected:rounded-none aria-selected:opacity-100"
+          "size-9 rounded-none p-0 font-normal aria-selected:rounded-none aria-selected:opacity-100",
         ),
         selected:
           "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground rounded-none",
@@ -57,14 +57,20 @@ function Calendar({
       components={{
         Chevron: ({ orientation, className, ...iconProps }) =>
           orientation === "left" ? (
-            <ChevronLeftIcon className={cn("size-4", className)} {...iconProps} />
+            <ChevronLeftIcon
+              className={cn("size-4", className)}
+              {...iconProps}
+            />
           ) : (
-            <ChevronRightIcon className={cn("size-4", className)} {...iconProps} />
+            <ChevronRightIcon
+              className={cn("size-4", className)}
+              {...iconProps}
+            />
           ),
       }}
       {...props}
     />
-  )
+  );
 }
 
-export { Calendar }
+export { Calendar };

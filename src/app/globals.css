@@ -170,7 +170,8 @@ body {
 }
 
 @keyframes breathe {
-  0%, 100% {
+  0%,
+  100% {
     translate: 0 0;
   }
   50% {

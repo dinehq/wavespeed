@@ -32,7 +32,7 @@ export const setupTasks = [
   },
 ];
 
-export const apiTasks = [
+const apiTasks = [
   { label: "Get an API key", action: "Get", href: "/api-keys" },
   {
     label: "Quick start guide",
@@ -51,7 +51,7 @@ export const apiTasks = [
   },
 ];
 
-export const createWithAiTasks = [
+const createWithAiTasks = [
   { label: "Desktop app", action: "Download", href: "/explore" },
   { label: "Studio", action: "Open", href: "/explore" },
   {
@@ -370,18 +370,54 @@ export const usageTabBreakdownChartConfig = {
 } as const;
 
 export const topUpAmountOptions = [
-  { amount: "$5", throughput: "50 images or 5 videos per minute", benefit: "No concurrent tasks" },
-  { amount: "$10", throughput: "50 images or 5 videos per minute", benefit: "Gain 3 concurrent tasks" },
-  { amount: "$20", throughput: "100 images or 10 videos per minute", benefit: "Gain 6 concurrent tasks" },
-  { amount: "$50", throughput: "200 images or 20 videos per minute", benefit: "Gain 12 concurrent tasks" },
-  { amount: "$100", throughput: "500 images or 60 videos per minute", benefit: "Gain 100 concurrent tasks" },
-  { amount: "$1,000", throughput: "3,000 images or 600 videos per minute", benefit: "Gain 2,000 concurrent tasks" },
-  { amount: "$10,000", throughput: "VIP plan with custom throughput", benefit: "Contact us for concurrency setup" },
-  { amount: "Custom", throughput: "Tailored usage package", benefit: "Minimum $5" },
+  {
+    amount: "$5",
+    throughput: "50 images or 5 videos per minute",
+    benefit: "No concurrent tasks",
+  },
+  {
+    amount: "$10",
+    throughput: "50 images or 5 videos per minute",
+    benefit: "Gain 3 concurrent tasks",
+  },
+  {
+    amount: "$20",
+    throughput: "100 images or 10 videos per minute",
+    benefit: "Gain 6 concurrent tasks",
+  },
+  {
+    amount: "$50",
+    throughput: "200 images or 20 videos per minute",
+    benefit: "Gain 12 concurrent tasks",
+  },
+  {
+    amount: "$100",
+    throughput: "500 images or 60 videos per minute",
+    benefit: "Gain 100 concurrent tasks",
+  },
+  {
+    amount: "$1,000",
+    throughput: "3,000 images or 600 videos per minute",
+    benefit: "Gain 2,000 concurrent tasks",
+  },
+  {
+    amount: "$10,000",
+    throughput: "VIP plan with custom throughput",
+    benefit: "Contact us for concurrency setup",
+  },
+  {
+    amount: "Custom",
+    throughput: "Tailored usage package",
+    benefit: "Minimum $5",
+  },
 ];
 
 export const billingTopUpRecords = [
-  { description: "Credit Card", date: "03/03/2026, 10:56 PM", amount: "+$5.25" },
+  {
+    description: "Credit Card",
+    date: "03/03/2026, 10:56 PM",
+    amount: "+$5.25",
+  },
 ];
 
 export const billingUsageRecords = [
@@ -420,7 +456,13 @@ export const settingsBasicInfo = {
 export const settingsTeamMembers = [{ name: "Mangmor", role: "Personal" }];
 
 export const accountLevels = [
-  { level: "Bronze", imagesPerMin: 10, videosPerMin: 5, maxConcurrent: 3, activation: "-" },
+  {
+    level: "Bronze",
+    imagesPerMin: 10,
+    videosPerMin: 5,
+    maxConcurrent: 3,
+    activation: "-",
+  },
   {
     level: "Silver",
     imagesPerMin: 500,

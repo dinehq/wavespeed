@@ -6,7 +6,14 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 type ProductApiKeysTabProps = {
   newApiKeyName: string;
@@ -57,20 +64,35 @@ export function ProductApiKeysTab({
             <Table>
               <TableHeader>
                 <TableRow className="border-foreground/10 hover:bg-transparent">
-                  <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">Name</TableHead>
-                  <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">Key</TableHead>
-                  <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">Created</TableHead>
-                  <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">Status</TableHead>
-                  <TableHead className="text-foreground/50 text-right text-[10px] tracking-[1px]">Actions</TableHead>
+                  <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                    Name
+                  </TableHead>
+                  <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                    Key
+                  </TableHead>
+                  <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                    Created
+                  </TableHead>
+                  <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                    Status
+                  </TableHead>
+                  <TableHead className="text-foreground/50 text-right text-[10px] tracking-[1px]">
+                    Actions
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {apiKeyRecords.map((record) => (
-                  <TableRow key={record.id} className="border-foreground/10 hover:bg-surface">
+                  <TableRow
+                    key={record.id}
+                    className="border-foreground/10 hover:bg-surface"
+                  >
                     <TableCell className="text-xs">{record.name}</TableCell>
                     <TableCell className="text-xs">
                       <div className="flex items-center gap-1.5">
-                        <span className="font-mono text-[11px]">{record.key}</span>
+                        <span className="font-mono text-[11px]">
+                          {record.key}
+                        </span>
                         <Button
                           variant="ghost"
                           size="icon-xs"
@@ -90,7 +112,9 @@ export function ProductApiKeysTab({
                         </Button>
                       </div>
                     </TableCell>
-                    <TableCell className="text-xs">{record.createdAt}</TableCell>
+                    <TableCell className="text-xs">
+                      {record.createdAt}
+                    </TableCell>
                     <TableCell>
                       <Badge
                         variant="outline"
@@ -100,7 +124,11 @@ export function ProductApiKeysTab({
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right">
-                      <Button variant="destructive" size="sm" className="h-7 rounded-xs px-2.5 text-xs tracking-[0.8px]">
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        className="h-7 rounded-xs px-2.5 text-xs tracking-[0.8px]"
+                      >
                         Delete
                       </Button>
                     </TableCell>

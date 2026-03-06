@@ -277,7 +277,7 @@ function CategoryCard({
         />
       </div>
       <p
-        className={`relative truncate font-display text-base leading-6 font-medium tracking-[-0.5px] md:text-xl md:leading-7 ${
+        className={`font-display relative truncate text-base leading-6 font-medium tracking-[-0.5px] md:text-xl md:leading-7 ${
           category.dark ? "text-white" : "text-black"
         }`}
       >

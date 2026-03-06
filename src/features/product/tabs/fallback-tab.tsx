@@ -8,7 +8,9 @@ export function ProductFallbackTab({ tab }: ProductFallbackTabProps) {
       <div className="mx-auto w-full max-w-[1280px]">
         <div className="border-foreground/10 bg-background rounded-xs shadow-none">
           <div className="p-6">
-            <p className="text-foreground text-sm">{tab} section is not configured yet.</p>
+            <p className="text-foreground text-sm">
+              {tab} section is not configured yet.
+            </p>
           </div>
         </div>
       </div>

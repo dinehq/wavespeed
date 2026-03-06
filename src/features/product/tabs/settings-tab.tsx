@@ -1,9 +1,21 @@
-import { accountLevels, currentAccountLevel, settingsBasicInfo, settingsTeamMembers } from "@/features/product/data/product-main-data";
+import {
+  accountLevels,
+  currentAccountLevel,
+  settingsBasicInfo,
+  settingsTeamMembers,
+} from "@/features/product/data/product-main-data";
 import { ProductSectionHeader } from "@/features/product/components/product-section-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 export function ProductSettingsTab() {
   return (
@@ -15,17 +27,27 @@ export function ProductSettingsTab() {
         />
 
         <section className="space-y-2">
-          <h2 className="text-foreground font-display text-xl font-semibold tracking-tight">Basic Info</h2>
+          <h2 className="text-foreground font-display text-xl font-semibold tracking-tight">
+            Basic Info
+          </h2>
           <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
             <CardContent className="space-y-4 p-4">
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-1.5">
-                  <p className="text-foreground/60 text-[11px] tracking-[0.8px] uppercase">Email</p>
-                  <p className="text-foreground text-sm">{settingsBasicInfo.email}</p>
+                  <p className="text-foreground/60 text-[11px] tracking-[0.8px] uppercase">
+                    Email
+                  </p>
+                  <p className="text-foreground text-sm">
+                    {settingsBasicInfo.email}
+                  </p>
                 </div>
                 <div className="space-y-1.5">
-                  <p className="text-foreground/60 text-[11px] tracking-[0.8px] uppercase">Username</p>
-                  <p className="text-foreground text-sm">{settingsBasicInfo.username}</p>
+                  <p className="text-foreground/60 text-[11px] tracking-[0.8px] uppercase">
+                    Username
+                  </p>
+                  <p className="text-foreground text-sm">
+                    {settingsBasicInfo.username}
+                  </p>
                 </div>
               </div>
 
@@ -50,11 +72,16 @@ export function ProductSettingsTab() {
         </section>
 
         <section className="space-y-2">
-          <h2 className="text-foreground font-display text-xl font-semibold tracking-tight">My Team</h2>
+          <h2 className="text-foreground font-display text-xl font-semibold tracking-tight">
+            My Team
+          </h2>
           <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
             <CardContent className="divide-foreground/10 divide-y p-0">
               {settingsTeamMembers.map((member) => (
-                <div key={member.name} className="flex items-center justify-between gap-3 px-4 py-3">
+                <div
+                  key={member.name}
+                  className="flex items-center justify-between gap-3 px-4 py-3"
+                >
                   <p className="text-foreground text-sm">{member.name}</p>
                   <Badge
                     variant="outline"
@@ -70,7 +97,9 @@ export function ProductSettingsTab() {
 
         <section className="space-y-2">
           <div className="flex items-center justify-between gap-2">
-            <h2 className="text-foreground font-display text-xl font-semibold tracking-tight">Account Level</h2>
+            <h2 className="text-foreground font-display text-xl font-semibold tracking-tight">
+              Account Level
+            </h2>
             <Badge
               variant="outline"
               className="rounded-xs border-[#3f74ff]/30 bg-[#3f74ff]/8 px-2 py-0.5 text-[10px] tracking-[0.8px] text-[#3f74ff] uppercase"
@@ -81,18 +110,29 @@ export function ProductSettingsTab() {
           <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
             <CardContent className="space-y-4 p-4">
               <p className="text-foreground/60 text-sm">
-                WaveSpeedAI offers multiple account levels to match different throughput and concurrency requirements.
+                WaveSpeedAI offers multiple account levels to match different
+                throughput and concurrency requirements.
               </p>
 
               <div className="border-foreground/10 overflow-hidden rounded-xs border">
                 <Table>
                   <TableHeader>
                     <TableRow className="border-foreground/10 hover:bg-transparent">
-                      <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">Level</TableHead>
-                      <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">Images/min</TableHead>
-                      <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">Videos/min</TableHead>
-                      <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">Max Concurrent</TableHead>
-                      <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">Activation</TableHead>
+                      <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                        Level
+                      </TableHead>
+                      <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                        Images/min
+                      </TableHead>
+                      <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                        Videos/min
+                      </TableHead>
+                      <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                        Max Concurrent
+                      </TableHead>
+                      <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                        Activation
+                      </TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -107,7 +147,9 @@ export function ProductSettingsTab() {
                         >
                           <TableCell className="text-xs">
                             <div className="flex items-center gap-2">
-                              <span className="text-foreground font-medium">{level.level}</span>
+                              <span className="text-foreground font-medium">
+                                {level.level}
+                              </span>
                               {isCurrent ? (
                                 <Badge
                                   variant="outline"
@@ -118,10 +160,18 @@ export function ProductSettingsTab() {
                               ) : null}
                             </div>
                           </TableCell>
-                          <TableCell className="text-xs">{level.imagesPerMin}</TableCell>
-                          <TableCell className="text-xs">{level.videosPerMin}</TableCell>
-                          <TableCell className="text-xs">{level.maxConcurrent}</TableCell>
-                          <TableCell className="text-xs">{level.activation}</TableCell>
+                          <TableCell className="text-xs">
+                            {level.imagesPerMin}
+                          </TableCell>
+                          <TableCell className="text-xs">
+                            {level.videosPerMin}
+                          </TableCell>
+                          <TableCell className="text-xs">
+                            {level.maxConcurrent}
+                          </TableCell>
+                          <TableCell className="text-xs">
+                            {level.activation}
+                          </TableCell>
                         </TableRow>
                       );
                     })}
@@ -130,7 +180,8 @@ export function ProductSettingsTab() {
               </div>
 
               <div className="bg-surface text-foreground/70 rounded-xs px-3 py-2 text-xs">
-                Upgrade by completing the required top-up amount for your target account level.
+                Upgrade by completing the required top-up amount for your target
+                account level.
               </div>
 
               <Button className="h-9 w-full rounded-xs px-4 text-xs tracking-[0.8px]">
