@@ -296,7 +296,7 @@ export function ProductDashboardTab({
               >
                 <CardContent className="flex min-h-[144px] flex-col px-4 py-4">
                   <div>
-                    <p className="text-foreground/60 text-sm tracking-[0.3px]">
+                    <p className="text-foreground/60 text-xs tracking-[0.3px]">
                       {item.label}
                     </p>
                     <p className="text-foreground mt-2 text-2xl leading-none font-medium tracking-tight">
