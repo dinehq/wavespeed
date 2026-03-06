@@ -3,37 +3,6 @@ import localFont from "next/font/local";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 
-const azeret = localFont({
-  src: [
-    {
-      path: "../fonts/Azeret-TRIAL-Regular.woff2",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "../fonts/Azeret-TRIAL-Medium.woff2",
-      weight: "500",
-      style: "normal",
-    },
-    {
-      path: "../fonts/Azeret-TRIAL-MediumItalic.woff2",
-      weight: "500",
-      style: "italic",
-    },
-    {
-      path: "../fonts/Azeret-TRIAL-SemiBold.woff2",
-      weight: "600",
-      style: "normal",
-    },
-    {
-      path: "../fonts/Azeret-TRIAL-SemiBoldItalic.woff2",
-      weight: "600",
-      style: "italic",
-    },
-  ],
-  variable: "--font-azeret",
-});
-
 const azeretSemiMono = localFont({
   src: [
     {
@@ -63,10 +32,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <meta name="apple-mobile-web-app-title" content="WaveSpeed" />
-      <body
-        className={`${azeret.variable} ${azeretSemiMono.variable} antialiased`}
-      >
+      <body className={`${azeretSemiMono.variable} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
         </ThemeProvider>

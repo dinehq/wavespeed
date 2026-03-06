@@ -2,7 +2,7 @@
 
 import { format, subDays } from "date-fns";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { DateRange } from "react-day-picker";
 import {
@@ -119,7 +119,14 @@ const controlSelectTriggerFilterClass = `${controlSelectTriggerClass} ${requestF
 const controlIconButtonClass =
   "border-foreground/10 text-foreground/70 bg-background hover:bg-foreground/5 rounded-xs shadow-xs";
 
+const subscribe = () => () => {};
+const getSnapshot = () => true;
+const getServerSnapshot = () => false;
+const useMounted = () =>
+  useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+
 export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
+  const mounted = useMounted();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -750,6 +757,32 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
       </Card>
     </section>
   );
+
+  if (!mounted) {
+    return (
+      <section className="bg-background pb-6 md:pb-8">
+        <div className="border-foreground/10 bg-background/95 supports-backdrop-filter:bg-background/80 sticky top-0 z-40 border-t border-b px-4 backdrop-blur">
+          <div className="w-full">
+            <div
+              className="flex h-12 w-full items-center justify-start gap-2 overflow-x-auto rounded-none px-0"
+              aria-hidden
+            >
+              {dashboardTabs.map((tab) => (
+                <span
+                  key={tab}
+                  className="flex-none rounded-none px-2 py-0 text-sm tracking-[1.2px] whitespace-nowrap text-foreground/60"
+                >
+                  {tab}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="min-h-[200px]" />
+      </section>
+    );
+  }
+
   return (
     <section className="bg-background pb-6 md:pb-8">
       <div
@@ -770,7 +803,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                 <TabsTrigger
                   key={tab}
                   value={tab}
-                  className="h-12 flex-none rounded-none px-2 py-0 text-xs tracking-[1.2px] whitespace-nowrap after:bg-transparent data-[state=active]:text-[#3f74ff] data-[state=active]:after:bg-[#3f74ff]"
+                  className="h-12 flex-none rounded-none px-2 py-0 text-sm tracking-[1.2px] whitespace-nowrap after:bg-transparent data-[state=active]:text-[#3f74ff] data-[state=active]:after:bg-[#3f74ff]"
                 >
                   {tab}
                 </TabsTrigger>
