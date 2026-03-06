@@ -474,12 +474,12 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
       </div>
 
       <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
-        <CardContent className="bg-surface/40 flex items-center gap-1.5 py-2.5 pr-4 pl-3 md:pr-5">
-          <AlertCircle className="text-foreground/60 size-3.5 shrink-0" />
+        <CardContent className="flex items-center gap-1.5 bg-amber-500/6 py-2.5 pr-4 pl-3 dark:bg-amber-400/8 md:pr-5">
+          <AlertCircle className="size-3.5 shrink-0 text-amber-600 dark:text-amber-400" />
           <div>
-            <p className="text-foreground/70 text-xs leading-[1.35]">
-              Your outputs are stored for 7 days only. Download and save
-              important files before they expire.
+            <p className="text-xs leading-[1.35] text-amber-900/70 dark:text-amber-200/80">
+              Your outputs are stored for <strong>7 days only</strong>.
+              Download and save important files before they expire.
             </p>
           </div>
         </CardContent>
@@ -551,16 +551,19 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                       variant="outline"
                       className={`rounded-xs border-0 px-2 py-1 text-[10px] tracking-[1px] ${
                         request.status === "Succeeded"
-                          ? "bg-green/20 text-foreground"
-                          : "bg-surface text-foreground/70"
+                          ? "bg-emerald-500/15 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-300"
+                          : "bg-amber-500/15 text-amber-700 dark:bg-amber-400/15 dark:text-amber-300"
                       }`}
                     >
+                      {request.status !== "Succeeded" && (
+                        <span className="mr-1 inline-block size-1.5 animate-pulse rounded-full bg-current" />
+                      )}
                       {request.status}
                     </Badge>
                   </div>
                   <div className="mt-3 flex items-center justify-between text-xs">
                     <div className="text-foreground/70 flex items-center gap-2">
-                      <div className="bg-surface relative size-9 overflow-hidden rounded-xs">
+                      <div className="bg-surface relative size-12 overflow-hidden rounded-xs">
                         <Image
                           src={request.outputPreview}
                           alt={`${request.model} output`}
@@ -671,7 +674,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                       </div>
                     </TableCell>
                     <TableCell className="text-xs">
-                      <div className="bg-surface relative size-9 overflow-hidden rounded-xs">
+                      <div className="bg-surface relative size-12 overflow-hidden rounded-xs">
                         <Image
                           src={request.outputPreview}
                           alt={`${request.model} output preview`}
@@ -706,10 +709,13 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                         variant="outline"
                         className={`rounded-xs border-0 px-2 py-1 text-[10px] tracking-[1px] ${
                           request.status === "Succeeded"
-                            ? "bg-green/20 text-foreground"
-                            : "bg-surface text-foreground/70"
+                            ? "bg-emerald-500/15 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-300"
+                            : "bg-amber-500/15 text-amber-700 dark:bg-amber-400/15 dark:text-amber-300"
                         }`}
                       >
+                        {request.status !== "Succeeded" && (
+                          <span className="mr-1 inline-block size-1.5 animate-pulse rounded-full bg-current" />
+                        )}
                         {request.status}
                       </Badge>
                     </TableCell>

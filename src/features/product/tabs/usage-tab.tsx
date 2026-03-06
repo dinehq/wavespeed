@@ -160,7 +160,7 @@ export function ProductUsageTab({
                   {item.label}
                 </p>
                 {item.actions.length > 0 ? (
-                  <p className="text-foreground mt-1 text-2xl leading-none font-medium tracking-tight">
+                  <p className="text-foreground mt-2 text-2xl leading-none font-medium tracking-tight">
                     {item.value}
                   </p>
                 ) : (

@@ -57,7 +57,6 @@ export function ProductDashboardTab({
   navigateFromGettingStarted,
   controlButtonClass,
   controlButtonSmClass,
-  controlSelectTriggerCompactClass,
   router,
   requestsSection,
 }: ProductDashboardTabProps) {
@@ -66,67 +65,54 @@ export function ProductDashboardTab({
       <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-4">
         <ProductSectionHeader
           title="Dashboard"
-          withDivider={showGettingStarted}
-          footer={
-            <button
-              type="button"
-              onClick={() => setShowGettingStarted((prev) => !prev)}
-              className="text-subtle hover:text-foreground mt-2 cursor-pointer text-sm transition-colors"
-            >
-              {showGettingStarted
-                ? "Hide getting started guide"
-                : "Show getting started guide"}
-            </button>
-          }
+          withDivider={false}
           actions={
             <>
-              <span className="text-foreground/60 text-xs">I want to</span>
-              <Select
-                value={dashboardIntent}
-                onValueChange={(value) =>
-                  setDashboardIntent(value as DashboardIntent)
-                }
-              >
-                <SelectTrigger
-                  size="sm"
-                  className={controlSelectTriggerCompactClass}
+              {showGettingStarted && (
+                <Select
+                  value={dashboardIntent}
+                  onValueChange={(value) =>
+                    setDashboardIntent(value as DashboardIntent)
+                  }
                 >
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="bg-background rounded-xs border-0 shadow-sm">
-                  <SelectItem
-                    value="create-with-ai"
-                    className="rounded-xs text-xs"
+                  <SelectTrigger
+                    size="sm"
+                    className={`${controlButtonSmClass} min-w-0 justify-between gap-1 pr-2`}
                   >
-                    create with AI
-                  </SelectItem>
-                  <SelectItem
-                    value="build-with-api"
-                    className="rounded-xs text-xs"
-                  >
-                    build app with API
-                  </SelectItem>
-                </SelectContent>
-              </Select>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-background rounded-xs border-0 shadow-sm">
+                    <SelectItem
+                      value="create-with-ai"
+                      className="rounded-xs text-xs"
+                    >
+                      Create with AI
+                    </SelectItem>
+                    <SelectItem
+                      value="build-with-api"
+                      className="rounded-xs text-xs"
+                    >
+                      Build with API
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowGettingStarted((prev) => !prev)}
+                className={controlButtonSmClass}
+              >
+                {showGettingStarted
+                  ? "Hide Getting started"
+                  : "Show Getting started"}
+              </Button>
             </>
           }
         />
 
         {showGettingStarted ? (
           <article className="mb-6 space-y-4">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <h2 className="text-foreground text-xl font-semibold tracking-tight">
-                Getting started
-              </h2>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowGettingStarted(false)}
-                className={`${controlButtonClass} rounded-xs`}
-              >
-                Don&apos;t show this
-              </Button>
-            </div>
             <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
               <CardContent className="p-0">
                 <div className="divide-foreground/10 grid divide-y md:grid-cols-3 md:divide-x md:divide-y-0">
@@ -209,7 +195,7 @@ export function ProductDashboardTab({
                           >
                             <div className="flex min-w-0 flex-1 items-center gap-2">
                               {currentGettingStartedContent.showIndex ? (
-                                <span className="text-foreground/50 w-5 shrink-0 text-[10px] tracking-[1px]">
+                                <span className="text-foreground/50 w-5 shrink-0 text-[11px] tracking-[1px]">
                                   {String(index + 1).padStart(2, "0")}
                                 </span>
                               ) : null}
@@ -217,7 +203,7 @@ export function ProductDashboardTab({
                                 {task.label}
                               </span>
                             </div>
-                            <span className="text-foreground/60 group-hover:text-foreground inline-flex shrink-0 items-center gap-1 text-[11px]">
+                            <span className="text-foreground/60 group-hover:text-foreground inline-flex shrink-0 items-center gap-1 text-xs">
                               <span className="tracking-[0.5px]">
                                 {task.action}
                               </span>
@@ -261,7 +247,7 @@ export function ProductDashboardTab({
                                 <p className="text-foreground line-clamp-1 text-sm">
                                   {model.name}
                                 </p>
-                                <p className="text-foreground/50 text-[11px] leading-tight">
+                                <p className="text-foreground/50 text-xs leading-tight">
                                   {model.type}
                                 </p>
                               </div>
@@ -306,14 +292,14 @@ export function ProductDashboardTab({
             {dashboardSummaryCards.map((item) => (
               <Card
                 key={`dashboard-${item.label}`}
-                className="bg-surface gap-0 rounded-xs border-0 py-0 shadow-none"
+                className="bg-surface gap-0 rounded-xs border-0 py-0 shadow-none dark:border dark:border-white/6"
               >
                 <CardContent className="flex min-h-[144px] flex-col px-4 py-4">
                   <div>
-                    <p className="text-foreground/60 text-xs tracking-[0.5px]">
+                    <p className="text-foreground/60 text-sm tracking-[0.3px]">
                       {item.label}
                     </p>
-                    <p className="text-foreground mt-1 text-2xl leading-none font-medium tracking-tight">
+                    <p className="text-foreground mt-2 text-2xl leading-none font-medium tracking-tight">
                       {item.value}
                     </p>
                   </div>
@@ -375,22 +361,22 @@ export function ProductDashboardTab({
               {modelCards.map((model) => (
                 <Card
                   key={`latest-${model.name}`}
-                  className="border-foreground/10 hover:bg-surface gap-0 rounded-xs py-0 shadow-none transition-colors"
+                  className="group border-foreground/10 gap-0 overflow-hidden rounded-xs py-0 shadow-none transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:hover:shadow-black/25"
                 >
                   <CardContent className="flex items-center gap-2.5 p-2">
-                    <div className="relative size-10 shrink-0 overflow-hidden rounded-xs">
+                    <div className="relative size-14 shrink-0 overflow-hidden rounded-xs">
                       <Image
                         src={model.image}
                         alt={model.name}
                         fill
-                        className="object-cover"
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
                       />
                     </div>
                     <div className="min-w-0">
                       <p className="text-foreground line-clamp-1 text-xs">
                         {model.name}
                       </p>
-                      <p className="text-foreground/50 mt-0.5 text-[11px] leading-tight">
+                      <p className="text-foreground/50 mt-0.5 text-xs leading-tight">
                         {model.type}
                       </p>
                     </div>
@@ -405,22 +391,22 @@ export function ProductDashboardTab({
               {favoriteModelCards.map((model) => (
                 <Card
                   key={`favorite-${model.name}`}
-                  className="border-foreground/10 hover:bg-surface gap-0 rounded-xs py-0 shadow-none transition-colors"
+                  className="group border-foreground/10 gap-0 overflow-hidden rounded-xs py-0 shadow-none transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:hover:shadow-black/25"
                 >
                   <CardContent className="flex items-center gap-2.5 p-2">
-                    <div className="relative size-10 shrink-0 overflow-hidden rounded-xs">
+                    <div className="relative size-14 shrink-0 overflow-hidden rounded-xs">
                       <Image
                         src={model.image}
                         alt={model.name}
                         fill
-                        className="object-cover"
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
                       />
                     </div>
                     <div className="min-w-0">
                       <p className="text-foreground line-clamp-1 text-xs">
                         {model.name}
                       </p>
-                      <p className="text-foreground/50 mt-0.5 text-[11px] leading-tight">
+                      <p className="text-foreground/50 mt-0.5 text-xs leading-tight">
                         {model.type}
                       </p>
                     </div>
