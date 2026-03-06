@@ -1,6 +1,5 @@
 export const productMainTabs = [
   "Dashboard",
-  "Explore",
   "Usage",
   "History",
   "LLM",
@@ -17,7 +16,6 @@ export const isProductMainTab = (value: string): value is ProductMainTab =>
 
 export const productMainTabRoutes: Partial<Record<ProductMainTab, string>> = {
   Dashboard: "/dashboard",
-  Explore: "/explore",
   Usage: "/usage",
   History: "/history",
   LLM: "/llm",
@@ -33,8 +31,6 @@ export const resolveProductMainTabFromPathname = (
   switch (pathname) {
     case "/dashboard":
       return "Dashboard";
-    case "/explore":
-      return "Explore";
     case "/usage":
       return "Usage";
     case "/history":
