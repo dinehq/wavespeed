@@ -339,25 +339,29 @@ export const usageTabDailyUsage = [
 ];
 
 export const usageTabBreakdown = [
-  { date: "03/01", nanoBanana: 0.028, qwenEdit: 0.01 },
-  { date: "03/03", nanoBanana: 0.064, qwenEdit: 0.02 },
-  { date: "03/04", nanoBanana: 0.052, qwenEdit: 0.018 },
-  { date: "03/05", nanoBanana: 0.041, qwenEdit: 0.012 },
-  { date: "03/07", nanoBanana: 0.071, qwenEdit: 0.024 },
-  { date: "03/09", nanoBanana: 0.076, qwenEdit: 0.028 },
-  { date: "03/11", nanoBanana: 0.048, qwenEdit: 0.015 },
-  { date: "03/13", nanoBanana: 0.069, qwenEdit: 0.022 },
-  { date: "03/15", nanoBanana: 0.055, qwenEdit: 0.016 },
-  { date: "03/17", nanoBanana: 0.043, qwenEdit: 0.012 },
-  { date: "03/19", nanoBanana: 0.058, qwenEdit: 0.019 },
-  { date: "03/21", nanoBanana: 0.072, qwenEdit: 0.025 },
-  { date: "03/23", nanoBanana: 0.066, qwenEdit: 0.021 },
-  { date: "03/25", nanoBanana: 0.053, qwenEdit: 0.017 },
-  { date: "03/27", nanoBanana: 0.047, qwenEdit: 0.014 },
-  { date: "03/29", nanoBanana: 0.039, qwenEdit: 0.011 },
-  { date: "03/31", nanoBanana: 0.031, qwenEdit: 0.009 },
+  { date: "03/01", nanoBanana: 0.028, qwenEdit: 0.01, gpt4o: 0.015, claudeSonnet: 0.012, geminiPro: 0.008 },
+  { date: "03/03", nanoBanana: 0.064, qwenEdit: 0.02, gpt4o: 0.032, claudeSonnet: 0.025, geminiPro: 0.018 },
+  { date: "03/04", nanoBanana: 0.052, qwenEdit: 0.018, gpt4o: 0.028, claudeSonnet: 0.022, geminiPro: 0.014 },
+  { date: "03/05", nanoBanana: 0.041, qwenEdit: 0.012, gpt4o: 0.02, claudeSonnet: 0.016, geminiPro: 0.01 },
+  { date: "03/07", nanoBanana: 0.071, qwenEdit: 0.024, gpt4o: 0.038, claudeSonnet: 0.03, geminiPro: 0.022 },
+  { date: "03/09", nanoBanana: 0.076, qwenEdit: 0.028, gpt4o: 0.042, claudeSonnet: 0.034, geminiPro: 0.024 },
+  { date: "03/11", nanoBanana: 0.048, qwenEdit: 0.015, gpt4o: 0.024, claudeSonnet: 0.019, geminiPro: 0.013 },
+  { date: "03/13", nanoBanana: 0.069, qwenEdit: 0.022, gpt4o: 0.035, claudeSonnet: 0.028, geminiPro: 0.02 },
+  { date: "03/15", nanoBanana: 0.055, qwenEdit: 0.016, gpt4o: 0.026, claudeSonnet: 0.021, geminiPro: 0.015 },
+  { date: "03/17", nanoBanana: 0.043, qwenEdit: 0.012, gpt4o: 0.02, claudeSonnet: 0.016, geminiPro: 0.011 },
+  { date: "03/19", nanoBanana: 0.058, qwenEdit: 0.019, gpt4o: 0.03, claudeSonnet: 0.024, geminiPro: 0.017 },
+  { date: "03/21", nanoBanana: 0.072, qwenEdit: 0.025, gpt4o: 0.04, claudeSonnet: 0.032, geminiPro: 0.023 },
+  { date: "03/23", nanoBanana: 0.066, qwenEdit: 0.021, gpt4o: 0.033, claudeSonnet: 0.026, geminiPro: 0.019 },
+  { date: "03/25", nanoBanana: 0.053, qwenEdit: 0.017, gpt4o: 0.027, claudeSonnet: 0.022, geminiPro: 0.016 },
+  { date: "03/27", nanoBanana: 0.047, qwenEdit: 0.014, gpt4o: 0.023, claudeSonnet: 0.018, geminiPro: 0.013 },
+  { date: "03/29", nanoBanana: 0.039, qwenEdit: 0.011, gpt4o: 0.019, claudeSonnet: 0.015, geminiPro: 0.01 },
+  { date: "03/31", nanoBanana: 0.031, qwenEdit: 0.009, gpt4o: 0.015, claudeSonnet: 0.012, geminiPro: 0.008 },
 ];
 
+/**
+ * 蓝紫色系色板：由 #5a56d6（紫蓝）与 #3f74ff（蓝）衍生。
+ * 规律：同色相带内变化明度/饱和度，从深紫蓝 → 紫蓝 → 蓝 → 浅蓝 → 淡紫，既成体系又易区分。
+ */
 export const usageTabBreakdownChartConfig = {
   nanoBanana: {
     label: "google/nano-banana-2/text-to-image",
@@ -366,6 +370,18 @@ export const usageTabBreakdownChartConfig = {
   qwenEdit: {
     label: "wavespeed-ai/qwen-image-2.0/edit",
     color: "#3f74ff",
+  },
+  gpt4o: {
+    label: "openai/gpt-4o",
+    color: "#4a47bd",
+  },
+  claudeSonnet: {
+    label: "anthropic/claude-sonnet-4",
+    color: "#6b7cf5",
+  },
+  geminiPro: {
+    label: "google/gemini-2.0-flash",
+    color: "#8b85e8",
   },
 } as const;
 
