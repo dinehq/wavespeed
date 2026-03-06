@@ -242,17 +242,35 @@ export const usageTabSummaryCards = [
   {
     label: "Total Cost",
     value: "$7.8450",
-    actions: [],
+    actions: [
+      {
+        label: "View breakdown",
+        variant: "outline",
+        scrollTarget: "usage-per-model",
+      },
+    ],
   },
   {
     label: "Total Requests",
     value: "130",
-    actions: [],
+    actions: [
+      {
+        label: "View history",
+        href: "/history",
+        variant: "outline",
+      },
+    ],
   },
   {
     label: "Models Used",
     value: "8",
-    actions: [],
+    actions: [
+      {
+        label: "View by model",
+        variant: "outline",
+        scrollTarget: "usage-per-model",
+      },
+    ],
   },
 ] as const;
 

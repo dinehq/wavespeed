@@ -1,5 +1,5 @@
-import { ProductMain } from "@/features/product/components/product-main";
+import { redirect } from "next/navigation";
 
 export default function ProductExplorePage() {
-  return <ProductMain forcedMainTab="Explore" />;
+  redirect("/dashboard");
 }
