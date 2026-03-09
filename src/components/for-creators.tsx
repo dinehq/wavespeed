@@ -12,7 +12,7 @@ export function ForCreators() {
   return (
     <section className="bg-dark dark:bg-dark relative overflow-hidden">
       <div className="px-6 pt-16 md:px-20 md:pt-[120px]">
-        <div className="mx-auto max-w-[1280px]">
+        <div className="mx-auto max-w-7xl">
           {/* Section header */}
           <div className="mb-[48px] flex flex-col gap-4">
             <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">

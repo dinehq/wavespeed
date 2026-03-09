@@ -78,7 +78,7 @@ export function ProductUsageTab({
 
   return (
     <div className="px-6 pt-6 md:px-20 md:pt-8">
-      <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-4">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-4">
         <ProductSectionHeader
           title="Usage"
           description="View usage data for the selected time range"
@@ -203,9 +203,9 @@ export function ProductUsageTab({
 
         <Card className="bg-surface gap-0 rounded-xs border-0 py-0 shadow-none">
           <CardHeader className="px-4 pt-4 pb-0">
-<CardTitle className="text-foreground font-display text-xl font-semibold tracking-tight">
-                Usage breakdown
-              </CardTitle>
+            <CardTitle className="text-foreground font-display text-xl font-semibold tracking-tight">
+              Usage breakdown
+            </CardTitle>
           </CardHeader>
           <CardContent className="px-4 pt-3 pb-4">
             <ChartContainer
@@ -394,9 +394,9 @@ export function ProductUsageTab({
 
         <Card className="bg-surface gap-0 rounded-xs border-0 py-0 shadow-none">
           <CardHeader className="px-4 pt-4 pb-0">
-<CardTitle className="text-foreground font-display text-xl font-semibold tracking-tight">
-            Daily Usage
-          </CardTitle>
+            <CardTitle className="text-foreground font-display text-xl font-semibold tracking-tight">
+              Daily Usage
+            </CardTitle>
           </CardHeader>
           <CardContent className="px-4 pt-3 pb-4">
             <div className={usageTableContainerClass}>

@@ -115,7 +115,7 @@ export function ProductApiKeysTab({
 
   return (
     <div className="px-6 pt-6 md:px-20 md:pt-8">
-      <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-4">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-4">
         <ProductSectionHeader
           title="API Keys"
           actions={
@@ -136,7 +136,7 @@ export function ProductApiKeysTab({
                 value={newApiKeyName}
                 onChange={(event) => setNewApiKeyName(event.target.value)}
                 placeholder="Enter key name"
-                className="border-foreground/10 h-9 rounded-xs bg-background text-xs"
+                className="border-foreground/10 bg-background h-9 rounded-xs text-xs"
               />
               <Button
                 className="h-9 min-w-[160px] rounded-xs px-4 text-xs tracking-[0.8px] sm:w-auto"
@@ -153,116 +153,128 @@ export function ProductApiKeysTab({
                 <p>Create one to get started.</p>
               </div>
             ) : (
-            <Table>
-              <TableHeader>
-                <TableRow className="border-foreground/10 hover:bg-transparent">
-                  <TableHead className="text-foreground/50 pl-4 text-[10px] tracking-[1px]">
-                    Name
-                  </TableHead>
-                  <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
-                    Key
-                  </TableHead>
-                  <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
-                    Created
-                  </TableHead>
-                  <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
-                    Status
-                  </TableHead>
-                  <TableHead className="text-foreground/50 pr-4 text-right text-[10px] tracking-[1px]">
-                    Actions
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {records.map((record) => (
-                  <TableRow
-                    key={record.id}
-                    className="border-foreground/10 hover:bg-surface"
-                  >
-                    <TableCell className="pl-4 text-xs">{record.name}</TableCell>
-                    <TableCell className="text-xs">
-                      <div className="flex min-w-0 items-center gap-1.5">
-                        <span className="font-mono text-[11px] shrink-0">
-                          {visibleKeyIds.has(record.id)
-                            ? record.key
-                            : maskApiKey(record.key)}
-                        </span>
-                        <span className="flex shrink-0 items-center gap-1.5">
-                        <Button
-                          variant="ghost"
-                          size="icon-xs"
-                          aria-label="Copy API key"
-                          onClick={() => copyApiKey(record.key)}
-                          className="text-foreground/60 hover:text-foreground"
-                        >
-                          <Copy className="size-3.5" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon-xs"
-                          aria-label={
-                            visibleKeyIds.has(record.id)
-                              ? "Hide API key"
-                              : "Show API key"
-                          }
-                          onClick={() => toggleKeyVisibility(record.id)}
-                          className="text-foreground/60 hover:text-foreground"
-                        >
-                          {visibleKeyIds.has(record.id) ? (
-                            <EyeOff className="size-3.5" />
-                          ) : (
-                            <Eye className="size-3.5" />
-                          )}
-                        </Button>
-                        </span>
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-xs">
-                      {record.createdAt}
-                    </TableCell>
-                    <TableCell>
-                      <Badge
-                        variant="outline"
-                        className={statusBadgeClass(record.status)}
-                      >
-                        {record.status !== "Active" && (
-                          <span className="mr-1 inline-block size-1.5 animate-pulse rounded-full bg-current" />
-                        )}
-                        {record.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="pr-4 text-right">
-                      <Button
-                        variant="ghost"
-                        size="icon-xs"
-                        aria-label="Delete API key"
-                        onClick={() => openDeleteConfirm(record.id)}
-                        className="text-foreground/60 hover:text-red-500"
-                      >
-                        <Trash2 className="size-3.5" />
-                      </Button>
-                    </TableCell>
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-foreground/10 hover:bg-transparent">
+                    <TableHead className="text-foreground/50 pl-4 text-[10px] tracking-[1px]">
+                      Name
+                    </TableHead>
+                    <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                      Key
+                    </TableHead>
+                    <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                      Created
+                    </TableHead>
+                    <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                      Status
+                    </TableHead>
+                    <TableHead className="text-foreground/50 pr-4 text-right text-[10px] tracking-[1px]">
+                      Actions
+                    </TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {records.map((record) => (
+                    <TableRow
+                      key={record.id}
+                      className="border-foreground/10 hover:bg-surface"
+                    >
+                      <TableCell className="pl-4 text-xs">
+                        {record.name}
+                      </TableCell>
+                      <TableCell className="text-xs">
+                        <div className="flex min-w-0 items-center gap-1.5">
+                          <span className="shrink-0 font-mono text-[11px]">
+                            {visibleKeyIds.has(record.id)
+                              ? record.key
+                              : maskApiKey(record.key)}
+                          </span>
+                          <span className="flex shrink-0 items-center gap-1.5">
+                            <Button
+                              variant="ghost"
+                              size="icon-xs"
+                              aria-label="Copy API key"
+                              onClick={() => copyApiKey(record.key)}
+                              className="text-foreground/60 hover:text-foreground"
+                            >
+                              <Copy className="size-3.5" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon-xs"
+                              aria-label={
+                                visibleKeyIds.has(record.id)
+                                  ? "Hide API key"
+                                  : "Show API key"
+                              }
+                              onClick={() => toggleKeyVisibility(record.id)}
+                              className="text-foreground/60 hover:text-foreground"
+                            >
+                              {visibleKeyIds.has(record.id) ? (
+                                <EyeOff className="size-3.5" />
+                              ) : (
+                                <Eye className="size-3.5" />
+                              )}
+                            </Button>
+                          </span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-xs">
+                        {record.createdAt}
+                      </TableCell>
+                      <TableCell>
+                        <Badge
+                          variant="outline"
+                          className={statusBadgeClass(record.status)}
+                        >
+                          {record.status !== "Active" && (
+                            <span className="mr-1 inline-block size-1.5 animate-pulse rounded-full bg-current" />
+                          )}
+                          {record.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="pr-4 text-right">
+                        <Button
+                          variant="ghost"
+                          size="icon-xs"
+                          aria-label="Delete API key"
+                          onClick={() => openDeleteConfirm(record.id)}
+                          className="text-foreground/60 hover:text-red-500"
+                        >
+                          <Trash2 className="size-3.5" />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             )}
           </CardContent>
         </Card>
 
-        <AlertDialog open={deleteConfirmOpen} onOpenChange={(open) => !open && closeDeleteConfirm()}>
+        <AlertDialog
+          open={deleteConfirmOpen}
+          onOpenChange={(open) => !open && closeDeleteConfirm()}
+        >
           <AlertDialogContent className="rounded-xs">
             <AlertDialogHeader>
               <AlertDialogTitle>Delete access key?</AlertDialogTitle>
               <AlertDialogDescription>
-                This action cannot be undone. The key will stop working immediately.
+                This action cannot be undone. The key will stop working
+                immediately.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter className="mt-6 gap-2">
-              <AlertDialogCancel onClick={closeDeleteConfirm} className="rounded-xs">
+              <AlertDialogCancel
+                onClick={closeDeleteConfirm}
+                className="rounded-xs"
+              >
                 Cancel
               </AlertDialogCancel>
-              <AlertDialogAction onClick={handleDeleteKey} className="rounded-xs">
+              <AlertDialogAction
+                onClick={handleDeleteKey}
+                className="rounded-xs"
+              >
                 Delete
               </AlertDialogAction>
             </AlertDialogFooter>

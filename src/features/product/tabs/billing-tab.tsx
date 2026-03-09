@@ -12,7 +12,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import {
   Table,
   TableBody,
@@ -92,7 +96,11 @@ export function ProductBillingTab({
       { id: "stripe", label: "Stripe", Icon: PaymentStripeIcon },
       { id: "paypal", label: "PayPal", Icon: PaymentPaypalIcon },
       { id: "krw-pay", label: "KRW Pay", Icon: PaymentKrwIcon },
-      { id: "wechat-ali", label: "WeChat / AliPay", Icon: PaymentWechatAliIcon },
+      {
+        id: "wechat-ali",
+        label: "WeChat / AliPay",
+        Icon: PaymentWechatAliIcon,
+      },
     ],
     [],
   );
@@ -119,7 +127,7 @@ export function ProductBillingTab({
 
   return (
     <div className="px-6 pt-6 md:px-20 md:pt-8">
-      <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-4">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-4">
         <ProductSectionHeader title="Billing" />
         <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
           <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
@@ -135,7 +143,9 @@ export function ProductBillingTab({
                 </p>
                 <div className="grid gap-2 md:grid-cols-2">
                   {topUpAmountOptions.map((option) => {
-                    const conciseThroughput = formatTopUpThroughput(option.throughput);
+                    const conciseThroughput = formatTopUpThroughput(
+                      option.throughput,
+                    );
                     const conciseBenefit = formatTopUpBenefit(option.benefit);
 
                     return (
@@ -152,7 +162,7 @@ export function ProductBillingTab({
                         <span
                           className={`leading-none font-semibold tracking-tight ${
                             selectedTopUpAmount === option.amount
-                              ? "text-[#3f74ff] text-[22px]"
+                              ? "text-[22px] text-[#3f74ff]"
                               : "text-foreground text-[22px]"
                           }`}
                         >
@@ -199,7 +209,7 @@ export function ProductBillingTab({
                     </PopoverTrigger>
                     <PopoverContent
                       align="start"
-                      className="bg-background w-[360px] max-w-[calc(100vw-2rem)] rounded-xs border border-foreground/10 p-3 shadow-sm"
+                      className="bg-background border-foreground/10 w-[360px] max-w-[calc(100vw-2rem)] rounded-xs border p-3 shadow-sm"
                     >
                       <div className="flex flex-col gap-3">
                         {paymentMethodOptions.map((method) => (
@@ -229,7 +239,9 @@ export function ProductBillingTab({
                 <div className="flex w-full flex-col gap-2 md:w-auto md:flex-row md:items-center">
                   <Input
                     value={customTopUpAmount}
-                    onChange={(event) => setCustomTopUpAmount(event.target.value)}
+                    onChange={(event) =>
+                      setCustomTopUpAmount(event.target.value)
+                    }
                     inputMode="decimal"
                     placeholder={parsedTopUpAmount || "Amount"}
                     className="border-foreground/10 h-9 rounded-xs text-xs md:w-[140px]"
@@ -437,7 +449,9 @@ export function ProductBillingTab({
                   >
                     Reset
                   </Button>
-                  <Button className="h-8 rounded-xs px-3 text-xs">Search</Button>
+                  <Button className="h-8 rounded-xs px-3 text-xs">
+                    Search
+                  </Button>
                 </div>
 
                 <div className="border-foreground/10 rounded-xs border">
@@ -473,8 +487,12 @@ export function ProductBillingTab({
                           <TableCell className="text-xs text-[#3f74ff]">
                             {record.predictionId}
                           </TableCell>
-                          <TableCell className="text-xs">{record.model}</TableCell>
-                          <TableCell className="text-xs">{record.date}</TableCell>
+                          <TableCell className="text-xs">
+                            {record.model}
+                          </TableCell>
+                          <TableCell className="text-xs">
+                            {record.date}
+                          </TableCell>
                           <TableCell className="text-xs">
                             <Badge
                               variant="outline"

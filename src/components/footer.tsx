@@ -34,7 +34,7 @@ export function Footer() {
 
   return (
     <footer className="bg-dark border-t border-white/10 px-6 py-16 md:px-20 md:pt-20">
-      <div className="mx-auto max-w-[1280px]">
+      <div className="mx-auto max-w-7xl">
         <div className="mb-10 flex flex-col gap-10 lg:flex-row lg:justify-between">
           {/* Logo + status */}
           <div className="flex w-auto flex-col gap-6 lg:h-[216px] lg:w-[174px] lg:justify-between">

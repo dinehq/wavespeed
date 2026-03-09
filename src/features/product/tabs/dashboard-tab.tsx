@@ -62,7 +62,7 @@ export function ProductDashboardTab({
 }: ProductDashboardTabProps) {
   return (
     <div className="px-6 pt-6 md:px-20 md:pt-8">
-      <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-4">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-4">
         <ProductSectionHeader
           title="Dashboard"
           withDivider={false}
@@ -136,7 +136,7 @@ export function ProductDashboardTab({
                               className={`flex size-4 shrink-0 items-center justify-center rounded-full ${
                                 task.done
                                   ? "bg-[#16a34a] text-white"
-                                  : "border border-foreground/10 bg-transparent text-transparent"
+                                  : "border-foreground/10 border bg-transparent text-transparent"
                               }`}
                             >
                               <Check className="size-3" />

@@ -565,7 +565,7 @@ export function ToolsSection() {
         {/* Category Row 1 */}
         <DragRow className="cursor-grab overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {categoryRow1.map((cat, i) => (
-            <div key={i} className="w-[400px] shrink-0">
+            <div key={i} className="w-[260px] shrink-0 md:w-[400px]">
               <CategoryCard category={cat} />
             </div>
           ))}
@@ -574,7 +574,7 @@ export function ToolsSection() {
         {/* Category Row 2 */}
         <DragRow className="cursor-grab overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {categoryRow2.map((cat, i) => (
-            <div key={i} className="w-[320px] shrink-0">
+            <div key={i} className="w-[200px] shrink-0 md:w-[320px]">
               <CategoryCard category={cat} />
             </div>
           ))}
