@@ -296,7 +296,7 @@ function CategoryCard({
 
 export function ToolsSection() {
   return (
-    <section className="overflow-hidden pt-20 md:pt-[120px]">
+    <section className="pt-20 md:pt-[120px]">
       {/* Header */}
       <div className="mx-auto mb-10 max-w-[976px] px-6 text-center md:px-20">
         <h2 className="text-heading font-display mb-6 text-[32px] leading-none font-medium tracking-[-1px] text-balance md:text-[48px]">
@@ -312,14 +312,14 @@ export function ToolsSection() {
       {/* Cards area — full width, grid for even distribution */}
       <div className="flex flex-col gap-[18px] px-4">
         {/* Provider Row 1: large + 3 small */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr]">
+        <div className="grid grid-cols-1 gap-4 overflow-hidden sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr]">
           {providerRow1.map((card) => (
             <ProviderCard key={card.name} card={card} />
           ))}
         </div>
 
         {/* Provider Row 2: 3 small + large */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_2fr]">
+        <div className="grid grid-cols-1 gap-4 overflow-hidden sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_2fr]">
           {providerRow2.map((card) => (
             <ProviderCard key={card.name} card={card} />
           ))}
