@@ -137,6 +137,42 @@ const models = [
     tps: "68tps",
     status: 5,
   },
+  {
+    name: "gen4-aleph",
+    provider: "runway",
+    type: "text-to-video",
+    speed: "4.8s",
+    speedBar: 26,
+    tps: "24tps",
+    status: 5,
+  },
+  {
+    name: "reccraft-v3",
+    provider: "reccraft",
+    type: "text-to-image",
+    speed: "1.2s",
+    speedBar: 65,
+    tps: "58tps",
+    status: 5,
+  },
+  {
+    name: "flux-2-turbo",
+    provider: "wavespeed-ai",
+    type: "text-to-image",
+    speed: "0.9s",
+    speedBar: 72,
+    tps: "64tps",
+    status: 5,
+  },
+  {
+    name: "hunyuan-video",
+    provider: "tencent",
+    type: "text-to-video",
+    speed: "5.6s",
+    speedBar: 22,
+    tps: "20tps",
+    status: 5,
+  },
 ];
 
 const leftThumbs = [
@@ -152,6 +188,10 @@ const leftThumbs = [
   thumb10,
   thumb11,
   thumb12,
+  thumb1,
+  thumb2,
+  thumb3,
+  thumb4,
 ];
 const rightThumbs = [
   thumbR1,
@@ -166,6 +206,10 @@ const rightThumbs = [
   thumbR10,
   thumbR11,
   thumbR12,
+  thumbR1,
+  thumbR2,
+  thumbR3,
+  thumbR4,
 ];
 
 function StatusDots({ count }: { count: number }) {

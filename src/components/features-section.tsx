@@ -29,7 +29,7 @@ export function FeaturesSection() {
     <section className="px-6 py-16 md:px-20 md:py-[120px]">
       <div className="mx-auto max-w-[1280px]">
         <div className="mb-10 flex max-w-[876px] flex-col gap-4">
-          <h2 className="text-heading text-[32px] leading-none font-medium tracking-[-1px] text-balance md:text-[48px]">
+          <h2 className="text-heading font-display text-[32px] leading-none font-medium tracking-[-1px] text-balance md:text-[48px]">
             Engineered for <em className="italic">Velocity</em>
           </h2>
           <p className="text-foreground/60 font-mono text-base text-pretty">

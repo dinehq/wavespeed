@@ -188,6 +188,24 @@ body {
   }
 }
 
+@keyframes marquee {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: -50% 0;
+  }
+}
+
+@keyframes marquee-reverse {
+  from {
+    translate: -50% 0;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
