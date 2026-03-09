@@ -1,4 +1,7 @@
+"use client";
+
 import Image, { type StaticImageData } from "next/image";
+import { useRef } from "react";
 import Lab1 from "@/images/lab-1.svg";
 import Lab2 from "@/images/lab-2.svg";
 import Lab3 from "@/images/lab-3.svg";
@@ -71,9 +74,64 @@ const providerRow1 = [
     size: "small" as const,
     bg: [toolsBytedanceBg, toolsBytedanceBg2],
     models: [
-      "seedance-v1.5-pro/text-to video",
-      "seedance-v1.5-pro/image-tovideo",
-      "seedance-v1.5-pro/text-tovideo",
+      "seedance-v1.5-pro/text-to-video",
+      "seedance-v1.5-pro/image-to-video",
+      "seedance-v1.5-pro/text-to-video",
+    ],
+  },
+  {
+    name: "runway",
+    logo: Lab5,
+    size: "small" as const,
+    bg: toolsRunwayBg,
+    models: ["gen4-aleph", "gen4-turbo", "gen4-image", "gen4-image-turbo"],
+  },
+  {
+    name: "KlingAI",
+    logo: Lab6,
+    size: "small" as const,
+    bg: toolsKlingBg,
+    models: [
+      "kling-v2.6-std/motion-control",
+      "kling-v2.5-turbo-std/i2v",
+      "kling-v2.5-turbo-pro/i2v",
+      "kling-video-to-audio",
+    ],
+  },
+  {
+    name: "RecCraft",
+    logo: Lab7,
+    size: "small" as const,
+    bg: toolsReccraftBg,
+    models: [
+      "reccraft-v3/text-to-image",
+      "reccraft-v3/svg",
+      "reccraft-v3/image-to-image",
+      "reccraft-v3/inpaint",
+    ],
+  },
+  {
+    name: "Google",
+    logo: Lab8,
+    size: "large" as const,
+    bg: toolsGoogleBg,
+    models: [
+      ["nano-banana-pro/edit", "veo3.1/ref-to-video"],
+      ["veo3.1/text-to-video", "veo extend"],
+      ["veo3.1-fast/t2v", "nano-banana-pro/t2i"],
+      ["veo3.1-fast/i2v", "nano-banana-pro/ultra"],
+    ],
+  },
+  {
+    name: "Tencent",
+    logo: Lab2,
+    size: "small" as const,
+    bg: toolsWanBg,
+    models: [
+      "hunyuan-video/text-to-video",
+      "hunyuan-video/image-to-video",
+      "hunyuan-dit/text-to-image",
+      "hunyuan-dit/image-edit",
     ],
   },
 ];
@@ -84,13 +142,7 @@ const providerRow2 = [
     logo: Lab5,
     size: "small" as const,
     bg: toolsRunwayBg,
-    models: [
-      "gen4-aleph",
-      "gen4-turbo",
-      "gen4-image",
-      "gen4-image-turbo",
-      "upscale-v1",
-    ],
+    models: ["gen4-aleph", "gen4-turbo", "gen4-image", "gen4-image-turbo"],
   },
   {
     name: "KlingAI",
@@ -98,9 +150,9 @@ const providerRow2 = [
     size: "small" as const,
     bg: toolsKlingBg,
     models: [
-      "kling-v2.6-std/motion-contro",
-      "kling-v2.5-turbo-std/image-tovideo",
-      "kling-v2.5-turbo-pro/image to-video",
+      "kling-v2.6-std/motion-control",
+      "kling-v2.5-turbo-std/i2v",
+      "kling-v2.5-turbo-pro/i2v",
       "kling-video-to-audio",
     ],
   },
@@ -110,10 +162,10 @@ const providerRow2 = [
     size: "small" as const,
     bg: toolsReccraftBg,
     models: [
-      "Wan 2.6 Text-to-Video",
-      "Wan 2.6 Image-to-Video",
-      "wan-2.6/reference-to-video",
-      "wan-2.6/image-edit",
+      "reccraft-v3/text-to-image",
+      "reccraft-v3/svg",
+      "reccraft-v3/image-to-image",
+      "reccraft-v3/inpaint",
     ],
   },
   {
@@ -122,10 +174,69 @@ const providerRow2 = [
     size: "large" as const,
     bg: toolsGoogleBg,
     models: [
-      ["nano-banana-pro/edit", "veo3.1/reference-to-video"],
+      ["nano-banana-pro/edit", "veo3.1/ref-to-video"],
       ["veo3.1/text-to-video", "veo extend"],
-      ["veo3.1-fast/text-to-video", "nano-banana-pro/text-to image nutriti"],
-      ["veo3.1-fast/image-to-video", "nano-banana-pro/text-to. image-ultra"],
+      ["veo3.1-fast/t2v", "nano-banana-pro/t2i"],
+      ["veo3.1-fast/i2v", "nano-banana-pro/ultra"],
+    ],
+  },
+  {
+    name: "Tencent",
+    logo: Lab2,
+    size: "small" as const,
+    bg: toolsWanBg,
+    models: [
+      "hunyuan-video/text-to-video",
+      "hunyuan-video/image-to-video",
+      "hunyuan-dit/text-to-image",
+      "hunyuan-dit/image-edit",
+    ],
+  },
+  {
+    name: "Black Forest Labs",
+    logo: Lab1,
+    size: "large" as const,
+    bg: toolsBflBg,
+    models: [
+      ["FLUX 2 PRO", "FLUX 2 MAX"],
+      ["FLUX 2 DEV", "FLUX 2 FLASH"],
+      ["FLUX 2 FLEX", "FLUX 2 TURBO"],
+      ["FLUX 2 DEV LoRA", "FLUX 2 KLEIN"],
+    ],
+  },
+  {
+    name: "Wan",
+    logo: Lab2,
+    size: "small" as const,
+    bg: toolsWanBg,
+    models: [
+      "Wan 2.6 Text-to-Video",
+      "Wan 2.6 Image-to-Video",
+      "wan-2.6/reference-to-video",
+      "wan-2.6/image-edit",
+    ],
+  },
+  {
+    name: "OpenAI",
+    logo: Lab3,
+    size: "small" as const,
+    bg: toolsOpenaiBg,
+    models: [
+      "gpt-image-1.5/edit",
+      "sora-2/image-to-video",
+      "sora-2/text-to-video",
+      "gpt-image-1",
+    ],
+  },
+  {
+    name: "ByteDance",
+    logo: Lab4,
+    size: "small" as const,
+    bg: [toolsBytedanceBg, toolsBytedanceBg2],
+    models: [
+      "seedance-v1.5-pro/text-to-video",
+      "seedance-v1.5-pro/image-to-video",
+      "seedance-v1.5-pro/text-to-video",
     ],
   },
 ];
@@ -161,13 +272,43 @@ const categoryRow1 = [
     bg: tool05,
     dark: false,
   },
+  {
+    name: "Upscaling",
+    count: "12 models",
+    bg: tool06,
+    dark: false,
+  },
+  {
+    name: "Image Inpainting",
+    count: "8 models",
+    bg: tool07,
+    dark: false,
+  },
+  {
+    name: "Style Transfer",
+    count: "15 models",
+    bg: tool08,
+    dark: false,
+  },
+  {
+    name: "Background Removal",
+    count: "6 models",
+    bg: tool09,
+    dark: false,
+  },
+  {
+    name: "Video Effects",
+    count: "10 models",
+    bg: tool10,
+    dark: false,
+  },
 ];
 
 const categoryRow2 = [
   {
-    name: "Best Open Source Video Models",
-    count: "30 models",
-    bg: tool06,
+    name: "Text-to-3D",
+    count: "14 models",
+    bg: tool11,
     dark: false,
   },
   {
@@ -200,6 +341,30 @@ const categoryRow2 = [
     bg: tool11,
     dark: false,
   },
+  {
+    name: "Motion Capture",
+    count: "7 models",
+    bg: tool01,
+    dark: false,
+  },
+  {
+    name: "Voice Cloning",
+    count: "5 models",
+    bg: tool02,
+    dark: false,
+  },
+  {
+    name: "Image Segmentation",
+    count: "9 models",
+    bg: tool03,
+    dark: false,
+  },
+  {
+    name: "Video Restoration",
+    count: "4 models",
+    bg: tool04,
+    dark: false,
+  },
 ];
 
 type ProviderCard = (typeof providerRow1)[number];
@@ -210,7 +375,7 @@ function ProviderCard({ card }: { card: ProviderCard }) {
   const hasGrid = isLarge && Array.isArray(card.models[0]);
 
   return (
-    <div className="group relative flex h-[240px] min-w-0 cursor-pointer flex-col justify-between overflow-hidden rounded-xs p-6 transition-all duration-200 hover:scale-[1.02] hover:shadow-xl md:h-[320px]">
+    <div className="group relative flex h-[240px] min-w-0 cursor-pointer flex-col justify-between overflow-hidden rounded-xs p-6 transition-all duration-200 hover:shadow-[inset_0_0_0_2px_rgba(255,255,255,0.15)] hover:brightness-110 md:h-[320px]">
       {/* Background image(s) */}
       <div className="pointer-events-none absolute inset-0">
         <div className="bg-panel absolute inset-0" />
@@ -220,7 +385,7 @@ function ProviderCard({ card }: { card: ProviderCard }) {
             src={bg}
             alt=""
             fill
-            className="object-cover transition-transform duration-500 group-hover:scale-110"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ))}
       </div>
@@ -235,7 +400,7 @@ function ProviderCard({ card }: { card: ProviderCard }) {
       />
 
       {/* Logo */}
-      <card.logo className="relative self-start" />
+      <card.logo className="relative h-auto self-start" />
 
       {/* Model list */}
       {hasGrid ? (
@@ -267,7 +432,7 @@ function CategoryCard({
   category: { name: string; count: string; bg: StaticImageData; dark: boolean };
 }) {
   return (
-    <div className="group relative flex h-[80px] min-w-0 cursor-pointer flex-col justify-between overflow-hidden rounded-xs p-4 transition-all duration-200 hover:scale-[1.02] hover:shadow-xl md:h-[131px] md:p-6">
+    <div className="group relative flex h-[80px] min-w-0 cursor-pointer flex-col justify-between overflow-hidden rounded-xs p-4 transition-all duration-200 hover:shadow-[inset_0_0_0_2px_rgba(255,255,255,0.15)] hover:brightness-110 md:h-[132px] md:p-6">
       <div className="pointer-events-none absolute inset-0">
         <Image
           src={category.bg}
@@ -277,7 +442,7 @@ function CategoryCard({
         />
       </div>
       <p
-        className={`relative truncate text-base leading-6 font-medium tracking-[-0.5px] md:text-xl md:leading-7 ${
+        className={`font-display relative truncate text-base leading-6 font-medium tracking-[-0.5px] md:text-xl md:leading-7 ${
           category.dark ? "text-white" : "text-black"
         }`}
       >
@@ -294,12 +459,66 @@ function CategoryCard({
   );
 }
 
+function DragRow({
+  className,
+  children,
+}: {
+  className?: string;
+  children: React.ReactNode;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isDown = useRef(false);
+  const startX = useRef(0);
+  const scrollStart = useRef(0);
+  const dragged = useRef(false);
+
+  return (
+    <div
+      ref={ref}
+      className={`flex gap-4 select-none ${className ?? ""}`}
+      onMouseDown={(e) => {
+        const el = ref.current;
+        if (!el) return;
+        isDown.current = true;
+        startX.current = e.pageX;
+        scrollStart.current = el.scrollLeft;
+        dragged.current = false;
+        el.style.cursor = "grabbing";
+      }}
+      onMouseMove={(e) => {
+        const el = ref.current;
+        if (!el || !isDown.current) return;
+        e.preventDefault();
+        const walk = (e.pageX - startX.current) * 1.5;
+        el.scrollLeft = scrollStart.current - walk;
+        if (Math.abs(walk) > 3) dragged.current = true;
+      }}
+      onMouseUp={() => {
+        isDown.current = false;
+        if (ref.current) ref.current.style.cursor = "grab";
+      }}
+      onMouseLeave={() => {
+        isDown.current = false;
+        if (ref.current) ref.current.style.cursor = "grab";
+      }}
+      onClickCapture={(e) => {
+        if (dragged.current) {
+          e.stopPropagation();
+          e.preventDefault();
+        }
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
 export function ToolsSection() {
   return (
-    <section className="overflow-hidden pt-20 md:pt-[120px]">
+    <section className="pt-20 md:pt-[120px]">
       {/* Header */}
       <div className="mx-auto mb-10 max-w-[976px] px-6 text-center md:px-20">
-        <h2 className="text-heading mb-6 text-[32px] leading-none font-medium tracking-[-1px] text-balance md:text-[48px]">
+        <h2 className="text-heading font-display mb-6 text-[32px] leading-none font-medium tracking-[-1px] text-balance md:text-[48px]">
           Get <em className="italic">any</em> tool you want
         </h2>
         <p className="text-subtle font-mono text-base text-pretty">
@@ -310,38 +529,56 @@ export function ToolsSection() {
       </div>
 
       {/* Cards area — full width, grid for even distribution */}
-      <div className="flex flex-col gap-[18px] px-4">
-        {/* Provider Row 1: large + 3 small */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr]">
-          {providerRow1.map((card) => (
-            <ProviderCard key={card.name} card={card} />
-          ))}
+      <div className="flex flex-col gap-4 px-4">
+        {/* Provider Row 1: marquee */}
+        <div className="group/marquee overflow-hidden">
+          <div className="flex w-max animate-[marquee_60s_linear_infinite] gap-4 group-hover/marquee:paused">
+            {[...providerRow1, ...providerRow1].map((card, i) => (
+              <div
+                key={`${card.name}-${i}`}
+                className={`shrink-0 ${
+                  card.size === "large" ? "w-[540px]" : "w-[320px]"
+                }`}
+              >
+                <ProviderCard card={card} />
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* Provider Row 2: 3 small + large */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_2fr]">
-          {providerRow2.map((card) => (
-            <ProviderCard key={card.name} card={card} />
-          ))}
+        {/* Provider Row 2: reverse marquee */}
+        <div className="group/marquee2 overflow-hidden">
+          <div className="flex w-max animate-[marquee-reverse_60s_linear_infinite] gap-4 group-hover/marquee2:paused">
+            {[...providerRow2, ...providerRow2].map((card, i) => (
+              <div
+                key={`${card.name}-r-${i}`}
+                className={`shrink-0 ${
+                  card.size === "large" ? "w-[540px]" : "w-[320px]"
+                }`}
+              >
+                <ProviderCard card={card} />
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Category Row 1 */}
-        <div className="flex gap-2 max-lg:overflow-x-auto max-lg:[scrollbar-width:none] md:gap-4 lg:grid lg:grid-cols-5 max-lg:[&::-webkit-scrollbar]:hidden">
-          {categoryRow1.map((cat) => (
-            <div key={cat.name} className="w-[200px] shrink-0 lg:w-auto">
+        <DragRow className="cursor-grab overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {categoryRow1.map((cat, i) => (
+            <div key={i} className="w-[400px] shrink-0">
               <CategoryCard category={cat} />
             </div>
           ))}
-        </div>
+        </DragRow>
 
         {/* Category Row 2 */}
-        <div className="flex gap-2 max-lg:overflow-x-auto max-lg:[scrollbar-width:none] md:gap-4 lg:grid lg:grid-cols-6 max-lg:[&::-webkit-scrollbar]:hidden">
-          {categoryRow2.map((cat) => (
-            <div key={cat.name + "2"} className="w-[200px] shrink-0 lg:w-auto">
+        <DragRow className="cursor-grab overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {categoryRow2.map((cat, i) => (
+            <div key={i} className="w-[320px] shrink-0">
               <CategoryCard category={cat} />
             </div>
           ))}
-        </div>
+        </DragRow>
       </div>
     </section>
   );

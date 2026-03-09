@@ -1,7 +1,15 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import localFont from "next/font/local";
+import Script from "next/script";
 import { ThemeProvider } from "next-themes";
+import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+});
 
 const azeret = localFont({
   src: [
@@ -65,11 +73,19 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <meta name="apple-mobile-web-app-title" content="WaveSpeed" />
       <body
-        className={`${azeret.variable} ${azeretSemiMono.variable} antialiased`}
+        className={`${inter.variable} ${azeret.variable} ${azeretSemiMono.variable} antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
+          <Toaster />
         </ThemeProvider>
+        {process.env.NODE_ENV === "development" && (
+          <Script
+            src="//unpkg.com/react-grab/dist/index.global.js"
+            crossOrigin="anonymous"
+            strategy="beforeInteractive"
+          />
+        )}
       </body>
     </html>
   );

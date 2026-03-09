@@ -16,7 +16,7 @@ export function CTABanner() {
       </div>
 
       <div className="relative mx-auto flex h-full max-w-[1440px] flex-col items-center justify-center gap-6 px-6 py-12 md:flex-row md:justify-between md:px-20 md:py-0">
-        <h2 className="text-center text-[32px] leading-none font-medium tracking-[-1px] text-balance text-black md:text-left md:text-[48px]">
+        <h2 className="font-display text-center text-[32px] leading-none font-medium tracking-[-1px] text-balance text-black md:text-left md:text-[48px]">
           Unlock Your AI Potential Today
         </h2>
 

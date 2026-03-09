@@ -1,0 +1,12 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": ["src/app/**/page.tsx", "src/app/**/layout.tsx"],
+  "project": ["src/**/*.{ts,tsx}"],
+  "ignoreDependencies": [
+    "tailwindcss",
+    "tw-animate-css",
+    "postcss",
+    "shadcn",
+    "@svgr/webpack"
+  ]
+}

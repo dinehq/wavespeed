@@ -16,7 +16,7 @@ export function ForCreators() {
           {/* Section header */}
           <div className="mb-[48px] flex flex-col gap-4">
             <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
-              <h2 className="text-[32px] leading-none font-medium tracking-[-1px] text-balance text-white md:text-[48px]">
+              <h2 className="font-display text-[32px] leading-none font-medium tracking-[-1px] text-balance text-white md:text-[48px]">
                 Built for <em className="italic">Creators</em>
               </h2>
               <div className="flex shrink-0 items-center gap-3">
@@ -56,7 +56,7 @@ export function ForCreators() {
           <div className="grid grid-cols-2 gap-y-4 border-t border-white/10 pt-6 md:grid-cols-4">
             {features.map((f) => (
               <div key={f.label}>
-                <p className="font-mono text-2xl font-medium text-white">
+                <p className="font-display text-2xl font-medium text-white">
                   {f.label}
                 </p>
                 <p className="font-mono text-xs tracking-[1px] text-white/40 uppercase">
