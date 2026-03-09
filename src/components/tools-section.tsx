@@ -1,6 +1,7 @@
 "use client";
 
 import Image, { type StaticImageData } from "next/image";
+import { useRef } from "react";
 import Lab1 from "@/images/lab-1.svg";
 import Lab2 from "@/images/lab-2.svg";
 import Lab3 from "@/images/lab-3.svg";
@@ -458,6 +459,60 @@ function CategoryCard({
   );
 }
 
+function DragRow({
+  className,
+  children,
+}: {
+  className?: string;
+  children: React.ReactNode;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isDown = useRef(false);
+  const startX = useRef(0);
+  const scrollStart = useRef(0);
+  const dragged = useRef(false);
+
+  return (
+    <div
+      ref={ref}
+      className={`flex gap-4 select-none ${className ?? ""}`}
+      onMouseDown={(e) => {
+        const el = ref.current;
+        if (!el) return;
+        isDown.current = true;
+        startX.current = e.pageX;
+        scrollStart.current = el.scrollLeft;
+        dragged.current = false;
+        el.style.cursor = "grabbing";
+      }}
+      onMouseMove={(e) => {
+        const el = ref.current;
+        if (!el || !isDown.current) return;
+        e.preventDefault();
+        const walk = (e.pageX - startX.current) * 1.5;
+        el.scrollLeft = scrollStart.current - walk;
+        if (Math.abs(walk) > 3) dragged.current = true;
+      }}
+      onMouseUp={() => {
+        isDown.current = false;
+        if (ref.current) ref.current.style.cursor = "grab";
+      }}
+      onMouseLeave={() => {
+        isDown.current = false;
+        if (ref.current) ref.current.style.cursor = "grab";
+      }}
+      onClickCapture={(e) => {
+        if (dragged.current) {
+          e.stopPropagation();
+          e.preventDefault();
+        }
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
 export function ToolsSection() {
   return (
     <section className="pt-20 md:pt-[120px]">
@@ -477,7 +532,7 @@ export function ToolsSection() {
       <div className="flex flex-col gap-4 px-4">
         {/* Provider Row 1: marquee */}
         <div className="group/marquee overflow-hidden">
-          <div className="group-hover/marquee:paused flex w-max animate-[marquee_60s_linear_infinite] gap-4">
+          <div className="flex w-max animate-[marquee_60s_linear_infinite] gap-4 group-hover/marquee:paused">
             {[...providerRow1, ...providerRow1].map((card, i) => (
               <div
                 key={`${card.name}-${i}`}
@@ -493,7 +548,7 @@ export function ToolsSection() {
 
         {/* Provider Row 2: reverse marquee */}
         <div className="group/marquee2 overflow-hidden">
-          <div className="group-hover/marquee2:paused flex w-max animate-[marquee-reverse_60s_linear_infinite] gap-4">
+          <div className="flex w-max animate-[marquee-reverse_60s_linear_infinite] gap-4 group-hover/marquee2:paused">
             {[...providerRow2, ...providerRow2].map((card, i) => (
               <div
                 key={`${card.name}-r-${i}`}
@@ -508,22 +563,22 @@ export function ToolsSection() {
         </div>
 
         {/* Category Row 1 */}
-        <div className="flex gap-4 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <DragRow className="cursor-grab overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {categoryRow1.map((cat, i) => (
             <div key={i} className="w-[400px] shrink-0">
               <CategoryCard category={cat} />
             </div>
           ))}
-        </div>
+        </DragRow>
 
         {/* Category Row 2 */}
-        <div className="flex gap-4 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <DragRow className="cursor-grab overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {categoryRow2.map((cat, i) => (
             <div key={i} className="w-[320px] shrink-0">
               <CategoryCard category={cat} />
             </div>
           ))}
-        </div>
+        </DragRow>
       </div>
     </section>
   );
