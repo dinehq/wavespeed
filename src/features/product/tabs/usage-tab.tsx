@@ -203,9 +203,9 @@ export function ProductUsageTab({
 
         <Card className="bg-surface gap-0 rounded-xs border-0 py-0 shadow-none">
           <CardHeader className="px-4 pt-4 pb-0">
-            <CardTitle className="text-foreground text-sm tracking-[0.4px]">
-              Usage breakdown
-            </CardTitle>
+<CardTitle className="text-foreground font-display text-xl font-semibold tracking-tight">
+                Usage breakdown
+              </CardTitle>
           </CardHeader>
           <CardContent className="px-4 pt-3 pb-4">
             <ChartContainer
@@ -260,7 +260,7 @@ export function ProductUsageTab({
                   stroke="none"
                   strokeWidth={0}
                   radius={[0, 0, 0, 0]}
-                  maxBarSize={24}
+                  maxBarSize={12}
                 />
                 <Bar
                   dataKey="qwenEdit"
@@ -269,7 +269,34 @@ export function ProductUsageTab({
                   stroke="none"
                   strokeWidth={0}
                   radius={[0, 0, 0, 0]}
-                  maxBarSize={24}
+                  maxBarSize={12}
+                />
+                <Bar
+                  dataKey="gpt4o"
+                  name="openai/gpt-4o"
+                  fill="var(--color-gpt4o)"
+                  stroke="none"
+                  strokeWidth={0}
+                  radius={[0, 0, 0, 0]}
+                  maxBarSize={12}
+                />
+                <Bar
+                  dataKey="claudeSonnet"
+                  name="anthropic/claude-sonnet-4"
+                  fill="var(--color-claudeSonnet)"
+                  stroke="none"
+                  strokeWidth={0}
+                  radius={[0, 0, 0, 0]}
+                  maxBarSize={12}
+                />
+                <Bar
+                  dataKey="geminiPro"
+                  name="google/gemini-2.0-flash"
+                  fill="var(--color-geminiPro)"
+                  stroke="none"
+                  strokeWidth={0}
+                  radius={[0, 0, 0, 0]}
+                  maxBarSize={12}
                 />
               </BarChart>
             </ChartContainer>
@@ -279,7 +306,7 @@ export function ProductUsageTab({
         <div ref={usagePerModelSectionRef} className="scroll-mt-24">
           <Card className="bg-surface gap-0 rounded-xs border-0 py-0 shadow-none">
             <CardHeader className="px-4 pt-4 pb-0">
-              <CardTitle className="text-foreground text-sm tracking-[0.4px]">
+              <CardTitle className="text-foreground font-display text-xl font-semibold tracking-tight">
                 Usage per model
               </CardTitle>
             </CardHeader>
@@ -367,9 +394,9 @@ export function ProductUsageTab({
 
         <Card className="bg-surface gap-0 rounded-xs border-0 py-0 shadow-none">
           <CardHeader className="px-4 pt-4 pb-0">
-            <CardTitle className="text-foreground text-sm tracking-[0.4px]">
-              Daily Usage
-            </CardTitle>
+<CardTitle className="text-foreground font-display text-xl font-semibold tracking-tight">
+            Daily Usage
+          </CardTitle>
           </CardHeader>
           <CardContent className="px-4 pt-3 pb-4">
             <div className={usageTableContainerClass}>

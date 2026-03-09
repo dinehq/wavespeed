@@ -63,6 +63,7 @@ import { ProductDashboardTab } from "@/features/product/tabs/dashboard-tab";
 import { ProductSettingsTab } from "@/features/product/tabs/settings-tab";
 import { ProductUsageTab } from "@/features/product/tabs/usage-tab";
 import type { DashboardIntent } from "@/features/product/types/product-main";
+import { toast } from "@/hooks/use-toast";
 
 type ProductMainProps = {
   forcedMainTab?: ProductMainTab;
@@ -76,7 +77,7 @@ const controlButtonSmClass = `${controlButtonClass} h-8 rounded-xs px-2.5`;
 const controlButtonMdClass = `${controlButtonClass} h-8 rounded-xs px-3`;
 const controlButtonXsClass = `${controlButtonClass} h-7 rounded-xs px-2`;
 const controlSelectTriggerClass =
-  "border-foreground/10 bg-background text-foreground/80 hover:bg-foreground/5 rounded-xs text-xs shadow-xs";
+  "cursor-pointer border-foreground/10 bg-background text-foreground/80 hover:bg-foreground/5 rounded-xs text-xs shadow-xs";
 const controlSelectTriggerCompactClass = `${controlSelectTriggerClass} h-7 justify-start gap-1 pr-1.5 pl-2.5`;
 const requestFilterTriggerClass =
   "inline-flex h-8 w-fit min-w-0 shrink-0 items-center justify-start gap-1 rounded-xs border pr-1.5 pl-2.5 text-xs font-normal whitespace-nowrap tracking-[0.8px]";
@@ -252,7 +253,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
     );
   };
   const getRequestCheckboxClassName = (checked: boolean) =>
-    `inline-flex size-3.5 items-center justify-center rounded-[2px] border transition-colors ${
+    `cursor-pointer inline-flex size-3.5 items-center justify-center rounded-[2px] border transition-colors ${
       checked
         ? "border-[#8ea8ff] bg-[#e9efff] text-[#5f7dff]"
         : "border-foreground/15 bg-background hover:bg-foreground/[0.03] text-transparent"
@@ -260,6 +261,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
   const copyRequestId = async (requestId: string) => {
     try {
       await navigator.clipboard.writeText(requestId);
+      toast({ title: "Copied", description: "Request ID copied to clipboard." });
     } catch {
       // Clipboard may be unavailable in unsupported browsers.
     }
@@ -267,6 +269,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
   const copyApiKey = async (key: string) => {
     try {
       await navigator.clipboard.writeText(key);
+      toast({ title: "Copied", description: "API key copied to clipboard." });
     } catch {
       // Clipboard may be unavailable in unsupported browsers.
     }
@@ -300,7 +303,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                   role="switch"
                   aria-checked={showApiRequests}
                   onClick={() => setShowApiRequests((prev) => !prev)}
-                  className={`relative inline-flex h-4.5 w-8 items-center rounded-full p-0.5 transition-colors ${
+                  className={`cursor-pointer relative inline-flex h-4.5 w-8 items-center rounded-full p-0.5 transition-colors ${
                     showApiRequests ? "bg-foreground/25" : "bg-foreground/15"
                   }`}
                 >
@@ -355,7 +358,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                         setIsModelFilterOpen(false);
                         setModelFilterQuery("");
                       }}
-                      className={`hover:bg-foreground/5 flex w-full items-center rounded-xs px-2 py-1.5 text-left text-xs ${
+                      className={`cursor-pointer hover:bg-foreground/5 flex w-full items-center rounded-xs px-2 py-1.5 text-left text-xs ${
                         modelFilterValue === "all-models"
                           ? "bg-foreground/5 text-foreground"
                           : "text-foreground/80"
@@ -373,7 +376,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                             setIsModelFilterOpen(false);
                             setModelFilterQuery("");
                           }}
-                          className={`hover:bg-foreground/5 flex w-full items-center rounded-xs px-2 py-1.5 text-left text-xs ${
+                          className={`cursor-pointer hover:bg-foreground/5 flex w-full items-center rounded-xs px-2 py-1.5 text-left text-xs ${
                             modelFilterValue === model
                               ? "bg-foreground/5 text-foreground"
                               : "text-foreground/80"
@@ -503,7 +506,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                         <button
                           type="button"
                           onClick={() => openRequestDetail(request.id)}
-                          className="text-foreground font-mono text-xs underline-offset-2 hover:text-[#3f74ff] hover:underline"
+                          className="cursor-pointer text-foreground/70 hover:text-foreground font-mono text-xs underline-offset-2 hover:underline"
                         >
                           {request.id}
                         </button>
@@ -662,7 +665,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                         <button
                           type="button"
                           onClick={() => openRequestDetail(request.id)}
-                          className="text-foreground font-mono underline-offset-2 hover:text-[#3f74ff] hover:underline"
+                          className="cursor-pointer text-foreground/70 hover:text-foreground font-mono text-xs underline-offset-2 hover:underline"
                         >
                           {request.id}
                         </button>

@@ -136,7 +136,7 @@ export function ProductDashboardTab({
                               className={`flex size-4 shrink-0 items-center justify-center rounded-full ${
                                 task.done
                                   ? "bg-[#16a34a] text-white"
-                                  : "bg-foreground/20 text-transparent"
+                                  : "border border-foreground/10 bg-transparent text-transparent"
                               }`}
                             >
                               <Check className="size-3" />
