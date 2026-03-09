@@ -532,7 +532,7 @@ export function ToolsSection() {
       <div className="flex flex-col gap-4 px-4">
         {/* Provider Row 1: marquee */}
         <div className="group/marquee overflow-hidden">
-          <div className="flex w-max animate-[marquee_60s_linear_infinite] gap-4 group-hover/marquee:paused">
+          <div className="group-hover/marquee:paused flex w-max animate-[marquee_60s_linear_infinite] gap-4">
             {[...providerRow1, ...providerRow1].map((card, i) => (
               <div
                 key={`${card.name}-${i}`}
@@ -548,7 +548,7 @@ export function ToolsSection() {
 
         {/* Provider Row 2: reverse marquee */}
         <div className="group/marquee2 overflow-hidden">
-          <div className="flex w-max animate-[marquee-reverse_60s_linear_infinite] gap-4 group-hover/marquee2:paused">
+          <div className="group-hover/marquee2:paused flex w-max animate-[marquee-reverse_60s_linear_infinite] gap-4">
             {[...providerRow2, ...providerRow2].map((card, i) => (
               <div
                 key={`${card.name}-r-${i}`}

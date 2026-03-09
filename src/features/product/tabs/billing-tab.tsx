@@ -41,7 +41,6 @@ type ProductBillingTabProps = {
   controlButtonMdClass: string;
   controlButtonSmClass: string;
   controlButtonXsClass: string;
-  controlSelectTriggerClass: string;
 };
 
 function formatTopUpThroughput(throughput: string): string {
@@ -89,7 +88,6 @@ export function ProductBillingTab({
   controlButtonMdClass,
   controlButtonSmClass,
   controlButtonXsClass,
-  controlSelectTriggerClass,
 }: ProductBillingTabProps) {
   const paymentMethodOptions = useMemo(
     () => [

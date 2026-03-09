@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { Check } from "lucide-react";
 
 import {
@@ -11,13 +11,17 @@ import {
 } from "@/components/ui/toast";
 import { useToast } from "@/hooks/use-toast";
 
-export function Toaster() {
-  const [mounted, setMounted] = useState(false);
-  const { toasts } = useToast();
+const subscribe = () => () => {};
+const getSnapshot = () => true;
+const getServerSnapshot = () => false;
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+export function Toaster() {
+  const mounted = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot,
+  );
+  const { toasts } = useToast();
 
   if (!mounted) return null;
 
@@ -41,4 +45,3 @@ export function Toaster() {
     </ToastProvider>
   );
 }
-

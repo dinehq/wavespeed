@@ -261,7 +261,10 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
   const copyRequestId = async (requestId: string) => {
     try {
       await navigator.clipboard.writeText(requestId);
-      toast({ title: "Copied", description: "Request ID copied to clipboard." });
+      toast({
+        title: "Copied",
+        description: "Request ID copied to clipboard.",
+      });
     } catch {
       // Clipboard may be unavailable in unsupported browsers.
     }
@@ -303,7 +306,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                   role="switch"
                   aria-checked={showApiRequests}
                   onClick={() => setShowApiRequests((prev) => !prev)}
-                  className={`cursor-pointer relative inline-flex h-4.5 w-8 items-center rounded-full p-0.5 transition-colors ${
+                  className={`relative inline-flex h-4.5 w-8 cursor-pointer items-center rounded-full p-0.5 transition-colors ${
                     showApiRequests ? "bg-foreground/25" : "bg-foreground/15"
                   }`}
                 >
@@ -358,7 +361,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                         setIsModelFilterOpen(false);
                         setModelFilterQuery("");
                       }}
-                      className={`cursor-pointer hover:bg-foreground/5 flex w-full items-center rounded-xs px-2 py-1.5 text-left text-xs ${
+                      className={`hover:bg-foreground/5 flex w-full cursor-pointer items-center rounded-xs px-2 py-1.5 text-left text-xs ${
                         modelFilterValue === "all-models"
                           ? "bg-foreground/5 text-foreground"
                           : "text-foreground/80"
@@ -376,7 +379,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                             setIsModelFilterOpen(false);
                             setModelFilterQuery("");
                           }}
-                          className={`cursor-pointer hover:bg-foreground/5 flex w-full items-center rounded-xs px-2 py-1.5 text-left text-xs ${
+                          className={`hover:bg-foreground/5 flex w-full cursor-pointer items-center rounded-xs px-2 py-1.5 text-left text-xs ${
                             modelFilterValue === model
                               ? "bg-foreground/5 text-foreground"
                               : "text-foreground/80"
@@ -506,7 +509,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                         <button
                           type="button"
                           onClick={() => openRequestDetail(request.id)}
-                          className="cursor-pointer text-foreground/70 hover:text-foreground font-mono text-xs underline-offset-2 hover:underline"
+                          className="text-foreground/70 hover:text-foreground cursor-pointer font-mono text-xs underline-offset-2 hover:underline"
                         >
                           {request.id}
                         </button>
@@ -665,7 +668,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                         <button
                           type="button"
                           onClick={() => openRequestDetail(request.id)}
-                          className="cursor-pointer text-foreground/70 hover:text-foreground font-mono text-xs underline-offset-2 hover:underline"
+                          className="text-foreground/70 hover:text-foreground cursor-pointer font-mono text-xs underline-offset-2 hover:underline"
                         >
                           {request.id}
                         </button>
@@ -838,7 +841,6 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
           controlButtonMdClass={controlButtonMdClass}
           controlButtonSmClass={controlButtonSmClass}
           controlButtonXsClass={controlButtonXsClass}
-          controlSelectTriggerClass={controlSelectTriggerClass}
         />
       ) : resolvedMainTab === "Settings" ? (
         <ProductSettingsTab />
