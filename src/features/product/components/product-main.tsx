@@ -571,7 +571,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
             <Table className="min-w-170">
               <TableHeader>
                 <TableRow className="border-foreground/10 hover:bg-transparent">
-                  <TableHead className="w-10 p-0 align-middle">
+                  <TableHead className="w-10 pl-3 pr-2 align-middle lg:pl-4">
                     <div className="flex items-center justify-center">
                       <button
                         type="button"
@@ -602,22 +602,22 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                       </button>
                     </div>
                   </TableHead>
-                  <TableHead className="text-foreground/50 tracking-lg w-20">
+                  <TableHead className="text-foreground/50 tracking-lg w-20 px-3 lg:px-4">
                     Output
                   </TableHead>
-                  <TableHead className="text-foreground/50 tracking-lg">
+                  <TableHead className="text-foreground/50 tracking-lg px-3 lg:px-4">
                     ID
                   </TableHead>
-                  <TableHead className="text-foreground/50 tracking-lg">
+                  <TableHead className="text-foreground/50 tracking-lg px-3 lg:px-4">
                     Model
                   </TableHead>
-                  <TableHead className="text-foreground/50 tracking-lg">
+                  <TableHead className="text-foreground/50 tracking-lg px-3 lg:px-4">
                     Status
                   </TableHead>
-                  <TableHead className="text-foreground/50 tracking-lg">
+                  <TableHead className="text-foreground/50 tracking-lg px-3 lg:px-4">
                     Created
                   </TableHead>
-                  <TableHead className="text-foreground/50 tracking-lg">
+                  <TableHead className="text-foreground/50 tracking-lg pl-3 pr-3 lg:pl-4 lg:pr-4">
                     Action
                   </TableHead>
                 </TableRow>
@@ -628,7 +628,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                     key={request.id}
                     className="border-foreground/10 hover:bg-surface"
                   >
-                    <TableCell className="p-0 align-middle">
+                    <TableCell className="pl-3 pr-2 py-0 align-middle lg:pl-4">
                       <div className="flex items-center justify-center py-2">
                         <button
                           type="button"
@@ -659,7 +659,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                         </button>
                       </div>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="px-3 lg:px-4">
                       <div className="bg-surface relative size-12 overflow-hidden rounded-xs">
                         <Image
                           src={request.outputPreview}
@@ -669,7 +669,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                         />
                       </div>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="px-3 lg:px-4">
                       <div className="flex items-center gap-1">
                         <button
                           type="button"
@@ -689,8 +689,8 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                         </Button>
                       </div>
                     </TableCell>
-                    <TableCell>{request.model}</TableCell>
-                    <TableCell>
+                    <TableCell className="px-3 lg:px-4">{request.model}</TableCell>
+                    <TableCell className="px-3 lg:px-4">
                       <Badge
                         variant="outline"
                         className={`tracking-lg rounded-xs border-0 px-2 py-1 text-xs ${
@@ -705,8 +705,8 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                         {request.status}
                       </Badge>
                     </TableCell>
-                    <TableCell>{request.createdAt}</TableCell>
-                    <TableCell>
+                    <TableCell className="px-3 lg:px-4">{request.createdAt}</TableCell>
+                    <TableCell className="pl-3 pr-3 lg:pl-4 lg:pr-4">
                       <div className="flex items-center gap-1">
                         <Button
                           variant="ghost"
