@@ -744,7 +744,6 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
   );
   const renderTopTabsSkeleton = () => (
     <div className="border-foreground/10 bg-background/95 supports-backdrop-filter:bg-background/80 sticky top-0 z-40 flex justify-center border-b px-4 backdrop-blur">
-
       <div className="w-full max-w-7xl">
         <div
           className="flex h-12 w-full items-center justify-start gap-8 overflow-x-auto rounded-none px-0"
@@ -756,9 +755,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
               <span
                 key={tab}
                 className={`tracking-xl relative flex h-12 flex-none items-center rounded-none px-0 py-0 text-sm whitespace-nowrap ${
-                  isActive
-                    ? "text-foreground font-bold"
-                    : "text-foreground/60"
+                  isActive ? "text-foreground font-bold" : "text-foreground/60"
                 }`}
               >
                 {tab}
@@ -791,7 +788,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
               <TabsTrigger
                 key={tab}
                 value={tab}
-                className="tracking-xl data-[state=active]:text-foreground data-[state=active]:font-bold data-[state=active]:after:bg-foreground h-12 flex-none rounded-none px-0 py-0 text-sm whitespace-nowrap after:bg-transparent"
+                className="tracking-xl data-[state=active]:text-foreground data-[state=active]:after:bg-foreground h-12 flex-none rounded-none px-0 py-0 text-sm whitespace-nowrap after:bg-transparent data-[state=active]:font-bold"
               >
                 {tab}
               </TabsTrigger>

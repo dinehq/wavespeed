@@ -425,6 +425,62 @@ export function ProductBillingTab({
             </CardContent>
             <div className="border-foreground/10 mt-auto border-t px-4 py-4">
               <div className="flex flex-col gap-2 md:flex-row md:items-end md:gap-2">
+                <div className="flex w-full flex-col items-start gap-1 md:w-auto md:flex-none">
+                  <Popover
+                    open={isPaymentPickerOpen}
+                    onOpenChange={setIsPaymentPickerOpen}
+                  >
+                    <div className="flex w-full items-center justify-end gap-5 md:w-auto">
+                      <PopoverTrigger asChild>
+                        <button
+                          type="button"
+                          aria-label={`Selected payment: ${selectedPaymentMeta.label}`}
+                          className={`bg-background hover:bg-surface border-foreground/10 focus-visible:border-ring focus-visible:ring-ring/50 flex h-[36px] items-center rounded-xs border shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] ${
+                            isPaymentPickerOpen ? "border-brand!" : ""
+                          }`}
+                        >
+                          <span className="flex h-full w-[120px] items-center justify-center px-2">
+                            <selectedPaymentMeta.Icon
+                              className="max-h-full w-auto max-w-full shrink-0"
+                              preserveAspectRatio="xMidYMid meet"
+                            />
+                          </span>
+                          <span className="border-foreground/10 flex h-full w-6 items-center justify-center border-l">
+                            <ChevronDown className="text-foreground/40 size-4" />
+                          </span>
+                        </button>
+                      </PopoverTrigger>
+                    </div>
+                    <PopoverContent
+                      align="start"
+                      className="bg-background border-foreground/10 w-[152px] rounded-xs border p-2 shadow-sm"
+                    >
+                      <div className="flex flex-col items-center gap-1">
+                        {paymentMethodOptions.map((method) => (
+                          <button
+                            key={method.id}
+                            type="button"
+                            onClick={() => {
+                              setSelectedPaymentMethod(method.id);
+                              setIsPaymentPickerOpen(false);
+                            }}
+                            aria-label={method.label}
+                            className={`border-foreground/10 hover:bg-surface flex h-[36px] w-full items-center justify-center rounded-xs border px-2 transition-colors ${
+                              selectedPaymentMethod === method.id
+                                ? "border-brand!"
+                                : ""
+                            }`}
+                          >
+                            <method.Icon
+                              className="max-h-full w-auto max-w-full shrink-0"
+                              preserveAspectRatio="xMidYMid meet"
+                            />
+                          </button>
+                        ))}
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                </div>
                 <div className="hidden w-full items-center gap-2 md:flex md:flex-1">
                   {hasActivatedCustomInput ? (
                     <Input
@@ -441,62 +497,6 @@ export function ProductBillingTab({
                   <Button className="h-9 flex-1 rounded-xs px-4 text-xs tracking-[0.8px]">
                     Buy ({buyAmountLabel})
                   </Button>
-                </div>
-                <div className="flex w-full flex-col items-start gap-1 md:w-auto md:flex-none">
-                  <Popover
-                    open={isPaymentPickerOpen}
-                    onOpenChange={setIsPaymentPickerOpen}
-                  >
-                    <div className="flex w-full items-center justify-end gap-5 md:w-auto">
-                      <PopoverTrigger asChild>
-                        <button
-                          type="button"
-                          aria-label={`Selected payment: ${selectedPaymentMeta.label}`}
-                          className={`bg-background hover:bg-surface border-foreground/10 focus-visible:border-ring focus-visible:ring-ring/50 flex h-[36px] items-center rounded-xs border shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] ${
-                            isPaymentPickerOpen ? "border-brand!" : ""
-                          }`}
-                        >
-                          <span className="flex h-full w-[90px] items-center justify-center px-2">
-                            <selectedPaymentMeta.Icon
-                              className="max-h-full w-auto max-w-full shrink-0"
-                              preserveAspectRatio="xMidYMid meet"
-                            />
-                          </span>
-                          <span className="border-foreground/10 flex h-full w-6 items-center justify-center border-l">
-                            <ChevronDown className="text-foreground/40 size-4" />
-                          </span>
-                        </button>
-                      </PopoverTrigger>
-                    </div>
-                    <PopoverContent
-                      align="start"
-                      className="bg-background border-foreground/10 w-fit rounded-xs border p-2 shadow-sm"
-                    >
-                      <div className="flex flex-col items-center gap-1">
-                        {paymentMethodOptions.map((method) => (
-                          <button
-                            key={method.id}
-                            type="button"
-                            onClick={() => {
-                              setSelectedPaymentMethod(method.id);
-                              setIsPaymentPickerOpen(false);
-                            }}
-                            aria-label={method.label}
-                            className={`border-foreground/10 hover:bg-surface flex h-[36px] w-[90px] items-center justify-center rounded-xs border px-2 transition-colors ${
-                              selectedPaymentMethod === method.id
-                                ? "border-brand!"
-                                : ""
-                            }`}
-                          >
-                            <method.Icon
-                              className="max-h-full w-auto max-w-full shrink-0"
-                              preserveAspectRatio="xMidYMid meet"
-                            />
-                          </button>
-                        ))}
-                      </div>
-                    </PopoverContent>
-                  </Popover>
                 </div>
               </div>
             </div>

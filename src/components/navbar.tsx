@@ -68,15 +68,15 @@ export function Navbar({ mode = "default" }: NavbarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [resourcesOpen, setResourcesOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
-  const [teamOpen, setTeamOpen] = useState(false);
   const [activeLang, setActiveLang] = useState("English");
   const [activeTeam, setActiveTeam] = useState("Dine Team");
+  const [userOpen, setUserOpen] = useState(false);
 
   return (
     <nav className="relative flex h-16 w-full items-center justify-center px-4">
-      <div className="flex w-full max-w-7xl items-center gap-10">
+      <div className="flex w-full max-w-7xl items-center justify-between gap-6">
         {/* Left: Logo + Nav links */}
-        <div className="flex items-center gap-8">
+        <div className="flex min-w-0 items-center gap-6">
           <Link
             href="/"
             aria-label="WaveSpeed home"
@@ -84,7 +84,7 @@ export function Navbar({ mode = "default" }: NavbarProps) {
           >
             <Logo className="text-foreground h-6 w-auto" />
           </Link>
-          <div className="hidden items-center gap-6 md:flex">
+          <div className="hidden items-center gap-6 lg:flex">
             {["Explore", "Pricing", "Enterprise"].map((item) => (
               <a
                 key={item}
@@ -138,65 +138,14 @@ export function Navbar({ mode = "default" }: NavbarProps) {
 
         {/* Right: Search + Team + Utility buttons */}
         <div className="flex flex-1 items-center justify-end gap-2">
-          {isDashboardMode && (
-            <div
-              className="relative mr-2 hidden md:flex"
-              onMouseEnter={() => setTeamOpen(true)}
-              onMouseLeave={() => setTeamOpen(false)}
-            >
-              <button className="flex cursor-pointer items-center gap-1">
-                <span className="bg-foreground/10 inline-block size-5 rounded-full" />
-                <span className="text-foreground text-sm leading-6 font-medium">
-                  {activeTeam}
-                </span>
-                <ChevronDown
-                  className={`text-foreground size-4 shrink-0 transition-transform duration-150 ${teamOpen ? "rotate-180" : ""}`}
-                />
-              </button>
-              {teamOpen && (
-                <div className="absolute top-full right-0 z-50 pt-4">
-                  <div className="border-foreground/5 bg-background flex w-50 flex-col rounded-xs border py-2 shadow-lg">
-                    {teams.map((team) => (
-                      <button
-                        key={team.name}
-                        onClick={() => {
-                          setActiveTeam(team.name);
-                          setTeamOpen(false);
-                        }}
-                        className="text-foreground/80 hover:bg-foreground/5 flex cursor-pointer items-center justify-between px-4 py-2 text-left text-sm transition-colors duration-150"
-                      >
-                        <span className="flex items-center gap-2">
-                          <span className="bg-foreground/10 inline-block size-5 rounded-full" />
-                          <span>
-                            <span className="text-foreground block text-sm font-medium">
-                              {team.name}
-                            </span>
-                            <span className="text-foreground/50 block text-xs">
-                              {team.role}
-                            </span>
-                          </span>
-                        </span>
-                        {activeTeam === team.name && (
-                          <svg
-                            className="text-foreground size-4 shrink-0"
-                            viewBox="0 0 16 16"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <path d="M3 8.5L6.5 12L13 4" />
-                          </svg>
-                        )}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-          <div className="bg-surface hover:bg-foreground/10 hidden items-center gap-1.5 rounded-xs px-2 py-1.5 transition-colors duration-150 md:flex">
+          <Link
+            href="/explore"
+            aria-label="Search"
+            className="bg-surface hover:bg-foreground/10 hidden size-8 items-center justify-center rounded-xs transition-colors duration-150 md:flex xl:hidden"
+          >
+            <SearchIcon className="opacity-60" />
+          </Link>
+          <div className="bg-surface hover:bg-foreground/10 hidden items-center gap-1.5 rounded-xs px-2 py-1.5 transition-colors duration-150 xl:flex">
             <SearchIcon className="opacity-40" />
             <input
               type="text"
@@ -292,31 +241,97 @@ export function Navbar({ mode = "default" }: NavbarProps) {
                   </svg>
                 </span>
               </Link>
-              <button
-                aria-label="User profile"
-                className="bg-surface hover:bg-foreground/10 flex size-8 cursor-pointer items-center justify-center rounded-xs transition-colors duration-150"
+              <div
+                className="relative"
+                onMouseEnter={() => setUserOpen(true)}
+                onMouseLeave={() => setUserOpen(false)}
               >
-                <svg
-                  className="text-foreground size-4"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
+                <button
+                  aria-label="User profile"
+                  className="bg-surface hover:bg-foreground/10 flex size-8 cursor-pointer items-center justify-center rounded-xs transition-colors duration-150"
                 >
-                  <circle
-                    cx="8"
-                    cy="5.2"
-                    r="2.2"
-                    stroke="currentColor"
-                    strokeWidth="1.2"
-                  />
-                  <path
-                    d="M3.5 12.8c0-2.1 2-3.4 4.5-3.4s4.5 1.3 4.5 3.4"
-                    stroke="currentColor"
-                    strokeWidth="1.2"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </button>
+                  <svg
+                    className="text-foreground size-4"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle
+                      cx="8"
+                      cy="5.2"
+                      r="2.2"
+                      stroke="currentColor"
+                      strokeWidth="1.2"
+                    />
+                    <path
+                      d="M3.5 12.8c0-2.1 2-3.4 4.5-3.4s4.5 1.3 4.5 3.4"
+                      stroke="currentColor"
+                      strokeWidth="1.2"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </button>
+                {userOpen && (
+                  <div className="absolute top-full right-0 z-50 pt-4">
+                    <div className="border-foreground/5 bg-background flex w-56 flex-col rounded-xs border shadow-lg">
+                      <div className="border-foreground/5 border-b px-4 py-3">
+                        <p className="text-foreground text-sm font-medium">
+                          user@wavespeed.ai
+                        </p>
+                      </div>
+                      <div className="border-foreground/5 border-b py-2">
+                        <p className="text-foreground/50 px-4 py-1 text-xs">
+                          Teams
+                        </p>
+                        {teams.map((team) => (
+                          <button
+                            key={team.name}
+                            onClick={() => {
+                              setActiveTeam(team.name);
+                              setUserOpen(false);
+                            }}
+                            className="text-foreground/80 hover:bg-foreground/5 flex w-full cursor-pointer items-center justify-between px-4 py-2 text-left text-sm transition-colors duration-150"
+                          >
+                            <span className="flex items-center gap-2">
+                              <span className="bg-foreground/10 inline-block size-5 rounded-full" />
+                              <span className="text-foreground text-sm font-medium">
+                                {team.name}
+                              </span>
+                            </span>
+                            {activeTeam === team.name && (
+                              <svg
+                                className="text-foreground size-4 shrink-0"
+                                viewBox="0 0 16 16"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              >
+                                <path d="M3 8.5L6.5 12L13 4" />
+                              </svg>
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                      <div className="py-2">
+                        <a
+                          href="#"
+                          className="text-foreground/80 hover:bg-foreground/5 block cursor-pointer px-4 py-2 text-sm transition-colors duration-150"
+                        >
+                          Settings
+                        </a>
+                        <a
+                          href="#"
+                          className="text-foreground/80 hover:bg-foreground/5 block cursor-pointer px-4 py-2 text-sm transition-colors duration-150"
+                        >
+                          Sign Out
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             </>
           ) : (
             <a
@@ -331,7 +346,7 @@ export function Navbar({ mode = "default" }: NavbarProps) {
           <button
             aria-label="Toggle menu"
             onClick={() => setMenuOpen(!menuOpen)}
-            className="flex size-8 cursor-pointer items-center justify-center md:hidden"
+            className="flex size-8 cursor-pointer items-center justify-center lg:hidden"
           >
             <svg
               className="size-5"
@@ -360,7 +375,7 @@ export function Navbar({ mode = "default" }: NavbarProps) {
 
       {/* Mobile dropdown panel */}
       {menuOpen && (
-        <div className="border-foreground/5 bg-background absolute top-16 right-0 left-0 z-50 flex flex-col gap-4 border-t p-4 shadow-lg md:hidden">
+        <div className="border-foreground/5 bg-background absolute top-16 right-0 left-0 z-50 flex flex-col gap-4 border-t p-4 shadow-lg lg:hidden">
           {isDashboardMode && (
             <div className="flex flex-col gap-1">
               {teams.map((team) => (
@@ -401,16 +416,15 @@ export function Navbar({ mode = "default" }: NavbarProps) {
               ))}
             </div>
           )}
-          {!isDashboardMode &&
-            ["Explore", "Pricing", "Enterprise"].map((item) => (
-              <a
-                key={item}
-                href="#"
-                className="text-foreground hover:text-foreground/50 tracking-xl py-2 font-mono text-sm leading-4 transition-colors duration-150"
-              >
-                {item}
-              </a>
-            ))}
+          {["Explore", "Pricing", "Enterprise"].map((item) => (
+            <a
+              key={item}
+              href="#"
+              className="text-foreground hover:text-foreground/50 tracking-xl py-2 font-mono text-sm leading-4 transition-colors duration-150"
+            >
+              {item}
+            </a>
+          ))}
           <button
             onClick={() => setResourcesOpen(!resourcesOpen)}
             className="text-foreground hover:text-foreground/50 tracking-xl flex cursor-pointer items-center gap-1 py-2 font-mono text-sm leading-4 transition-colors duration-150"
@@ -440,6 +454,62 @@ export function Navbar({ mode = "default" }: NavbarProps) {
               ))}
             </div>
           )}
+          {isDashboardMode && (
+            <Link
+              href="/billing"
+              className="text-foreground hover:text-foreground/50 tracking-xl flex items-center gap-2 py-2 font-mono text-sm leading-4 transition-colors duration-150"
+            >
+              <span>Balance</span>
+              <span className="text-foreground/60 font-sans text-sm font-medium">
+                $6.186
+              </span>
+            </Link>
+          )}
+          <div className="flex flex-col gap-1">
+            <button
+              onClick={() => setLangOpen(!langOpen)}
+              className="text-foreground hover:text-foreground/50 tracking-xl flex cursor-pointer items-center gap-1 py-2 font-mono text-sm leading-4 transition-colors duration-150"
+            >
+              Language
+              <span className="text-foreground/50 text-xs">({activeLang})</span>
+              <ChevronDown
+                className={`size-4 transition-transform duration-150 ${langOpen ? "rotate-180" : ""}`}
+              />
+            </button>
+            {langOpen && (
+              <div className="flex flex-col gap-1 pl-2">
+                {languages.map((lang) => (
+                  <button
+                    key={lang}
+                    onClick={() => {
+                      setActiveLang(lang);
+                      setLangOpen(false);
+                    }}
+                    className={`flex cursor-pointer items-center justify-between rounded-xs px-2 py-1.5 text-left font-mono text-sm transition-colors duration-150 ${
+                      activeLang === lang
+                        ? "text-foreground"
+                        : "text-foreground/60 hover:text-foreground"
+                    }`}
+                  >
+                    {lang}
+                    {activeLang === lang && (
+                      <svg
+                        className="text-foreground size-4 shrink-0"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M3 8.5L6.5 12L13 4" />
+                      </svg>
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
           <div className="bg-surface flex items-center gap-2 rounded-xs px-2 py-2">
             <SearchIcon className="opacity-40" />
             <input
