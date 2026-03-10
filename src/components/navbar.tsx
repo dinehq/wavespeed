@@ -41,6 +41,11 @@ const resourceGroups = [
   },
 ];
 
+const teams = [
+  { name: "Dine Team", role: "Owner" },
+  { name: "Personal", role: "Member" },
+];
+
 const languages = [
   "English",
   "Bahasa Indonesia",
@@ -63,236 +68,339 @@ export function Navbar({ mode = "default" }: NavbarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [resourcesOpen, setResourcesOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
+  const [teamOpen, setTeamOpen] = useState(false);
   const [activeLang, setActiveLang] = useState("English");
+  const [activeTeam, setActiveTeam] = useState("Dine Team");
 
   return (
-    <nav className="relative flex h-16 w-full items-center justify-between px-4">
-      <div className="flex flex-1 items-center">
-        <Link
-          href="/"
-          aria-label="WaveSpeed home"
-          className="inline-flex items-center transition-opacity duration-150 hover:opacity-70"
-        >
-          <Logo className="text-foreground h-6 w-auto" />
-        </Link>
-      </div>
-
-      <div className="hidden items-center gap-8 md:flex">
-        {["Explore", "Pricing", "Enterprise"].map((item) => (
-          <a
-            key={item}
-            href="#"
-            className="text-foreground hover:text-foreground/50 tracking-xl font-mono text-sm leading-4 transition-colors duration-150"
+    <nav className="relative flex h-16 w-full items-center justify-center px-4">
+      <div className="flex w-full max-w-7xl items-center gap-10">
+        {/* Left: Logo + Nav links */}
+        <div className="flex items-center gap-8">
+          <Link
+            href="/"
+            aria-label="WaveSpeed home"
+            className="inline-flex items-center transition-opacity duration-150 hover:opacity-70"
           >
-            {item}
-          </a>
-        ))}
-        <div
-          className="group relative"
-          onMouseEnter={() => setResourcesOpen(true)}
-          onMouseLeave={() => setResourcesOpen(false)}
-        >
-          <button className="text-foreground hover:text-foreground/50 tracking-xl flex cursor-pointer items-center gap-1 font-mono text-sm leading-4 transition-colors duration-150">
-            Resources
-            <ChevronDown
-              className={`size-4 transition-transform duration-150 ${resourcesOpen ? "rotate-180" : ""}`}
-            />
-          </button>
-          {resourcesOpen && (
-            <div className="absolute top-full right-0 z-50 pt-4">
-              <div className="border-foreground/5 bg-background grid w-105 grid-cols-2 gap-6 rounded-xs border p-5 pt-3 shadow-lg">
-                {resourceGroups.map((group) => (
-                  <div key={group.label} className="flex flex-col gap-1">
-                    <p className="text-foreground/60 tracking-xl mb-1 font-mono text-xs">
-                      {group.label}
-                    </p>
-                    {group.items.map((item) => (
-                      <a
-                        key={item.name}
-                        href="#"
-                        className="hover:bg-foreground/5 rounded-xs px-2 py-1.5 transition-colors duration-150"
-                      >
-                        <p className="text-foreground tracking-xl font-mono text-xs leading-4">
-                          {item.name}
+            <Logo className="text-foreground h-6 w-auto" />
+          </Link>
+          <div className="hidden items-center gap-6 md:flex">
+            {["Explore", "Pricing", "Enterprise"].map((item) => (
+              <a
+                key={item}
+                href="#"
+                className="text-foreground hover:text-foreground/50 tracking-xl font-mono text-sm leading-4 transition-colors duration-150"
+              >
+                {item}
+              </a>
+            ))}
+            <div
+              className="group relative"
+              onMouseEnter={() => setResourcesOpen(true)}
+              onMouseLeave={() => setResourcesOpen(false)}
+            >
+              <button className="text-foreground hover:text-foreground/50 tracking-xl flex cursor-pointer items-center gap-1 font-mono text-sm leading-4 transition-colors duration-150">
+                Resources
+                <ChevronDown
+                  className={`size-4 transition-transform duration-150 ${resourcesOpen ? "rotate-180" : ""}`}
+                />
+              </button>
+              {resourcesOpen && (
+                <div className="absolute top-full right-0 z-50 pt-4">
+                  <div className="border-foreground/5 bg-background grid w-105 grid-cols-2 gap-6 rounded-xs border p-5 pt-3 shadow-lg">
+                    {resourceGroups.map((group) => (
+                      <div key={group.label} className="flex flex-col gap-1">
+                        <p className="text-foreground/60 tracking-xl mb-1 font-mono text-xs">
+                          {group.label}
                         </p>
-                        <p className="text-foreground/60 font-mono text-xs leading-4">
-                          {item.desc}
-                        </p>
-                      </a>
+                        {group.items.map((item) => (
+                          <a
+                            key={item.name}
+                            href="#"
+                            className="hover:bg-foreground/5 rounded-xs px-2 py-1.5 transition-colors duration-150"
+                          >
+                            <p className="text-foreground tracking-xl font-mono text-xs leading-4">
+                              {item.name}
+                            </p>
+                            <p className="text-foreground/60 font-mono text-xs leading-4">
+                              {item.desc}
+                            </p>
+                          </a>
+                        ))}
+                      </div>
                     ))}
                   </div>
-                ))}
-              </div>
+                </div>
+              )}
             </div>
-          )}
+          </div>
         </div>
-      </div>
 
-      <div className="flex flex-1 items-center justify-end gap-2">
-        <div
-          className="relative hidden md:flex"
-          onMouseEnter={() => setLangOpen(true)}
-          onMouseLeave={() => setLangOpen(false)}
-        >
-          <button
-            aria-label="Language"
-            className="bg-surface hover:bg-foreground/10 flex size-8 cursor-pointer items-center justify-center rounded-xs transition-colors duration-150"
-          >
-            <svg
-              className="size-3"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+        {/* Right: Search + Team + Utility buttons */}
+        <div className="flex flex-1 items-center justify-end gap-2">
+          {isDashboardMode && (
+            <div
+              className="relative mr-2 hidden md:flex"
+              onMouseEnter={() => setTeamOpen(true)}
+              onMouseLeave={() => setTeamOpen(false)}
             >
-              <circle
-                cx="8"
-                cy="8"
-                r="6.5"
-                stroke="currentColor"
-                strokeWidth="1.2"
-              />
-              <path
-                d="M1.5 8h13M8 1.5c-2 2-3 4.2-3 6.5s1 4.5 3 6.5M8 1.5c2 2 3 4.2 3 6.5s-1 4.5-3 6.5"
-                stroke="currentColor"
-                strokeWidth="1.2"
-                strokeLinecap="round"
-              />
-            </svg>
-          </button>
-          {langOpen && (
-            <div className="absolute top-full right-0 z-50 pt-4">
-              <div className="border-foreground/5 bg-background flex w-50 flex-col rounded-xs border py-2 shadow-lg">
-                {languages.map((lang) => (
-                  <button
-                    key={lang}
-                    onClick={() => {
-                      setActiveLang(lang);
-                      setLangOpen(false);
-                    }}
-                    className="text-foreground/80 hover:bg-foreground/5 flex cursor-pointer items-center justify-between px-4 py-2 text-left font-mono text-sm transition-colors duration-150"
-                  >
-                    {lang}
-                    {activeLang === lang && (
-                      <svg
-                        className="text-foreground size-4 shrink-0"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
+              <button className="flex cursor-pointer items-center gap-1">
+                <span className="bg-foreground/10 inline-block size-5 rounded-full" />
+                <span className="text-foreground text-sm leading-6 font-medium">
+                  {activeTeam}
+                </span>
+                <ChevronDown
+                  className={`text-foreground size-4 shrink-0 transition-transform duration-150 ${teamOpen ? "rotate-180" : ""}`}
+                />
+              </button>
+              {teamOpen && (
+                <div className="absolute top-full right-0 z-50 pt-4">
+                  <div className="border-foreground/5 bg-background flex w-50 flex-col rounded-xs border py-2 shadow-lg">
+                    {teams.map((team) => (
+                      <button
+                        key={team.name}
+                        onClick={() => {
+                          setActiveTeam(team.name);
+                          setTeamOpen(false);
+                        }}
+                        className="text-foreground/80 hover:bg-foreground/5 flex cursor-pointer items-center justify-between px-4 py-2 text-left text-sm transition-colors duration-150"
                       >
-                        <path d="M3 8.5L6.5 12L13 4" />
-                      </svg>
-                    )}
-                  </button>
-                ))}
-              </div>
+                        <span className="flex items-center gap-2">
+                          <span className="bg-foreground/10 inline-block size-5 rounded-full" />
+                          <span>
+                            <span className="text-foreground block text-sm font-medium">
+                              {team.name}
+                            </span>
+                            <span className="text-foreground/50 block text-xs">
+                              {team.role}
+                            </span>
+                          </span>
+                        </span>
+                        {activeTeam === team.name && (
+                          <svg
+                            className="text-foreground size-4 shrink-0"
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="M3 8.5L6.5 12L13 4" />
+                          </svg>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
-        </div>
-        <div className="bg-surface hover:bg-foreground/10 hidden items-center gap-2 rounded-xs px-2 py-1.5 transition-colors duration-150 md:flex">
-          <SearchIcon className="opacity-40" />
-          <input
-            type="text"
-            placeholder="Search model..."
-            className="text-foreground placeholder:text-faint tracking-xl w-35 bg-transparent font-mono text-sm outline-none"
-          />
-        </div>
-        {isDashboardMode ? (
-          <>
-            <Link
-              href="/billing"
-              aria-label="Billing"
-              className="group hidden h-8 items-center gap-px md:inline-flex"
-            >
-              <span className="bg-surface group-hover:bg-foreground/10 text-foreground tracking-sm inline-flex h-8 items-center rounded-xs px-2 font-mono text-sm transition-colors duration-150">
-                $6.186
-              </span>
-              <span className="bg-surface group-hover:bg-foreground/10 text-foreground/70 inline-flex size-8 items-center justify-center rounded-xs transition-colors duration-150">
-                <svg
-                  className="size-3"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M8 3.5v9M3.5 8h9"
-                    stroke="currentColor"
-                    strokeWidth="1.2"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </span>
-            </Link>
+          <div className="bg-surface hover:bg-foreground/10 hidden items-center gap-1.5 rounded-xs px-2 py-1.5 transition-colors duration-150 md:flex">
+            <SearchIcon className="opacity-40" />
+            <input
+              type="text"
+              placeholder="Search model..."
+              className="text-foreground placeholder:text-faint tracking-xl w-35 bg-transparent font-mono text-sm outline-none"
+            />
+          </div>
+          <div
+            className="relative hidden md:flex"
+            onMouseEnter={() => setLangOpen(true)}
+            onMouseLeave={() => setLangOpen(false)}
+          >
             <button
-              aria-label="User profile"
+              aria-label="Language"
               className="bg-surface hover:bg-foreground/10 flex size-8 cursor-pointer items-center justify-center rounded-xs transition-colors duration-150"
             >
               <svg
-                className="text-foreground size-4"
+                className="size-3"
                 viewBox="0 0 16 16"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <circle
                   cx="8"
-                  cy="5.2"
-                  r="2.2"
+                  cy="8"
+                  r="6.5"
                   stroke="currentColor"
                   strokeWidth="1.2"
                 />
                 <path
-                  d="M3.5 12.8c0-2.1 2-3.4 4.5-3.4s4.5 1.3 4.5 3.4"
+                  d="M1.5 8h13M8 1.5c-2 2-3 4.2-3 6.5s1 4.5 3 6.5M8 1.5c2 2 3 4.2 3 6.5s-1 4.5-3 6.5"
                   stroke="currentColor"
                   strokeWidth="1.2"
                   strokeLinecap="round"
                 />
               </svg>
             </button>
-          </>
-        ) : (
-          <a
-            href="#"
-            className="bg-foreground text-background hover:bg-foreground/80 tracking-xl flex items-center justify-center rounded-xs px-4 py-1.5 font-mono text-sm transition-colors duration-150"
-          >
-            Sign In
-          </a>
-        )}
-
-        {/* Hamburger button — mobile only */}
-        <button
-          aria-label="Toggle menu"
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="flex size-8 cursor-pointer items-center justify-center md:hidden"
-        >
-          <svg
-            className="size-5"
-            viewBox="0 0 20 20"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          >
-            {menuOpen ? (
-              <>
-                <line x1="4" y1="4" x2="16" y2="16" />
-                <line x1="16" y1="4" x2="4" y2="16" />
-              </>
-            ) : (
-              <>
-                <line x1="3" y1="6" x2="17" y2="6" />
-                <line x1="3" y1="10" x2="17" y2="10" />
-                <line x1="3" y1="14" x2="17" y2="14" />
-              </>
+            {langOpen && (
+              <div className="absolute top-full right-0 z-50 pt-4">
+                <div className="border-foreground/5 bg-background flex w-50 flex-col rounded-xs border py-2 shadow-lg">
+                  {languages.map((lang) => (
+                    <button
+                      key={lang}
+                      onClick={() => {
+                        setActiveLang(lang);
+                        setLangOpen(false);
+                      }}
+                      className="text-foreground/80 hover:bg-foreground/5 flex cursor-pointer items-center justify-between px-4 py-2 text-left font-mono text-sm transition-colors duration-150"
+                    >
+                      {lang}
+                      {activeLang === lang && (
+                        <svg
+                          className="text-foreground size-4 shrink-0"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M3 8.5L6.5 12L13 4" />
+                        </svg>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
             )}
-          </svg>
-        </button>
+          </div>
+          {isDashboardMode ? (
+            <>
+              <Link
+                href="/billing"
+                aria-label="Billing"
+                className="group hidden h-8 items-center gap-px md:inline-flex"
+              >
+                <span className="bg-surface group-hover:bg-foreground/10 text-foreground tracking-sm inline-flex h-8 items-center rounded-xs px-2 font-sans text-sm font-medium transition-colors duration-150">
+                  $6.186
+                </span>
+                <span className="bg-surface group-hover:bg-foreground/10 text-foreground/70 inline-flex size-8 items-center justify-center rounded-xs transition-colors duration-150">
+                  <svg
+                    className="size-3"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M8 3.5v9M3.5 8h9"
+                      stroke="currentColor"
+                      strokeWidth="1.2"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </span>
+              </Link>
+              <button
+                aria-label="User profile"
+                className="bg-surface hover:bg-foreground/10 flex size-8 cursor-pointer items-center justify-center rounded-xs transition-colors duration-150"
+              >
+                <svg
+                  className="text-foreground size-4"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle
+                    cx="8"
+                    cy="5.2"
+                    r="2.2"
+                    stroke="currentColor"
+                    strokeWidth="1.2"
+                  />
+                  <path
+                    d="M3.5 12.8c0-2.1 2-3.4 4.5-3.4s4.5 1.3 4.5 3.4"
+                    stroke="currentColor"
+                    strokeWidth="1.2"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </button>
+            </>
+          ) : (
+            <a
+              href="#"
+              className="bg-foreground text-background hover:bg-foreground/80 tracking-xl flex items-center justify-center rounded-xs px-4 py-1.5 font-mono text-sm transition-colors duration-150"
+            >
+              Sign In
+            </a>
+          )}
+
+          {/* Hamburger button — mobile only */}
+          <button
+            aria-label="Toggle menu"
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="flex size-8 cursor-pointer items-center justify-center md:hidden"
+          >
+            <svg
+              className="size-5"
+              viewBox="0 0 20 20"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            >
+              {menuOpen ? (
+                <>
+                  <line x1="4" y1="4" x2="16" y2="16" />
+                  <line x1="16" y1="4" x2="4" y2="16" />
+                </>
+              ) : (
+                <>
+                  <line x1="3" y1="6" x2="17" y2="6" />
+                  <line x1="3" y1="10" x2="17" y2="10" />
+                  <line x1="3" y1="14" x2="17" y2="14" />
+                </>
+              )}
+            </svg>
+          </button>
+        </div>
       </div>
 
       {/* Mobile dropdown panel */}
       {menuOpen && (
         <div className="border-foreground/5 bg-background absolute top-16 right-0 left-0 z-50 flex flex-col gap-4 border-t p-4 shadow-lg md:hidden">
+          {isDashboardMode && (
+            <div className="flex flex-col gap-1">
+              {teams.map((team) => (
+                <button
+                  key={team.name}
+                  onClick={() => setActiveTeam(team.name)}
+                  className={`flex cursor-pointer items-center justify-between rounded-xs px-2 py-2 text-left transition-colors duration-150 ${
+                    activeTeam === team.name
+                      ? "bg-foreground/5"
+                      : "hover:bg-foreground/5"
+                  }`}
+                >
+                  <span className="flex items-center gap-2">
+                    <span className="bg-foreground/10 inline-block size-5 rounded-full" />
+                    <span>
+                      <span className="text-foreground block text-sm font-medium">
+                        {team.name}
+                      </span>
+                      <span className="text-foreground/50 block text-xs">
+                        {team.role}
+                      </span>
+                    </span>
+                  </span>
+                  {activeTeam === team.name && (
+                    <svg
+                      className="text-foreground size-4 shrink-0"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M3 8.5L6.5 12L13 4" />
+                    </svg>
+                  )}
+                </button>
+              ))}
+            </div>
+          )}
           {!isDashboardMode &&
             ["Explore", "Pricing", "Enterprise"].map((item) => (
               <a

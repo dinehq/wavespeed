@@ -41,7 +41,6 @@ type ProductBillingTabProps = {
   navigateToBillingSubTab: (nextTab: string) => void;
   billingRecordsRef: RefObject<HTMLDivElement | null>;
   controlButtonClass: string;
-  controlButtonMdClass: string;
   controlButtonSmClass: string;
   controlButtonXsClass: string;
 };

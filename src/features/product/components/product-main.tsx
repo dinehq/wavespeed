@@ -69,12 +69,15 @@ type ProductMainProps = {
   forcedMainTab?: ProductMainTab;
 };
 
+type ProductRouter = {
+  push: (href: string) => void;
+};
+
 const dashboardTabs = productMainTabs;
 
 const controlButtonClass =
   "border-foreground/10 text-foreground/80 hover:bg-foreground/5 text-xs tracking-md shadow-xs";
 const controlButtonSmClass = `${controlButtonClass} h-8 rounded-xs px-2.5`;
-const controlButtonMdClass = `${controlButtonClass} h-8 rounded-xs px-3`;
 const controlButtonXsClass = `${controlButtonClass} h-7 rounded-xs px-2`;
 const controlSelectTriggerClass =
   "cursor-pointer border-foreground/10 bg-background text-foreground/80 hover:bg-foreground/5 rounded-xs text-xs shadow-xs";
@@ -279,6 +282,11 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
   };
   const openRequestDetail = (requestId: string) => {
     router.push(`/requests/${requestId}`);
+  };
+  const productRouter: ProductRouter = {
+    push: (href) => {
+      router.push(href);
+    },
   };
   const renderRequestsSection = (
     headerLevel: "primary" | "secondary" = "secondary",
@@ -734,71 +742,68 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
       </Card>
     </section>
   );
+  const renderTopTabsSkeleton = () => (
+    <div className="border-foreground/10 bg-background/95 supports-backdrop-filter:bg-background/80 sticky top-0 z-40 flex justify-center border-b px-4 backdrop-blur">
 
-  if (!mounted) {
-    return (
-      <section className="bg-background pb-6 md:pb-8">
-        <div className="border-foreground/10 bg-background/95 supports-backdrop-filter:bg-background/80 sticky top-0 z-40 border-t border-b px-4 backdrop-blur">
-          <div className="w-full">
-            <div
-              className="flex h-12 w-full items-center justify-start gap-2 overflow-x-auto rounded-none px-0"
-              aria-hidden
-            >
-              {dashboardTabs.map((tab) => {
-                const isActive = tab === resolvedMainTab;
-                return (
-                  <span
-                    key={tab}
-                    className={`tracking-xl relative flex h-12 flex-none items-center rounded-none px-2 py-0 text-sm whitespace-nowrap ${
-                      isActive ? "text-[#3f74ff]" : "text-foreground/60"
-                    }`}
-                  >
-                    {tab}
-                    {isActive && (
-                      <span className="absolute right-0 bottom-0 left-0 h-0.5 bg-[#3f74ff]" />
-                    )}
-                  </span>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-        <div className="min-h-50" />
-      </section>
-    );
-  }
-
-  return (
-    <section className="bg-background pb-6 md:pb-8">
-      <div
-        ref={mainTabsContainerRef}
-        className="border-foreground/10 bg-background/95 supports-backdrop-filter:bg-background/80 sticky top-0 z-40 border-t border-b px-4 backdrop-blur"
-      >
-        <div className="w-full">
-          <Tabs
-            value={resolvedMainTab}
-            onValueChange={navigateToMainTab}
-            className="w-full"
-          >
-            <TabsList
-              variant="line"
-              className="w-full justify-start gap-2 overflow-x-auto rounded-none px-0 group-data-[orientation=horizontal]/tabs:h-12"
-            >
-              {dashboardTabs.map((tab) => (
-                <TabsTrigger
-                  key={tab}
-                  value={tab}
-                  className="tracking-xl data-[state=active]:text-brand data-[state=active]:after:bg-brand h-12 flex-none rounded-none px-2 py-0 text-sm whitespace-nowrap after:bg-transparent"
-                >
-                  {tab}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </Tabs>
+      <div className="w-full max-w-7xl">
+        <div
+          className="flex h-12 w-full items-center justify-start gap-8 overflow-x-auto rounded-none px-0"
+          aria-hidden
+        >
+          {dashboardTabs.map((tab) => {
+            const isActive = tab === resolvedMainTab;
+            return (
+              <span
+                key={tab}
+                className={`tracking-xl relative flex h-12 flex-none items-center rounded-none px-0 py-0 text-sm whitespace-nowrap ${
+                  isActive
+                    ? "text-foreground font-bold"
+                    : "text-foreground/60"
+                }`}
+              >
+                {tab}
+                {isActive && (
+                  <span className="bg-foreground absolute right-0 bottom-0 left-0 h-0.5" />
+                )}
+              </span>
+            );
+          })}
         </div>
       </div>
-
-      {resolvedMainTab === "Dashboard" ? (
+    </div>
+  );
+  const renderTopTabs = () => (
+    <div
+      ref={mainTabsContainerRef}
+      className="border-foreground/10 bg-background/95 supports-backdrop-filter:bg-background/80 sticky top-0 z-40 flex justify-center border-b px-4 backdrop-blur"
+    >
+      <div className="w-full max-w-7xl">
+        <Tabs
+          value={resolvedMainTab}
+          onValueChange={navigateToMainTab}
+          className="w-full"
+        >
+          <TabsList
+            variant="line"
+            className="w-full justify-start gap-8 overflow-x-auto rounded-none px-0 group-data-[orientation=horizontal]/tabs:h-12"
+          >
+            {dashboardTabs.map((tab) => (
+              <TabsTrigger
+                key={tab}
+                value={tab}
+                className="tracking-xl data-[state=active]:text-foreground data-[state=active]:font-bold data-[state=active]:after:bg-foreground h-12 flex-none rounded-none px-0 py-0 text-sm whitespace-nowrap after:bg-transparent"
+              >
+                {tab}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
+      </div>
+    </div>
+  );
+  const renderResolvedTabContent = () => {
+    if (resolvedMainTab === "Dashboard") {
+      return (
         <ProductDashboardTab
           showGettingStarted={showGettingStarted}
           setShowGettingStarted={setShowGettingStarted}
@@ -809,10 +814,14 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
           controlButtonClass={controlButtonClass}
           controlButtonSmClass={controlButtonSmClass}
           controlSelectTriggerCompactClass={controlSelectTriggerCompactClass}
-          router={router}
+          router={productRouter}
           requestsSection={renderRequestsSection("secondary")}
         />
-      ) : resolvedMainTab === "Usage" ? (
+      );
+    }
+
+    if (resolvedMainTab === "Usage") {
+      return (
         <ProductUsageTab
           usageQuickRange={usageQuickRange}
           usageDateRange={usageDateRange}
@@ -822,13 +831,21 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
           applyUsageQuickRange={applyUsageQuickRange}
           scrollToUsagePerModelSection={scrollToUsagePerModelSection}
           usagePerModelSectionRef={usagePerModelSectionRef}
-          router={router}
+          router={productRouter}
           controlButtonClass={controlButtonClass}
           controlButtonSmClass={controlButtonSmClass}
         />
-      ) : resolvedMainTab === "History" ? (
+      );
+    }
+
+    if (resolvedMainTab === "History") {
+      return (
         <ProductHistoryTab requestsSection={renderRequestsSection("primary")} />
-      ) : resolvedMainTab === "Billing" ? (
+      );
+    }
+
+    if (resolvedMainTab === "Billing") {
+      return (
         <ProductBillingTab
           selectedTopUpAmount={selectedTopUpAmount}
           setSelectedTopUpAmount={setSelectedTopUpAmount}
@@ -836,21 +853,42 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
           navigateToBillingSubTab={navigateToBillingSubTab}
           billingRecordsRef={billingRecordsRef}
           controlButtonClass={controlButtonClass}
-          controlButtonMdClass={controlButtonMdClass}
           controlButtonSmClass={controlButtonSmClass}
           controlButtonXsClass={controlButtonXsClass}
         />
-      ) : resolvedMainTab === "Settings" ? (
-        <ProductSettingsTab />
-      ) : resolvedMainTab === "API Keys" ? (
+      );
+    }
+
+    if (resolvedMainTab === "Settings") {
+      return <ProductSettingsTab />;
+    }
+
+    if (resolvedMainTab === "API Keys") {
+      return (
         <ProductApiKeysTab
           newApiKeyName={newApiKeyName}
           setNewApiKeyName={setNewApiKeyName}
           copyApiKey={copyApiKey}
         />
-      ) : (
-        <ProductFallbackTab tab={resolvedMainTab} />
-      )}
+      );
+    }
+
+    return <ProductFallbackTab tab={resolvedMainTab} />;
+  };
+
+  if (!mounted) {
+    return (
+      <section className="bg-background pb-6 md:pb-8">
+        {renderTopTabsSkeleton()}
+        <div className="min-h-50" />
+      </section>
+    );
+  }
+
+  return (
+    <section className="bg-background pb-6 md:pb-8">
+      {renderTopTabs()}
+      {renderResolvedTabContent()}
     </section>
   );
 }
