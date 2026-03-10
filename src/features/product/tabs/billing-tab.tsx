@@ -38,7 +38,6 @@ type ProductBillingTabProps = {
   navigateToBillingSubTab: (nextTab: string) => void;
   billingRecordsRef: MutableRefObject<HTMLDivElement | null>;
   controlButtonClass: string;
-  controlButtonMdClass: string;
   controlButtonSmClass: string;
   controlButtonXsClass: string;
 };
@@ -113,7 +112,6 @@ export function ProductBillingTab({
   resolvedBillingTab,
   navigateToBillingSubTab,
   billingRecordsRef,
-  controlButtonMdClass,
   controlButtonSmClass,
   controlButtonXsClass,
 }: ProductBillingTabProps) {

@@ -78,7 +78,6 @@ const dashboardTabs = productMainTabs;
 const controlButtonClass =
   "border-foreground/10 text-foreground/80 hover:bg-foreground/5 text-xs tracking-md shadow-xs";
 const controlButtonSmClass = `${controlButtonClass} h-8 rounded-xs px-2.5`;
-const controlButtonMdClass = `${controlButtonClass} h-8 rounded-xs px-3`;
 const controlButtonXsClass = `${controlButtonClass} h-7 rounded-xs px-2`;
 const controlSelectTriggerClass =
   "cursor-pointer border-foreground/10 bg-background text-foreground/80 hover:bg-foreground/5 rounded-xs text-xs shadow-xs";
@@ -90,8 +89,6 @@ const requestFilterTriggerIconClass =
 const controlSelectTriggerFilterClass = `${controlSelectTriggerClass} ${requestFilterTriggerClass} data-[placeholder]:text-foreground/80 ${requestFilterTriggerIconClass}`;
 const controlIconButtonClass =
   "border-foreground/10 text-foreground/70 bg-background hover:bg-foreground/5 rounded-xs shadow-xs";
-const contentShellClass = "px-6 md:px-20";
-const contentMaxWidthClass = "mx-auto w-full max-w-7xl";
 
 const subscribe = () => () => {};
 const getSnapshot = () => true;
@@ -856,7 +853,6 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
           navigateToBillingSubTab={navigateToBillingSubTab}
           billingRecordsRef={billingRecordsRef}
           controlButtonClass={controlButtonClass}
-          controlButtonMdClass={controlButtonMdClass}
           controlButtonSmClass={controlButtonSmClass}
           controlButtonXsClass={controlButtonXsClass}
         />

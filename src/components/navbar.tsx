@@ -41,6 +41,11 @@ const resourceGroups = [
   },
 ];
 
+const teams = [
+  { name: "Dine Team", role: "Owner" },
+  { name: "Personal", role: "Member" },
+];
+
 const languages = [
   "English",
   "Bahasa Indonesia",
@@ -63,13 +68,15 @@ export function Navbar({ mode = "default" }: NavbarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [resourcesOpen, setResourcesOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
+  const [teamOpen, setTeamOpen] = useState(false);
   const [activeLang, setActiveLang] = useState("English");
+  const [activeTeam, setActiveTeam] = useState("Dine Team");
 
   return (
     <nav className="relative flex h-16 w-full items-center justify-center px-4">
-      <div className="flex w-full max-w-7xl items-center gap-6">
-        {/* Left: Logo + Team selector + Search */}
-        <div className="flex items-center gap-4">
+      <div className="flex w-full max-w-7xl items-center gap-10">
+        {/* Left: Logo + Nav links */}
+        <div className="flex items-center gap-8">
           <Link
             href="/"
             aria-label="WaveSpeed home"
@@ -77,28 +84,7 @@ export function Navbar({ mode = "default" }: NavbarProps) {
           >
             <Logo className="text-foreground h-6 w-auto" />
           </Link>
-          {isDashboardMode && (
-            <button className="hidden items-center gap-1 md:flex">
-              <span className="bg-foreground/10 inline-block size-5 rounded-full" />
-              <span className="text-foreground text-sm font-medium leading-6">
-                Dine Team
-              </span>
-              <ChevronDown className="text-foreground size-4 shrink-0" />
-            </button>
-          )}
-          <div className="bg-surface hover:bg-foreground/10 hidden items-center gap-2 rounded-xs px-2 py-1.5 transition-colors duration-150 md:flex">
-            <SearchIcon className="opacity-40" />
-            <input
-              type="text"
-              placeholder="Search model..."
-              className="text-foreground placeholder:text-faint tracking-xl w-35 bg-transparent font-mono text-sm outline-none"
-            />
-          </div>
-        </div>
-
-        {/* Right: Nav links + Utility buttons */}
-        <div className="flex flex-1 items-center justify-end gap-2">
-          <div className="hidden items-center gap-4 md:flex">
+          <div className="hidden items-center gap-6 md:flex">
             {["Explore", "Pricing", "Enterprise"].map((item) => (
               <a
                 key={item}
@@ -147,6 +133,76 @@ export function Navbar({ mode = "default" }: NavbarProps) {
                 </div>
               )}
             </div>
+          </div>
+        </div>
+
+        {/* Right: Search + Team + Utility buttons */}
+        <div className="flex flex-1 items-center justify-end gap-2">
+          {isDashboardMode && (
+            <div
+              className="relative mr-2 hidden md:flex"
+              onMouseEnter={() => setTeamOpen(true)}
+              onMouseLeave={() => setTeamOpen(false)}
+            >
+              <button className="flex cursor-pointer items-center gap-1">
+                <span className="bg-foreground/10 inline-block size-5 rounded-full" />
+                <span className="text-foreground text-sm leading-6 font-medium">
+                  {activeTeam}
+                </span>
+                <ChevronDown
+                  className={`text-foreground size-4 shrink-0 transition-transform duration-150 ${teamOpen ? "rotate-180" : ""}`}
+                />
+              </button>
+              {teamOpen && (
+                <div className="absolute top-full right-0 z-50 pt-4">
+                  <div className="border-foreground/5 bg-background flex w-50 flex-col rounded-xs border py-2 shadow-lg">
+                    {teams.map((team) => (
+                      <button
+                        key={team.name}
+                        onClick={() => {
+                          setActiveTeam(team.name);
+                          setTeamOpen(false);
+                        }}
+                        className="text-foreground/80 hover:bg-foreground/5 flex cursor-pointer items-center justify-between px-4 py-2 text-left text-sm transition-colors duration-150"
+                      >
+                        <span className="flex items-center gap-2">
+                          <span className="bg-foreground/10 inline-block size-5 rounded-full" />
+                          <span>
+                            <span className="text-foreground block text-sm font-medium">
+                              {team.name}
+                            </span>
+                            <span className="text-foreground/50 block text-xs">
+                              {team.role}
+                            </span>
+                          </span>
+                        </span>
+                        {activeTeam === team.name && (
+                          <svg
+                            className="text-foreground size-4 shrink-0"
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="M3 8.5L6.5 12L13 4" />
+                          </svg>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+          <div className="bg-surface hover:bg-foreground/10 hidden items-center gap-1.5 rounded-xs px-2 py-1.5 transition-colors duration-150 md:flex">
+            <SearchIcon className="opacity-40" />
+            <input
+              type="text"
+              placeholder="Search model..."
+              className="text-foreground placeholder:text-faint tracking-xl w-35 bg-transparent font-mono text-sm outline-none"
+            />
           </div>
           <div
             className="relative hidden md:flex"
@@ -305,6 +361,46 @@ export function Navbar({ mode = "default" }: NavbarProps) {
       {/* Mobile dropdown panel */}
       {menuOpen && (
         <div className="border-foreground/5 bg-background absolute top-16 right-0 left-0 z-50 flex flex-col gap-4 border-t p-4 shadow-lg md:hidden">
+          {isDashboardMode && (
+            <div className="flex flex-col gap-1">
+              {teams.map((team) => (
+                <button
+                  key={team.name}
+                  onClick={() => setActiveTeam(team.name)}
+                  className={`flex cursor-pointer items-center justify-between rounded-xs px-2 py-2 text-left transition-colors duration-150 ${
+                    activeTeam === team.name
+                      ? "bg-foreground/5"
+                      : "hover:bg-foreground/5"
+                  }`}
+                >
+                  <span className="flex items-center gap-2">
+                    <span className="bg-foreground/10 inline-block size-5 rounded-full" />
+                    <span>
+                      <span className="text-foreground block text-sm font-medium">
+                        {team.name}
+                      </span>
+                      <span className="text-foreground/50 block text-xs">
+                        {team.role}
+                      </span>
+                    </span>
+                  </span>
+                  {activeTeam === team.name && (
+                    <svg
+                      className="text-foreground size-4 shrink-0"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M3 8.5L6.5 12L13 4" />
+                    </svg>
+                  )}
+                </button>
+              ))}
+            </div>
+          )}
           {!isDashboardMode &&
             ["Explore", "Pricing", "Enterprise"].map((item) => (
               <a
