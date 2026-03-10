@@ -45,7 +45,7 @@ export function ProductSectionHeader({
       <div className="min-w-0">
         <h1
           className={cn(
-            "text-heading font-display text-3xl leading-none font-semibold",
+            "text-heading font-display text-3xl leading-none font-bold",
             titleClassName,
           )}
         >

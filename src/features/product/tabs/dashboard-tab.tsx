@@ -160,7 +160,7 @@ export function ProductDashboardTab({
                               onClick={() =>
                                 navigateFromGettingStarted(task.href)
                               }
-                              className={`h-9 shrink-0 rounded-xs px-3 text-xs ${
+                              className={`h-8 shrink-0 rounded-xs px-3 text-xs ${
                                 task.tone === "primary"
                                   ? "bg-foreground text-background hover:bg-foreground/80 shadow-xs"
                                   : `${controlButtonClass}`
@@ -294,9 +294,7 @@ export function ProductDashboardTab({
               >
                 <CardContent className="flex min-h-36 flex-col px-4 py-4">
                   <div>
-                    <p className="text-foreground/60 text-xs">
-                      {item.label}
-                    </p>
+                    <p className="text-foreground/60 text-xs">{item.label}</p>
                     <p className="text-foreground mt-2 text-2xl leading-none font-medium">
                       {item.value}
                     </p>
@@ -309,7 +307,7 @@ export function ProductDashboardTab({
                           size="sm"
                           variant={action.variant}
                           onClick={() => router.push(action.href)}
-                          className={`h-9 rounded-xs px-3 text-xs ${
+                          className={`h-8 rounded-xs px-3 text-xs ${
                             action.variant === "default"
                               ? ""
                               : controlButtonClass
@@ -334,13 +332,13 @@ export function ProductDashboardTab({
             >
               <TabsTrigger
                 value="latest-models"
-                className="data-[state=active]:text-foreground data-[state=active]:after:bg-foreground h-10 flex-none rounded-none px-1.5 font-semibold whitespace-nowrap group-data-[orientation=horizontal]/tabs:after:h-px"
+                className="data-[state=active]:text-foreground data-[state=active]:after:bg-foreground h-10 flex-none rounded-none px-1.5 font-bold whitespace-nowrap group-data-[orientation=horizontal]/tabs:after:h-px"
               >
                 Latest models
               </TabsTrigger>
               <TabsTrigger
                 value="favorite-models"
-                className="data-[state=active]:text-foreground data-[state=active]:after:bg-foreground h-10 flex-none rounded-none px-1.5 font-semibold whitespace-nowrap group-data-[orientation=horizontal]/tabs:after:h-px"
+                className="data-[state=active]:text-foreground data-[state=active]:after:bg-foreground h-10 flex-none rounded-none px-1.5 font-bold whitespace-nowrap group-data-[orientation=horizontal]/tabs:after:h-px"
               >
                 Favorite models
               </TabsTrigger>
@@ -348,7 +346,7 @@ export function ProductDashboardTab({
             <Button
               variant="outline"
               size="sm"
-              className={`${controlButtonSmClass} h-9 shrink-0`}
+              className={`${controlButtonSmClass} h-8 shrink-0`}
             >
               View all models
             </Button>

@@ -122,7 +122,7 @@ export function ProductApiKeysTab({
             <Button
               variant="link"
               size="sm"
-              className="text-foreground/70 hover:text-foreground h-9 px-0 text-xs"
+              className="text-foreground/70 hover:text-foreground h-8 px-0 text-xs"
             >
               How to use API key?
             </Button>
@@ -136,10 +136,10 @@ export function ProductApiKeysTab({
                 value={newApiKeyName}
                 onChange={(event) => setNewApiKeyName(event.target.value)}
                 placeholder="Enter key name"
-                className="border-foreground/10 bg-background h-9 rounded-xs text-xs"
+                className="border-foreground/10 bg-background h-8 rounded-xs text-xs"
               />
               <Button
-                className="h-9 min-w-40 rounded-xs px-3 text-xs sm:w-auto"
+                className="h-8 min-w-40 rounded-xs px-3 text-xs sm:w-auto"
                 onClick={handleCreateKey}
               >
                 Create Key

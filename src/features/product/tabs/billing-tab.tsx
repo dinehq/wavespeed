@@ -85,7 +85,7 @@ function renderWithEmphasizedNumbers(text: string) {
   return text.split(/(\+?[\d,]+)/g).map((part, index) => {
     if (/^\+?[\d,]+$/.test(part)) {
       return (
-        <span key={`${part}-${index}`} className="font-semibold">
+        <span key={`${part}-${index}`} className="font-bold">
           {part}
         </span>
       );
@@ -284,7 +284,7 @@ export function ProductBillingTab({
     ],
   );
   const billingFilterTriggerClass =
-    "cursor-pointer border-foreground/10 bg-background text-foreground/80 hover:bg-foreground/5 rounded-xs text-xs shadow-xs inline-flex h-9 w-fit min-w-0 shrink-0 items-center justify-start gap-1 rounded-xs border pr-1.5 pl-2.5 font-normal whitespace-nowrap [&_svg]:!size-3.5 [&_svg]:!text-foreground/50 [&_svg]:!opacity-100";
+    "cursor-pointer border-foreground/10 bg-background text-foreground/80 hover:bg-foreground/5 rounded-xs text-xs shadow-xs inline-flex h-8 w-fit min-w-0 shrink-0 items-center justify-start gap-1 rounded-xs border pr-1.5 pl-2.5 font-normal whitespace-nowrap [&_svg]:!size-3.5 [&_svg]:!text-foreground/50 [&_svg]:!opacity-100";
 
   const displayedAmounts = [
     "$5",
@@ -352,7 +352,7 @@ export function ProductBillingTab({
             }`}
           />
         </span>
-        <span className="text-foreground relative z-10 block w-16 shrink-0 text-sm leading-none font-semibold tabular-nums">
+        <span className="text-foreground relative z-10 block w-16 shrink-0 text-sm leading-none font-bold tabular-nums">
           {option.amount}
         </span>
         <span className="relative z-10 flex-1 text-right text-xs">
@@ -374,9 +374,7 @@ export function ProductBillingTab({
         <div className="grid gap-4 md:grid-cols-2">
           <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
             <CardContent className="flex min-h-[144px] flex-col px-4 py-4">
-              <p className="text-foreground/60 text-xs">
-                Current balance
-              </p>
+              <p className="text-foreground/60 text-xs">Current balance</p>
               <p className="text-foreground mt-2 text-2xl leading-none font-medium">
                 $6,186
               </p>
@@ -390,9 +388,7 @@ export function ProductBillingTab({
 
           <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
             <CardContent className="flex min-h-[144px] flex-col px-4 py-4">
-              <p className="text-foreground/60 text-xs">
-                Usage this month
-              </p>
+              <p className="text-foreground/60 text-xs">Usage this month</p>
               <p className="text-foreground mt-2 text-2xl leading-none font-medium">
                 $0.00
               </p>
@@ -410,7 +406,7 @@ export function ProductBillingTab({
         <div className="grid gap-4 lg:grid-cols-2">
           <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
             <CardHeader className="px-4 pt-4 pb-3">
-              <CardTitle className="text-foreground font-display text-xl font-semibold">
+              <CardTitle className="text-foreground font-display text-xl font-bold">
                 Top Up
               </CardTitle>
             </CardHeader>
@@ -435,7 +431,7 @@ export function ProductBillingTab({
                         <button
                           type="button"
                           aria-label={`Selected payment: ${selectedPaymentMeta.label}`}
-                          className={`bg-background hover:bg-surface border-foreground/10 focus-visible:border-ring focus-visible:ring-ring/50 flex h-9 items-center rounded-xs border shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] ${
+                          className={`bg-background hover:bg-surface border-foreground/10 focus-visible:border-ring focus-visible:ring-ring/50 flex h-8 items-center rounded-xs border shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] ${
                             isPaymentPickerOpen ? "border-brand!" : ""
                           }`}
                         >
@@ -455,7 +451,7 @@ export function ProductBillingTab({
                       align="start"
                       className="bg-background border-foreground/10 w-[152px] rounded-xs border p-2 shadow-sm"
                     >
-                      <div className="flex flex-col items-center gap-1">
+                      <div className="flex flex-col items-center gap-1.5">
                         {paymentMethodOptions.map((method) => (
                           <button
                             key={method.id}
@@ -465,7 +461,7 @@ export function ProductBillingTab({
                               setIsPaymentPickerOpen(false);
                             }}
                             aria-label={method.label}
-                            className={`border-foreground/10 hover:bg-surface flex h-9 w-full items-center justify-center rounded-xs border px-2 transition-colors ${
+                            className={`border-foreground/10 hover:bg-surface flex h-8 w-full items-center justify-center rounded-xs border px-2 transition-colors ${
                               selectedPaymentMethod === method.id
                                 ? "border-brand!"
                                 : ""
@@ -491,10 +487,10 @@ export function ProductBillingTab({
                       }
                       step="any"
                       placeholder={parsedTopUpAmount || "Amount"}
-                      className="border-foreground/10 bg-background h-9 flex-1 rounded-xs text-xs"
+                      className="border-foreground/10 bg-background h-8 flex-1 rounded-xs text-xs"
                     />
                   ) : null}
-                  <Button className="h-9 flex-1 rounded-xs px-3 text-xs">
+                  <Button className="h-8 flex-1 rounded-xs px-3 text-xs">
                     Buy ({buyAmountLabel})
                   </Button>
                 </div>
@@ -504,7 +500,7 @@ export function ProductBillingTab({
           <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
             <CardHeader className="px-4 pt-4 pb-3">
               <div className="flex items-center gap-2">
-                <CardTitle className="text-foreground font-display text-xl font-semibold">
+                <CardTitle className="text-foreground font-display text-xl font-bold">
                   Auto Top-up
                 </CardTitle>
                 <Badge
@@ -545,7 +541,7 @@ export function ProductBillingTab({
                       onChange={(event) =>
                         setAutoTopUpThreshold(event.target.value)
                       }
-                      className="border-foreground/10 h-9 rounded-xs pl-7 text-sm"
+                      className="border-foreground/10 h-8 rounded-xs pl-7 text-sm"
                     />
                   </div>
                   <span className="text-foreground/65 text-sm">USD</span>
@@ -569,7 +565,7 @@ export function ProductBillingTab({
                       onChange={(event) =>
                         setAutoTopUpAmount(event.target.value)
                       }
-                      className="border-foreground/10 h-9 rounded-xs pl-7 text-sm"
+                      className="border-foreground/10 h-8 rounded-xs pl-7 text-sm"
                     />
                   </div>
                   <span className="text-foreground/65 text-sm">USD</span>
@@ -577,14 +573,14 @@ export function ProductBillingTab({
               </div>
 
               <div className="bg-muted rounded-xs px-2.5 py-3 text-sm leading-none">
-                <span className="text-foreground font-semibold">
+                <span className="text-foreground font-bold">
                   ${autoTopUpAmountLabel}
                 </span>
                 <span className="text-subtle">
                   {" "}
                   will be added when balance reaches{" "}
                 </span>
-                <span className="text-foreground font-semibold">
+                <span className="text-foreground font-bold">
                   ${autoTopUpThresholdLabel}
                 </span>
               </div>
@@ -596,7 +592,7 @@ export function ProductBillingTab({
               <Button
                 onClick={() => setIsAutoTopUpActive((prev) => !prev)}
                 variant={isAutoTopUpActive ? "outline" : "default"}
-                className="h-9 w-full rounded-xs text-xs"
+                className="h-8 w-full rounded-xs text-xs"
               >
                 {isAutoTopUpActive
                   ? "Disable Auto Top-up"
@@ -617,11 +613,9 @@ export function ProductBillingTab({
             <div className="flex w-full gap-2 md:w-auto">
               <Input
                 placeholder="Coupon code"
-                className="border-foreground/10 h-9 rounded-xs text-xs md:w-45"
+                className="border-foreground/10 h-8 rounded-xs text-xs md:w-45"
               />
-              <Button className="h-9 rounded-xs px-3 text-xs">
-                Redeem
-              </Button>
+              <Button className="h-8 rounded-xs px-3 text-xs">Redeem</Button>
             </div>
           </CardContent>
         </Card>
@@ -639,13 +633,13 @@ export function ProductBillingTab({
             >
               <TabsTrigger
                 value="top-up"
-                className="data-[state=active]:text-foreground data-[state=active]:after:bg-foreground h-9 flex-none rounded-none px-1.5 font-semibold whitespace-nowrap group-data-[orientation=horizontal]/tabs:after:h-px"
+                className="data-[state=active]:text-foreground data-[state=active]:after:bg-foreground h-8 flex-none rounded-none px-1.5 font-bold whitespace-nowrap group-data-[orientation=horizontal]/tabs:after:h-px"
               >
                 Top Up
               </TabsTrigger>
               <TabsTrigger
                 value="billing"
-                className="data-[state=active]:text-foreground data-[state=active]:after:bg-foreground h-9 flex-none rounded-none px-1.5 font-semibold whitespace-nowrap group-data-[orientation=horizontal]/tabs:after:h-px"
+                className="data-[state=active]:text-foreground data-[state=active]:after:bg-foreground h-8 flex-none rounded-none px-1.5 font-bold whitespace-nowrap group-data-[orientation=horizontal]/tabs:after:h-px"
               >
                 Billing
               </TabsTrigger>
@@ -683,7 +677,7 @@ export function ProductBillingTab({
                           setPredictionFilterQuery(event.target.value)
                         }
                         placeholder="Search prediction ID"
-                        className="border-foreground/10 h-9 rounded-xs text-xs"
+                        className="border-foreground/10 h-8 rounded-xs text-xs"
                       />
                       <div className="mt-2 max-h-52 space-y-1 overflow-y-auto">
                         <button
@@ -758,7 +752,7 @@ export function ProductBillingTab({
                           setAccessKeyFilterQuery(event.target.value)
                         }
                         placeholder="Search access keys"
-                        className="border-foreground/10 h-9 rounded-xs text-xs"
+                        className="border-foreground/10 h-8 rounded-xs text-xs"
                       />
                       <div className="mt-2 max-h-52 space-y-1 overflow-y-auto">
                         <button
@@ -833,7 +827,7 @@ export function ProductBillingTab({
                           setModelFilterQuery(event.target.value)
                         }
                         placeholder="Search models..."
-                        className="border-foreground/10 h-9 rounded-xs text-xs"
+                        className="border-foreground/10 h-8 rounded-xs text-xs"
                       />
                       <div className="mt-2 max-h-52 space-y-1 overflow-y-auto">
                         <button
@@ -886,7 +880,7 @@ export function ProductBillingTab({
                       <Button
                         variant="outline"
                         data-empty={!billingDateRange?.from}
-                        className="border-foreground/10 text-foreground/80 data-[empty=true]:text-muted-foreground h-9 w-auto max-w-full min-w-0 justify-start gap-1.5 rounded-xs px-2.5 text-left text-xs font-normal"
+                        className="border-foreground/10 text-foreground/80 data-[empty=true]:text-muted-foreground h-8 w-auto max-w-full min-w-0 justify-start gap-1.5 rounded-xs px-2.5 text-left text-xs font-normal"
                       >
                         <CalendarIcon className="size-3.5" />
                         <span>{billingDateRangeLabel}</span>
@@ -1054,28 +1048,28 @@ export function ProductBillingTab({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-foreground/60 hover:text-foreground h-9 rounded-xs px-3 text-xs"
+                  className="text-foreground/60 hover:text-foreground h-8 rounded-xs px-3 text-xs"
                 >
                   Previous
                 </Button>
                 <Button
                   variant="outline"
                   size="sm"
-                  className="border-foreground/10 h-9 min-w-9 rounded-xs px-3 text-xs"
+                  className="border-foreground/10 h-8 min-w-9 rounded-xs px-3 text-xs"
                 >
                   1
                 </Button>
                 <Button
                   variant="outline"
                   size="sm"
-                  className="border-foreground/10 h-9 rounded-xs px-3 text-xs"
+                  className="border-foreground/10 h-8 rounded-xs px-3 text-xs"
                 >
                   Go
                 </Button>
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-foreground/60 hover:text-foreground h-9 rounded-xs px-3 text-xs"
+                  className="text-foreground/60 hover:text-foreground h-8 rounded-xs px-3 text-xs"
                 >
                   Next
                 </Button>
@@ -1094,10 +1088,10 @@ export function ProductBillingTab({
               onChange={(event) => setCustomTopUpAmount(event.target.value)}
               step="any"
               placeholder={parsedTopUpAmount || "Amount"}
-              className="border-foreground/10 h-9 flex-1 rounded-xs text-xs"
+              className="border-foreground/10 h-8 flex-1 rounded-xs text-xs"
             />
           ) : null}
-          <Button className="h-9 flex-1 rounded-xs px-3 text-xs">
+          <Button className="h-8 flex-1 rounded-xs px-3 text-xs">
             Buy ({buyAmountLabel})
           </Button>
         </div>

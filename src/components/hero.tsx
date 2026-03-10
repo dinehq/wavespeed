@@ -4,7 +4,7 @@ export function Hero() {
   return (
     <section className="relative flex flex-col items-center gap-10 overflow-hidden px-6 pt-16 pb-8 md:px-12 md:pt-24 md:pb-16 lg:px-20">
       <div className="relative flex max-w-[788px] flex-col items-center gap-4 text-center">
-        <h1 className="text-heading font-display text-4xl leading-none font-semibold tracking-tight text-balance md:text-7xl">
+        <h1 className="text-heading font-display text-4xl leading-none font-bold tracking-tight text-balance md:text-7xl">
           The Ultimate AI Media Generation Platform
         </h1>
         <p className="text-subtle font-mono text-lg leading-tight text-pretty">

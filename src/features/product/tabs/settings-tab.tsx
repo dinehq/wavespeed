@@ -36,15 +36,13 @@ export function ProductSettingsTab() {
         <ProductSectionHeader title="Settings" />
         <div className="grid gap-4 md:grid-cols-2">
           <section className="space-y-2">
-            <h2 className="text-foreground font-display text-base font-semibold">
+            <h2 className="text-foreground font-display text-base font-bold">
               Basic Info
             </h2>
             <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
               <CardContent className="divide-foreground/10 divide-y p-0">
                 <div className="flex items-center justify-between gap-4 px-4 py-2.5">
-                  <p className="text-foreground/60 shrink-0 text-xs">
-                    Email
-                  </p>
+                  <p className="text-foreground/60 shrink-0 text-xs">Email</p>
                   <p className="text-foreground min-w-0 truncate text-sm">
                     {settingsBasicInfo.email}
                   </p>
@@ -84,7 +82,7 @@ export function ProductSettingsTab() {
           </section>
 
           <section className="space-y-2">
-            <h2 className="text-foreground font-display text-base font-semibold">
+            <h2 className="text-foreground font-display text-base font-bold">
               My Team
             </h2>
             <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
@@ -110,7 +108,7 @@ export function ProductSettingsTab() {
 
         <section className="space-y-2">
           <div className="flex items-center justify-between gap-2">
-            <h2 className="text-foreground font-display text-base font-semibold">
+            <h2 className="text-foreground font-display text-base font-bold">
               Account Level
             </h2>
             <Badge
@@ -189,7 +187,7 @@ export function ProductSettingsTab() {
                 account level.
               </div>
 
-              <Button className="h-9 w-full rounded-xs px-3 text-xs">
+              <Button className="h-8 w-full rounded-xs px-3 text-xs">
                 Upgrade Now
               </Button>
             </CardContent>
