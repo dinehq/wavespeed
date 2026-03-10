@@ -66,7 +66,7 @@ export function ProductSettingsTab() {
                         <Badge
                           key={method}
                           variant="outline"
-                          className="border-foreground/10 bg-surface text-foreground gap-1.5 overflow-visible rounded-xs px-2 py-1 text-xs font-normal [&>svg]:size-auto"
+                          className="border-foreground/10 bg-surface text-foreground gap-1.5 overflow-visible rounded-xs pl-1.5 pr-2 py-1 text-sm font-normal [&>svg]:size-auto"
                         >
                           {Icon ? (
                             <Icon className="h-4 w-auto shrink-0" />
@@ -125,23 +125,23 @@ export function ProductSettingsTab() {
                 throughput and concurrency requirements.
               </p>
 
-              <div className="border-foreground/10 overflow-x-auto rounded-xs border">
+              <div className="-mx-4 border-foreground/10 overflow-x-auto border-y">
                 <Table>
                   <TableHeader>
                     <TableRow className="border-foreground/10 hover:bg-transparent">
-                      <TableHead className="text-foreground/50 tracking-lg">
+                      <TableHead className="text-foreground/50 tracking-lg px-4">
                         Level
                       </TableHead>
-                      <TableHead className="text-foreground/50 tracking-lg">
+                      <TableHead className="text-foreground/50 tracking-lg px-4">
                         Img/min
                       </TableHead>
-                      <TableHead className="text-foreground/50 tracking-lg">
+                      <TableHead className="text-foreground/50 tracking-lg px-4">
                         Vid/min
                       </TableHead>
-                      <TableHead className="text-foreground/50 tracking-lg">
+                      <TableHead className="text-foreground/50 tracking-lg px-4">
                         Concurrent
                       </TableHead>
-                      <TableHead className="text-foreground/50 tracking-lg">
+                      <TableHead className="text-foreground/50 tracking-lg px-4">
                         Activation
                       </TableHead>
                     </TableRow>
@@ -156,7 +156,7 @@ export function ProductSettingsTab() {
                             isCurrent ? "bg-surface/70" : ""
                           }`}
                         >
-                          <TableCell>
+                          <TableCell className="px-4">
                             <div className="flex items-center gap-2">
                               <span className="text-foreground font-medium">
                                 {level.level}
@@ -171,10 +171,16 @@ export function ProductSettingsTab() {
                               ) : null}
                             </div>
                           </TableCell>
-                          <TableCell>{level.imagesPerMin}</TableCell>
-                          <TableCell>{level.videosPerMin}</TableCell>
-                          <TableCell>{level.maxConcurrent}</TableCell>
-                          <TableCell>{level.activation}</TableCell>
+                          <TableCell className="px-4">
+                            {level.imagesPerMin}
+                          </TableCell>
+                          <TableCell className="px-4">
+                            {level.videosPerMin}
+                          </TableCell>
+                          <TableCell className="px-4">
+                            {level.maxConcurrent}
+                          </TableCell>
+                          <TableCell className="px-4">{level.activation}</TableCell>
                         </TableRow>
                       );
                     })}
