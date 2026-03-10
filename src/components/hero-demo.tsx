@@ -1002,7 +1002,7 @@ export function HeroDemo() {
                   ))}
                 </div>
                 {/* Code */}
-                <div className="flex flex-col gap-1 whitespace-pre font-mono text-xs leading-tight">
+                <div className="flex flex-col gap-1 font-mono text-xs leading-tight whitespace-pre">
                   {current.lines.map((line, i) => (
                     <p key={i}>{line.content}</p>
                   ))}

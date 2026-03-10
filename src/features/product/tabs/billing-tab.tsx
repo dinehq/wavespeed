@@ -1,4 +1,4 @@
-import { useMemo, useState, type MutableRefObject } from "react";
+import { useMemo, useState, type RefObject } from "react";
 
 import { format } from "date-fns";
 import { CalendarIcon, ChevronDown, Info } from "lucide-react";
@@ -39,7 +39,7 @@ type ProductBillingTabProps = {
   setSelectedTopUpAmount: (value: string) => void;
   resolvedBillingTab: "billing" | "top-up";
   navigateToBillingSubTab: (nextTab: string) => void;
-  billingRecordsRef: MutableRefObject<HTMLDivElement | null>;
+  billingRecordsRef: RefObject<HTMLDivElement | null>;
   controlButtonClass: string;
   controlButtonSmClass: string;
   controlButtonXsClass: string;
@@ -151,7 +151,9 @@ export function ProductBillingTab({
   const [modelFilterValue, setModelFilterValue] = useState("all");
   const [modelFilterQuery, setModelFilterQuery] = useState("");
   const [isDateFilterOpen, setIsDateFilterOpen] = useState(false);
-  const [billingDateRange, setBillingDateRange] = useState<DateRange | undefined>();
+  const [billingDateRange, setBillingDateRange] = useState<
+    DateRange | undefined
+  >();
   const autoTopUpAmountLabel = useMemo(
     () => formatAutoTopUpRuleAmount(autoTopUpAmount),
     [autoTopUpAmount],
@@ -197,15 +199,22 @@ export function ProductBillingTab({
     [paymentMethodOptions, selectedPaymentMethod],
   );
   const predictionOptions = useMemo(
-    () => Array.from(new Set(billingUsageRecords.map((record) => record.predictionId))),
+    () =>
+      Array.from(
+        new Set(billingUsageRecords.map((record) => record.predictionId)),
+      ),
     [],
   );
   const accessKeyOptions = useMemo(
-    () => Array.from(new Set(billingUsageRecords.map((record) => record.accessKey))),
+    () =>
+      Array.from(
+        new Set(billingUsageRecords.map((record) => record.accessKey)),
+      ),
     [],
   );
   const modelOptions = useMemo(
-    () => Array.from(new Set(billingUsageRecords.map((record) => record.model))),
+    () =>
+      Array.from(new Set(billingUsageRecords.map((record) => record.model))),
     [],
   );
   const filteredPredictionOptions = useMemo(
@@ -244,7 +253,8 @@ export function ProductBillingTab({
           predictionFilterValue === "all" ||
           record.predictionId === predictionFilterValue;
         const matchesAccessKey =
-          accessKeyFilterValue === "all" || record.accessKey === accessKeyFilterValue;
+          accessKeyFilterValue === "all" ||
+          record.accessKey === accessKeyFilterValue;
         const matchesModel =
           modelFilterValue === "all" || record.model === modelFilterValue;
         let matchesDate = true;
@@ -262,7 +272,9 @@ export function ProductBillingTab({
             matchesDate = recordDate >= rangeStart && recordDate <= rangeEnd;
           }
         }
-        return matchesPrediction && matchesAccessKey && matchesModel && matchesDate;
+        return (
+          matchesPrediction && matchesAccessKey && matchesModel && matchesDate
+        );
       }),
     [
       accessKeyFilterValue,
@@ -325,7 +337,7 @@ export function ProductBillingTab({
         }`}
       >
         <span
-          className="bg-muted pointer-events-none absolute inset-y-0 -inset-x-2 rounded-[3px] opacity-0 transition-opacity group-hover:opacity-100"
+          className="bg-muted pointer-events-none absolute -inset-x-2 inset-y-0 rounded-[3px] opacity-0 transition-opacity group-hover:opacity-100"
           aria-hidden
         />
         <span
@@ -345,7 +357,9 @@ export function ProductBillingTab({
         </span>
         <span className="relative z-10 flex-1 text-right text-[10px] leading-[13px]">
           <span className="text-foreground/70">
-            {renderWithEmphasizedNumbers(`${conciseThroughput} · ${conciseBenefit}`)}
+            {renderWithEmphasizedNumbers(
+              `${conciseThroughput} · ${conciseBenefit}`,
+            )}
           </span>
         </span>
       </button>
@@ -403,7 +417,9 @@ export function ProductBillingTab({
             <CardContent className="flex flex-1 flex-col justify-end px-4 pb-4">
               <section className="w-full">
                 <div className="border-foreground/10 grid">
-                  {displayedTopUpOptions.map((option) => renderTopUpOption(option))}
+                  {displayedTopUpOptions.map((option) =>
+                    renderTopUpOption(option),
+                  )}
                 </div>
               </section>
             </CardContent>
@@ -519,7 +535,7 @@ export function ProductBillingTab({
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="relative flex-1 max-w-48">
+                  <div className="relative max-w-48 flex-1">
                     <span className="text-foreground/65 absolute top-1/2 left-3 -translate-y-1/2 text-sm">
                       $
                     </span>
@@ -538,17 +554,21 @@ export function ProductBillingTab({
 
               <div className="space-y-1.5">
                 <div className="flex items-center gap-1 text-sm">
-                  <span className="text-foreground/75">Auto top up credits</span>
+                  <span className="text-foreground/75">
+                    Auto top up credits
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="relative flex-1 max-w-48">
+                  <div className="relative max-w-48 flex-1">
                     <span className="text-foreground/65 absolute top-1/2 left-3 -translate-y-1/2 text-sm">
                       $
                     </span>
                     <Input
                       type="number"
                       value={autoTopUpAmount}
-                      onChange={(event) => setAutoTopUpAmount(event.target.value)}
+                      onChange={(event) =>
+                        setAutoTopUpAmount(event.target.value)
+                      }
                       className="border-foreground/10 h-9 rounded-xs pl-7 text-sm"
                     />
                   </div>
@@ -571,7 +591,6 @@ export function ProductBillingTab({
               <p className="text-foreground/60 text-xs">
                 Auto top-up only supports Stripe for now.
               </p>
-
             </CardContent>
             <div className="border-foreground/10 mt-auto border-t px-4 py-4">
               <Button
@@ -579,7 +598,9 @@ export function ProductBillingTab({
                 variant={isAutoTopUpActive ? "outline" : "default"}
                 className="h-9 w-full rounded-xs text-sm tracking-[0.3px]"
               >
-                {isAutoTopUpActive ? "Disable Auto Top-up" : "Enable Auto Top-up"}
+                {isAutoTopUpActive
+                  ? "Disable Auto Top-up"
+                  : "Enable Auto Top-up"}
               </Button>
             </div>
           </Card>
@@ -611,7 +632,7 @@ export function ProductBillingTab({
           className="gap-0"
           ref={billingRecordsRef}
         >
-          <div className="mb-2 px-0 py-1 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+          <div className="mb-2 flex flex-col gap-2 px-0 py-1 md:flex-row md:items-center md:justify-between">
             <TabsList
               variant="line"
               className="h-auto justify-start gap-3 rounded-none bg-transparent px-0"
@@ -795,7 +816,9 @@ export function ProductBillingTab({
                         className={billingFilterTriggerClass}
                       >
                         <span>
-                          {modelFilterValue === "all" ? "Model" : modelFilterValue}
+                          {modelFilterValue === "all"
+                            ? "Model"
+                            : modelFilterValue}
                         </span>
                         <ChevronDown className="text-foreground/50 size-3 shrink-0" />
                       </button>
@@ -806,7 +829,9 @@ export function ProductBillingTab({
                     >
                       <Input
                         value={modelFilterQuery}
-                        onChange={(event) => setModelFilterQuery(event.target.value)}
+                        onChange={(event) =>
+                          setModelFilterQuery(event.target.value)
+                        }
                         placeholder="Search models..."
                         className="border-foreground/10 h-8 rounded-xs text-xs"
                       />
@@ -864,9 +889,7 @@ export function ProductBillingTab({
                         className="border-foreground/10 text-foreground/80 data-[empty=true]:text-muted-foreground tracking-sm h-8 w-auto max-w-full min-w-0 justify-start gap-1.5 rounded-xs px-2.5 text-left text-xs font-normal"
                       >
                         <CalendarIcon className="size-3.5" />
-                        <span>
-                          {billingDateRangeLabel}
-                        </span>
+                        <span>{billingDateRangeLabel}</span>
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent
@@ -899,7 +922,7 @@ export function ProductBillingTab({
             <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
               <CardContent className="min-h-56 p-0">
                 {billingTopUpRecords.length > 0 ? (
-                  <Table className="[&_th]:px-4 [&_td]:px-4">
+                  <Table className="[&_td]:px-4 [&_th]:px-4">
                     <TableHeader>
                       <TableRow className="border-foreground/10 hover:bg-transparent">
                         <TableHead className="text-foreground/50 tracking-lg">
@@ -952,7 +975,7 @@ export function ProductBillingTab({
                 )}
               </CardContent>
             </Card>
-            <div className="mt-2 h-7 flex items-center">
+            <div className="mt-2 flex h-7 items-center">
               <p className="text-foreground/50 text-xs">
                 Showing {billingTopUpRecords.length} result
                 {billingTopUpRecords.length > 1 ? "s" : ""}
@@ -963,7 +986,7 @@ export function ProductBillingTab({
           <TabsContent value="billing" className="mt-0">
             <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
               <CardContent className="min-h-56 p-0">
-                <Table className="[&_th]:px-4 [&_td]:px-4">
+                <Table className="[&_td]:px-4 [&_th]:px-4">
                   <TableHeader>
                     <TableRow className="border-foreground/10 hover:bg-transparent">
                       <TableHead className="text-foreground/50 tracking-lg">
@@ -990,7 +1013,9 @@ export function ProductBillingTab({
                           key={record.predictionId}
                           className="border-foreground/10 hover:bg-surface"
                         >
-                          <TableCell className="text-xs">{record.accessKey}</TableCell>
+                          <TableCell className="text-xs">
+                            {record.accessKey}
+                          </TableCell>
                           <TableCell className="text-foreground/70 font-mono text-xs">
                             {record.predictionId}
                           </TableCell>
@@ -1020,7 +1045,7 @@ export function ProductBillingTab({
                 </Table>
               </CardContent>
             </Card>
-            <div className="mt-2 min-h-7 flex flex-col gap-2 text-xs sm:h-7 sm:flex-row sm:items-center sm:justify-between">
+            <div className="mt-2 flex min-h-7 flex-col gap-2 text-xs sm:h-7 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-foreground/60">
                 Showing 1 to {filteredBillingUsageRecords.length} of{" "}
                 {filteredBillingUsageRecords.length} results
