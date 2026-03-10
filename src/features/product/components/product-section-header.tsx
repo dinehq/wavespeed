@@ -20,11 +20,9 @@ type ProductSectionHeaderProps = {
 
 export function ProductSectionHeader({
   title,
-  description,
   actions,
   footer,
   titleClassName,
-  descriptionClassName,
   actionsClassName,
   withDivider = false,
   alignCenter = true,
@@ -47,17 +45,13 @@ export function ProductSectionHeader({
       <div className="min-w-0">
         <h1
           className={cn(
-            "text-heading font-display text-3xl leading-none font-semibold tracking-[-0.8px]",
+            "text-heading font-display text-3xl leading-none font-semibold",
             titleClassName,
           )}
         >
           {title}
         </h1>
-        {description ? (
-          <p className={cn("text-subtle mt-2 text-sm", descriptionClassName)}>
-            {description}
-          </p>
-        ) : null}
+
         {footer}
       </div>
       {actions ? (

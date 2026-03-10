@@ -442,7 +442,7 @@ function CategoryCard({
         />
       </div>
       <p
-        className={`font-display relative truncate text-base leading-6 font-medium tracking-[-0.5px] md:text-xl md:leading-7 ${
+        className={`font-display relative truncate text-base leading-6 font-medium tracking-tight md:text-xl md:leading-7 ${
           category.dark ? "text-white" : "text-black"
         }`}
       >
@@ -518,7 +518,7 @@ export function ToolsSection() {
     <section className="pt-20 md:pt-30">
       {/* Header */}
       <div className="mx-auto mb-10 max-w-244 px-6 text-center md:px-12 lg:px-20">
-        <h2 className="text-heading font-display mb-6 text-2xl leading-none font-medium tracking-[-1px] text-balance md:text-5xl">
+        <h2 className="text-heading font-display mb-6 text-2xl leading-none font-medium tracking-tight text-balance md:text-5xl">
           Get <em className="italic">any</em> tool you want
         </h2>
         <p className="text-subtle font-mono text-base text-pretty">

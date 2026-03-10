@@ -118,7 +118,7 @@ export function ProductDashboardTab({
                 <div className="divide-foreground/10 grid divide-y md:grid-cols-3 md:divide-x md:divide-y-0">
                   <section className="flex h-full flex-col justify-between px-4 pt-4 pb-1 md:px-5 md:pt-5 md:pb-2">
                     <div className="mb-4">
-                      <CardTitle className="text-foreground font-display tracking-xs text-base">
+                      <CardTitle className="text-foreground font-display text-base">
                         Welcome to WaveSpeed
                       </CardTitle>
                       <CardDescription className="text-subtle mt-1.5 text-sm leading-5">
@@ -160,10 +160,10 @@ export function ProductDashboardTab({
                               onClick={() =>
                                 navigateFromGettingStarted(task.href)
                               }
-                              className={`h-8 shrink-0 rounded-xs px-3 text-xs ${
+                              className={`h-9 shrink-0 rounded-xs px-3 text-xs ${
                                 task.tone === "primary"
-                                  ? "bg-foreground text-background hover:bg-foreground/80 tracking-md shadow-xs"
-                                  : `tracking-sm ${controlButtonClass}`
+                                  ? "bg-foreground text-background hover:bg-foreground/80 shadow-xs"
+                                  : `${controlButtonClass}`
                               }`}
                             >
                               {task.action}
@@ -176,7 +176,7 @@ export function ProductDashboardTab({
 
                   <section className="flex h-full flex-col justify-between px-4 pt-4 pb-1 md:px-5 md:pt-5 md:pb-2">
                     <div className="mb-4">
-                      <CardTitle className="text-foreground font-display tracking-xs text-base">
+                      <CardTitle className="text-foreground font-display text-base">
                         {currentGettingStartedContent.title}
                       </CardTitle>
                       <CardDescription className="text-subtle mt-1.5 text-sm leading-5">
@@ -204,7 +204,7 @@ export function ProductDashboardTab({
                               </span>
                             </div>
                             <span className="text-foreground/60 group-hover:text-foreground inline-flex shrink-0 items-center gap-1 text-xs">
-                              <span className="tracking-sm">{task.action}</span>
+                              <span>{task.action}</span>
                               <ArrowRight className="size-3.5" />
                             </span>
                           </button>
@@ -215,7 +215,7 @@ export function ProductDashboardTab({
 
                   <section className="flex h-full flex-col justify-between px-4 pt-4 pb-1 md:px-5 md:pt-5 md:pb-2">
                     <div className="mb-4">
-                      <CardTitle className="text-foreground font-display tracking-xs text-base">
+                      <CardTitle className="text-foreground font-display text-base">
                         Explore Models
                       </CardTitle>
                       <CardDescription className="text-subtle mt-1.5 text-sm leading-5">
@@ -294,10 +294,10 @@ export function ProductDashboardTab({
               >
                 <CardContent className="flex min-h-36 flex-col px-4 py-4">
                   <div>
-                    <p className="text-foreground/60 tracking-xs text-xs">
+                    <p className="text-foreground/60 text-xs">
                       {item.label}
                     </p>
-                    <p className="text-foreground mt-2 text-2xl leading-none font-medium tracking-tight">
+                    <p className="text-foreground mt-2 text-2xl leading-none font-medium">
                       {item.value}
                     </p>
                   </div>
@@ -309,7 +309,7 @@ export function ProductDashboardTab({
                           size="sm"
                           variant={action.variant}
                           onClick={() => router.push(action.href)}
-                          className={`tracking-sm h-8 rounded-xs px-3 text-xs ${
+                          className={`h-9 rounded-xs px-3 text-xs ${
                             action.variant === "default"
                               ? ""
                               : controlButtonClass
@@ -348,7 +348,7 @@ export function ProductDashboardTab({
             <Button
               variant="outline"
               size="sm"
-              className={`${controlButtonSmClass} h-8 shrink-0`}
+              className={`${controlButtonSmClass} h-9 shrink-0`}
             >
               View all models
             </Button>

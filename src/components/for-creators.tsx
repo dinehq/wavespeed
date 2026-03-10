@@ -16,7 +16,7 @@ export function ForCreators() {
           {/* Section header */}
           <div className="mb-12 flex flex-col gap-4">
             <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
-              <h2 className="font-display text-2xl leading-none font-medium tracking-[-1px] text-balance text-white md:text-5xl">
+              <h2 className="font-display text-2xl leading-none font-medium tracking-tight text-balance text-white md:text-5xl">
                 Built for <em className="italic">Creators</em>
               </h2>
               <div className="flex shrink-0 items-center gap-3">

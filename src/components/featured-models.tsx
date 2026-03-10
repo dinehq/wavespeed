@@ -238,7 +238,7 @@ export function FeaturedModels() {
       {/* Header */}
       <div className="mx-auto flex max-w-290 flex-col items-center gap-10">
         <div className="flex max-w-[876px] flex-col items-center gap-4 text-center">
-          <h2 className="text-heading font-display text-2xl leading-none font-medium tracking-[-1px] text-balance md:text-5xl">
+          <h2 className="text-heading font-display text-2xl leading-none font-medium tracking-tight text-balance md:text-5xl">
             Featured Models
           </h2>
           <p className="text-subtle font-mono text-base text-pretty">

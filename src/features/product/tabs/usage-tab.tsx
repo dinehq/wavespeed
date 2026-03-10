@@ -81,7 +81,6 @@ export function ProductUsageTab({
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-4">
         <ProductSectionHeader
           title="Usage"
-          description="View usage data for the selected time range"
           actions={
             <>
               <Button
@@ -97,7 +96,7 @@ export function ProductUsageTab({
                   <Button
                     variant="outline"
                     data-empty={!usageDateRange?.from}
-                    className="border-foreground/10 text-foreground/80 data-[empty=true]:text-muted-foreground tracking-sm h-8 w-auto max-w-full min-w-0 justify-start gap-1.5 rounded-xs px-2.5 text-left text-xs font-normal"
+                    className="border-foreground/10 text-foreground/80 data-[empty=true]:text-muted-foreground h-9 w-auto max-w-full min-w-0 justify-start gap-1.5 rounded-xs px-2.5 text-left text-xs font-normal"
                   >
                     <CalendarIcon className="size-3.5" />
                     <span>{usageDateRangeLabel}</span>
@@ -136,7 +135,7 @@ export function ProductUsageTab({
                       item.label as "1d" | "7d" | "30d",
                     )
                   }
-                  className={`tracking-md h-8 min-w-[38px] rounded-xs px-2 text-xs ${
+                  className={`h-9 min-w-[38px] rounded-xs px-2 text-xs ${
                     usageQuickRange === item.label
                       ? "border-foreground bg-foreground text-background hover:bg-foreground/85 hover:text-background"
                       : controlButtonClass
@@ -156,15 +155,15 @@ export function ProductUsageTab({
               className="bg-surface gap-0 rounded-xs border-0 py-0 shadow-none"
             >
               <CardContent className="flex min-h-36 flex-col px-4 py-4">
-                <p className="text-foreground/60 tracking-sm text-xs">
+                <p className="text-foreground/60 text-xs">
                   {item.label}
                 </p>
                 {item.actions.length > 0 ? (
-                  <p className="text-foreground mt-2 text-2xl leading-none font-medium tracking-tight">
+                  <p className="text-foreground mt-2 text-2xl leading-none font-medium">
                     {item.value}
                   </p>
                 ) : (
-                  <p className="text-foreground mt-auto text-2xl leading-none font-medium tracking-tight">
+                  <p className="text-foreground mt-auto text-2xl leading-none font-medium">
                     {item.value}
                   </p>
                 )}
@@ -187,7 +186,7 @@ export function ProductUsageTab({
                             router.push(action.href);
                           }
                         }}
-                        className={`tracking-sm h-8 rounded-xs px-3 text-xs ${
+                        className={`h-9 rounded-xs px-3 text-xs ${
                           action.variant === "default" ? "" : controlButtonClass
                         }`}
                       >
@@ -203,7 +202,7 @@ export function ProductUsageTab({
 
         <Card className="bg-surface gap-0 rounded-xs border-0 py-0 shadow-none">
           <CardHeader className="px-4 pt-4 pb-0">
-            <CardTitle className="text-foreground font-display text-xl font-semibold tracking-tight">
+            <CardTitle className="text-foreground font-display text-xl font-semibold">
               Usage breakdown
             </CardTitle>
           </CardHeader>
@@ -306,7 +305,7 @@ export function ProductUsageTab({
         <div ref={usagePerModelSectionRef} className="scroll-mt-24">
           <Card className="bg-surface gap-0 rounded-xs border-0 py-0 shadow-none">
             <CardHeader className="px-4 pt-4 pb-0">
-              <CardTitle className="text-foreground font-display text-xl font-semibold tracking-tight">
+              <CardTitle className="text-foreground font-display text-xl font-semibold">
                 Usage per model
               </CardTitle>
             </CardHeader>
@@ -381,10 +380,10 @@ export function ProductUsageTab({
                 </Table>
               </div>
               <div className="border-foreground/10 flex items-center justify-between border-t pt-3">
-                <p className="text-foreground/70 tracking-xs text-xs">
+                <p className="text-foreground/70 text-xs">
                   Total {usagePerModelTotalPredictions} predictions
                 </p>
-                <p className="text-foreground text-base font-semibold tracking-tight">
+                <p className="text-foreground text-base font-semibold">
                   ${usagePerModelTotalCost.toFixed(4)}
                 </p>
               </div>
@@ -394,7 +393,7 @@ export function ProductUsageTab({
 
         <Card className="bg-surface gap-0 rounded-xs border-0 py-0 shadow-none">
           <CardHeader className="px-4 pt-4 pb-0">
-            <CardTitle className="text-foreground font-display text-xl font-semibold tracking-tight">
+            <CardTitle className="text-foreground font-display text-xl font-semibold">
               Daily Usage
             </CardTitle>
           </CardHeader>

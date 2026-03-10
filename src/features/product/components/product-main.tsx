@@ -76,14 +76,14 @@ type ProductRouter = {
 const dashboardTabs = productMainTabs;
 
 const controlButtonClass =
-  "border-foreground/10 text-foreground/80 hover:bg-foreground/5 text-xs tracking-md shadow-xs";
-const controlButtonSmClass = `${controlButtonClass} h-8 rounded-xs px-2.5`;
-const controlButtonXsClass = `${controlButtonClass} h-7 rounded-xs px-2`;
+  "border-foreground/10 text-foreground/80 hover:bg-foreground/5 text-xs shadow-xs";
+const controlButtonSmClass = `${controlButtonClass} h-9 rounded-xs px-3`;
+const controlButtonXsClass = `${controlButtonClass} h-9 rounded-xs px-3`;
 const controlSelectTriggerClass =
   "cursor-pointer border-foreground/10 bg-background text-foreground/80 hover:bg-foreground/5 rounded-xs text-xs shadow-xs";
 const controlSelectTriggerCompactClass = `${controlSelectTriggerClass} h-7 justify-start gap-1 pr-1.5 pl-2.5`;
 const requestFilterTriggerClass =
-  "inline-flex h-8 w-fit min-w-0 shrink-0 items-center justify-start gap-1 rounded-xs border pr-1.5 pl-2.5 text-xs font-normal whitespace-nowrap tracking-md";
+  "inline-flex h-9 w-fit min-w-0 shrink-0 items-center justify-start gap-1 rounded-xs border pr-1.5 pl-2.5 text-xs font-normal whitespace-nowrap";
 const requestFilterTriggerIconClass =
   "[&_svg]:!size-3.5 [&_svg]:!text-foreground/50 [&_svg]:!opacity-100";
 const controlSelectTriggerFilterClass = `${controlSelectTriggerClass} ${requestFilterTriggerClass} data-[placeholder]:text-foreground/80 ${requestFilterTriggerIconClass}`;
@@ -297,7 +297,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
           title="Requests"
           titleClassName={
             headerLevel === "secondary"
-              ? "text-foreground font-display text-xl font-semibold tracking-tight"
+              ? "text-foreground font-display text-xl font-semibold"
               : undefined
           }
           bottomPaddingClassName="pb-0"
@@ -359,7 +359,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                       setModelFilterQuery(event.target.value)
                     }
                     placeholder="Search models..."
-                    className="border-foreground/10 h-8 rounded-xs text-xs"
+                    className="border-foreground/10 h-9 rounded-xs text-xs"
                   />
                   <div className="mt-2 max-h-56 space-y-1 overflow-y-auto">
                     <button
@@ -430,7 +430,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                     onChange={(event) => setIdSearchQuery(event.target.value)}
                     autoFocus
                     placeholder="Search ID"
-                    className="border-foreground/10 tracking-md h-8 w-30 rounded-xs text-xs shadow-xs md:text-xs"
+                    className="border-foreground/10 h-9 w-30 rounded-xs text-xs shadow-xs md:text-xs"
                   />
                   <Button
                     variant="outline"
@@ -481,14 +481,14 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
             }`}
           >
             <div className="flex items-center justify-between px-2 py-2">
-              <span className="text-foreground/60 tracking-xs ml-2 text-xs">
+              <span className="text-foreground/60 ml-2 text-xs">
                 {selectedItemsLabel}
               </span>
               <div className="flex items-center gap-2">
                 <Button
                   size="sm"
                   variant="outline"
-                  className="border-foreground/10 h-8 rounded-xs px-2.5 text-xs"
+                  className="border-foreground/10 h-9 rounded-xs px-3 text-xs"
                 >
                   <Download className="size-3.5" />
                   Download
@@ -496,7 +496,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                 <Button
                   size="sm"
                   variant="destructive"
-                  className="h-8 rounded-xs px-2.5 text-xs"
+                  className="h-9 rounded-xs px-3 text-xs"
                 >
                   <Trash2 className="size-3.5" />
                   Delete
@@ -746,7 +746,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
     <div className="border-foreground/10 bg-background/95 supports-backdrop-filter:bg-background/80 sticky top-0 z-40 flex justify-center border-b px-6 backdrop-blur md:px-12 lg:px-20">
       <div className="w-full max-w-7xl">
         <div
-          className="flex h-12 w-full items-center justify-start gap-4 overflow-x-auto scrollbar-none rounded-none px-0 md:gap-6 lg:gap-8"
+          className="scrollbar-none flex h-12 w-full items-center justify-start gap-4 overflow-x-auto rounded-none px-0 md:gap-6 lg:gap-8"
           aria-hidden
         >
           {dashboardTabs.map((tab) => {
@@ -755,7 +755,9 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
               <span
                 key={tab}
                 className={`tracking-xl relative flex h-12 flex-none items-center rounded-none px-0 py-0 text-sm whitespace-nowrap ${
-                  isActive ? "text-foreground font-bold" : "text-foreground/60"
+                  isActive
+                    ? "text-foreground font-semibold"
+                    : "text-foreground/60"
                 }`}
               >
                 {tab}
@@ -782,13 +784,13 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
         >
           <TabsList
             variant="line"
-            className="w-full justify-start gap-4 overflow-x-auto scrollbar-none rounded-none px-0 group-data-[orientation=horizontal]/tabs:h-12 md:gap-6 lg:gap-8"
+            className="scrollbar-none w-full justify-start gap-4 overflow-x-auto rounded-none px-0 group-data-[orientation=horizontal]/tabs:h-12 md:gap-6 lg:gap-8"
           >
             {dashboardTabs.map((tab) => (
               <TabsTrigger
                 key={tab}
                 value={tab}
-                className="tracking-xl data-[state=active]:text-foreground data-[state=active]:after:bg-foreground h-12 flex-none rounded-none px-0 py-0 text-sm whitespace-nowrap after:bg-transparent data-[state=active]:font-bold"
+                className="tracking-xl data-[state=active]:text-foreground data-[state=active]:after:bg-foreground h-12 flex-none rounded-none px-0 py-0 text-sm whitespace-nowrap after:bg-transparent data-[state=active]:font-semibold"
               >
                 {tab}
               </TabsTrigger>
