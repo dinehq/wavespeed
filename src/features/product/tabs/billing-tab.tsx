@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type MutableRefObject } from "react";
+import { useMemo, useState, type MutableRefObject } from "react";
 
 import { CalendarIcon, ChevronDown } from "lucide-react";
 
@@ -128,24 +128,28 @@ export function ProductBillingTab({
   }, [selectedTopUpAmount]);
 
   const isCustomTopUpSelected = selectedTopUpAmount === "Custom";
-  const [customTopUpAmount, setCustomTopUpAmount] = useState(parsedTopUpAmount);
-  const [lastPresetTopUpAmount, setLastPresetTopUpAmount] =
-    useState(parsedTopUpAmount);
-  const [hasActivatedCustomInput, setHasActivatedCustomInput] = useState(false);
-
-  useEffect(() => {
-    if (!isCustomTopUpSelected && parsedTopUpAmount) {
-      setLastPresetTopUpAmount(parsedTopUpAmount);
-      setCustomTopUpAmount(parsedTopUpAmount);
-    }
+  const lastPresetTopUpAmount = useMemo(() => {
+    if (isCustomTopUpSelected) return "";
+    return parsedTopUpAmount;
   }, [isCustomTopUpSelected, parsedTopUpAmount]);
 
-  useEffect(() => {
-    if (isCustomTopUpSelected) {
+  const [customTopUpAmount, setCustomTopUpAmount] = useState(parsedTopUpAmount);
+  const [hasActivatedCustomInput, setHasActivatedCustomInput] = useState(false);
+
+  const handleSelectTopUpAmount = (amount: string) => {
+    const wasCustom = selectedTopUpAmount === "Custom";
+    const willBeCustom = amount === "Custom";
+    setSelectedTopUpAmount(amount);
+    if (willBeCustom && !wasCustom) {
       setHasActivatedCustomInput(true);
-      setCustomTopUpAmount(lastPresetTopUpAmount);
+      setCustomTopUpAmount(parsedTopUpAmount);
+    } else if (!willBeCustom) {
+      const numeric = Number(amount.replace(/[^0-9.]/g, ""));
+      if (Number.isFinite(numeric) && numeric > 0) {
+        setCustomTopUpAmount(String(numeric));
+      }
     }
-  }, [isCustomTopUpSelected, lastPresetTopUpAmount]);
+  };
 
   const selectedPaymentMeta = useMemo(
     () =>
@@ -203,10 +207,10 @@ export function ProductBillingTab({
       <button
         key={option.amount}
         type="button"
-        onClick={() => setSelectedTopUpAmount(option.amount)}
+        onClick={() => handleSelectTopUpAmount(option.amount)}
         className={`border-foreground/10 bg-background hover:bg-surface flex items-center gap-3 rounded-xs border p-3 text-left transition-colors ${
           selectedTopUpAmount === option.amount
-            ? "bg-surface border-transparent ring-brand ring ring-inset"
+            ? "bg-surface ring-brand border-transparent ring ring-inset"
             : ""
         }`}
       >
@@ -227,7 +231,9 @@ export function ProductBillingTab({
                 : "text-foreground/70"
             }
           >
-            {renderWithEmphasizedNumbers(`${conciseThroughput} · ${conciseBenefit}`)}
+            {renderWithEmphasizedNumbers(
+              `${conciseThroughput} · ${conciseBenefit}`,
+            )}
           </span>
         </span>
       </button>
@@ -289,10 +295,14 @@ export function ProductBillingTab({
                 </p>
                 <div className="grid gap-2 md:grid-cols-2">
                   <div className="grid gap-2">
-                    {leftColumnOptions.map((option) => renderTopUpOption(option))}
+                    {leftColumnOptions.map((option) =>
+                      renderTopUpOption(option),
+                    )}
                   </div>
                   <div className="grid gap-2">
-                    {rightColumnOptions.map((option) => renderTopUpOption(option))}
+                    {rightColumnOptions.map((option) =>
+                      renderTopUpOption(option),
+                    )}
                   </div>
                 </div>
               </section>
@@ -312,9 +322,7 @@ export function ProductBillingTab({
                           type="button"
                           aria-label={`Selected payment: ${selectedPaymentMeta.label}`}
                           className={`bg-background hover:bg-surface border-foreground/10 focus-visible:border-ring focus-visible:ring-ring/50 flex h-[36px] items-center rounded-xs border shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] ${
-                            isPaymentPickerOpen
-                              ? "border-brand!"
-                              : ""
+                            isPaymentPickerOpen ? "border-brand!" : ""
                           }`}
                         >
                           <span className="flex h-full w-[90px] items-center justify-center px-2">
@@ -492,7 +500,7 @@ export function ProductBillingTab({
                           <TableCell>
                             <Badge
                               variant="outline"
-                              className="rounded-xs border-brand/30 bg-brand/8 px-2 py-0.5 text-[10px] text-brand"
+                              className="border-brand/30 bg-brand/8 text-brand rounded-xs px-2 py-0.5 text-[10px]"
                             >
                               {record.amount}
                             </Badge>

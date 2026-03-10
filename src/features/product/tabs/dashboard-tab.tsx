@@ -118,7 +118,7 @@ export function ProductDashboardTab({
                 <div className="divide-foreground/10 grid divide-y md:grid-cols-3 md:divide-x md:divide-y-0">
                   <section className="flex h-full flex-col justify-between px-4 pt-4 pb-1 md:px-5 md:pt-5 md:pb-2">
                     <div className="mb-4">
-                      <CardTitle className="text-foreground font-display text-base tracking-xs">
+                      <CardTitle className="text-foreground font-display tracking-xs text-base">
                         Welcome to WaveSpeed
                       </CardTitle>
                       <CardDescription className="text-subtle mt-1.5 text-sm leading-5">
@@ -176,7 +176,7 @@ export function ProductDashboardTab({
 
                   <section className="flex h-full flex-col justify-between px-4 pt-4 pb-1 md:px-5 md:pt-5 md:pb-2">
                     <div className="mb-4">
-                      <CardTitle className="text-foreground font-display text-base tracking-xs">
+                      <CardTitle className="text-foreground font-display tracking-xs text-base">
                         {currentGettingStartedContent.title}
                       </CardTitle>
                       <CardDescription className="text-subtle mt-1.5 text-sm leading-5">
@@ -195,7 +195,7 @@ export function ProductDashboardTab({
                           >
                             <div className="flex min-w-0 flex-1 items-center gap-2">
                               {currentGettingStartedContent.showIndex ? (
-                                <span className="text-foreground/50 w-5 shrink-0 text-xs tracking-lg">
+                                <span className="text-foreground/50 tracking-lg w-5 shrink-0 text-xs">
                                   {String(index + 1).padStart(2, "0")}
                                 </span>
                               ) : null}
@@ -204,9 +204,7 @@ export function ProductDashboardTab({
                               </span>
                             </div>
                             <span className="text-foreground/60 group-hover:text-foreground inline-flex shrink-0 items-center gap-1 text-xs">
-                              <span className="tracking-sm">
-                                {task.action}
-                              </span>
+                              <span className="tracking-sm">{task.action}</span>
                               <ArrowRight className="size-3.5" />
                             </span>
                           </button>
@@ -217,7 +215,7 @@ export function ProductDashboardTab({
 
                   <section className="flex h-full flex-col justify-between px-4 pt-4 pb-1 md:px-5 md:pt-5 md:pb-2">
                     <div className="mb-4">
-                      <CardTitle className="text-foreground font-display text-base tracking-xs">
+                      <CardTitle className="text-foreground font-display tracking-xs text-base">
                         Explore Models
                       </CardTitle>
                       <CardDescription className="text-subtle mt-1.5 text-sm leading-5">
@@ -296,7 +294,7 @@ export function ProductDashboardTab({
               >
                 <CardContent className="flex min-h-36 flex-col px-4 py-4">
                   <div>
-                    <p className="text-foreground/60 text-xs tracking-xs">
+                    <p className="text-foreground/60 tracking-xs text-xs">
                       {item.label}
                     </p>
                     <p className="text-foreground mt-2 text-2xl leading-none font-medium tracking-tight">
@@ -311,7 +309,7 @@ export function ProductDashboardTab({
                           size="sm"
                           variant={action.variant}
                           onClick={() => router.push(action.href)}
-                          className={`h-8 rounded-xs px-3 text-xs tracking-sm ${
+                          className={`tracking-sm h-8 rounded-xs px-3 text-xs ${
                             action.variant === "default"
                               ? ""
                               : controlButtonClass

@@ -17,7 +17,7 @@ export function Hero() {
           href="#"
           className="bg-foreground text-background hover:bg-foreground/80 flex items-center justify-center gap-3 rounded-xs px-8 py-4 transition-colors duration-150"
         >
-          <span className="font-mono text-sm leading-4 font-medium tracking-xl uppercase">
+          <span className="tracking-xl font-mono text-sm leading-4 font-medium uppercase">
             Start Building
           </span>
           <ArrowRight className="size-4" />
@@ -26,7 +26,7 @@ export function Hero() {
           href="#"
           className="bg-surface text-foreground hover:bg-foreground/10 flex items-center justify-center rounded-xs px-8 py-4 transition-colors duration-150"
         >
-          <span className="font-mono text-sm leading-4 font-medium tracking-xl uppercase">
+          <span className="tracking-xl font-mono text-sm leading-4 font-medium uppercase">
             Documentation
           </span>
         </a>

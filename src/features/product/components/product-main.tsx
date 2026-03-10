@@ -788,7 +788,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                 <TabsTrigger
                   key={tab}
                   value={tab}
-                  className="tracking-xl h-12 flex-none rounded-none px-2 py-0 text-sm whitespace-nowrap after:bg-transparent data-[state=active]:text-brand data-[state=active]:after:bg-brand"
+                  className="tracking-xl data-[state=active]:text-brand data-[state=active]:after:bg-brand h-12 flex-none rounded-none px-2 py-0 text-sm whitespace-nowrap after:bg-transparent"
                 >
                   {tab}
                 </TabsTrigger>

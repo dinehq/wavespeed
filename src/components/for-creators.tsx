@@ -22,13 +22,13 @@ export function ForCreators() {
               <div className="flex shrink-0 items-center gap-3">
                 <a
                   href="https://wavespeed.ai/studio/"
-                  className="inline-flex items-center gap-2 rounded-xs bg-white px-5 py-2.5 font-mono text-sm tracking-xl text-black uppercase transition-colors duration-150 hover:bg-white/90"
+                  className="tracking-xl inline-flex items-center gap-2 rounded-xs bg-white px-5 py-2.5 font-mono text-sm text-black uppercase transition-colors duration-150 hover:bg-white/90"
                 >
                   Try Studio
                 </a>
                 <a
                   href="https://wavespeed.ai/landing/desktop"
-                  className="group inline-flex items-center gap-2 rounded-xs border border-white/20 px-5 py-2.5 font-mono text-sm tracking-xl text-white uppercase transition-colors duration-150 hover:bg-white/10"
+                  className="group tracking-xl inline-flex items-center gap-2 rounded-xs border border-white/20 px-5 py-2.5 font-mono text-sm text-white uppercase transition-colors duration-150 hover:bg-white/10"
                 >
                   Desktop
                   <svg
@@ -59,7 +59,7 @@ export function ForCreators() {
                 <p className="font-display text-2xl font-medium text-white">
                   {f.label}
                 </p>
-                <p className="font-mono text-xs tracking-lg text-white/40 uppercase">
+                <p className="tracking-lg font-mono text-xs text-white/40 uppercase">
                   {f.detail}
                 </p>
               </div>
