@@ -953,7 +953,7 @@ export function HeroDemo() {
                   className={`relative flex cursor-pointer items-center gap-1 rounded-[3px] px-4 py-2 font-mono text-xs transition-colors ${
                     activeTab === tab.key
                       ? "bg-panel text-ink"
-                      : "bg-panel text-ink"
+                      : "text-ink/60 hover:bg-panel hover:text-ink"
                   }`}
                 >
                   {activeTab === tab.key && (
@@ -994,7 +994,7 @@ export function HeroDemo() {
             <div className="bg-panel relative h-65 md:h-87 md:flex-1">
               <div className="absolute top-10 left-6 flex">
                 {/* Line numbers */}
-                <div className="text-secondary flex w-6 flex-col gap-1 font-mono text-xs leading-tight">
+                <div className="text-subtle flex w-6 flex-col gap-1 font-mono text-xs leading-tight">
                   {current.lines.map((_, i) => (
                     <p key={i} className="opacity-40">
                       {i + 1}
@@ -1044,31 +1044,31 @@ export function HeroDemo() {
               {/* Chat preview */}
               {activeTab === "chat" && (
                 <div className="bg-panel absolute inset-0 flex flex-col overflow-hidden p-5">
-                  <p className="text-secondary tracking-lg mb-3 font-mono text-xs text-pretty uppercase">
+                  <p className="text-subtle tracking-lg mb-3 font-mono text-xs text-pretty uppercase">
                     Response
                   </p>
                   <div className="text-code-text flex flex-col gap-2 font-mono text-xs leading-normal">
                     <p>The conversation covered four key areas:</p>
                     <div className="flex flex-col gap-1.5 pl-1">
-                      <p className="text-secondary text-pretty">
+                      <p className="text-subtle text-pretty">
                         <span className="text-code-text">1.</span> Q3 revenue
                         increased 23% year-over-year
                       </p>
-                      <p className="text-secondary text-pretty">
+                      <p className="text-subtle text-pretty">
                         <span className="text-code-text">2.</span> New API
                         launch scheduled for October
                       </p>
-                      <p className="text-secondary text-pretty">
+                      <p className="text-subtle text-pretty">
                         <span className="text-code-text">3.</span>{" "}
                         Infrastructure team hiring 5 engineers
                       </p>
-                      <p className="text-secondary text-pretty">
+                      <p className="text-subtle text-pretty">
                         <span className="text-code-text">4.</span> Partnership
                         agreement signed with Acme
                       </p>
                     </div>
                     <div className="border-foreground/5 mt-2 border-t pt-2">
-                      <p className="text-secondary text-xs text-pretty">
+                      <p className="text-subtle text-xs text-pretty">
                         Action item: Scale GPU cluster to 256 nodes by Q4,
                         targeting p99 latency &lt; 200ms.
                       </p>
@@ -1107,7 +1107,7 @@ export function HeroDemo() {
                       ))}
                     </div>
                   </div>
-                  <div className="text-secondary flex w-full justify-between font-mono text-xs">
+                  <div className="text-subtle flex w-full justify-between font-mono text-xs">
                     <span>0:00</span>
                     <span>0:04</span>
                   </div>
