@@ -355,7 +355,7 @@ export function ProductBillingTab({
         <span className="text-foreground relative z-10 block w-16 shrink-0 text-sm leading-none font-semibold tracking-tight tabular-nums">
           {option.amount}
         </span>
-        <span className="relative z-10 flex-1 text-right text-[10px] leading-[13px]">
+        <span className="relative z-10 flex-1 text-right text-xs leading-4">
           <span className="text-foreground/70">
             {renderWithEmphasizedNumbers(
               `${conciseThroughput} · ${conciseBenefit}`,
