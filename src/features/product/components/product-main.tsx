@@ -256,7 +256,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
     );
   };
   const getRequestCheckboxClassName = (checked: boolean) =>
-    `cursor-pointer inline-flex size-3.5 items-center justify-center rounded-[2px] border transition-colors ${
+    `cursor-pointer inline-flex size-3.5 items-center justify-center rounded-xs border transition-colors ${
       checked
         ? "border-[#8ea8ff] bg-[#e9efff] text-[#5f7dff]"
         : "border-foreground/15 bg-background hover:bg-foreground/[0.03] text-transparent"

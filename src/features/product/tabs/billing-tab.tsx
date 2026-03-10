@@ -337,7 +337,7 @@ export function ProductBillingTab({
         }`}
       >
         <span
-          className="bg-muted pointer-events-none absolute -inset-x-2 inset-y-0 rounded-[3px] opacity-0 transition-opacity group-hover:opacity-100"
+          className="bg-muted pointer-events-none absolute -inset-x-2 inset-y-0 rounded-xs opacity-0 transition-opacity group-hover:opacity-100"
           aria-hidden
         />
         <span
@@ -373,9 +373,9 @@ export function ProductBillingTab({
 
         <div className="grid gap-4 md:grid-cols-2">
           <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
-            <CardContent className="flex min-h-[144px] flex-col px-4 py-4">
+            <CardContent className="flex min-h-36 flex-col px-4 py-4">
               <p className="text-foreground/60 text-xs">Current balance</p>
-              <p className="text-foreground mt-2 text-2xl leading-none font-medium">
+              <p className="text-foreground mt-2 text-2xl leading-none font-semibold">
                 $6,186
               </p>
               <div className="mt-auto flex items-center pt-4">
@@ -387,13 +387,13 @@ export function ProductBillingTab({
           </Card>
 
           <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
-            <CardContent className="flex min-h-[144px] flex-col px-4 py-4">
+            <CardContent className="flex min-h-36 flex-col px-4 py-4">
               <p className="text-foreground/60 text-xs">Usage this month</p>
-              <p className="text-foreground mt-2 text-2xl leading-none font-medium">
+              <p className="text-foreground mt-2 text-2xl leading-none font-semibold">
                 $0.00
               </p>
               <div className="mt-auto flex items-center gap-2 pt-4">
-                <span className="bg-muted text-foreground/70 rounded-[2px] px-1.5 py-1.5 text-xs font-medium">
+                <span className="bg-muted text-foreground/70 rounded-xs px-1.5 py-1.5 text-xs font-medium">
                   $0.00
                 </span>
                 <span className="text-foreground/60 text-xs">
@@ -449,7 +449,7 @@ export function ProductBillingTab({
                     </div>
                     <PopoverContent
                       align="start"
-                      className="bg-background border-foreground/10 w-[152px] rounded-xs border p-2 shadow-sm"
+                      className="bg-background border-foreground/10 w-38 rounded-xs border p-2 shadow-sm"
                     >
                       <div className="flex flex-col items-center gap-1.5">
                         {paymentMethodOptions.map((method) => (
@@ -505,7 +505,7 @@ export function ProductBillingTab({
                 </CardTitle>
                 <Badge
                   variant="outline"
-                  className={`rounded-[2px] px-1.5 py-0 text-xs ${
+                  className={`rounded-xs px-1.5 py-0 text-xs ${
                     isAutoTopUpActive
                       ? "border-emerald-500/30 bg-emerald-500/12 text-emerald-700 dark:border-emerald-400/35 dark:bg-emerald-400/15 dark:text-emerald-300"
                       : "border-foreground/15 text-foreground/55"

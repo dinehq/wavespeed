@@ -135,7 +135,7 @@ export function ProductUsageTab({
                       item.label as "1d" | "7d" | "30d",
                     )
                   }
-                  className={`h-8 min-w-[38px] rounded-xs px-2 text-xs ${
+                  className={`h-8 min-w-10 rounded-xs px-2 text-xs ${
                     usageQuickRange === item.label
                       ? "border-foreground bg-foreground text-background hover:bg-foreground/85 hover:text-background"
                       : controlButtonClass
@@ -157,7 +157,7 @@ export function ProductUsageTab({
               <CardContent className="flex min-h-36 flex-col px-4 py-4">
                 <p className="text-foreground/60 text-xs">{item.label}</p>
                 {item.actions.length > 0 ? (
-                  <p className="text-foreground mt-2 text-2xl leading-none font-medium">
+                  <p className="text-foreground mt-2 text-2xl leading-none font-semibold">
                     {item.value}
                   </p>
                 ) : (

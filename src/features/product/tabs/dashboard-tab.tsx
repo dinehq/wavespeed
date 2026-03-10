@@ -295,7 +295,7 @@ export function ProductDashboardTab({
                 <CardContent className="flex min-h-36 flex-col px-4 py-4">
                   <div>
                     <p className="text-foreground/60 text-xs">{item.label}</p>
-                    <p className="text-foreground mt-2 text-2xl leading-none font-medium">
+                    <p className="text-foreground mt-2 text-2xl leading-none font-semibold">
                       {item.value}
                     </p>
                   </div>
