@@ -72,7 +72,7 @@ type ProductMainProps = {
 const dashboardTabs = productMainTabs;
 
 const controlButtonClass =
-  "border-foreground/10 text-foreground/80 hover:bg-foreground/5 text-xs tracking-[0.8px] shadow-xs";
+  "border-foreground/10 text-foreground/80 hover:bg-foreground/5 text-xs tracking-md shadow-xs";
 const controlButtonSmClass = `${controlButtonClass} h-8 rounded-xs px-2.5`;
 const controlButtonMdClass = `${controlButtonClass} h-8 rounded-xs px-3`;
 const controlButtonXsClass = `${controlButtonClass} h-7 rounded-xs px-2`;
@@ -80,7 +80,7 @@ const controlSelectTriggerClass =
   "cursor-pointer border-foreground/10 bg-background text-foreground/80 hover:bg-foreground/5 rounded-xs text-xs shadow-xs";
 const controlSelectTriggerCompactClass = `${controlSelectTriggerClass} h-7 justify-start gap-1 pr-1.5 pl-2.5`;
 const requestFilterTriggerClass =
-  "inline-flex h-8 w-fit min-w-0 shrink-0 items-center justify-start gap-1 rounded-xs border pr-1.5 pl-2.5 text-xs font-normal whitespace-nowrap tracking-[0.8px]";
+  "inline-flex h-8 w-fit min-w-0 shrink-0 items-center justify-start gap-1 rounded-xs border pr-1.5 pl-2.5 text-xs font-normal whitespace-nowrap tracking-md";
 const requestFilterTriggerIconClass =
   "[&_svg]:!size-3.5 [&_svg]:!text-foreground/50 [&_svg]:!opacity-100";
 const controlSelectTriggerFilterClass = `${controlSelectTriggerClass} ${requestFilterTriggerClass} data-[placeholder]:text-foreground/80 ${requestFilterTriggerIconClass}`;
@@ -298,7 +298,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
           actions={
             <>
               <div className="flex h-8 items-center gap-2 rounded-xs px-1.5">
-                <span className="text-foreground/80 text-[11px]">
+                <span className="text-foreground/80 text-xs">
                   Show API requests
                 </span>
                 <button
@@ -342,7 +342,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                   </button>
                 </PopoverTrigger>
                 <PopoverContent
-                  className="bg-background w-[248px] rounded-xs border-0 p-2 shadow-sm"
+                  className="bg-background w-62 rounded-xs border-0 p-2 shadow-sm"
                   align="end"
                 >
                   <Input
@@ -422,7 +422,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                     onChange={(event) => setIdSearchQuery(event.target.value)}
                     autoFocus
                     placeholder="Search ID"
-                    className="border-foreground/10 h-8 w-[120px] rounded-xs text-[11px] tracking-[0.8px] shadow-xs md:text-[11px]"
+                    className="border-foreground/10 tracking-md h-8 w-30 rounded-xs text-xs shadow-xs md:text-xs"
                   />
                   <Button
                     variant="outline"
@@ -473,7 +473,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
             }`}
           >
             <div className="flex items-center justify-between px-2 py-2">
-              <span className="text-foreground/60 ml-2 text-[11px] tracking-[0.3px]">
+              <span className="text-foreground/60 tracking-xs ml-2 text-xs">
                 {selectedItemsLabel}
               </span>
               <div className="flex items-center gap-2">
@@ -529,7 +529,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                     </div>
                     <Badge
                       variant="outline"
-                      className={`rounded-xs border-0 px-2 py-1 text-[10px] tracking-[1px] ${
+                      className={`tracking-lg rounded-xs border-0 px-2 py-1 text-xs ${
                         request.status === "Succeeded"
                           ? "bg-emerald-500/15 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-300"
                           : "bg-amber-500/15 text-amber-700 dark:bg-amber-400/15 dark:text-amber-300"
@@ -562,7 +562,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
           </div>
 
           <div className="hidden md:block">
-            <Table className="min-w-[680px]">
+            <Table className="min-w-170">
               <TableHeader>
                 <TableRow className="border-foreground/10 hover:bg-transparent">
                   <TableHead className="w-10 p-0 align-middle">
@@ -596,22 +596,22 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                       </button>
                     </div>
                   </TableHead>
-                  <TableHead className="text-foreground/50 w-20 text-[10px] tracking-[1px]">
+                  <TableHead className="text-foreground/50 tracking-lg w-20">
                     Output
                   </TableHead>
-                  <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                  <TableHead className="text-foreground/50 tracking-lg">
                     ID
                   </TableHead>
-                  <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                  <TableHead className="text-foreground/50 tracking-lg">
                     Model
                   </TableHead>
-                  <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                  <TableHead className="text-foreground/50 tracking-lg">
                     Status
                   </TableHead>
-                  <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                  <TableHead className="text-foreground/50 tracking-lg">
                     Created
                   </TableHead>
-                  <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                  <TableHead className="text-foreground/50 tracking-lg">
                     Action
                   </TableHead>
                 </TableRow>
@@ -653,7 +653,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                         </button>
                       </div>
                     </TableCell>
-                    <TableCell className="text-xs">
+                    <TableCell>
                       <div className="bg-surface relative size-12 overflow-hidden rounded-xs">
                         <Image
                           src={request.outputPreview}
@@ -663,7 +663,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                         />
                       </div>
                     </TableCell>
-                    <TableCell className="text-xs">
+                    <TableCell>
                       <div className="flex items-center gap-1">
                         <button
                           type="button"
@@ -683,11 +683,11 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                         </Button>
                       </div>
                     </TableCell>
-                    <TableCell className="text-xs">{request.model}</TableCell>
+                    <TableCell>{request.model}</TableCell>
                     <TableCell>
                       <Badge
                         variant="outline"
-                        className={`rounded-xs border-0 px-2 py-1 text-[10px] tracking-[1px] ${
+                        className={`tracking-lg rounded-xs border-0 px-2 py-1 text-xs ${
                           request.status === "Succeeded"
                             ? "bg-emerald-500/15 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-300"
                             : "bg-amber-500/15 text-amber-700 dark:bg-amber-400/15 dark:text-amber-300"
@@ -699,9 +699,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                         {request.status}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-xs">
-                      {request.createdAt}
-                    </TableCell>
+                    <TableCell>{request.createdAt}</TableCell>
                     <TableCell>
                       <div className="flex items-center gap-1">
                         <Button
@@ -751,13 +749,13 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                 return (
                   <span
                     key={tab}
-                    className={`relative flex h-12 flex-none items-center rounded-none px-2 py-0 text-sm tracking-[1.2px] whitespace-nowrap ${
+                    className={`tracking-xl relative flex h-12 flex-none items-center rounded-none px-2 py-0 text-sm whitespace-nowrap ${
                       isActive ? "text-[#3f74ff]" : "text-foreground/60"
                     }`}
                   >
                     {tab}
                     {isActive && (
-                      <span className="absolute right-0 bottom-0 left-0 h-[2px] bg-[#3f74ff]" />
+                      <span className="absolute right-0 bottom-0 left-0 h-0.5 bg-[#3f74ff]" />
                     )}
                   </span>
                 );
@@ -765,7 +763,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
             </div>
           </div>
         </div>
-        <div className="min-h-[200px]" />
+        <div className="min-h-50" />
       </section>
     );
   }
@@ -790,7 +788,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                 <TabsTrigger
                   key={tab}
                   value={tab}
-                  className="h-12 flex-none rounded-none px-2 py-0 text-sm tracking-[1.2px] whitespace-nowrap after:bg-transparent data-[state=active]:text-[#3f74ff] data-[state=active]:after:bg-[#3f74ff]"
+                  className="tracking-xl h-12 flex-none rounded-none px-2 py-0 text-sm whitespace-nowrap after:bg-transparent data-[state=active]:text-[#3f74ff] data-[state=active]:after:bg-[#3f74ff]"
                 >
                   {tab}
                 </TabsTrigger>

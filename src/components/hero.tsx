@@ -7,7 +7,7 @@ export function Hero() {
         <h1 className="text-heading font-display text-4xl leading-none font-semibold tracking-[-1px] text-balance md:text-7xl">
           The Ultimate AI Media Generation Platform
         </h1>
-        <p className="text-subtle font-mono text-[18px] leading-tight text-pretty">
+        <p className="text-subtle font-mono text-lg leading-tight text-pretty">
           Build multimodal applications with a single high-speed interface.
         </p>
       </div>
@@ -17,7 +17,7 @@ export function Hero() {
           href="#"
           className="bg-foreground text-background hover:bg-foreground/80 flex items-center justify-center gap-3 rounded-xs px-8 py-4 transition-colors duration-150"
         >
-          <span className="font-mono text-sm leading-4 font-medium tracking-[1.2px] uppercase">
+          <span className="font-mono text-sm leading-4 font-medium tracking-xl uppercase">
             Start Building
           </span>
           <ArrowRight className="size-4" />
@@ -26,7 +26,7 @@ export function Hero() {
           href="#"
           className="bg-surface text-foreground hover:bg-foreground/10 flex items-center justify-center rounded-xs px-8 py-4 transition-colors duration-150"
         >
-          <span className="font-mono text-sm leading-4 font-medium tracking-[1.2px] uppercase">
+          <span className="font-mono text-sm leading-4 font-medium tracking-xl uppercase">
             Documentation
           </span>
         </a>

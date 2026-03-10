@@ -47,8 +47,8 @@ type ProductApiKeysTabProps = {
 
 const statusBadgeClass = (status: string) =>
   status === "Active"
-    ? "rounded-xs border-0 px-2 py-1 text-[10px] tracking-[1px] bg-emerald-500/15 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-300"
-    : "rounded-xs border-0 px-2 py-1 text-[10px] tracking-[1px] bg-amber-500/15 text-amber-700 dark:bg-amber-400/15 dark:text-amber-300";
+    ? "rounded-xs border-0 px-2 py-1 text-xs tracking-lg bg-emerald-500/15 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-300"
+    : "rounded-xs border-0 px-2 py-1 text-xs tracking-lg bg-amber-500/15 text-amber-700 dark:bg-amber-400/15 dark:text-amber-300";
 
 export function ProductApiKeysTab({
   newApiKeyName,
@@ -122,7 +122,7 @@ export function ProductApiKeysTab({
             <Button
               variant="link"
               size="sm"
-              className="text-foreground/70 hover:text-foreground h-8 px-0 text-xs tracking-[0.4px]"
+              className="text-foreground/70 hover:text-foreground tracking-xs h-8 px-0 text-xs"
             >
               How to use API key?
             </Button>
@@ -139,16 +139,16 @@ export function ProductApiKeysTab({
                 className="border-foreground/10 bg-background h-9 rounded-xs text-xs"
               />
               <Button
-                className="h-9 min-w-[160px] rounded-xs px-4 text-xs tracking-[0.8px] sm:w-auto"
+                className="tracking-md h-9 min-w-40 rounded-xs px-4 text-xs sm:w-auto"
                 onClick={handleCreateKey}
               >
                 Create Key
               </Button>
             </div>
           </CardContent>
-          <CardContent className="min-h-[420px] p-0">
+          <CardContent className="min-h-105 p-0">
             {records.length === 0 ? (
-              <div className="text-foreground/60 flex min-h-[320px] flex-col items-center justify-center gap-1 px-4 py-12 text-center text-sm">
+              <div className="text-foreground/60 flex min-h-80 flex-col items-center justify-center gap-1 px-4 py-12 text-center text-sm">
                 <p className="font-medium">No access keys found.</p>
                 <p>Create one to get started.</p>
               </div>
@@ -156,19 +156,19 @@ export function ProductApiKeysTab({
               <Table>
                 <TableHeader>
                   <TableRow className="border-foreground/10 hover:bg-transparent">
-                    <TableHead className="text-foreground/50 pl-4 text-[10px] tracking-[1px]">
+                    <TableHead className="text-foreground/50 tracking-lg pl-4">
                       Name
                     </TableHead>
-                    <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                    <TableHead className="text-foreground/50 tracking-lg">
                       Key
                     </TableHead>
-                    <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                    <TableHead className="text-foreground/50 tracking-lg">
                       Created
                     </TableHead>
-                    <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                    <TableHead className="text-foreground/50 tracking-lg">
                       Status
                     </TableHead>
-                    <TableHead className="text-foreground/50 pr-4 text-right text-[10px] tracking-[1px]">
+                    <TableHead className="text-foreground/50 tracking-lg pr-4 text-right">
                       Actions
                     </TableHead>
                   </TableRow>
@@ -179,12 +179,10 @@ export function ProductApiKeysTab({
                       key={record.id}
                       className="border-foreground/10 hover:bg-surface"
                     >
-                      <TableCell className="pl-4 text-xs">
-                        {record.name}
-                      </TableCell>
-                      <TableCell className="text-xs">
+                      <TableCell className="pl-4">{record.name}</TableCell>
+                      <TableCell>
                         <div className="flex min-w-0 items-center gap-1.5">
-                          <span className="shrink-0 font-mono text-[11px]">
+                          <span className="shrink-0 font-mono">
                             {visibleKeyIds.has(record.id)
                               ? record.key
                               : maskApiKey(record.key)}
@@ -219,9 +217,7 @@ export function ProductApiKeysTab({
                           </span>
                         </div>
                       </TableCell>
-                      <TableCell className="text-xs">
-                        {record.createdAt}
-                      </TableCell>
+                      <TableCell>{record.createdAt}</TableCell>
                       <TableCell>
                         <Badge
                           variant="outline"

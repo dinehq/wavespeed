@@ -11,24 +11,24 @@ const features = [
 export function ForCreators() {
   return (
     <section className="bg-dark dark:bg-dark relative overflow-hidden">
-      <div className="px-6 pt-16 md:px-20 md:pt-[120px]">
+      <div className="px-6 pt-16 md:px-20 md:pt-30">
         <div className="mx-auto max-w-7xl">
           {/* Section header */}
-          <div className="mb-[48px] flex flex-col gap-4">
+          <div className="mb-12 flex flex-col gap-4">
             <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
-              <h2 className="font-display text-[32px] leading-none font-medium tracking-[-1px] text-balance text-white md:text-[48px]">
+              <h2 className="font-display text-2xl leading-none font-medium tracking-[-1px] text-balance text-white md:text-5xl">
                 Built for <em className="italic">Creators</em>
               </h2>
               <div className="flex shrink-0 items-center gap-3">
                 <a
                   href="https://wavespeed.ai/studio/"
-                  className="inline-flex items-center gap-2 rounded-xs bg-white px-5 py-2.5 font-mono text-sm tracking-[1.2px] text-black uppercase transition-colors duration-150 hover:bg-white/90"
+                  className="inline-flex items-center gap-2 rounded-xs bg-white px-5 py-2.5 font-mono text-sm tracking-xl text-black uppercase transition-colors duration-150 hover:bg-white/90"
                 >
                   Try Studio
                 </a>
                 <a
                   href="https://wavespeed.ai/landing/desktop"
-                  className="group inline-flex items-center gap-2 rounded-xs border border-white/20 px-5 py-2.5 font-mono text-sm tracking-[1.2px] text-white uppercase transition-colors duration-150 hover:bg-white/10"
+                  className="group inline-flex items-center gap-2 rounded-xs border border-white/20 px-5 py-2.5 font-mono text-sm tracking-xl text-white uppercase transition-colors duration-150 hover:bg-white/10"
                 >
                   Desktop
                   <svg
@@ -59,7 +59,7 @@ export function ForCreators() {
                 <p className="font-display text-2xl font-medium text-white">
                   {f.label}
                 </p>
-                <p className="font-mono text-xs tracking-[1px] text-white/40 uppercase">
+                <p className="font-mono text-xs tracking-lg text-white/40 uppercase">
                   {f.detail}
                 </p>
               </div>
@@ -69,8 +69,8 @@ export function ForCreators() {
       </div>
 
       {/* App screenshot — full width, outside container */}
-      <div className="relative mt-[48px] h-[300px] md:h-[660px]">
-        <div className="absolute inset-x-0 top-0 h-[300px] overflow-hidden md:h-[660px]">
+      <div className="relative mt-12 h-75 md:h-165">
+        <div className="absolute inset-x-0 top-0 h-75 overflow-hidden md:h-165">
           <Image
             src={creatorBg}
             alt="WaveSpeed Studio"

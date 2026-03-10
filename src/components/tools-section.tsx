@@ -375,7 +375,7 @@ function ProviderCard({ card }: { card: ProviderCard }) {
   const hasGrid = isLarge && Array.isArray(card.models[0]);
 
   return (
-    <div className="group relative flex h-[240px] min-w-0 cursor-pointer flex-col justify-between overflow-hidden rounded-xs p-6 transition-all duration-200 hover:shadow-[inset_0_0_0_2px_rgba(255,255,255,0.15)] hover:brightness-110 md:h-[320px]">
+    <div className="group relative flex h-60 min-w-0 cursor-pointer flex-col justify-between overflow-hidden rounded-xs p-6 transition-all duration-200 hover:shadow-[inset_0_0_0_2px_rgba(255,255,255,0.15)] hover:brightness-110 md:h-80">
       {/* Background image(s) */}
       <div className="pointer-events-none absolute inset-0">
         <div className="bg-panel absolute inset-0" />
@@ -390,9 +390,9 @@ function ProviderCard({ card }: { card: ProviderCard }) {
         ))}
       </div>
       {/* Bottom gradient + blur with smooth fade-in via mask */}
-      <div className="absolute right-0 bottom-0 left-0 h-[160px] bg-linear-to-b from-transparent to-black/40" />
+      <div className="absolute right-0 bottom-0 left-0 h-40 bg-linear-to-b from-transparent to-black/40" />
       <div
-        className="absolute right-0 bottom-0 left-0 h-[160px] backdrop-blur-lg"
+        className="absolute right-0 bottom-0 left-0 h-40 backdrop-blur-lg"
         style={{
           maskImage: "linear-gradient(to bottom, transparent, black)",
           WebkitMaskImage: "linear-gradient(to bottom, transparent, black)",
@@ -432,7 +432,7 @@ function CategoryCard({
   category: { name: string; count: string; bg: StaticImageData; dark: boolean };
 }) {
   return (
-    <div className="group relative flex h-[80px] min-w-0 cursor-pointer flex-col justify-between overflow-hidden rounded-xs p-4 transition-all duration-200 hover:shadow-[inset_0_0_0_2px_rgba(255,255,255,0.15)] hover:brightness-110 md:h-[132px] md:p-6">
+    <div className="group relative flex h-20 min-w-0 cursor-pointer flex-col justify-between overflow-hidden rounded-xs p-4 transition-all duration-200 hover:shadow-[inset_0_0_0_2px_rgba(255,255,255,0.15)] hover:brightness-110 md:h-33 md:p-6">
       <div className="pointer-events-none absolute inset-0">
         <Image
           src={category.bg}
@@ -515,10 +515,10 @@ function DragRow({
 
 export function ToolsSection() {
   return (
-    <section className="pt-20 md:pt-[120px]">
+    <section className="pt-20 md:pt-30">
       {/* Header */}
-      <div className="mx-auto mb-10 max-w-[976px] px-6 text-center md:px-20">
-        <h2 className="text-heading font-display mb-6 text-[32px] leading-none font-medium tracking-[-1px] text-balance md:text-[48px]">
+      <div className="mx-auto mb-10 max-w-244 px-6 text-center md:px-20">
+        <h2 className="text-heading font-display mb-6 text-2xl leading-none font-medium tracking-[-1px] text-balance md:text-5xl">
           Get <em className="italic">any</em> tool you want
         </h2>
         <p className="text-subtle font-mono text-base text-pretty">
@@ -537,7 +537,7 @@ export function ToolsSection() {
               <div
                 key={`${card.name}-${i}`}
                 className={`shrink-0 ${
-                  card.size === "large" ? "w-[540px]" : "w-[320px]"
+                  card.size === "large" ? "w-135" : "w-80"
                 }`}
               >
                 <ProviderCard card={card} />
@@ -553,7 +553,7 @@ export function ToolsSection() {
               <div
                 key={`${card.name}-r-${i}`}
                 className={`shrink-0 ${
-                  card.size === "large" ? "w-[540px]" : "w-[320px]"
+                  card.size === "large" ? "w-135" : "w-80"
                 }`}
               >
                 <ProviderCard card={card} />
@@ -565,7 +565,7 @@ export function ToolsSection() {
         {/* Category Row 1 */}
         <DragRow className="cursor-grab overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {categoryRow1.map((cat, i) => (
-            <div key={i} className="w-[260px] shrink-0 md:w-[400px]">
+            <div key={i} className="w-65 shrink-0 md:w-100">
               <CategoryCard category={cat} />
             </div>
           ))}
@@ -574,7 +574,7 @@ export function ToolsSection() {
         {/* Category Row 2 */}
         <DragRow className="cursor-grab overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {categoryRow2.map((cat, i) => (
-            <div key={i} className="w-[200px] shrink-0 md:w-[320px]">
+            <div key={i} className="w-50 shrink-0 md:w-80">
               <CategoryCard category={cat} />
             </div>
           ))}

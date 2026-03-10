@@ -34,7 +34,7 @@ export function ProductSettingsTab() {
             <CardContent className="space-y-4 p-4">
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-1.5">
-                  <p className="text-foreground/60 text-[11px] tracking-[0.8px] uppercase">
+                  <p className="text-foreground/60 tracking-md text-xs uppercase">
                     Email
                   </p>
                   <p className="text-foreground text-sm">
@@ -42,7 +42,7 @@ export function ProductSettingsTab() {
                   </p>
                 </div>
                 <div className="space-y-1.5">
-                  <p className="text-foreground/60 text-[11px] tracking-[0.8px] uppercase">
+                  <p className="text-foreground/60 tracking-md text-xs uppercase">
                     Username
                   </p>
                   <p className="text-foreground text-sm">
@@ -52,7 +52,7 @@ export function ProductSettingsTab() {
               </div>
 
               <div className="space-y-1.5">
-                <p className="text-foreground/60 text-[11px] tracking-[0.8px] uppercase">
+                <p className="text-foreground/60 tracking-md text-xs uppercase">
                   Login Methods
                 </p>
                 <div className="flex flex-wrap gap-2">
@@ -60,7 +60,7 @@ export function ProductSettingsTab() {
                     <Badge
                       key={method}
                       variant="outline"
-                      className="border-foreground/10 bg-surface text-foreground rounded-xs px-2 py-1 text-[11px] font-normal"
+                      className="border-foreground/10 bg-surface text-foreground rounded-xs px-2 py-1 text-xs font-normal"
                     >
                       {method}
                     </Badge>
@@ -85,7 +85,7 @@ export function ProductSettingsTab() {
                   <p className="text-foreground text-sm">{member.name}</p>
                   <Badge
                     variant="outline"
-                    className="border-foreground/10 bg-surface text-foreground/70 rounded-xs px-2 py-0.5 text-[10px] tracking-[0.8px] uppercase"
+                    className="border-foreground/10 bg-surface text-foreground/70 tracking-md rounded-xs px-2 py-0.5 text-xs uppercase"
                   >
                     {member.role}
                   </Badge>
@@ -102,7 +102,7 @@ export function ProductSettingsTab() {
             </h2>
             <Badge
               variant="outline"
-              className="rounded-xs border-[#3f74ff]/30 bg-[#3f74ff]/8 px-2 py-0.5 text-[10px] tracking-[0.8px] text-[#3f74ff] uppercase"
+              className="tracking-md rounded-xs border-[#3f74ff]/30 bg-[#3f74ff]/8 px-2 py-0.5 text-xs text-[#3f74ff] uppercase"
             >
               {currentAccountLevel}
             </Badge>
@@ -118,19 +118,19 @@ export function ProductSettingsTab() {
                 <Table>
                   <TableHeader>
                     <TableRow className="border-foreground/10 hover:bg-transparent">
-                      <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                      <TableHead className="text-foreground/50 tracking-lg">
                         Level
                       </TableHead>
-                      <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                      <TableHead className="text-foreground/50 tracking-lg">
                         Images/min
                       </TableHead>
-                      <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                      <TableHead className="text-foreground/50 tracking-lg">
                         Videos/min
                       </TableHead>
-                      <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                      <TableHead className="text-foreground/50 tracking-lg">
                         Max Concurrent
                       </TableHead>
-                      <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                      <TableHead className="text-foreground/50 tracking-lg">
                         Activation
                       </TableHead>
                     </TableRow>
@@ -145,7 +145,7 @@ export function ProductSettingsTab() {
                             isCurrent ? "bg-surface/70" : ""
                           }`}
                         >
-                          <TableCell className="text-xs">
+                          <TableCell>
                             <div className="flex items-center gap-2">
                               <span className="text-foreground font-medium">
                                 {level.level}
@@ -153,25 +153,17 @@ export function ProductSettingsTab() {
                               {isCurrent ? (
                                 <Badge
                                   variant="outline"
-                                  className="rounded-xs border-[#3f74ff]/30 bg-[#3f74ff]/8 px-1.5 py-0.5 text-[10px] text-[#3f74ff]"
+                                  className="rounded-xs border-[#3f74ff]/30 bg-[#3f74ff]/8 px-1.5 py-0.5 text-xs text-[#3f74ff]"
                                 >
                                   Current
                                 </Badge>
                               ) : null}
                             </div>
                           </TableCell>
-                          <TableCell className="text-xs">
-                            {level.imagesPerMin}
-                          </TableCell>
-                          <TableCell className="text-xs">
-                            {level.videosPerMin}
-                          </TableCell>
-                          <TableCell className="text-xs">
-                            {level.maxConcurrent}
-                          </TableCell>
-                          <TableCell className="text-xs">
-                            {level.activation}
-                          </TableCell>
+                          <TableCell>{level.imagesPerMin}</TableCell>
+                          <TableCell>{level.videosPerMin}</TableCell>
+                          <TableCell>{level.maxConcurrent}</TableCell>
+                          <TableCell>{level.activation}</TableCell>
                         </TableRow>
                       );
                     })}
@@ -184,7 +176,7 @@ export function ProductSettingsTab() {
                 account level.
               </div>
 
-              <Button className="h-9 w-full rounded-xs px-4 text-xs tracking-[0.8px]">
+              <Button className="tracking-md h-9 w-full rounded-xs px-4 text-xs">
                 Upgrade Now
               </Button>
             </CardContent>

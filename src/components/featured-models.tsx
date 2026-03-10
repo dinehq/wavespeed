@@ -224,7 +224,7 @@ function StatusDots({ count }: { count: number }) {
 
 function SpeedBar({ percent }: { percent: number }) {
   return (
-    <div className="bg-track h-[3px] w-[84px]">
+    <div className="bg-track h-0.75 w-21">
       <div className="bg-foreground h-full" style={{ width: `${percent}%` }} />
     </div>
   );
@@ -234,11 +234,11 @@ export function FeaturedModels() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
-    <section className="bg-background pt-20 md:pt-[120px]">
+    <section className="bg-background pt-20 md:pt-30">
       {/* Header */}
-      <div className="mx-auto flex max-w-[1160px] flex-col items-center gap-10">
+      <div className="mx-auto flex max-w-290 flex-col items-center gap-10">
         <div className="flex max-w-[876px] flex-col items-center gap-4 text-center">
-          <h2 className="text-heading font-display text-[32px] leading-none font-medium tracking-[-1px] text-balance md:text-[48px]">
+          <h2 className="text-heading font-display text-2xl leading-none font-medium tracking-[-1px] text-balance md:text-5xl">
             Featured Models
           </h2>
           <p className="text-subtle font-mono text-base text-pretty">
@@ -294,7 +294,7 @@ export function FeaturedModels() {
         </div>
 
         {/* Table rows */}
-        <div className="mx-auto max-w-[1160px]">
+        <div className="mx-auto max-w-290">
           <div className="flex flex-col">
             {models.map((model, i) => (
               <a
@@ -350,10 +350,10 @@ export function FeaturedModels() {
       </div>
 
       {/* CTA button */}
-      <div className="mx-auto mt-10 flex max-w-[1160px] justify-center">
+      <div className="mx-auto mt-10 flex max-w-290 justify-center">
         <a
           href="#"
-          className="bg-foreground text-background hover:bg-foreground/80 rounded-xs px-4 py-3 font-mono text-sm font-medium tracking-[1.2px] transition-colors duration-150"
+          className="bg-foreground text-background hover:bg-foreground/80 rounded-xs px-4 py-3 font-mono text-sm font-medium tracking-xl transition-colors duration-150"
         >
           Explore all 1326 models
         </a>

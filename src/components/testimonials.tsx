@@ -100,9 +100,9 @@ export function Testimonials() {
   }, []);
 
   return (
-    <section className="bg-surface pt-16 [--section-pad:24px] md:pt-[80px] md:pb-[32px] md:[--section-pad:80px]">
+    <section className="bg-surface pt-16 [--section-pad:24px] md:pt-20 md:pb-8 md:[--section-pad:80px]">
       <div className="mb-8 px-6 md:mb-12 md:px-20">
-        <h2 className="text-heading font-display mx-auto max-w-7xl text-[32px] leading-none font-medium tracking-[-1px] text-balance md:text-[48px]">
+        <h2 className="text-heading font-display mx-auto max-w-7xl text-2xl leading-none font-medium tracking-[-1px] text-balance md:text-5xl">
           What people are saying
         </h2>
       </div>
@@ -121,7 +121,7 @@ export function Testimonials() {
         {testimonials.map((t) => (
           <div
             key={t.name}
-            className="group bg-background dark:bg-panel relative flex w-[300px] shrink-0 flex-col justify-between gap-4 overflow-hidden rounded-xs p-6 transition-shadow duration-300 hover:shadow-[0px_12px_24px_0px_rgba(0,0,0,0.08)] md:w-[480px] md:p-10 dark:hover:shadow-[0px_12px_24px_0px_rgba(0,0,0,0.3)]"
+            className="group bg-background dark:bg-panel relative flex w-75 shrink-0 flex-col justify-between gap-4 overflow-hidden rounded-xs p-6 transition-shadow duration-300 hover:shadow-[0px_12px_24px_0px_rgba(0,0,0,0.08)] md:w-120 md:p-10 dark:hover:shadow-[0px_12px_24px_0px_rgba(0,0,0,0.3)]"
           >
             <Image
               src={quoteBg}

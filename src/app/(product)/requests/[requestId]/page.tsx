@@ -17,8 +17,8 @@ export default async function RequestDetailPage({
 
   return (
     <section className="bg-background min-h-[60vh] px-6 py-10 md:px-20">
-      <div className="border-foreground/10 bg-surface/30 mx-auto w-full max-w-[920px] rounded-xs border p-6">
-        <p className="text-foreground/60 text-[11px] tracking-[0.8px] uppercase">
+      <div className="border-foreground/10 bg-surface/30 mx-auto w-full max-w-230 rounded-xs border p-6">
+        <p className="text-foreground/60 text-xs tracking-md uppercase">
           Request ID
         </p>
         <p className="text-foreground mt-2 font-mono text-sm break-all">

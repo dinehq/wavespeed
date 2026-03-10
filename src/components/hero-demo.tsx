@@ -941,7 +941,7 @@ export function HeroDemo() {
         />
       </div>
 
-      <div className="relative mx-auto max-w-[960px] px-4 py-4 md:px-0 md:py-12">
+      <div className="relative mx-auto max-w-240 px-4 py-4 md:px-0 md:py-12">
         <div className="bg-background flex flex-col gap-2 rounded-[5px] p-2">
           {/* Tab bar */}
           <div className="flex flex-col items-start justify-between gap-2 sm:flex-row sm:items-center sm:gap-0">
@@ -991,10 +991,10 @@ export function HeroDemo() {
           {/* Editor content */}
           <div className="bg-panel-alt flex flex-col overflow-hidden rounded-[3px] md:flex-row">
             {/* Code panel */}
-            <div className="bg-panel relative h-[260px] md:h-[348px] md:flex-1">
+            <div className="bg-panel relative h-65 md:h-87 md:flex-1">
               <div className="absolute top-10 left-6 flex">
                 {/* Line numbers */}
-                <div className="text-secondary flex w-6 flex-col gap-1 font-mono text-[13px] leading-tight">
+                <div className="text-secondary flex w-6 flex-col gap-1 font-mono text-xs leading-tight">
                   {current.lines.map((_, i) => (
                     <p key={i} className="opacity-40">
                       {i + 1}
@@ -1002,15 +1002,15 @@ export function HeroDemo() {
                   ))}
                 </div>
                 {/* Code */}
-                <div className="flex flex-col gap-1 font-mono text-[13px] leading-tight">
+                <div className="flex flex-col gap-1 font-mono text-xs leading-tight">
                   {current.lines.map((line, i) => (
                     <p key={i}>{line.content}</p>
                   ))}
                 </div>
               </div>
               {/* Status */}
-              <div className="bg-background absolute bottom-3 left-6 flex items-center gap-2 rounded px-2 py-1 md:top-[308px] md:bottom-auto">
-                <span className="bg-green size-[6px] rounded-full" />
+              <div className="bg-background absolute bottom-3 left-6 flex items-center gap-2 rounded px-2 py-1 md:top-77 md:bottom-auto">
+                <span className="bg-green size-1.5 rounded-full" />
                 <span className="text-subtle font-mono text-xs leading-tight">
                   {current.status}
                 </span>
@@ -1018,7 +1018,7 @@ export function HeroDemo() {
             </div>
 
             {/* Preview panel */}
-            <div className="relative flex h-[260px] flex-col items-center justify-end overflow-hidden p-2 md:h-[348px] md:flex-1">
+            <div className="relative flex h-65 flex-col items-center justify-end overflow-hidden p-2 md:h-87 md:flex-1">
               {/* Image preview */}
               {activeTab === "image" && (
                 <Image
@@ -1044,10 +1044,10 @@ export function HeroDemo() {
               {/* Chat preview */}
               {activeTab === "chat" && (
                 <div className="bg-panel absolute inset-0 flex flex-col overflow-hidden p-5">
-                  <p className="text-secondary mb-3 font-mono text-[10px] tracking-[1px] text-pretty uppercase">
+                  <p className="text-secondary tracking-lg mb-3 font-mono text-xs text-pretty uppercase">
                     Response
                   </p>
-                  <div className="text-code-text flex flex-col gap-2 font-mono text-[12px] leading-normal">
+                  <div className="text-code-text flex flex-col gap-2 font-mono text-xs leading-normal">
                     <p>The conversation covered four key areas:</p>
                     <div className="flex flex-col gap-1.5 pl-1">
                       <p className="text-secondary text-pretty">
@@ -1068,7 +1068,7 @@ export function HeroDemo() {
                       </p>
                     </div>
                     <div className="border-foreground/5 mt-2 border-t pt-2">
-                      <p className="text-secondary text-[11px] text-pretty">
+                      <p className="text-secondary text-xs text-pretty">
                         Action item: Scale GPU cluster to 256 nodes by Q4,
                         targeting p99 latency &lt; 200ms.
                       </p>
@@ -1091,7 +1091,7 @@ export function HeroDemo() {
                         <path d="M1 1L9 6L1 11V1Z" fill="white" />
                       </svg>
                     </div>
-                    <div className="flex h-10 flex-1 items-end gap-[2px]">
+                    <div className="flex h-10 flex-1 items-end gap-0.5">
                       {[
                         0.3, 0.5, 0.8, 0.6, 1, 0.7, 0.4, 0.9, 0.5, 0.3, 0.7,
                         0.85, 0.6, 0.4, 0.9, 1, 0.7, 0.5, 0.3, 0.6, 0.8, 0.5,
@@ -1107,22 +1107,22 @@ export function HeroDemo() {
                       ))}
                     </div>
                   </div>
-                  <div className="text-secondary flex w-full justify-between font-mono text-[10px]">
+                  <div className="text-secondary flex w-full justify-between font-mono text-xs">
                     <span>0:00</span>
                     <span>0:04</span>
                   </div>
-                  <p className="text-code-text/40 text-center font-mono text-[12px] leading-[1.4] text-pretty">
+                  <p className="text-code-text/40 text-center font-mono text-xs leading-[1.4] text-pretty">
                     &ldquo;Hello from WaveSpeed&rdquo;
                   </p>
                 </div>
               )}
 
-              <div className="relative flex h-[52px] w-full items-center gap-3 rounded-[2px] border border-white/10 bg-black/80 px-[9px] py-px backdrop-blur-[10px]">
+              <div className="relative flex h-13 w-full items-center gap-3 rounded-[2px] border border-white/10 bg-black/80 px-2 py-px backdrop-blur-md">
                 <div className="flex flex-col">
                   <p className="font-sans text-xs leading-4 text-pretty text-white">
                     {current.output}
                   </p>
-                  <p className="text-footer-label font-mono text-[10px] leading-4 text-pretty">
+                  <p className="text-footer-label font-mono text-xs leading-4 text-pretty">
                     {current.meta}
                   </p>
                 </div>

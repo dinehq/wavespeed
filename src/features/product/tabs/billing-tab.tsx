@@ -136,7 +136,7 @@ export function ProductBillingTab({
             </CardHeader>
             <CardContent className="space-y-4 px-4 pb-4">
               <section>
-                <p className="text-foreground/60 mb-2 text-[11px] tracking-[0.8px] uppercase">
+                <p className="text-foreground/60 tracking-md mb-2 text-xs uppercase">
                   Amount
                 </p>
                 <div className="grid gap-2 md:grid-cols-2">
@@ -160,17 +160,17 @@ export function ProductBillingTab({
                         <span
                           className={`leading-none font-semibold tracking-tight ${
                             selectedTopUpAmount === option.amount
-                              ? "text-[22px] text-[#3f74ff]"
-                              : "text-foreground text-[22px]"
+                              ? "text-2xl text-[#3f74ff]"
+                              : "text-foreground text-2xl"
                           }`}
                         >
                           {option.amount}
                         </span>
                         <span className="text-right">
-                          <span className="text-foreground/70 block text-[11px] leading-4">
+                          <span className="text-foreground/70 block text-xs leading-4">
                             {conciseThroughput}
                           </span>
-                          <span className="text-foreground/60 mt-0.5 block text-[11px] leading-4">
+                          <span className="text-foreground/60 mt-0.5 block text-xs leading-4">
                             {conciseBenefit}
                           </span>
                         </span>
@@ -182,7 +182,7 @@ export function ProductBillingTab({
 
               <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                 <div className="flex flex-col gap-1">
-                  <p className="text-foreground/60 text-[11px] tracking-[0.8px] uppercase">
+                  <p className="text-foreground/60 tracking-md text-xs uppercase">
                     Payment Method
                   </p>
                   <Popover
@@ -193,13 +193,13 @@ export function ProductBillingTab({
                       <button
                         type="button"
                         aria-label={`Selected payment: ${selectedPaymentMeta.label}`}
-                        className={`bg-background hover:bg-surface relative grid h-[74px] w-full place-items-center rounded-xs border px-4 transition-colors sm:w-[308px] ${
+                        className={`bg-background hover:bg-surface relative grid h-19 w-full place-items-center rounded-xs border px-4 transition-colors sm:w-77 ${
                           isPaymentPickerOpen
                             ? "border-[#3f74ff] ring-1 ring-[#3f74ff]"
                             : "border-foreground/15"
                         }`}
                       >
-                        <span className="flex h-11 w-full max-w-[220px] items-center justify-center [&>svg]:h-full [&>svg]:w-auto [&>svg]:max-w-full [&>svg]:shrink-0">
+                        <span className="flex h-11 w-full max-w-55 items-center justify-center [&>svg]:h-full [&>svg]:w-auto [&>svg]:max-w-full [&>svg]:shrink-0">
                           <selectedPaymentMeta.Icon preserveAspectRatio="xMidYMid meet" />
                         </span>
                         <ChevronDown className="text-foreground/40 pointer-events-none absolute right-3 size-4" />
@@ -207,7 +207,7 @@ export function ProductBillingTab({
                     </PopoverTrigger>
                     <PopoverContent
                       align="start"
-                      className="bg-background border-foreground/10 w-[360px] max-w-[calc(100vw-2rem)] rounded-xs border p-3 shadow-sm"
+                      className="bg-background border-foreground/10 w-90 max-w-[calc(100vw-2rem)] rounded-xs border p-3 shadow-sm"
                     >
                       <div className="flex flex-col gap-3">
                         {paymentMethodOptions.map((method) => (
@@ -219,13 +219,13 @@ export function ProductBillingTab({
                               setIsPaymentPickerOpen(false);
                             }}
                             aria-label={method.label}
-                            className={`border-foreground/10 hover:bg-surface flex h-[76px] w-full items-center justify-center rounded-xs border px-4 transition-colors ${
+                            className={`border-foreground/10 hover:bg-surface flex h-19 w-full items-center justify-center rounded-xs border px-4 transition-colors ${
                               selectedPaymentMethod === method.id
                                 ? "border-[#3f74ff] ring-1 ring-[#3f74ff]"
                                 : ""
                             }`}
                           >
-                            <span className="flex h-11 w-full max-w-[220px] items-center justify-center [&>svg]:h-full [&>svg]:w-auto [&>svg]:max-w-full [&>svg]:shrink-0">
+                            <span className="flex h-11 w-full max-w-55 items-center justify-center [&>svg]:h-full [&>svg]:w-auto [&>svg]:max-w-full [&>svg]:shrink-0">
                               <method.Icon preserveAspectRatio="xMidYMid meet" />
                             </span>
                           </button>
@@ -242,9 +242,9 @@ export function ProductBillingTab({
                     }
                     inputMode="decimal"
                     placeholder={parsedTopUpAmount || "Amount"}
-                    className="border-foreground/10 h-9 rounded-xs text-xs md:w-[140px]"
+                    className="border-foreground/10 h-9 rounded-xs text-xs md:w-35"
                   />
-                  <Button className="h-9 rounded-xs px-4 text-xs tracking-[0.8px]">
+                  <Button className="tracking-md h-9 rounded-xs px-4 text-xs">
                     Buy ({selectedTopUpAmount})
                   </Button>
                 </div>
@@ -272,7 +272,7 @@ export function ProductBillingTab({
                 $6,186
               </p>
               <p className="text-foreground/60 mt-1 text-xs">Account Balance</p>
-              <p className="text-foreground/50 mt-2 text-[11px]">
+              <p className="text-foreground/50 mt-2 text-xs">
                 The balance never expires.
               </p>
             </CardContent>
@@ -308,9 +308,9 @@ export function ProductBillingTab({
             <div className="flex w-full gap-2 md:w-auto">
               <Input
                 placeholder="Coupon code"
-                className="border-foreground/10 h-8 rounded-xs text-xs md:w-[180px]"
+                className="border-foreground/10 h-8 rounded-xs text-xs md:w-45"
               />
-              <Button className="h-8 rounded-xs px-3 text-xs tracking-[0.8px]">
+              <Button className="tracking-md h-8 rounded-xs px-3 text-xs">
                 Redeem
               </Button>
             </div>
@@ -359,16 +359,16 @@ export function ProductBillingTab({
                   <Table>
                     <TableHeader>
                       <TableRow className="border-foreground/10 hover:bg-transparent">
-                        <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                        <TableHead className="text-foreground/50 tracking-lg">
                           Description
                         </TableHead>
-                        <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                        <TableHead className="text-foreground/50 tracking-lg">
                           Date
                         </TableHead>
-                        <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                        <TableHead className="text-foreground/50 tracking-lg">
                           Amount
                         </TableHead>
-                        <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                        <TableHead className="text-foreground/50 tracking-lg">
                           Action
                         </TableHead>
                       </TableRow>
@@ -379,16 +379,12 @@ export function ProductBillingTab({
                           key={`${record.description}-${record.date}`}
                           className="border-foreground/10 hover:bg-surface"
                         >
-                          <TableCell className="text-xs">
-                            {record.description}
-                          </TableCell>
-                          <TableCell className="text-xs">
-                            {record.date}
-                          </TableCell>
-                          <TableCell className="text-xs">
+                          <TableCell>{record.description}</TableCell>
+                          <TableCell>{record.date}</TableCell>
+                          <TableCell>
                             <Badge
                               variant="outline"
-                              className="rounded-xs border-[#3f74ff]/30 bg-[#3f74ff]/8 px-2 py-0.5 text-[10px] text-[#3f74ff]"
+                              className="rounded-xs border-[#3f74ff]/30 bg-[#3f74ff]/8 px-2 py-0.5 text-xs text-[#3f74ff]"
                             >
                               {record.amount}
                             </Badge>
@@ -456,19 +452,19 @@ export function ProductBillingTab({
                   <Table>
                     <TableHeader>
                       <TableRow className="border-foreground/10 hover:bg-transparent">
-                        <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                        <TableHead className="text-foreground/50 tracking-lg">
                           Access Key
                         </TableHead>
-                        <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                        <TableHead className="text-foreground/50 tracking-lg">
                           Prediction ID
                         </TableHead>
-                        <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                        <TableHead className="text-foreground/50 tracking-lg">
                           Model
                         </TableHead>
-                        <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                        <TableHead className="text-foreground/50 tracking-lg">
                           Date
                         </TableHead>
-                        <TableHead className="text-foreground/50 text-[10px] tracking-[1px]">
+                        <TableHead className="text-foreground/50 tracking-lg">
                           Amount
                         </TableHead>
                       </TableRow>
@@ -479,22 +475,16 @@ export function ProductBillingTab({
                           key={record.predictionId}
                           className="border-foreground/10 hover:bg-surface"
                         >
-                          <TableCell className="text-xs">
-                            {record.accessKey}
-                          </TableCell>
-                          <TableCell className="text-xs text-[#3f74ff]">
+                          <TableCell>{record.accessKey}</TableCell>
+                          <TableCell className="text-[#3f74ff]">
                             {record.predictionId}
                           </TableCell>
-                          <TableCell className="text-xs">
-                            {record.model}
-                          </TableCell>
-                          <TableCell className="text-xs">
-                            {record.date}
-                          </TableCell>
-                          <TableCell className="text-xs">
+                          <TableCell>{record.model}</TableCell>
+                          <TableCell>{record.date}</TableCell>
+                          <TableCell>
                             <Badge
                               variant="outline"
-                              className="rounded-xs border-[#ef4444]/25 bg-[#ef4444]/8 px-2 py-0.5 text-[10px] text-[#ef4444]"
+                              className="rounded-xs border-[#ef4444]/25 bg-[#ef4444]/8 px-2 py-0.5 text-xs text-[#ef4444]"
                             >
                               {record.amount}
                             </Badge>

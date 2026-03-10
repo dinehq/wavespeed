@@ -26,10 +26,10 @@ export function FeaturesSection() {
   }, []);
 
   return (
-    <section className="px-6 py-16 md:px-20 md:py-[120px]">
+    <section className="px-6 py-16 md:px-20 md:py-30">
       <div className="mx-auto max-w-7xl">
         <div className="mb-10 flex max-w-[876px] flex-col gap-4">
-          <h2 className="text-heading font-display text-[32px] leading-none font-medium tracking-[-1px] text-balance md:text-[48px]">
+          <h2 className="text-heading font-display text-2xl leading-none font-medium tracking-[-1px] text-balance md:text-5xl">
             Engineered for <em className="italic">Velocity</em>
           </h2>
           <p className="text-foreground/60 font-mono text-base text-pretty">
@@ -42,10 +42,10 @@ export function FeaturesSection() {
         <div ref={ref} className="flex flex-col gap-4">
           {/* Row 1: Vast Model Library (smaller) + Blazing Fast Inference (larger) */}
           <div className="flex flex-col gap-4 lg:flex-row">
-            <div className="bg-surface relative h-[380px] w-full shrink-0 overflow-hidden rounded-xs lg:h-[420px] lg:w-[45%]">
+            <div className="bg-surface relative h-95 w-full shrink-0 overflow-hidden rounded-xs lg:h-105 lg:w-[45%]">
               {/* Provider logos — drift in from left */}
               <div
-                className={`absolute top-[10px] right-0 h-[220px] w-[600px] transition-all duration-1000 ease-out sm:h-[260px] md:h-[280px] lg:h-[287px] ${
+                className={`absolute top-2.5 right-0 h-55 w-150 transition-all duration-1000 ease-out sm:h-65 md:h-70 lg:h-[287px] ${
                   entered
                     ? "translate-x-0 opacity-100"
                     : "-translate-x-8 opacity-0"
@@ -60,7 +60,7 @@ export function FeaturesSection() {
               </div>
 
               {/* Text */}
-              <div className="absolute right-6 bottom-[24px] left-6">
+              <div className="absolute right-6 bottom-6 left-6">
                 <h3 className="text-ink font-display mb-2 text-2xl leading-7 font-medium">
                   Vast Model Library
                 </h3>
@@ -71,7 +71,7 @@ export function FeaturesSection() {
               </div>
             </div>
 
-            <div className="bg-surface relative h-[380px] w-full overflow-hidden rounded-xs lg:h-[420px] lg:flex-1">
+            <div className="bg-surface relative h-95 w-full overflow-hidden rounded-xs lg:h-105 lg:flex-1">
               {/* Title + description */}
               <div className="absolute top-6 right-6 left-6 z-10 lg:w-[584px]">
                 <h3 className="text-ink font-display mb-2 text-2xl leading-7 font-medium">
@@ -99,13 +99,13 @@ export function FeaturesSection() {
 
           {/* Row 2: Built for Scale (larger) + Enterprise Security (smaller) */}
           <div className="flex flex-col gap-4 lg:flex-row">
-            <div className="bg-surface relative h-[380px] w-full shrink-0 overflow-hidden rounded-xs lg:h-[420px] lg:w-[55%]">
+            <div className="bg-surface relative h-95 w-full shrink-0 overflow-hidden rounded-xs lg:h-105 lg:w-[55%]">
               {/* Title + description */}
               <div className="absolute top-6 right-6 left-6 z-10 lg:w-[642px]">
                 <h3 className="text-ink font-display mb-2 text-2xl leading-7 font-medium">
                   Built for Scale
                 </h3>
-                <p className="text-foreground/60 max-w-[400px] font-mono text-sm text-pretty">
+                <p className="text-foreground/60 max-w-100 font-mono text-sm text-pretty">
                   Enterprise-grade reliability with 99.99% uptime guarantees and
                   dedicated throughput for high-volume applications.
                 </p>
@@ -124,10 +124,10 @@ export function FeaturesSection() {
               </div>
             </div>
 
-            <div className="from-surface to-accent-light relative h-[380px] w-full overflow-hidden rounded-xs bg-linear-to-b lg:h-[420px] lg:flex-1">
+            <div className="from-surface to-accent-light relative h-95 w-full overflow-hidden rounded-xs bg-linear-to-b lg:h-105 lg:flex-1">
               {/* 3D box — rises from bottom */}
               <div
-                className={`absolute top-0 right-[-30px] h-[380px] w-[250px] transition-all duration-1000 ease-out lg:top-[-13px] lg:right-0 lg:h-[480px] lg:w-[390px] ${
+                className={`absolute top-0 right-[-30px] h-95 w-[250px] transition-all duration-1000 ease-out lg:top-[-13px] lg:right-0 lg:h-120 lg:w-98 ${
                   entered
                     ? "translate-y-0 opacity-100"
                     : "translate-y-8 opacity-0"
@@ -145,7 +145,7 @@ export function FeaturesSection() {
                 </div>
               </div>
               {/* Title + description */}
-              <div className="absolute right-6 bottom-[24px] left-6 z-10 lg:w-[526px]">
+              <div className="absolute right-6 bottom-6 left-6 z-10 lg:w-[526px]">
                 <h3 className="text-ink font-display mb-2 text-2xl leading-7 font-medium">
                   Security
                 </h3>

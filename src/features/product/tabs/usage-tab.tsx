@@ -63,10 +63,10 @@ export function ProductUsageTab({
 }: ProductUsageTabProps) {
   const usageTableContainerClass = "overflow-hidden rounded-xs";
   const usageTableHeaderRowClass = "border-foreground/10 hover:bg-transparent";
-  const usageTableHeadClass = "text-foreground/70 text-[10px] tracking-[1px]";
+  const usageTableHeadClass = "text-foreground/70 tracking-lg";
   const usageTableBodyRowClass =
     "border-foreground/8 hover:bg-foreground/[0.02]";
-  const usageTableCellClass = "text-xs";
+  const usageTableCellClass = "";
   const usagePerModelTotalPredictions = usageTabPerModel.reduce(
     (sum, item) => sum + item.requestCount,
     0,
@@ -97,7 +97,7 @@ export function ProductUsageTab({
                   <Button
                     variant="outline"
                     data-empty={!usageDateRange?.from}
-                    className="border-foreground/10 text-foreground/80 data-[empty=true]:text-muted-foreground h-8 w-auto max-w-full min-w-0 justify-start gap-1.5 rounded-xs px-2.5 text-left text-xs font-normal tracking-[0.6px]"
+                    className="border-foreground/10 text-foreground/80 data-[empty=true]:text-muted-foreground tracking-sm h-8 w-auto max-w-full min-w-0 justify-start gap-1.5 rounded-xs px-2.5 text-left text-xs font-normal"
                   >
                     <CalendarIcon className="size-3.5" />
                     <span>{usageDateRangeLabel}</span>
@@ -136,7 +136,7 @@ export function ProductUsageTab({
                       item.label as "1d" | "7d" | "30d",
                     )
                   }
-                  className={`h-8 min-w-[38px] rounded-xs px-2 text-xs tracking-[0.8px] ${
+                  className={`tracking-md h-8 min-w-[38px] rounded-xs px-2 text-xs ${
                     usageQuickRange === item.label
                       ? "border-foreground bg-foreground text-background hover:bg-foreground/85 hover:text-background"
                       : controlButtonClass
@@ -155,8 +155,8 @@ export function ProductUsageTab({
               key={item.label}
               className="bg-surface gap-0 rounded-xs border-0 py-0 shadow-none"
             >
-              <CardContent className="flex min-h-[144px] flex-col px-4 py-4">
-                <p className="text-foreground/60 text-xs tracking-[0.5px]">
+              <CardContent className="flex min-h-36 flex-col px-4 py-4">
+                <p className="text-foreground/60 tracking-sm text-xs">
                   {item.label}
                 </p>
                 {item.actions.length > 0 ? (
@@ -187,7 +187,7 @@ export function ProductUsageTab({
                             router.push(action.href);
                           }
                         }}
-                        className={`h-8 rounded-xs px-3 text-xs tracking-[0.5px] ${
+                        className={`tracking-sm h-8 rounded-xs px-3 text-xs ${
                           action.variant === "default" ? "" : controlButtonClass
                         }`}
                       >
@@ -210,7 +210,7 @@ export function ProductUsageTab({
           <CardContent className="px-4 pt-3 pb-4">
             <ChartContainer
               config={usageTabBreakdownChartConfig}
-              className="h-[300px] w-full"
+              className="h-75 w-full"
             >
               <BarChart
                 accessibilityLayer
@@ -381,7 +381,7 @@ export function ProductUsageTab({
                 </Table>
               </div>
               <div className="border-foreground/10 flex items-center justify-between border-t pt-3">
-                <p className="text-foreground/70 text-xs tracking-[0.3px]">
+                <p className="text-foreground/70 tracking-xs text-xs">
                   Total {usagePerModelTotalPredictions} predictions
                 </p>
                 <p className="text-foreground text-base font-semibold tracking-tight">

@@ -37,11 +37,11 @@ export function Footer() {
       <div className="mx-auto max-w-7xl">
         <div className="mb-10 flex flex-col gap-10 lg:flex-row lg:justify-between">
           {/* Logo + status */}
-          <div className="flex w-auto flex-col gap-6 lg:h-[216px] lg:w-[174px] lg:justify-between">
+          <div className="flex w-auto flex-col gap-6 lg:h-54 lg:w-[174px] lg:justify-between">
             <Logo className="h-6 w-auto self-start text-white" />
             <div className="flex items-center gap-2">
               <span className="size-2 rounded-full bg-green-400" />
-              <span className="font-mono text-[10px] leading-4 tracking-[1px] text-white/40 uppercase">
+              <span className="tracking-lg font-mono text-xs leading-4 text-white/40 uppercase">
                 All Service Online
               </span>
             </div>
@@ -50,8 +50,8 @@ export function Footer() {
           {/* Link columns */}
           <div className="grid grid-cols-2 gap-8 lg:flex lg:gap-16">
             {/* Learn More */}
-            <div className="flex w-auto flex-col gap-6 lg:min-w-[140px]">
-              <h2 className="text-footer-label font-mono text-xs leading-4 tracking-[1.2px] text-balance uppercase">
+            <div className="flex w-auto flex-col gap-6 lg:min-w-35">
+              <h2 className="text-footer-label tracking-xl font-mono text-xs leading-4 text-balance uppercase">
                 Learn More
               </h2>
               <div className="flex flex-col gap-4">
@@ -68,8 +68,8 @@ export function Footer() {
             </div>
 
             {/* Platform */}
-            <div className="flex w-auto flex-col gap-6 lg:min-w-[140px]">
-              <h2 className="text-footer-label font-mono text-xs leading-4 tracking-[1.2px] text-balance uppercase">
+            <div className="flex w-auto flex-col gap-6 lg:min-w-35">
+              <h2 className="text-footer-label tracking-xl font-mono text-xs leading-4 text-balance uppercase">
                 Platform
               </h2>
               <div className="flex flex-col gap-4">
@@ -86,8 +86,8 @@ export function Footer() {
             </div>
 
             {/* Resources */}
-            <div className="flex w-auto flex-col gap-6 lg:min-w-[140px]">
-              <h2 className="text-footer-label font-mono text-xs leading-4 tracking-[1.2px] text-balance uppercase">
+            <div className="flex w-auto flex-col gap-6 lg:min-w-35">
+              <h2 className="text-footer-label tracking-xl font-mono text-xs leading-4 text-balance uppercase">
                 Resources
               </h2>
               <div className="flex flex-col gap-4">
@@ -104,8 +104,8 @@ export function Footer() {
             </div>
 
             {/* Legal */}
-            <div className="flex w-auto flex-col gap-6 lg:min-w-[140px]">
-              <h2 className="text-footer-label font-mono text-xs leading-4 tracking-[1.2px] text-balance uppercase">
+            <div className="flex w-auto flex-col gap-6 lg:min-w-35">
+              <h2 className="text-footer-label tracking-xl font-mono text-xs leading-4 text-balance uppercase">
                 Legal
               </h2>
               <div className="flex flex-col gap-4">
@@ -125,7 +125,7 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="flex flex-col items-center justify-between gap-4 border-t border-white/20 pt-4 sm:flex-row sm:items-end sm:gap-0">
-          <p className="font-mono text-[10px] leading-4 tracking-[1px] text-pretty text-white/40 uppercase">
+          <p className="tracking-lg font-mono text-xs leading-4 text-pretty text-white/40 uppercase">
             &copy; 2026 WAVESPEED
           </p>
           <div className="flex items-center gap-6">
@@ -141,7 +141,7 @@ export function Footer() {
                       : "light",
                 )
               }
-              className="flex cursor-pointer items-center gap-1.5 font-mono text-[10px] tracking-[1px] text-white/40 uppercase transition-colors hover:text-white"
+              className="tracking-lg flex cursor-pointer items-center gap-1.5 font-mono text-xs text-white/40 uppercase transition-colors hover:text-white"
             >
               {mounted && theme === "dark" ? (
                 <>
