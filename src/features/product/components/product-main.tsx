@@ -511,33 +511,31 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                 className="border-foreground/10 gap-0 rounded-xs py-3 shadow-none"
               >
                 <CardContent className="px-3">
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <div className="flex items-center gap-1">
+                  <div className="space-y-1.5">
+                    <div className="flex min-w-0 items-center gap-1">
+                      <div className="min-w-0 flex-1">
                         <button
                           type="button"
                           onClick={() => openRequestDetail(request.id)}
-                          className="text-foreground/70 hover:text-foreground cursor-pointer font-mono text-xs underline-offset-2 hover:underline"
+                          className="text-foreground/70 hover:text-foreground block min-w-0 w-full cursor-pointer truncate text-left font-mono text-xs underline-offset-2 hover:underline"
                         >
                           {request.id}
                         </button>
-                        <Button
-                          variant="ghost"
-                          size="icon-xs"
-                          aria-label="Copy request ID"
-                          onClick={() => copyRequestId(request.id)}
-                          className="text-foreground/60 hover:text-foreground"
-                        >
-                          <Copy className="size-3.5" />
-                        </Button>
                       </div>
-                      <p className="text-foreground mt-1 text-sm">
-                        {request.model}
-                      </p>
+                      <Button
+                        variant="ghost"
+                        size="icon-xs"
+                        aria-label="Copy request ID"
+                        onClick={() => copyRequestId(request.id)}
+                        className="text-foreground/60 hover:text-foreground shrink-0"
+                      >
+                        <Copy className="size-3.5" />
+                      </Button>
                     </div>
+                    <p className="text-foreground truncate text-sm">{request.model}</p>
                     <Badge
                       variant="outline"
-                      className={`tracking-lg rounded-xs border-0 px-2 py-1 text-xs ${
+                      className={`tracking-lg w-fit rounded-xs border-0 px-2 py-1 text-xs ${
                         request.status === "Succeeded"
                           ? "bg-emerald-500/15 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-300"
                           : "bg-amber-500/15 text-amber-700 dark:bg-amber-400/15 dark:text-amber-300"
