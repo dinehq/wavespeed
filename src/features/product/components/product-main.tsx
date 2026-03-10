@@ -517,7 +517,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                         <button
                           type="button"
                           onClick={() => openRequestDetail(request.id)}
-                          className="text-foreground/70 hover:text-foreground block min-w-0 w-full cursor-pointer truncate text-left font-mono text-xs underline-offset-2 hover:underline"
+                          className="text-foreground/70 hover:text-foreground block w-full min-w-0 cursor-pointer truncate text-left font-mono text-xs underline-offset-2 hover:underline"
                         >
                           {request.id}
                         </button>
@@ -532,7 +532,9 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                         <Copy className="size-3.5" />
                       </Button>
                     </div>
-                    <p className="text-foreground truncate text-sm">{request.model}</p>
+                    <p className="text-foreground truncate text-sm">
+                      {request.model}
+                    </p>
                     <Badge
                       variant="outline"
                       className={`tracking-lg w-fit rounded-xs border-0 px-2 py-1 text-xs ${
@@ -571,7 +573,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
             <Table className="min-w-170">
               <TableHeader>
                 <TableRow className="border-foreground/10 hover:bg-transparent">
-                  <TableHead className="w-10 pl-3 pr-2 align-middle lg:pl-4">
+                  <TableHead className="w-10 pr-2 pl-3 align-middle lg:pl-4">
                     <div className="flex items-center justify-center">
                       <button
                         type="button"
@@ -617,7 +619,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                   <TableHead className="text-foreground/50 tracking-lg px-3 lg:px-4">
                     Created
                   </TableHead>
-                  <TableHead className="text-foreground/50 tracking-lg pl-3 pr-3 lg:pl-4 lg:pr-4">
+                  <TableHead className="text-foreground/50 tracking-lg pr-3 pl-3 lg:pr-4 lg:pl-4">
                     Action
                   </TableHead>
                 </TableRow>
@@ -628,7 +630,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                     key={request.id}
                     className="border-foreground/10 hover:bg-surface"
                   >
-                    <TableCell className="pl-3 pr-2 py-0 align-middle lg:pl-4">
+                    <TableCell className="py-0 pr-2 pl-3 align-middle lg:pl-4">
                       <div className="flex items-center justify-center py-2">
                         <button
                           type="button"
@@ -689,7 +691,9 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                         </Button>
                       </div>
                     </TableCell>
-                    <TableCell className="px-3 lg:px-4">{request.model}</TableCell>
+                    <TableCell className="px-3 lg:px-4">
+                      {request.model}
+                    </TableCell>
                     <TableCell className="px-3 lg:px-4">
                       <Badge
                         variant="outline"
@@ -705,8 +709,10 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                         {request.status}
                       </Badge>
                     </TableCell>
-                    <TableCell className="px-3 lg:px-4">{request.createdAt}</TableCell>
-                    <TableCell className="pl-3 pr-3 lg:pl-4 lg:pr-4">
+                    <TableCell className="px-3 lg:px-4">
+                      {request.createdAt}
+                    </TableCell>
+                    <TableCell className="pr-3 pl-3 lg:pr-4 lg:pl-4">
                       <div className="flex items-center gap-1">
                         <Button
                           variant="ghost"
