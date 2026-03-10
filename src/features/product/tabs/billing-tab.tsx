@@ -367,7 +367,7 @@ export function ProductBillingTab({
   };
 
   return (
-    <div className="px-6 pt-6 pb-24 md:px-20 md:pt-8 md:pb-0">
+    <div className="px-6 pt-6 pb-24 md:px-12 md:pt-8 md:pb-0 lg:px-20">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-4">
         <ProductSectionHeader title="Billing" />
 

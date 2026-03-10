@@ -33,7 +33,7 @@ export function Footer() {
   const mounted = useMounted();
 
   return (
-    <footer className="bg-dark border-t border-white/10 px-6 py-16 md:px-20 md:pt-20">
+    <footer className="bg-dark border-t border-white/10 px-6 py-16 md:px-12 md:pt-20 lg:px-20">
       <div className="mx-auto max-w-7xl">
         <div className="mb-10 flex flex-col gap-10 lg:flex-row lg:justify-between">
           {/* Logo + status */}

@@ -743,10 +743,10 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
     </section>
   );
   const renderTopTabsSkeleton = () => (
-    <div className="border-foreground/10 bg-background/95 supports-backdrop-filter:bg-background/80 sticky top-0 z-40 flex justify-center border-b px-4 backdrop-blur">
+    <div className="border-foreground/10 bg-background/95 supports-backdrop-filter:bg-background/80 sticky top-0 z-40 flex justify-center border-b px-6 backdrop-blur md:px-12 lg:px-20">
       <div className="w-full max-w-7xl">
         <div
-          className="flex h-12 w-full items-center justify-start gap-8 overflow-x-auto scrollbar-none rounded-none px-0"
+          className="flex h-12 w-full items-center justify-start gap-4 overflow-x-auto scrollbar-none rounded-none px-0 md:gap-6 lg:gap-8"
           aria-hidden
         >
           {dashboardTabs.map((tab) => {
@@ -772,7 +772,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
   const renderTopTabs = () => (
     <div
       ref={mainTabsContainerRef}
-      className="border-foreground/10 bg-background/95 supports-backdrop-filter:bg-background/80 sticky top-0 z-40 flex justify-center border-b px-4 backdrop-blur"
+      className="border-foreground/10 bg-background/95 supports-backdrop-filter:bg-background/80 sticky top-0 z-40 flex justify-center border-b px-6 backdrop-blur md:px-12 lg:px-20"
     >
       <div className="w-full max-w-7xl">
         <Tabs
@@ -782,7 +782,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
         >
           <TabsList
             variant="line"
-            className="w-full justify-start gap-8 overflow-x-auto scrollbar-none rounded-none px-0 group-data-[orientation=horizontal]/tabs:h-12"
+            className="w-full justify-start gap-4 overflow-x-auto scrollbar-none rounded-none px-0 group-data-[orientation=horizontal]/tabs:h-12 md:gap-6 lg:gap-8"
           >
             {dashboardTabs.map((tab) => (
               <TabsTrigger

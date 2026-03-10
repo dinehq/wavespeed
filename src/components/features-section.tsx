@@ -26,7 +26,7 @@ export function FeaturesSection() {
   }, []);
 
   return (
-    <section className="px-6 py-16 md:px-20 md:py-30">
+    <section className="px-6 py-16 md:px-12 md:py-30 lg:px-20">
       <div className="mx-auto max-w-7xl">
         <div className="mb-10 flex max-w-[876px] flex-col gap-4">
           <h2 className="text-heading font-display text-2xl leading-none font-medium tracking-[-1px] text-balance md:text-5xl">

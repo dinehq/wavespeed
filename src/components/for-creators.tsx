@@ -11,7 +11,7 @@ const features = [
 export function ForCreators() {
   return (
     <section className="bg-dark dark:bg-dark relative overflow-hidden">
-      <div className="px-6 pt-16 md:px-20 md:pt-30">
+      <div className="px-6 pt-16 md:px-12 md:pt-30 lg:px-20">
         <div className="mx-auto max-w-7xl">
           {/* Section header */}
           <div className="mb-12 flex flex-col gap-4">

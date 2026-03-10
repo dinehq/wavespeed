@@ -16,7 +16,7 @@ export default async function RequestDetailPage({
   const { requestId } = await params;
 
   return (
-    <section className="bg-background min-h-[60vh] px-6 py-10 md:px-20">
+    <section className="bg-background min-h-[60vh] px-6 py-10 md:px-12 lg:px-20">
       <div className="border-foreground/10 bg-surface/30 mx-auto w-full max-w-230 rounded-xs border p-6">
         <p className="text-foreground/60 tracking-md text-xs uppercase">
           Request ID

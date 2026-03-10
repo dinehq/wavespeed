@@ -89,7 +89,7 @@ export function Navbar({ mode = "default" }: NavbarProps) {
   const [userOpen, setUserOpen] = useState(false);
 
   return (
-    <nav className="relative flex h-16 w-full items-center justify-center px-4">
+    <nav className="relative flex h-16 w-full items-center justify-center px-6 md:px-12 lg:px-20">
       <div className="flex w-full max-w-7xl items-center justify-between gap-6">
         {/* Left: Logo + Nav links */}
         <div className="flex min-w-0 items-center gap-10">

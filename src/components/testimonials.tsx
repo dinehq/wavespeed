@@ -100,8 +100,8 @@ export function Testimonials() {
   }, []);
 
   return (
-    <section className="bg-surface pt-16 [--section-pad:24px] md:pt-20 md:pb-8 md:[--section-pad:80px]">
-      <div className="mb-8 px-6 md:mb-12 md:px-20">
+    <section className="bg-surface pt-16 [--section-pad:24px] md:pt-20 md:pb-8 md:[--section-pad:48px] lg:[--section-pad:80px]">
+      <div className="mb-8 px-6 md:mb-12 md:px-12 lg:px-20">
         <h2 className="text-heading font-display mx-auto max-w-7xl text-2xl leading-none font-medium tracking-[-1px] text-balance md:text-5xl">
           What people are saying
         </h2>

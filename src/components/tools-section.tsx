@@ -517,7 +517,7 @@ export function ToolsSection() {
   return (
     <section className="pt-20 md:pt-30">
       {/* Header */}
-      <div className="mx-auto mb-10 max-w-244 px-6 text-center md:px-20">
+      <div className="mx-auto mb-10 max-w-244 px-6 text-center md:px-12 lg:px-20">
         <h2 className="text-heading font-display mb-6 text-2xl leading-none font-medium tracking-[-1px] text-balance md:text-5xl">
           Get <em className="italic">any</em> tool you want
         </h2>
