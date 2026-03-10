@@ -10,33 +10,49 @@ const resourceGroups = [
   {
     label: "Products",
     items: [
-      { name: "Studio", desc: "Create with AI models" },
-      { name: "Tools", desc: "Image & video utilities" },
-      { name: "Download App", desc: "Desktop application" },
+      { name: "Studio", desc: "Create with AI models", href: "/studio" },
+      { name: "Tools", desc: "Image & video utilities", href: "/tools" },
+      {
+        name: "Download App",
+        desc: "Desktop application",
+        href: "/download",
+      },
     ],
   },
   {
     label: "Developers",
     items: [
-      { name: "Doc", desc: "API reference & guides" },
-      { name: "GitHub", desc: "Open source repos" },
-      { name: "Blog", desc: "Engineering updates" },
+      { name: "Doc", desc: "API reference & guides", href: "/docs" },
+      { name: "GitHub", desc: "Open source repos", href: "/github" },
+      { name: "Blog", desc: "Engineering updates", href: "/blog" },
     ],
   },
   {
     label: "Company",
     items: [
-      { name: "Contact Sales", desc: "Talk to our team" },
-      { name: "Customer Stories", desc: "Case studies" },
-      { name: "Affiliate", desc: "Partner program" },
+      { name: "Contact Sales", desc: "Talk to our team", href: "/contact" },
+      {
+        name: "Customer Stories",
+        desc: "Case studies",
+        href: "/customers",
+      },
+      { name: "Affiliate", desc: "Partner program", href: "/affiliate" },
     ],
   },
   {
     label: "Community",
     items: [
-      { name: "Support", desc: "Help & troubleshooting" },
-      { name: "Inspiration", desc: "Gallery & showcases" },
-      { name: "Be a Creator", desc: "Join the creator program" },
+      { name: "Support", desc: "Help & troubleshooting", href: "/support" },
+      {
+        name: "Inspiration",
+        desc: "Gallery & showcases",
+        href: "/inspiration",
+      },
+      {
+        name: "Be a Creator",
+        desc: "Join the creator program",
+        href: "/creators",
+      },
     ],
   },
 ];
@@ -76,7 +92,7 @@ export function Navbar({ mode = "default" }: NavbarProps) {
     <nav className="relative flex h-16 w-full items-center justify-center px-4">
       <div className="flex w-full max-w-7xl items-center justify-between gap-6">
         {/* Left: Logo + Nav links */}
-        <div className="flex min-w-0 items-center gap-6">
+        <div className="flex min-w-0 items-center gap-10">
           <Link
             href="/"
             aria-label="WaveSpeed home"
@@ -85,14 +101,18 @@ export function Navbar({ mode = "default" }: NavbarProps) {
             <Logo className="text-foreground h-6 w-auto" />
           </Link>
           <div className="hidden items-center gap-6 lg:flex">
-            {["Explore", "Pricing", "Enterprise"].map((item) => (
-              <a
-                key={item}
-                href="#"
+            {[
+              { label: "Explore", href: "/explore" },
+              { label: "Pricing", href: "/pricing" },
+              { label: "Enterprise", href: "/enterprise" },
+            ].map((item) => (
+              <Link
+                key={item.label}
+                href={item.href}
                 className="text-foreground hover:text-foreground/50 tracking-xl font-mono text-sm leading-4 transition-colors duration-150"
               >
-                {item}
-              </a>
+                {item.label}
+              </Link>
             ))}
             <div
               className="group relative"
@@ -114,9 +134,9 @@ export function Navbar({ mode = "default" }: NavbarProps) {
                           {group.label}
                         </p>
                         {group.items.map((item) => (
-                          <a
+                          <Link
                             key={item.name}
-                            href="#"
+                            href={item.href}
                             className="hover:bg-foreground/5 rounded-xs px-2 py-1.5 transition-colors duration-150"
                           >
                             <p className="text-foreground tracking-xl font-mono text-xs leading-4">
@@ -125,7 +145,7 @@ export function Navbar({ mode = "default" }: NavbarProps) {
                             <p className="text-foreground/60 font-mono text-xs leading-4">
                               {item.desc}
                             </p>
-                          </a>
+                          </Link>
                         ))}
                       </div>
                     ))}
@@ -154,7 +174,7 @@ export function Navbar({ mode = "default" }: NavbarProps) {
             />
           </div>
           <div
-            className="relative hidden md:flex"
+            className="relative hidden lg:flex"
             onMouseEnter={() => setLangOpen(true)}
             onMouseLeave={() => setLangOpen(false)}
           >
@@ -220,7 +240,7 @@ export function Navbar({ mode = "default" }: NavbarProps) {
               <Link
                 href="/billing"
                 aria-label="Billing"
-                className="group hidden h-8 items-center gap-px md:inline-flex"
+                className="group hidden h-8 items-center gap-px lg:inline-flex"
               >
                 <span className="bg-surface group-hover:bg-foreground/10 text-foreground tracking-sm inline-flex h-8 items-center rounded-xs px-2 font-sans text-sm font-medium transition-colors duration-150">
                   $6.186
@@ -315,18 +335,18 @@ export function Navbar({ mode = "default" }: NavbarProps) {
                         ))}
                       </div>
                       <div className="py-2">
-                        <a
-                          href="#"
+                        <Link
+                          href="/settings"
                           className="text-foreground/80 hover:bg-foreground/5 block cursor-pointer px-4 py-2 text-sm transition-colors duration-150"
                         >
                           Settings
-                        </a>
-                        <a
-                          href="#"
+                        </Link>
+                        <Link
+                          href="/sign-in"
                           className="text-foreground/80 hover:bg-foreground/5 block cursor-pointer px-4 py-2 text-sm transition-colors duration-150"
                         >
                           Sign Out
-                        </a>
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -334,12 +354,12 @@ export function Navbar({ mode = "default" }: NavbarProps) {
               </div>
             </>
           ) : (
-            <a
-              href="#"
+            <Link
+              href="/sign-in"
               className="bg-foreground text-background hover:bg-foreground/80 tracking-xl flex items-center justify-center rounded-xs px-4 py-1.5 font-mono text-sm transition-colors duration-150"
             >
               Sign In
-            </a>
+            </Link>
           )}
 
           {/* Hamburger button — mobile only */}
@@ -416,14 +436,18 @@ export function Navbar({ mode = "default" }: NavbarProps) {
               ))}
             </div>
           )}
-          {["Explore", "Pricing", "Enterprise"].map((item) => (
-            <a
-              key={item}
-              href="#"
+          {[
+            { label: "Explore", href: "/explore" },
+            { label: "Pricing", href: "/pricing" },
+            { label: "Enterprise", href: "/enterprise" },
+          ].map((item) => (
+            <Link
+              key={item.label}
+              href={item.href}
               className="text-foreground hover:text-foreground/50 tracking-xl py-2 font-mono text-sm leading-4 transition-colors duration-150"
             >
-              {item}
-            </a>
+              {item.label}
+            </Link>
           ))}
           <button
             onClick={() => setResourcesOpen(!resourcesOpen)}
@@ -442,13 +466,13 @@ export function Navbar({ mode = "default" }: NavbarProps) {
                     {group.label}
                   </p>
                   {group.items.map((item) => (
-                    <a
+                    <Link
                       key={item.name}
-                      href="#"
+                      href={item.href}
                       className="text-foreground hover:text-foreground/50 tracking-xl py-1 font-mono text-xs leading-4 transition-colors duration-150"
                     >
                       {item.name}
-                    </a>
+                    </Link>
                   ))}
                 </div>
               ))}

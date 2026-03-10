@@ -746,7 +746,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
     <div className="border-foreground/10 bg-background/95 supports-backdrop-filter:bg-background/80 sticky top-0 z-40 flex justify-center border-b px-4 backdrop-blur">
       <div className="w-full max-w-7xl">
         <div
-          className="flex h-12 w-full items-center justify-start gap-8 overflow-x-auto rounded-none px-0"
+          className="flex h-12 w-full items-center justify-start gap-8 overflow-x-auto scrollbar-none rounded-none px-0"
           aria-hidden
         >
           {dashboardTabs.map((tab) => {
@@ -782,7 +782,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
         >
           <TabsList
             variant="line"
-            className="w-full justify-start gap-8 overflow-x-auto rounded-none px-0 group-data-[orientation=horizontal]/tabs:h-12"
+            className="w-full justify-start gap-8 overflow-x-auto scrollbar-none rounded-none px-0 group-data-[orientation=horizontal]/tabs:h-12"
           >
             {dashboardTabs.map((tab) => (
               <TabsTrigger
