@@ -1024,7 +1024,7 @@ export function ProductBillingTab({
                           <TableCell>
                             <Badge
                               variant="outline"
-                              className="rounded-xs border-[#ef4444]/25 bg-[#ef4444]/8 px-2 py-0.5 text-xs text-[#ef4444]"
+                            className="rounded-xs border-[#ef4444]/25 bg-[#ef4444]/8 px-2 py-0.5 text-[10px] text-[#ef4444]"
                             >
                               {record.amount}
                             </Badge>

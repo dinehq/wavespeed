@@ -1,3 +1,5 @@
+import type { ComponentType } from "react";
+
 import {
   accountLevels,
   currentAccountLevel,
@@ -8,6 +10,8 @@ import { ProductSectionHeader } from "@/features/product/components/product-sect
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import LoginGithubIcon from "@/images/login-github.svg";
+import LoginGoogleIcon from "@/images/login-google.svg";
 import {
   Table,
   TableBody,
@@ -18,6 +22,12 @@ import {
 } from "@/components/ui/table";
 
 export function ProductSettingsTab() {
+  const loginMethodIconMap: Record<string, ComponentType<{ className?: string }>> =
+    {
+      Google: LoginGoogleIcon,
+      GitHub: LoginGithubIcon,
+    };
+
   return (
     <div className="px-6 pt-6 md:px-12 md:pt-8 lg:px-20">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-4">
@@ -34,7 +44,7 @@ export function ProductSettingsTab() {
             <CardContent className="space-y-4 p-4">
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-1.5">
-                  <p className="text-foreground/60 tracking-md text-xs uppercase">
+                  <p className="text-foreground/60 tracking-md text-xs">
                     Email
                   </p>
                   <p className="text-foreground text-sm">
@@ -42,7 +52,7 @@ export function ProductSettingsTab() {
                   </p>
                 </div>
                 <div className="space-y-1.5">
-                  <p className="text-foreground/60 tracking-md text-xs uppercase">
+                  <p className="text-foreground/60 tracking-md text-xs">
                     Username
                   </p>
                   <p className="text-foreground text-sm">
@@ -52,19 +62,27 @@ export function ProductSettingsTab() {
               </div>
 
               <div className="space-y-1.5">
-                <p className="text-foreground/60 tracking-md text-xs uppercase">
+                <p className="text-foreground/60 tracking-md text-xs">
                   Login Methods
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  {settingsBasicInfo.loginMethods.map((method) => (
-                    <Badge
-                      key={method}
-                      variant="outline"
-                      className="border-foreground/10 bg-surface text-foreground rounded-xs px-2 py-1 text-xs font-normal"
-                    >
-                      {method}
-                    </Badge>
-                  ))}
+                  {settingsBasicInfo.loginMethods.map((method) => {
+                    const Icon = loginMethodIconMap[method];
+                    return (
+                      <Badge
+                        key={method}
+                        variant="outline"
+                        className="border-foreground/10 bg-surface text-foreground rounded-xs px-2 py-1 text-xs font-normal"
+                      >
+                        {Icon ? (
+                          <span className="inline-flex h-6 w-6 items-center justify-center">
+                            <Icon className="max-h-full w-auto max-w-full shrink-0" />
+                          </span>
+                        ) : null}
+                        {method}
+                      </Badge>
+                    );
+                  })}
                 </div>
               </div>
             </CardContent>
