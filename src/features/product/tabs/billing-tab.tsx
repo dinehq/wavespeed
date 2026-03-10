@@ -1,6 +1,8 @@
 import { useMemo, useState, type MutableRefObject } from "react";
 
+import { format } from "date-fns";
 import { CalendarIcon, ChevronDown, Info } from "lucide-react";
+import type { DateRange } from "react-day-picker";
 
 import {
   billingTopUpRecords,
@@ -10,6 +12,7 @@ import {
 import { ProductSectionHeader } from "@/features/product/components/product-section-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Calendar as DateCalendar } from "@/components/ui/calendar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
@@ -105,6 +108,11 @@ function formatAutoTopUpRuleAmount(raw: string): string {
   return normalized;
 }
 
+function parseBillingRecordDate(raw: string): Date | null {
+  const parsed = new Date(raw);
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+}
+
 type TopUpAmountOption = (typeof topUpAmountOptions)[number];
 
 export function ProductBillingTab({
@@ -134,6 +142,18 @@ export function ProductBillingTab({
   const [isPaymentPickerOpen, setIsPaymentPickerOpen] = useState(false);
   const [autoTopUpAmount, setAutoTopUpAmount] = useState("20");
   const [autoTopUpThreshold, setAutoTopUpThreshold] = useState("10");
+  const [isAutoTopUpActive, setIsAutoTopUpActive] = useState(false);
+  const [isPredictionFilterOpen, setIsPredictionFilterOpen] = useState(false);
+  const [predictionFilterValue, setPredictionFilterValue] = useState("all");
+  const [predictionFilterQuery, setPredictionFilterQuery] = useState("");
+  const [isAccessKeyFilterOpen, setIsAccessKeyFilterOpen] = useState(false);
+  const [accessKeyFilterValue, setAccessKeyFilterValue] = useState("all");
+  const [accessKeyFilterQuery, setAccessKeyFilterQuery] = useState("");
+  const [isModelFilterOpen, setIsModelFilterOpen] = useState(false);
+  const [modelFilterValue, setModelFilterValue] = useState("all");
+  const [modelFilterQuery, setModelFilterQuery] = useState("");
+  const [isDateFilterOpen, setIsDateFilterOpen] = useState(false);
+  const [billingDateRange, setBillingDateRange] = useState<DateRange | undefined>();
   const autoTopUpAmountLabel = useMemo(
     () => formatAutoTopUpRuleAmount(autoTopUpAmount),
     [autoTopUpAmount],
@@ -178,6 +198,83 @@ export function ProductBillingTab({
       paymentMethodOptions[0],
     [paymentMethodOptions, selectedPaymentMethod],
   );
+  const predictionOptions = useMemo(
+    () => Array.from(new Set(billingUsageRecords.map((record) => record.predictionId))),
+    [],
+  );
+  const accessKeyOptions = useMemo(
+    () => Array.from(new Set(billingUsageRecords.map((record) => record.accessKey))),
+    [],
+  );
+  const modelOptions = useMemo(
+    () => Array.from(new Set(billingUsageRecords.map((record) => record.model))),
+    [],
+  );
+  const filteredPredictionOptions = useMemo(
+    () =>
+      predictionOptions.filter((item) =>
+        item.toLowerCase().includes(predictionFilterQuery.toLowerCase()),
+      ),
+    [predictionFilterQuery, predictionOptions],
+  );
+  const filteredAccessKeyOptions = useMemo(
+    () =>
+      accessKeyOptions.filter((item) =>
+        item.toLowerCase().includes(accessKeyFilterQuery.toLowerCase()),
+      ),
+    [accessKeyFilterQuery, accessKeyOptions],
+  );
+  const filteredModelOptions = useMemo(
+    () =>
+      modelOptions.filter((item) =>
+        item.toLowerCase().includes(modelFilterQuery.toLowerCase()),
+      ),
+    [modelFilterQuery, modelOptions],
+  );
+  const billingDateRangeLabel = useMemo(() => {
+    if (!billingDateRange?.from) return "Pick a date";
+    if (!billingDateRange.to) return format(billingDateRange.from, "MMM dd");
+    return `${format(billingDateRange.from, "MMM dd")} - ${format(
+      billingDateRange.to,
+      "MMM dd",
+    )}`;
+  }, [billingDateRange]);
+  const filteredBillingUsageRecords = useMemo(
+    () =>
+      billingUsageRecords.filter((record) => {
+        const matchesPrediction =
+          predictionFilterValue === "all" ||
+          record.predictionId === predictionFilterValue;
+        const matchesAccessKey =
+          accessKeyFilterValue === "all" || record.accessKey === accessKeyFilterValue;
+        const matchesModel =
+          modelFilterValue === "all" || record.model === modelFilterValue;
+        let matchesDate = true;
+        if (billingDateRange?.from) {
+          const recordDate = parseBillingRecordDate(record.date);
+          if (!recordDate) {
+            matchesDate = false;
+          } else {
+            const rangeStart = new Date(billingDateRange.from);
+            rangeStart.setHours(0, 0, 0, 0);
+            const rangeEnd = new Date(
+              billingDateRange.to ?? billingDateRange.from,
+            );
+            rangeEnd.setHours(23, 59, 59, 999);
+            matchesDate = recordDate >= rangeStart && recordDate <= rangeEnd;
+          }
+        }
+        return matchesPrediction && matchesAccessKey && matchesModel && matchesDate;
+      }),
+    [
+      accessKeyFilterValue,
+      billingDateRange,
+      modelFilterValue,
+      predictionFilterValue,
+    ],
+  );
+  const billingFilterTriggerClass =
+    "cursor-pointer border-foreground/10 bg-background text-foreground/80 hover:bg-foreground/5 rounded-xs text-xs shadow-xs inline-flex h-8 w-fit min-w-0 shrink-0 items-center justify-start gap-1 rounded-xs border pr-1.5 pl-2.5 font-normal whitespace-nowrap tracking-md [&_svg]:!size-3.5 [&_svg]:!text-foreground/50 [&_svg]:!opacity-100";
 
   const displayedAmounts = [
     "$5",
@@ -225,7 +322,9 @@ export function ProductBillingTab({
         key={option.amount}
         type="button"
         onClick={() => handleSelectTopUpAmount(option.amount)}
-        className="border-foreground/10 group relative flex w-full items-center gap-2 border-b py-3.5 text-left transition-colors"
+        className={`border-foreground/10 group relative flex w-full items-center gap-2 py-3.5 text-left transition-colors ${
+          option.amount === "Custom" ? "" : "border-b"
+        }`}
       >
         <span
           className="bg-muted pointer-events-none absolute inset-y-0 -inset-x-2 rounded-[3px] opacity-0 transition-opacity group-hover:opacity-100"
@@ -286,7 +385,7 @@ export function ProductBillingTab({
                 $0.00
               </p>
               <div className="mt-auto flex items-center gap-2 pt-4">
-                <span className="bg-brand/8 text-foreground/70 rounded-[2px] px-1.5 py-0.5 text-xs leading-[13px] font-medium tracking-[0.5px]">
+                <span className="bg-muted text-foreground/70 rounded-[2px] px-1.5 py-1.5 text-xs leading-[13px] font-medium tracking-[0.5px]">
                   $0.00
                 </span>
                 <span className="text-foreground/60 text-xs tracking-[0.5px]">
@@ -303,9 +402,9 @@ export function ProductBillingTab({
                 Top Up
               </CardTitle>
             </CardHeader>
-            <CardContent className="px-4 pb-4">
-              <section>
-                <div className="border-foreground/10 grid border-t">
+            <CardContent className="flex flex-1 flex-col justify-end px-4 pb-4">
+              <section className="w-full">
+                <div className="border-foreground/10 grid">
                   {displayedTopUpOptions.map((option) => renderTopUpOption(option))}
                 </div>
               </section>
@@ -396,9 +495,13 @@ export function ProductBillingTab({
                 </CardTitle>
                 <Badge
                   variant="outline"
-                  className="border-foreground/15 text-foreground/55 rounded-[2px] px-1.5 py-0 text-[10px] tracking-[0.4px]"
+                  className={`rounded-[2px] px-1.5 py-0 text-[10px] tracking-[0.4px] ${
+                    isAutoTopUpActive
+                      ? "border-emerald-500/30 bg-emerald-500/12 text-emerald-700 dark:border-emerald-400/35 dark:bg-emerald-400/15 dark:text-emerald-300"
+                      : "border-foreground/15 text-foreground/55"
+                  }`}
                 >
-                  Inactive
+                  {isAutoTopUpActive ? "Active" : "Inactive"}
                 </Badge>
               </div>
             </CardHeader>
@@ -455,7 +558,7 @@ export function ProductBillingTab({
                 </div>
               </div>
 
-              <div className="bg-surface rounded-xs px-2.5 py-2 text-sm leading-none tracking-tight">
+              <div className="bg-muted rounded-xs px-2.5 py-3 text-sm leading-none tracking-tight">
                 <span className="text-foreground font-semibold">
                   ${autoTopUpAmountLabel}
                 </span>
@@ -467,11 +570,18 @@ export function ProductBillingTab({
                   ${autoTopUpThresholdLabel}
                 </span>
               </div>
+              <p className="text-foreground/60 text-xs">
+                Auto top-up only supports Stripe for now.
+              </p>
 
             </CardContent>
             <div className="border-foreground/10 mt-auto border-t px-4 py-4">
-              <Button className="h-9 w-full rounded-xs text-sm tracking-[0.3px]">
-                Enable Auto Top-up
+              <Button
+                onClick={() => setIsAutoTopUpActive((prev) => !prev)}
+                variant={isAutoTopUpActive ? "outline" : "default"}
+                className="h-9 w-full rounded-xs text-sm tracking-[0.3px]"
+              >
+                {isAutoTopUpActive ? "Disable Auto Top-up" : "Enable Auto Top-up"}
               </Button>
             </div>
           </Card>
@@ -503,7 +613,7 @@ export function ProductBillingTab({
           className="gap-0"
           ref={billingRecordsRef}
         >
-          <div className="mb-2 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+          <div className="mb-2 px-0 py-1 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
             <TabsList
               variant="line"
               className="h-auto justify-start gap-3 rounded-none bg-transparent px-0"
@@ -522,6 +632,261 @@ export function ProductBillingTab({
               </TabsTrigger>
             </TabsList>
             <div className="flex flex-wrap items-center gap-2 self-start md:self-auto">
+              {resolvedBillingTab === "billing" ? (
+                <>
+                  <Popover
+                    open={isPredictionFilterOpen}
+                    onOpenChange={(open) => {
+                      setIsPredictionFilterOpen(open);
+                      if (!open) setPredictionFilterQuery("");
+                    }}
+                  >
+                    <PopoverTrigger asChild>
+                      <button
+                        type="button"
+                        className={billingFilterTriggerClass}
+                      >
+                        <span>
+                          {predictionFilterValue === "all"
+                            ? "Prediction ID"
+                            : predictionFilterValue}
+                        </span>
+                        <ChevronDown className="text-foreground/50 size-3 shrink-0" />
+                      </button>
+                    </PopoverTrigger>
+                    <PopoverContent
+                      align="end"
+                      className="bg-background w-70 rounded-xs border-0 p-2 shadow-sm"
+                    >
+                      <Input
+                        value={predictionFilterQuery}
+                        onChange={(event) =>
+                          setPredictionFilterQuery(event.target.value)
+                        }
+                        placeholder="Search prediction ID"
+                        className="border-foreground/10 h-8 rounded-xs text-xs"
+                      />
+                      <div className="mt-2 max-h-52 space-y-1 overflow-y-auto">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setPredictionFilterValue("all");
+                            setIsPredictionFilterOpen(false);
+                            setPredictionFilterQuery("");
+                          }}
+                          className={`hover:bg-foreground/5 flex w-full cursor-pointer rounded-xs px-2 py-1.5 text-left text-xs ${
+                            predictionFilterValue === "all"
+                              ? "bg-foreground/5 text-foreground"
+                              : "text-foreground/80"
+                          }`}
+                        >
+                          All prediction IDs
+                        </button>
+                        {filteredPredictionOptions.length > 0 ? (
+                          filteredPredictionOptions.map((option) => (
+                            <button
+                              key={option}
+                              type="button"
+                              onClick={() => {
+                                setPredictionFilterValue(option);
+                                setIsPredictionFilterOpen(false);
+                                setPredictionFilterQuery("");
+                              }}
+                              className={`hover:bg-foreground/5 flex w-full cursor-pointer rounded-xs px-2 py-1.5 text-left text-xs ${
+                                predictionFilterValue === option
+                                  ? "bg-foreground/5 text-foreground"
+                                  : "text-foreground/80"
+                              }`}
+                            >
+                              {option}
+                            </button>
+                          ))
+                        ) : (
+                          <p className="text-foreground/50 px-2 py-1.5 text-xs">
+                            No prediction IDs found
+                          </p>
+                        )}
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                  <Popover
+                    open={isAccessKeyFilterOpen}
+                    onOpenChange={(open) => {
+                      setIsAccessKeyFilterOpen(open);
+                      if (!open) setAccessKeyFilterQuery("");
+                    }}
+                  >
+                    <PopoverTrigger asChild>
+                      <button
+                        type="button"
+                        className={billingFilterTriggerClass}
+                      >
+                        <span>
+                          {accessKeyFilterValue === "all"
+                            ? "Access Key"
+                            : accessKeyFilterValue}
+                        </span>
+                        <ChevronDown className="text-foreground/50 size-3 shrink-0" />
+                      </button>
+                    </PopoverTrigger>
+                    <PopoverContent
+                      align="end"
+                      className="bg-background w-70 rounded-xs border-0 p-2 shadow-sm"
+                    >
+                      <Input
+                        value={accessKeyFilterQuery}
+                        onChange={(event) =>
+                          setAccessKeyFilterQuery(event.target.value)
+                        }
+                        placeholder="Search access keys"
+                        className="border-foreground/10 h-8 rounded-xs text-xs"
+                      />
+                      <div className="mt-2 max-h-52 space-y-1 overflow-y-auto">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setAccessKeyFilterValue("all");
+                            setIsAccessKeyFilterOpen(false);
+                            setAccessKeyFilterQuery("");
+                          }}
+                          className={`hover:bg-foreground/5 flex w-full cursor-pointer rounded-xs px-2 py-1.5 text-left text-xs ${
+                            accessKeyFilterValue === "all"
+                              ? "bg-foreground/5 text-foreground"
+                              : "text-foreground/80"
+                          }`}
+                        >
+                          All access keys
+                        </button>
+                        {filteredAccessKeyOptions.length > 0 ? (
+                          filteredAccessKeyOptions.map((option) => (
+                            <button
+                              key={option}
+                              type="button"
+                              onClick={() => {
+                                setAccessKeyFilterValue(option);
+                                setIsAccessKeyFilterOpen(false);
+                                setAccessKeyFilterQuery("");
+                              }}
+                              className={`hover:bg-foreground/5 flex w-full cursor-pointer rounded-xs px-2 py-1.5 text-left text-xs ${
+                                accessKeyFilterValue === option
+                                  ? "bg-foreground/5 text-foreground"
+                                  : "text-foreground/80"
+                              }`}
+                            >
+                              {option}
+                            </button>
+                          ))
+                        ) : (
+                          <p className="text-foreground/50 px-2 py-1.5 text-xs">
+                            No access keys found
+                          </p>
+                        )}
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                  <Popover
+                    open={isModelFilterOpen}
+                    onOpenChange={(open) => {
+                      setIsModelFilterOpen(open);
+                      if (!open) setModelFilterQuery("");
+                    }}
+                  >
+                    <PopoverTrigger asChild>
+                      <button
+                        type="button"
+                        className={billingFilterTriggerClass}
+                      >
+                        <span>
+                          {modelFilterValue === "all" ? "Model" : modelFilterValue}
+                        </span>
+                        <ChevronDown className="text-foreground/50 size-3 shrink-0" />
+                      </button>
+                    </PopoverTrigger>
+                    <PopoverContent
+                      align="end"
+                      className="bg-background w-70 rounded-xs border-0 p-2 shadow-sm"
+                    >
+                      <Input
+                        value={modelFilterQuery}
+                        onChange={(event) => setModelFilterQuery(event.target.value)}
+                        placeholder="Search models..."
+                        className="border-foreground/10 h-8 rounded-xs text-xs"
+                      />
+                      <div className="mt-2 max-h-52 space-y-1 overflow-y-auto">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setModelFilterValue("all");
+                            setIsModelFilterOpen(false);
+                            setModelFilterQuery("");
+                          }}
+                          className={`hover:bg-foreground/5 flex w-full cursor-pointer rounded-xs px-2 py-1.5 text-left text-xs ${
+                            modelFilterValue === "all"
+                              ? "bg-foreground/5 text-foreground"
+                              : "text-foreground/80"
+                          }`}
+                        >
+                          All models
+                        </button>
+                        {filteredModelOptions.length > 0 ? (
+                          filteredModelOptions.map((option) => (
+                            <button
+                              key={option}
+                              type="button"
+                              onClick={() => {
+                                setModelFilterValue(option);
+                                setIsModelFilterOpen(false);
+                                setModelFilterQuery("");
+                              }}
+                              className={`hover:bg-foreground/5 flex w-full cursor-pointer rounded-xs px-2 py-1.5 text-left text-xs ${
+                                modelFilterValue === option
+                                  ? "bg-foreground/5 text-foreground"
+                                  : "text-foreground/80"
+                              }`}
+                            >
+                              {option}
+                            </button>
+                          ))
+                        ) : (
+                          <p className="text-foreground/50 px-2 py-1.5 text-xs">
+                            No models found
+                          </p>
+                        )}
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                  <Popover
+                    open={isDateFilterOpen}
+                    onOpenChange={setIsDateFilterOpen}
+                  >
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        data-empty={!billingDateRange?.from}
+                        className="border-foreground/10 text-foreground/80 data-[empty=true]:text-muted-foreground tracking-sm h-8 w-auto max-w-full min-w-0 justify-start gap-1.5 rounded-xs px-2.5 text-left text-xs font-normal"
+                      >
+                        <CalendarIcon className="size-3.5" />
+                        <span>
+                          {billingDateRangeLabel}
+                        </span>
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent
+                      align="end"
+                      className="bg-background w-auto rounded-xs border-0 p-0 shadow-sm"
+                    >
+                      <DateCalendar
+                        mode="range"
+                        defaultMonth={billingDateRange?.from}
+                        selected={billingDateRange}
+                        onSelect={setBillingDateRange}
+                        numberOfMonths={2}
+                        className="text-xs"
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </>
+              ) : null}
               <Button
                 variant="outline"
                 size="sm"
@@ -534,9 +899,9 @@ export function ProductBillingTab({
 
           <TabsContent value="top-up" className="mt-0">
             <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
-              <CardContent className="px-4 pt-3 pb-4">
-                <div className="border-foreground/10 rounded-xs border">
-                  <Table>
+              <CardContent className="min-h-56 p-0">
+                {billingTopUpRecords.length > 0 ? (
+                  <Table className="[&_th]:px-4 [&_td]:px-4">
                     <TableHeader>
                       <TableRow className="border-foreground/10 hover:bg-transparent">
                         <TableHead className="text-foreground/50 tracking-lg">
@@ -582,83 +947,53 @@ export function ProductBillingTab({
                       ))}
                     </TableBody>
                   </Table>
-                </div>
-                <p className="text-foreground/50 mt-3 text-xs">
-                  Showing {billingTopUpRecords.length} result
-                  {billingTopUpRecords.length > 1 ? "s" : ""}
-                </p>
+                ) : (
+                  <div className="text-foreground/60 flex min-h-56 items-center justify-center px-4 text-sm">
+                    No top-up records yet.
+                  </div>
+                )}
               </CardContent>
             </Card>
+            <div className="mt-2 h-7 flex items-center">
+              <p className="text-foreground/50 text-xs">
+                Showing {billingTopUpRecords.length} result
+                {billingTopUpRecords.length > 1 ? "s" : ""}
+              </p>
+            </div>
           </TabsContent>
 
           <TabsContent value="billing" className="mt-0">
             <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
-              <CardContent className="space-y-3 px-4 pt-3 pb-4">
-                <div className="grid gap-2 md:grid-cols-4">
-                  <Input
-                    placeholder="Prediction ID"
-                    className="border-foreground/10 h-8 rounded-xs text-xs"
-                  />
-                  <Input
-                    placeholder="Search API keys"
-                    className="border-foreground/10 h-8 rounded-xs text-xs"
-                  />
-                  <Input
-                    placeholder="Search model..."
-                    className="border-foreground/10 h-8 rounded-xs text-xs"
-                  />
-                  <Button
-                    variant="outline"
-                    className="border-foreground/10 text-foreground/70 hover:bg-foreground/5 h-8 justify-between rounded-xs px-2.5 text-xs"
-                  >
-                    Pick a date
-                    <CalendarIcon className="size-3.5" />
-                  </Button>
-                </div>
-
-                <div className="flex items-center justify-end gap-2">
-                  <Button
-                    variant="ghost"
-                    className="text-foreground/70 hover:text-foreground h-8 rounded-xs px-2 text-xs"
-                  >
-                    Reset
-                  </Button>
-                  <Button className="h-8 rounded-xs px-3 text-xs">
-                    Search
-                  </Button>
-                </div>
-
-                <div className="border-foreground/10 rounded-xs border">
-                  <Table>
-                    <TableHeader>
-                      <TableRow className="border-foreground/10 hover:bg-transparent">
-                        <TableHead className="text-foreground/50 tracking-lg">
-                          Access Key
-                        </TableHead>
-                        <TableHead className="text-foreground/50 tracking-lg">
-                          Prediction ID
-                        </TableHead>
-                        <TableHead className="text-foreground/50 tracking-lg">
-                          Model
-                        </TableHead>
-                        <TableHead className="text-foreground/50 tracking-lg">
-                          Date
-                        </TableHead>
-                        <TableHead className="text-foreground/50 tracking-lg">
-                          Amount
-                        </TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {billingUsageRecords.map((record) => (
+              <CardContent className="min-h-56 p-0">
+                <Table className="[&_th]:px-4 [&_td]:px-4">
+                  <TableHeader>
+                    <TableRow className="border-foreground/10 hover:bg-transparent">
+                      <TableHead className="text-foreground/50 tracking-lg">
+                        Access Key
+                      </TableHead>
+                      <TableHead className="text-foreground/50 tracking-lg">
+                        Prediction ID
+                      </TableHead>
+                      <TableHead className="text-foreground/50 tracking-lg">
+                        Model
+                      </TableHead>
+                      <TableHead className="text-foreground/50 tracking-lg">
+                        Date
+                      </TableHead>
+                      <TableHead className="text-foreground/50 tracking-lg">
+                        Amount
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredBillingUsageRecords.length > 0 ? (
+                      filteredBillingUsageRecords.map((record) => (
                         <TableRow
                           key={record.predictionId}
                           className="border-foreground/10 hover:bg-surface"
                         >
-                          <TableCell className="text-xs">
-                            {record.accessKey}
-                          </TableCell>
-                          <TableCell className="text-brand text-xs">
+                          <TableCell className="text-xs">{record.accessKey}</TableCell>
+                          <TableCell className="text-foreground/70 font-mono text-xs">
                             {record.predictionId}
                           </TableCell>
                           <TableCell>{record.model}</TableCell>
@@ -672,49 +1007,57 @@ export function ProductBillingTab({
                             </Badge>
                           </TableCell>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-
-                <div className="flex flex-col gap-2 text-xs sm:flex-row sm:items-center sm:justify-between">
-                  <p className="text-foreground/60">
-                    Showing 1 to {billingUsageRecords.length} of{" "}
-                    {billingUsageRecords.length} results
-                  </p>
-                  <div className="flex items-center gap-1">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="text-foreground/60 hover:text-foreground h-7 rounded-xs px-2 text-xs"
-                    >
-                      Previous
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="border-foreground/10 h-7 min-w-7 rounded-xs px-2 text-xs"
-                    >
-                      1
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="border-foreground/10 h-7 rounded-xs px-2 text-xs"
-                    >
-                      Go
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="text-foreground/60 hover:text-foreground h-7 rounded-xs px-2 text-xs"
-                    >
-                      Next
-                    </Button>
-                  </div>
-                </div>
+                      ))
+                    ) : (
+                      <TableRow className="border-foreground/10 hover:bg-transparent">
+                        <TableCell
+                          colSpan={5}
+                          className="text-foreground/60 h-40 text-center text-sm"
+                        >
+                          No billing records found.
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
               </CardContent>
             </Card>
+            <div className="mt-2 min-h-7 flex flex-col gap-2 text-xs sm:h-7 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-foreground/60">
+                Showing 1 to {filteredBillingUsageRecords.length} of{" "}
+                {filteredBillingUsageRecords.length} results
+              </p>
+              <div className="flex items-center gap-1">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-foreground/60 hover:text-foreground h-7 rounded-xs px-2 text-xs"
+                >
+                  Previous
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-foreground/10 h-7 min-w-7 rounded-xs px-2 text-xs"
+                >
+                  1
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-foreground/10 h-7 rounded-xs px-2 text-xs"
+                >
+                  Go
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-foreground/60 hover:text-foreground h-7 rounded-xs px-2 text-xs"
+                >
+                  Next
+                </Button>
+              </div>
+            </div>
           </TabsContent>
         </Tabs>
       </div>
