@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PaymentKrwIcon from "@/images/payment-krw.svg";
+import PaymentMethodIcon from "@/images/payment-method.svg";
 import PaymentPaypalIcon from "@/images/payment-paypal.svg";
 import PaymentStripeIcon from "@/images/payment-stripe.svg";
 import PaymentWechatAliIcon from "@/images/payment-wechat-ali.svg";
@@ -79,6 +80,22 @@ function formatTopUpBenefit(benefit: string): string {
   return benefit;
 }
 
+function renderWithEmphasizedNumbers(text: string) {
+  return text.split(/(\+?[\d,]+)/g).map((part, index) => {
+    if (/^\+?[\d,]+$/.test(part)) {
+      return (
+        <span key={`${part}-${index}`} className="font-semibold">
+          {part}
+        </span>
+      );
+    }
+
+    return part;
+  });
+}
+
+type TopUpAmountOption = (typeof topUpAmountOptions)[number];
+
 export function ProductBillingTab({
   selectedTopUpAmount,
   setSelectedTopUpAmount,
@@ -110,11 +127,25 @@ export function ProductBillingTab({
     return Number.isFinite(numeric) && numeric > 0 ? String(numeric) : "";
   }, [selectedTopUpAmount]);
 
+  const isCustomTopUpSelected = selectedTopUpAmount === "Custom";
   const [customTopUpAmount, setCustomTopUpAmount] = useState(parsedTopUpAmount);
+  const [lastPresetTopUpAmount, setLastPresetTopUpAmount] =
+    useState(parsedTopUpAmount);
+  const [hasActivatedCustomInput, setHasActivatedCustomInput] = useState(false);
 
   useEffect(() => {
-    setCustomTopUpAmount(parsedTopUpAmount);
-  }, [parsedTopUpAmount]);
+    if (!isCustomTopUpSelected && parsedTopUpAmount) {
+      setLastPresetTopUpAmount(parsedTopUpAmount);
+      setCustomTopUpAmount(parsedTopUpAmount);
+    }
+  }, [isCustomTopUpSelected, parsedTopUpAmount]);
+
+  useEffect(() => {
+    if (isCustomTopUpSelected) {
+      setHasActivatedCustomInput(true);
+      setCustomTopUpAmount(lastPresetTopUpAmount);
+    }
+  }, [isCustomTopUpSelected, lastPresetTopUpAmount]);
 
   const selectedPaymentMeta = useMemo(
     () =>
@@ -123,11 +154,128 @@ export function ProductBillingTab({
     [paymentMethodOptions, selectedPaymentMethod],
   );
 
+  const leftColumnAmounts = ["$5", "$10", "$20", "$50"] as const;
+  const rightColumnAmounts = ["$100", "$1,000", "$10,000"] as const;
+  const topUpOptionByAmount = new Map(
+    topUpAmountOptions.map((option) => [option.amount, option] as const),
+  );
+  const leftColumnOptions = leftColumnAmounts
+    .map((amount) => topUpOptionByAmount.get(amount))
+    .filter((option): option is TopUpAmountOption => option !== undefined);
+  const rightColumnBaseOptions = rightColumnAmounts
+    .map((amount) => topUpOptionByAmount.get(amount))
+    .filter((option): option is TopUpAmountOption => option !== undefined);
+  const pinnedAmounts = new Set<string>([
+    ...leftColumnAmounts,
+    ...rightColumnAmounts,
+  ]);
+  const rightColumnOptions = [
+    ...rightColumnBaseOptions,
+    ...topUpAmountOptions.filter((option) => !pinnedAmounts.has(option.amount)),
+  ];
+  const buyAmountLabel = useMemo(() => {
+    if (!isCustomTopUpSelected) {
+      return selectedTopUpAmount;
+    }
+
+    const normalizedCustomAmount = customTopUpAmount.trim();
+    if (normalizedCustomAmount) {
+      return `$${normalizedCustomAmount}`;
+    }
+
+    if (lastPresetTopUpAmount) {
+      return `$${lastPresetTopUpAmount}`;
+    }
+
+    return "$0";
+  }, [
+    customTopUpAmount,
+    isCustomTopUpSelected,
+    lastPresetTopUpAmount,
+    selectedTopUpAmount,
+  ]);
+
+  const renderTopUpOption = (option: TopUpAmountOption) => {
+    const conciseThroughput = formatTopUpThroughput(option.throughput);
+    const conciseBenefit = formatTopUpBenefit(option.benefit);
+
+    return (
+      <button
+        key={option.amount}
+        type="button"
+        onClick={() => setSelectedTopUpAmount(option.amount)}
+        className={`border-foreground/10 bg-background hover:bg-surface flex items-center gap-3 rounded-xs border p-3 text-left transition-colors ${
+          selectedTopUpAmount === option.amount
+            ? "bg-surface border-transparent ring-brand ring ring-inset"
+            : ""
+        }`}
+      >
+        <span
+          className={`block w-[120px] shrink-0 leading-none font-semibold tracking-tight tabular-nums ${
+            selectedTopUpAmount === option.amount
+              ? "text-brand text-[20px]"
+              : "text-foreground text-[20px]"
+          }`}
+        >
+          {option.amount}
+        </span>
+        <span className="flex-1 text-right text-[11px] leading-[14px]">
+          <span
+            className={
+              selectedTopUpAmount === option.amount
+                ? "text-brand"
+                : "text-foreground/70"
+            }
+          >
+            {renderWithEmphasizedNumbers(`${conciseThroughput} · ${conciseBenefit}`)}
+          </span>
+        </span>
+      </button>
+    );
+  };
+
   return (
-    <div className="px-6 pt-6 md:px-20 md:pt-8">
+    <div className="px-6 pt-6 pb-24 md:px-20 md:pt-8 md:pb-0">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-4">
         <ProductSectionHeader title="Billing" />
-        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
+
+        <div className="grid gap-4 md:grid-cols-2">
+          <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
+            <CardContent className="flex min-h-[144px] flex-col px-4 py-4">
+              <p className="text-foreground/60 text-xs tracking-[0.5px]">
+                Current balance
+              </p>
+              <p className="text-foreground mt-2 text-2xl leading-none font-medium tracking-tight">
+                $6,186
+              </p>
+              <div className="mt-auto flex items-center pt-4">
+                <p className="text-foreground/60 text-xs tracking-[0.5px]">
+                  The balance never expires.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
+            <CardContent className="flex min-h-[144px] flex-col px-4 py-4">
+              <p className="text-foreground/60 text-xs tracking-[0.5px]">
+                Usage this month
+              </p>
+              <p className="text-foreground mt-2 text-2xl leading-none font-medium tracking-tight">
+                $0.00
+              </p>
+              <div className="mt-auto flex items-center gap-2 pt-4">
+                <span className="bg-brand/8 text-foreground/70 rounded-[2px] px-1.5 py-0.5 text-xs leading-[13px] font-medium tracking-[0.5px]">
+                  $0.00
+                </span>
+                <span className="text-foreground/60 text-xs tracking-[0.5px]">
+                  Daily average
+                </span>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+        <div className="grid gap-4">
           <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
             <CardHeader className="px-4 pt-4 pb-3">
               <CardTitle className="text-foreground font-display text-xl font-semibold tracking-tight">
@@ -136,80 +284,62 @@ export function ProductBillingTab({
             </CardHeader>
             <CardContent className="space-y-4 px-4 pb-4">
               <section>
-                <p className="text-foreground/60 tracking-md mb-2 text-xs uppercase">
+                <p className="text-foreground/60 mb-2 text-[11px] tracking-[0.8px]">
                   Amount
                 </p>
                 <div className="grid gap-2 md:grid-cols-2">
-                  {topUpAmountOptions.map((option) => {
-                    const conciseThroughput = formatTopUpThroughput(
-                      option.throughput,
-                    );
-                    const conciseBenefit = formatTopUpBenefit(option.benefit);
-
-                    return (
-                      <button
-                        key={option.amount}
-                        type="button"
-                        onClick={() => setSelectedTopUpAmount(option.amount)}
-                        className={`border-foreground/10 bg-background hover:bg-surface flex items-center justify-between gap-3 rounded-xs border p-3 text-left transition-colors ${
-                          selectedTopUpAmount === option.amount
-                            ? "border-[#3f74ff] ring-1 ring-[#3f74ff]"
-                            : ""
-                        }`}
-                      >
-                        <span
-                          className={`leading-none font-semibold tracking-tight ${
-                            selectedTopUpAmount === option.amount
-                              ? "text-2xl text-[#3f74ff]"
-                              : "text-foreground text-2xl"
-                          }`}
-                        >
-                          {option.amount}
-                        </span>
-                        <span className="text-right">
-                          <span className="text-foreground/70 block text-xs leading-4">
-                            {conciseThroughput}
-                          </span>
-                          <span className="text-foreground/60 mt-0.5 block text-xs leading-4">
-                            {conciseBenefit}
-                          </span>
-                        </span>
-                      </button>
-                    );
-                  })}
+                  <div className="grid gap-2">
+                    {leftColumnOptions.map((option) => renderTopUpOption(option))}
+                  </div>
+                  <div className="grid gap-2">
+                    {rightColumnOptions.map((option) => renderTopUpOption(option))}
+                  </div>
                 </div>
               </section>
 
-              <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-                <div className="flex flex-col gap-1">
-                  <p className="text-foreground/60 tracking-md text-xs uppercase">
-                    Payment Method
+              <div className="flex flex-col gap-2 md:flex-row md:items-end md:gap-2">
+                <div className="flex w-full flex-col gap-1 md:flex-1">
+                  <p className="text-foreground/60 text-[11px] tracking-[0.8px]">
+                    Payment method
                   </p>
                   <Popover
                     open={isPaymentPickerOpen}
                     onOpenChange={setIsPaymentPickerOpen}
                   >
-                    <PopoverTrigger asChild>
-                      <button
-                        type="button"
-                        aria-label={`Selected payment: ${selectedPaymentMeta.label}`}
-                        className={`bg-background hover:bg-surface relative grid h-19 w-full place-items-center rounded-xs border px-4 transition-colors sm:w-77 ${
-                          isPaymentPickerOpen
-                            ? "border-[#3f74ff] ring-1 ring-[#3f74ff]"
-                            : "border-foreground/15"
-                        }`}
-                      >
-                        <span className="flex h-11 w-full max-w-55 items-center justify-center [&>svg]:h-full [&>svg]:w-auto [&>svg]:max-w-full [&>svg]:shrink-0">
-                          <selectedPaymentMeta.Icon preserveAspectRatio="xMidYMid meet" />
+                    <div className="flex items-center gap-5">
+                      <PopoverTrigger asChild>
+                        <button
+                          type="button"
+                          aria-label={`Selected payment: ${selectedPaymentMeta.label}`}
+                          className={`bg-background hover:bg-surface border-foreground/10 focus-visible:border-ring focus-visible:ring-ring/50 flex h-[36px] items-center rounded-xs border shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] ${
+                            isPaymentPickerOpen
+                              ? "border-brand!"
+                              : ""
+                          }`}
+                        >
+                          <span className="flex h-full w-[90px] items-center justify-center px-2">
+                            <selectedPaymentMeta.Icon
+                              className="max-h-full w-auto max-w-full shrink-0"
+                              preserveAspectRatio="xMidYMid meet"
+                            />
+                          </span>
+                          <span className="border-foreground/10 flex h-full w-6 items-center justify-center border-l">
+                            <ChevronDown className="text-foreground/40 size-4" />
+                          </span>
+                        </button>
+                      </PopoverTrigger>
+                      <div className="flex items-center gap-2">
+                        <PaymentMethodIcon className="h-[18px] w-[68px] shrink-0" />
+                        <span className="text-foreground/60 text-xs">
+                          and more...
                         </span>
-                        <ChevronDown className="text-foreground/40 pointer-events-none absolute right-3 size-4" />
-                      </button>
-                    </PopoverTrigger>
+                      </div>
+                    </div>
                     <PopoverContent
                       align="start"
-                      className="bg-background border-foreground/10 w-90 max-w-[calc(100vw-2rem)] rounded-xs border p-3 shadow-sm"
+                      className="bg-background border-foreground/10 w-fit rounded-xs border p-2 shadow-sm"
                     >
-                      <div className="flex flex-col gap-3">
+                      <div className="flex flex-col items-center gap-1">
                         {paymentMethodOptions.map((method) => (
                           <button
                             key={method.id}
@@ -219,62 +349,40 @@ export function ProductBillingTab({
                               setIsPaymentPickerOpen(false);
                             }}
                             aria-label={method.label}
-                            className={`border-foreground/10 hover:bg-surface flex h-19 w-full items-center justify-center rounded-xs border px-4 transition-colors ${
+                            className={`border-foreground/10 hover:bg-surface flex h-[36px] w-[90px] items-center justify-center rounded-xs border px-2 transition-colors ${
                               selectedPaymentMethod === method.id
-                                ? "border-[#3f74ff] ring-1 ring-[#3f74ff]"
+                                ? "border-brand!"
                                 : ""
                             }`}
                           >
-                            <span className="flex h-11 w-full max-w-55 items-center justify-center [&>svg]:h-full [&>svg]:w-auto [&>svg]:max-w-full [&>svg]:shrink-0">
-                              <method.Icon preserveAspectRatio="xMidYMid meet" />
-                            </span>
+                            <method.Icon
+                              className="max-h-full w-auto max-w-full shrink-0"
+                              preserveAspectRatio="xMidYMid meet"
+                            />
                           </button>
                         ))}
                       </div>
                     </PopoverContent>
                   </Popover>
                 </div>
-                <div className="flex w-full flex-col gap-2 md:w-auto md:flex-row md:items-center">
-                  <Input
-                    value={customTopUpAmount}
-                    onChange={(event) =>
-                      setCustomTopUpAmount(event.target.value)
-                    }
-                    inputMode="decimal"
-                    placeholder={parsedTopUpAmount || "Amount"}
-                    className="border-foreground/10 h-9 rounded-xs text-xs md:w-35"
-                  />
-                  <Button className="tracking-md h-9 rounded-xs px-4 text-xs">
-                    Buy ({selectedTopUpAmount})
+                <div className="hidden w-full items-center gap-2 md:flex md:flex-1">
+                  {hasActivatedCustomInput ? (
+                    <Input
+                      type="number"
+                      value={customTopUpAmount}
+                      onChange={(event) =>
+                        setCustomTopUpAmount(event.target.value)
+                      }
+                      step="any"
+                      placeholder={parsedTopUpAmount || "Amount"}
+                      className="border-foreground/10 bg-background h-9 flex-1 rounded-xs text-xs"
+                    />
+                  ) : null}
+                  <Button className="h-9 flex-1 rounded-xs px-4 text-xs tracking-[0.8px]">
+                    Buy ({buyAmountLabel})
                   </Button>
                 </div>
               </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
-            <CardHeader className="px-4 pt-4 pb-0">
-              <CardTitle className="text-foreground font-display text-xl font-semibold tracking-tight">
-                My Account
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="flex flex-col items-center px-4 pt-6 pb-5 text-center">
-              <div className="from-surface to-foreground/10 mb-3 flex size-18 items-center justify-center rounded-full bg-linear-to-br">
-                <span className="text-foreground text-2xl font-semibold">
-                  M
-                </span>
-              </div>
-              <p className="text-foreground text-2xl font-semibold">Mangmor</p>
-              <p className="text-foreground/60 mt-1 text-xs">
-                mangmorchang@gmail.com
-              </p>
-              <p className="mt-6 text-4xl font-semibold tracking-tight text-[#3f74ff]">
-                $6,186
-              </p>
-              <p className="text-foreground/60 mt-1 text-xs">Account Balance</p>
-              <p className="text-foreground/50 mt-2 text-xs">
-                The balance never expires.
-              </p>
             </CardContent>
           </Card>
         </div>
@@ -384,7 +492,7 @@ export function ProductBillingTab({
                           <TableCell>
                             <Badge
                               variant="outline"
-                              className="rounded-xs border-[#3f74ff]/30 bg-[#3f74ff]/8 px-2 py-0.5 text-xs text-[#3f74ff]"
+                              className="rounded-xs border-brand/30 bg-brand/8 px-2 py-0.5 text-[10px] text-brand"
                             >
                               {record.amount}
                             </Badge>
@@ -475,8 +583,10 @@ export function ProductBillingTab({
                           key={record.predictionId}
                           className="border-foreground/10 hover:bg-surface"
                         >
-                          <TableCell>{record.accessKey}</TableCell>
-                          <TableCell className="text-[#3f74ff]">
+                          <TableCell className="text-xs">
+                            {record.accessKey}
+                          </TableCell>
+                          <TableCell className="text-brand text-xs">
                             {record.predictionId}
                           </TableCell>
                           <TableCell>{record.model}</TableCell>
@@ -535,6 +645,24 @@ export function ProductBillingTab({
             </Card>
           </TabsContent>
         </Tabs>
+      </div>
+
+      <div className="bg-background/95 border-foreground/10 fixed inset-x-0 bottom-0 z-40 border-t px-6 py-3 backdrop-blur md:hidden">
+        <div className="mx-auto flex w-full max-w-7xl items-center gap-2">
+          {hasActivatedCustomInput ? (
+            <Input
+              type="number"
+              value={customTopUpAmount}
+              onChange={(event) => setCustomTopUpAmount(event.target.value)}
+              step="any"
+              placeholder={parsedTopUpAmount || "Amount"}
+              className="border-foreground/10 h-9 flex-1 rounded-xs text-xs"
+            />
+          ) : null}
+          <Button className="h-9 flex-1 rounded-xs px-4 text-xs tracking-[0.8px]">
+            Buy ({buyAmountLabel})
+          </Button>
+        </div>
       </div>
     </div>
   );

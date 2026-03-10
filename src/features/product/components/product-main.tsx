@@ -749,13 +749,13 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                 return (
                   <span
                     key={tab}
-                    className={`tracking-xl relative flex h-12 flex-none items-center rounded-none px-2 py-0 text-sm whitespace-nowrap ${
-                      isActive ? "text-[#3f74ff]" : "text-foreground/60"
+                    className={`relative flex h-12 flex-none items-center rounded-none px-2 py-0 text-sm tracking-[1.2px] whitespace-nowrap ${
+                      isActive ? "text-brand" : "text-foreground/60"
                     }`}
                   >
                     {tab}
                     {isActive && (
-                      <span className="absolute right-0 bottom-0 left-0 h-0.5 bg-[#3f74ff]" />
+                      <span className="bg-brand absolute right-0 bottom-0 left-0 h-[2px]" />
                     )}
                   </span>
                 );
@@ -788,7 +788,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                 <TabsTrigger
                   key={tab}
                   value={tab}
-                  className="tracking-xl h-12 flex-none rounded-none px-2 py-0 text-sm whitespace-nowrap after:bg-transparent data-[state=active]:text-[#3f74ff] data-[state=active]:after:bg-[#3f74ff]"
+                  className="h-12 flex-none rounded-none px-2 py-0 text-sm tracking-[1.2px] whitespace-nowrap after:bg-transparent data-[state=active]:text-brand data-[state=active]:after:bg-brand"
                 >
                   {tab}
                 </TabsTrigger>
