@@ -1,4 +1,4 @@
-import type { MutableRefObject } from "react";
+import type { RefObject } from "react";
 
 import { CalendarIcon, Download } from "lucide-react";
 
@@ -42,7 +42,7 @@ type ProductUsageTabProps = {
   setUsageQuickRange: (value: "1d" | "7d" | "30d" | null) => void;
   applyUsageQuickRange: (days: number, range: "1d" | "7d" | "30d") => void;
   scrollToUsagePerModelSection: () => void;
-  usagePerModelSectionRef: MutableRefObject<HTMLDivElement | null>;
+  usagePerModelSectionRef: RefObject<HTMLDivElement | null>;
   router: { push: (href: string) => void };
   controlButtonClass: string;
   controlButtonSmClass: string;
