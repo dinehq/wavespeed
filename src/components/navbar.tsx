@@ -217,7 +217,7 @@ export function Navbar({ mode = "default" }: NavbarProps) {
                 aria-label="Billing"
                 className="group hidden h-8 items-center gap-px md:inline-flex"
               >
-                <span className="bg-surface group-hover:bg-foreground/10 text-foreground tracking-sm inline-flex h-8 items-center rounded-xs px-2 font-mono text-sm transition-colors duration-150">
+                <span className="bg-surface group-hover:bg-foreground/10 text-foreground tracking-sm inline-flex h-8 items-center rounded-xs px-2 font-sans text-sm font-medium transition-colors duration-150">
                   $6.186
                 </span>
                 <span className="bg-surface group-hover:bg-foreground/10 text-foreground/70 inline-flex size-8 items-center justify-center rounded-xs transition-colors duration-150">
