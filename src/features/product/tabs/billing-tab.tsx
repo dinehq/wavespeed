@@ -1,6 +1,6 @@
 import { useMemo, useState, type MutableRefObject } from "react";
 
-import { CalendarIcon, ChevronDown } from "lucide-react";
+import { CalendarIcon, ChevronDown, Info } from "lucide-react";
 
 import {
   billingTopUpRecords,
@@ -27,7 +27,6 @@ import {
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PaymentKrwIcon from "@/images/payment-krw.svg";
-import PaymentMethodIcon from "@/images/payment-method.svg";
 import PaymentPaypalIcon from "@/images/payment-paypal.svg";
 import PaymentStripeIcon from "@/images/payment-stripe.svg";
 import PaymentWechatAliIcon from "@/images/payment-wechat-ali.svg";
@@ -94,6 +93,18 @@ function renderWithEmphasizedNumbers(text: string) {
   });
 }
 
+function formatAutoTopUpRuleAmount(raw: string): string {
+  const numeric = Number(raw);
+  if (!Number.isFinite(numeric) || numeric < 0) {
+    return "0";
+  }
+
+  const normalized = Number.isInteger(numeric)
+    ? String(numeric)
+    : numeric.toFixed(2).replace(/\.?0+$/, "");
+  return normalized;
+}
+
 type TopUpAmountOption = (typeof topUpAmountOptions)[number];
 
 export function ProductBillingTab({
@@ -121,6 +132,16 @@ export function ProductBillingTab({
   );
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("stripe");
   const [isPaymentPickerOpen, setIsPaymentPickerOpen] = useState(false);
+  const [autoTopUpAmount, setAutoTopUpAmount] = useState("20");
+  const [autoTopUpThreshold, setAutoTopUpThreshold] = useState("10");
+  const autoTopUpAmountLabel = useMemo(
+    () => formatAutoTopUpRuleAmount(autoTopUpAmount),
+    [autoTopUpAmount],
+  );
+  const autoTopUpThresholdLabel = useMemo(
+    () => formatAutoTopUpRuleAmount(autoTopUpThreshold),
+    [autoTopUpThreshold],
+  );
 
   const parsedTopUpAmount = useMemo(() => {
     const numeric = Number(selectedTopUpAmount.replace(/[^0-9.]/g, ""));
@@ -158,25 +179,20 @@ export function ProductBillingTab({
     [paymentMethodOptions, selectedPaymentMethod],
   );
 
-  const leftColumnAmounts = ["$5", "$10", "$20", "$50"] as const;
-  const rightColumnAmounts = ["$100", "$1,000", "$10,000"] as const;
+  const displayedAmounts = [
+    "$5",
+    "$10",
+    "$50",
+    "$100",
+    "$1,000",
+    "Custom",
+  ] as const;
   const topUpOptionByAmount = new Map(
     topUpAmountOptions.map((option) => [option.amount, option] as const),
   );
-  const leftColumnOptions = leftColumnAmounts
+  const displayedTopUpOptions = displayedAmounts
     .map((amount) => topUpOptionByAmount.get(amount))
     .filter((option): option is TopUpAmountOption => option !== undefined);
-  const rightColumnBaseOptions = rightColumnAmounts
-    .map((amount) => topUpOptionByAmount.get(amount))
-    .filter((option): option is TopUpAmountOption => option !== undefined);
-  const pinnedAmounts = new Set<string>([
-    ...leftColumnAmounts,
-    ...rightColumnAmounts,
-  ]);
-  const rightColumnOptions = [
-    ...rightColumnBaseOptions,
-    ...topUpAmountOptions.filter((option) => !pinnedAmounts.has(option.amount)),
-  ];
   const buyAmountLabel = useMemo(() => {
     if (!isCustomTopUpSelected) {
       return selectedTopUpAmount;
@@ -202,38 +218,37 @@ export function ProductBillingTab({
   const renderTopUpOption = (option: TopUpAmountOption) => {
     const conciseThroughput = formatTopUpThroughput(option.throughput);
     const conciseBenefit = formatTopUpBenefit(option.benefit);
+    const isSelected = selectedTopUpAmount === option.amount;
 
     return (
       <button
         key={option.amount}
         type="button"
         onClick={() => handleSelectTopUpAmount(option.amount)}
-        className={`border-foreground/10 bg-background hover:bg-surface flex items-center gap-3 rounded-xs border p-3 text-left transition-colors ${
-          selectedTopUpAmount === option.amount
-            ? "bg-surface ring-brand border-transparent ring ring-inset"
-            : ""
-        }`}
+        className="border-foreground/10 group relative flex w-full items-center gap-2 border-b py-3.5 text-left transition-colors"
       >
         <span
-          className={`block w-[120px] shrink-0 leading-none font-semibold tracking-tight tabular-nums ${
-            selectedTopUpAmount === option.amount
-              ? "text-brand text-[20px]"
-              : "text-foreground text-[20px]"
+          className="bg-muted pointer-events-none absolute inset-y-0 -inset-x-2 rounded-[3px] opacity-0 transition-opacity group-hover:opacity-100"
+          aria-hidden
+        />
+        <span
+          className={`relative z-10 flex size-4 shrink-0 items-center justify-center rounded-full border ${
+            isSelected ? "border-brand border-2" : "border-brand/70"
           }`}
+          aria-hidden
         >
+          <span
+            className={`bg-brand size-1.5 rounded-full transition-opacity ${
+              isSelected ? "opacity-100" : "opacity-0"
+            }`}
+          />
+        </span>
+        <span className="text-foreground relative z-10 block w-16 shrink-0 text-sm leading-none font-semibold tracking-tight tabular-nums">
           {option.amount}
         </span>
-        <span className="flex-1 text-right text-[11px] leading-[14px]">
-          <span
-            className={
-              selectedTopUpAmount === option.amount
-                ? "text-brand"
-                : "text-foreground/70"
-            }
-          >
-            {renderWithEmphasizedNumbers(
-              `${conciseThroughput} · ${conciseBenefit}`,
-            )}
+        <span className="relative z-10 flex-1 text-right text-[10px] leading-[13px]">
+          <span className="text-foreground/70">
+            {renderWithEmphasizedNumbers(`${conciseThroughput} · ${conciseBenefit}`)}
           </span>
         </span>
       </button>
@@ -281,42 +296,45 @@ export function ProductBillingTab({
             </CardContent>
           </Card>
         </div>
-        <div className="grid gap-4">
+        <div className="grid gap-4 lg:grid-cols-2">
           <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
             <CardHeader className="px-4 pt-4 pb-3">
               <CardTitle className="text-foreground font-display text-xl font-semibold tracking-tight">
                 Top Up
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4 px-4 pb-4">
+            <CardContent className="px-4 pb-4">
               <section>
-                <p className="text-foreground/60 mb-2 text-[11px] tracking-[0.8px]">
-                  Amount
-                </p>
-                <div className="grid gap-2 md:grid-cols-2">
-                  <div className="grid gap-2">
-                    {leftColumnOptions.map((option) =>
-                      renderTopUpOption(option),
-                    )}
-                  </div>
-                  <div className="grid gap-2">
-                    {rightColumnOptions.map((option) =>
-                      renderTopUpOption(option),
-                    )}
-                  </div>
+                <div className="border-foreground/10 grid border-t">
+                  {displayedTopUpOptions.map((option) => renderTopUpOption(option))}
                 </div>
               </section>
-
+            </CardContent>
+            <div className="border-foreground/10 mt-auto border-t px-4 py-4">
               <div className="flex flex-col gap-2 md:flex-row md:items-end md:gap-2">
-                <div className="flex w-full flex-col gap-1 md:flex-1">
-                  <p className="text-foreground/60 text-[11px] tracking-[0.8px]">
-                    Payment method
-                  </p>
+                <div className="hidden w-full items-center gap-2 md:flex md:flex-1">
+                  {hasActivatedCustomInput ? (
+                    <Input
+                      type="number"
+                      value={customTopUpAmount}
+                      onChange={(event) =>
+                        setCustomTopUpAmount(event.target.value)
+                      }
+                      step="any"
+                      placeholder={parsedTopUpAmount || "Amount"}
+                      className="border-foreground/10 bg-background h-9 flex-1 rounded-xs text-xs"
+                    />
+                  ) : null}
+                  <Button className="h-9 flex-1 rounded-xs px-4 text-xs tracking-[0.8px]">
+                    Buy ({buyAmountLabel})
+                  </Button>
+                </div>
+                <div className="flex w-full flex-col items-start gap-1 md:w-auto md:flex-none">
                   <Popover
                     open={isPaymentPickerOpen}
                     onOpenChange={setIsPaymentPickerOpen}
                   >
-                    <div className="flex items-center gap-5">
+                    <div className="flex w-full items-center justify-end gap-5 md:w-auto">
                       <PopoverTrigger asChild>
                         <button
                           type="button"
@@ -336,12 +354,6 @@ export function ProductBillingTab({
                           </span>
                         </button>
                       </PopoverTrigger>
-                      <div className="flex items-center gap-2">
-                        <PaymentMethodIcon className="h-[18px] w-[68px] shrink-0" />
-                        <span className="text-foreground/60 text-xs">
-                          and more...
-                        </span>
-                      </div>
                     </div>
                     <PopoverContent
                       align="start"
@@ -373,45 +385,97 @@ export function ProductBillingTab({
                     </PopoverContent>
                   </Popover>
                 </div>
-                <div className="hidden w-full items-center gap-2 md:flex md:flex-1">
-                  {hasActivatedCustomInput ? (
+              </div>
+            </div>
+          </Card>
+          <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
+            <CardHeader className="px-4 pt-4 pb-3">
+              <div className="flex items-center gap-2">
+                <CardTitle className="text-foreground font-display text-xl font-semibold tracking-tight">
+                  Auto Top-up
+                </CardTitle>
+                <Badge
+                  variant="outline"
+                  className="border-foreground/15 text-foreground/55 rounded-[2px] px-1.5 py-0 text-[10px] tracking-[0.4px]"
+                >
+                  Inactive
+                </Badge>
+              </div>
+            </CardHeader>
+            <CardContent className="flex h-full flex-col gap-4 px-4 pb-6">
+              <div className="bg-brand/8 border-brand/15 text-brand flex items-start gap-2 rounded-xs border px-2 py-2 text-xs">
+                <Info className="mt-px size-3.5 shrink-0" />
+                <p>
+                  Auto top-up may take a few minutes; raise your threshold to
+                  prevent running out.
+                </p>
+              </div>
+
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-1 text-sm">
+                  <span className="text-foreground/75">
+                    When credit balance goes below
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="relative flex-1 max-w-48">
+                    <span className="text-foreground/65 absolute top-1/2 left-3 -translate-y-1/2 text-sm">
+                      $
+                    </span>
                     <Input
                       type="number"
-                      value={customTopUpAmount}
+                      value={autoTopUpThreshold}
                       onChange={(event) =>
-                        setCustomTopUpAmount(event.target.value)
+                        setAutoTopUpThreshold(event.target.value)
                       }
-                      step="any"
-                      placeholder={parsedTopUpAmount || "Amount"}
-                      className="border-foreground/10 bg-background h-9 flex-1 rounded-xs text-xs"
+                      className="border-foreground/10 h-9 rounded-xs pl-7 text-sm"
                     />
-                  ) : null}
-                  <Button className="h-9 flex-1 rounded-xs px-4 text-xs tracking-[0.8px]">
-                    Buy ({buyAmountLabel})
-                  </Button>
+                  </div>
+                  <span className="text-foreground/65 text-sm">USD</span>
                 </div>
               </div>
+
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-1 text-sm">
+                  <span className="text-foreground/75">Auto top up credits</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="relative flex-1 max-w-48">
+                    <span className="text-foreground/65 absolute top-1/2 left-3 -translate-y-1/2 text-sm">
+                      $
+                    </span>
+                    <Input
+                      type="number"
+                      value={autoTopUpAmount}
+                      onChange={(event) => setAutoTopUpAmount(event.target.value)}
+                      className="border-foreground/10 h-9 rounded-xs pl-7 text-sm"
+                    />
+                  </div>
+                  <span className="text-foreground/65 text-sm">USD</span>
+                </div>
+              </div>
+
+              <div className="bg-surface rounded-xs px-2.5 py-2 text-sm leading-none tracking-tight">
+                <span className="text-foreground font-semibold">
+                  ${autoTopUpAmountLabel}
+                </span>
+                <span className="text-subtle">
+                  {" "}
+                  will be added when balance reaches{" "}
+                </span>
+                <span className="text-foreground font-semibold">
+                  ${autoTopUpThresholdLabel}
+                </span>
+              </div>
+
             </CardContent>
+            <div className="border-foreground/10 mt-auto border-t px-4 py-4">
+              <Button className="h-9 w-full rounded-xs text-sm tracking-[0.3px]">
+                Enable Auto Top-up
+              </Button>
+            </div>
           </Card>
         </div>
-
-        <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
-          <CardContent className="flex flex-col gap-3 px-4 py-3 md:flex-row md:items-center md:justify-between">
-            <p className="text-foreground text-sm">
-              Auto top-up:
-              <span className="text-foreground/60 ml-1">
-                Set up auto top-up to avoid running out of credits.
-              </span>
-            </p>
-            <Button
-              variant="outline"
-              size="sm"
-              className={controlButtonMdClass}
-            >
-              Enable
-            </Button>
-          </CardContent>
-        </Card>
 
         <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
           <CardContent className="flex flex-col gap-3 px-4 py-3 md:flex-row md:items-center md:justify-between">
