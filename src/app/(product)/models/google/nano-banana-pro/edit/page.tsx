@@ -79,7 +79,10 @@ export default function ModelDetailPage() {
           <div className="flex flex-col gap-2">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="text-foreground/60 flex items-center gap-2 text-xs">
-                <Link href="/" className="hover:text-foreground transition-colors">
+                <Link
+                  href="/"
+                  className="hover:text-foreground transition-colors"
+                >
                   Home
                 </Link>
                 <span>/</span>
@@ -90,7 +93,9 @@ export default function ModelDetailPage() {
                   Explore
                 </Link>
                 <span>/</span>
-                <span className="text-foreground">google/nano-banana-pro/edit</span>
+                <span className="text-foreground">
+                  google/nano-banana-pro/edit
+                </span>
               </div>
               <button className="text-brand hover:text-brand/80 inline-flex h-8 items-center gap-1 rounded-xs px-3 text-xs font-bold transition-colors">
                 Documentation
@@ -160,7 +165,7 @@ export default function ModelDetailPage() {
             </div>
 
             <div className="border-foreground/10 flex items-center gap-5 border-b pt-1">
-              <button className="text-foreground border-foreground h-8 border-b-2 font-bold text-xs">
+              <button className="text-foreground border-foreground h-8 border-b-2 text-xs font-bold">
                 Playground
               </button>
               <button className="text-foreground/60 hover:text-foreground h-8 text-xs font-bold transition-colors">

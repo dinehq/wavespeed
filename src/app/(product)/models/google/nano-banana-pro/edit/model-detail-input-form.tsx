@@ -58,7 +58,7 @@ export function ModelDetailInputForm() {
           <SelectTrigger className={controlSelectTriggerCompactClass}>
             <SelectValue />
           </SelectTrigger>
-          <SelectContent className="rounded-xs border-foreground/10">
+          <SelectContent className="border-foreground/10 rounded-xs">
             {inputModeOptions.map((opt) => (
               <SelectItem key={opt.value} value={opt.value}>
                 {opt.label}
@@ -73,7 +73,11 @@ export function ModelDetailInputForm() {
             images*
           </FieldLabel>
           <div className="flex items-center gap-3">
-            <Button variant="outline" size="sm" className={controlButtonSmClass}>
+            <Button
+              variant="outline"
+              size="sm"
+              className={controlButtonSmClass}
+            >
               <ImagePlus className="size-3.5" />
               Add Image
             </Button>
@@ -158,7 +162,7 @@ export function ModelDetailInputForm() {
             <SelectTrigger className={controlSelectClass}>
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="rounded-xs border-foreground/10">
+            <SelectContent className="border-foreground/10 rounded-xs">
               <SelectItem value="1:1">1:1</SelectItem>
               <SelectItem value="16:9">16:9</SelectItem>
               <SelectItem value="9:16">9:16</SelectItem>
@@ -176,7 +180,7 @@ export function ModelDetailInputForm() {
             <SelectTrigger className={controlSelectClass}>
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="rounded-xs border-foreground/10">
+            <SelectContent className="border-foreground/10 rounded-xs">
               <SelectItem value="1k">1k</SelectItem>
               <SelectItem value="2k">2k</SelectItem>
               <SelectItem value="4k">4k</SelectItem>
@@ -192,7 +196,7 @@ export function ModelDetailInputForm() {
             <SelectTrigger className={controlSelectClass}>
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="rounded-xs border-foreground/10">
+            <SelectContent className="border-foreground/10 rounded-xs">
               <SelectItem value="jpeg">jpeg</SelectItem>
               <SelectItem value="png">png</SelectItem>
               <SelectItem value="webp">webp</SelectItem>
