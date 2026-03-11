@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { CircleHelp } from "lucide-react";
+import { CircleHelp, ImagePlus, Link2, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,11 +20,23 @@ const controlSelectClass =
 const controlSelectTriggerCompactClass =
   "border-foreground/10 bg-background text-foreground/80 hover:bg-foreground/5 h-8 w-fit min-w-20 rounded-xs px-3 text-xs shadow-xs justify-between";
 
-function FieldLabel({ children }: { children: React.ReactNode }) {
+function FieldLabel({
+  children,
+  tooltip,
+}: {
+  children: React.ReactNode;
+  tooltip: string;
+}) {
   return (
     <p className="text-foreground/80 mb-2 flex items-center gap-1 text-xs">
       {children}
-      <CircleHelp className="size-3 opacity-60" />
+      <span
+        title={tooltip}
+        aria-label={tooltip}
+        className="text-foreground/60 inline-flex cursor-help items-center"
+      >
+        <CircleHelp className="size-3" />
+      </span>
     </p>
   );
 }
@@ -57,38 +69,75 @@ export function ModelDetailInputForm() {
       </div>
       <div className="space-y-4">
       <div>
-        <FieldLabel>images*</FieldLabel>
-        <div className="border-input bg-background rounded-xs border p-3">
-          <div className="border-foreground/15 bg-muted/50 flex min-h-24 items-center justify-center rounded-xs border border-dashed p-3">
-            <p className="text-muted-foreground text-center text-xs">
-              Paste image URL
-              <br />
-              or drag and drop file
-            </p>
-          </div>
-          <div className="mt-3 flex items-center gap-3">
-            <div className="relative size-12 overflow-hidden rounded-xs">
-              <Image
-                src={thumb1}
-                alt="Input sample thumbnail"
-                fill
-                className="object-cover"
-              />
-            </div>
-            <p className="text-foreground/70 text-xs">sample-reference.png</p>
-          </div>
-          <Button
-            variant="outline"
-            size="sm"
-            className={`${controlButtonSmClass} mt-3`}
-          >
-            Add Item
+        <FieldLabel tooltip="One or more reference images for editing.">
+          images*
+        </FieldLabel>
+        <div className="flex items-center gap-3">
+          <Button variant="outline" size="sm" className={controlButtonSmClass}>
+            <ImagePlus className="size-3.5" />
+            Add Image
           </Button>
+          <div className="bg-border h-5 w-px shrink-0" />
+          <div className="flex min-w-0 flex-1 items-center gap-2">
+            <input
+              type="text"
+              readOnly
+              value=""
+              placeholder="Add image from URL or paste from clipboard"
+              className="border-input placeholder:text-muted-foreground text-foreground h-8 flex-1 rounded-xs border px-3 text-xs outline-none"
+            />
+            <Button
+              variant="outline"
+              size="sm"
+              disabled
+              className={`${controlButtonSmClass} border-foreground/5 text-foreground/40 hover:bg-transparent`}
+            >
+              Add URL
+            </Button>
+          </div>
         </div>
+
+        <p className="text-foreground/60 mt-3 text-xs">
+          Hint: Drag and drop files from your computer, images from web pages,
+          paste from clipboard (Ctrl/Cmd+V), or provide a URL.
+        </p>
+
+        <div className="mt-3 grid grid-cols-2 gap-3">
+          {[1, 2].map((item) => (
+            <div
+              key={item}
+              className="bg-muted/40 border-input relative overflow-hidden rounded-xs border"
+            >
+              <div className="relative aspect-square w-full">
+                <Image
+                  src={thumb1}
+                  alt="Input sample thumbnail"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <button
+                type="button"
+                aria-label="Remove image"
+                className="bg-background/80 text-foreground/70 absolute top-2 right-2 inline-flex size-6 items-center justify-center rounded-xs border border-white/10"
+              >
+                <Trash2 className="size-3.5" />
+              </button>
+              <div className="text-foreground/70 absolute right-2 bottom-2 left-2 flex items-center justify-between text-xs">
+                <span>1024×1024</span>
+                <Link2 className="size-3.5" />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <p className="text-foreground/80 mt-3 text-sm">2 images added</p>
       </div>
 
       <div>
-        <FieldLabel>prompt*</FieldLabel>
+        <FieldLabel tooltip="Describe the edit you want the model to apply.">
+          prompt*
+        </FieldLabel>
         <textarea
           defaultValue="Make the hamburger made of glass."
           rows={4}
@@ -102,7 +151,9 @@ export function ModelDetailInputForm() {
       </div>
 
       <div>
-        <FieldLabel>aspect_ratio</FieldLabel>
+        <FieldLabel tooltip="Target aspect ratio for the generated result.">
+          aspect_ratio
+        </FieldLabel>
         <Select defaultValue="1:1">
           <SelectTrigger className={controlSelectClass}>
             <SelectValue />
@@ -118,7 +169,9 @@ export function ModelDetailInputForm() {
       </div>
 
       <div>
-        <FieldLabel>resolution</FieldLabel>
+        <FieldLabel tooltip="Output resolution level for generated images.">
+          resolution
+        </FieldLabel>
         <Select defaultValue="2k">
           <SelectTrigger className={controlSelectClass}>
             <SelectValue />
@@ -132,7 +185,9 @@ export function ModelDetailInputForm() {
       </div>
 
       <div>
-        <FieldLabel>output_format</FieldLabel>
+        <FieldLabel tooltip="The file format returned by the model output.">
+          output_format
+        </FieldLabel>
         <Select defaultValue="jpeg">
           <SelectTrigger className={controlSelectClass}>
             <SelectValue />
@@ -146,7 +201,9 @@ export function ModelDetailInputForm() {
       </div>
 
       <div>
-        <FieldLabel>enable_sync_mode</FieldLabel>
+        <FieldLabel tooltip="Wait for completion and return the result in one response.">
+          enable_sync_mode
+        </FieldLabel>
         <p className="text-foreground/60 text-xs">
           If enabled, API waits for generation and returns results directly in
           the same response.
@@ -154,7 +211,9 @@ export function ModelDetailInputForm() {
       </div>
 
       <div>
-        <FieldLabel>enable_base64_output</FieldLabel>
+        <FieldLabel tooltip="Return image data as base64 instead of a URL.">
+          enable_base64_output
+        </FieldLabel>
         <p className="text-foreground/60 text-xs">
           If enabled, output is embedded as base64 string instead of URL.
         </p>

@@ -41,7 +41,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ProductTopTabs } from "@/features/product/components/product-top-tabs";
 
 import {
   gettingStartedContentByIntent,
@@ -50,8 +50,6 @@ import {
 import { ProductSectionHeader } from "@/features/product/components/product-section-header";
 import {
   isProductMainTab,
-  productMainTabRoutes,
-  productMainTabs,
   resolveProductMainTabFromPathname,
   type ProductMainTab,
 } from "@/features/product/main-tabs";
@@ -72,8 +70,6 @@ type ProductMainProps = {
 type ProductRouter = {
   push: (href: string) => void;
 };
-
-const dashboardTabs = productMainTabs;
 
 const controlButtonClass =
   "border-foreground/10 text-foreground/80 hover:bg-foreground/5 text-xs shadow-xs";
@@ -151,19 +147,6 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
     gettingStartedContentByIntent[dashboardIntent];
   const navigateFromGettingStarted = (href: string) => {
     router.push(href);
-  };
-  const navigateToMainTab = (nextTab: string) => {
-    const directRoute = productMainTabRoutes[nextTab as ProductMainTab];
-    if (directRoute) {
-      router.push(directRoute);
-      return;
-    }
-
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("tab", nextTab);
-    params.delete("billingTab");
-    params.delete("scrollTo");
-    router.push(`/dashboard?${params.toString()}`);
   };
   const navigateToBillingSubTab = (nextTab: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -747,60 +730,13 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
     </section>
   );
   const renderTopTabsSkeleton = () => (
-    <div className="border-foreground/10 bg-background/95 supports-backdrop-filter:bg-background/80 sticky top-0 z-40 flex justify-center border-b px-6 backdrop-blur md:px-12 lg:px-20">
-      <div className="w-full max-w-7xl">
-        <div
-          className="scrollbar-none flex h-12 w-full items-center justify-start gap-4 overflow-x-auto rounded-none px-0 md:gap-6 lg:gap-8"
-          aria-hidden
-        >
-          {dashboardTabs.map((tab) => {
-            const isActive = tab === resolvedMainTab;
-            return (
-              <span
-                key={tab}
-                className={`tracking-xl relative flex h-12 flex-none items-center rounded-none px-0 py-0 text-sm whitespace-nowrap ${
-                  isActive ? "text-foreground font-bold" : "text-foreground/60"
-                }`}
-              >
-                {tab}
-                {isActive && (
-                  <span className="bg-foreground absolute right-0 bottom-0 left-0 h-0.5" />
-                )}
-              </span>
-            );
-          })}
-        </div>
-      </div>
-    </div>
+    <ProductTopTabs activeTab={resolvedMainTab} />
   );
   const renderTopTabs = () => (
-    <div
-      ref={mainTabsContainerRef}
-      className="border-foreground/10 bg-background/95 supports-backdrop-filter:bg-background/80 sticky top-0 z-40 flex justify-center border-b px-6 backdrop-blur md:px-12 lg:px-20"
-    >
-      <div className="w-full max-w-7xl">
-        <Tabs
-          value={resolvedMainTab}
-          onValueChange={navigateToMainTab}
-          className="w-full"
-        >
-          <TabsList
-            variant="line"
-            className="scrollbar-none w-full justify-start gap-4 overflow-x-auto rounded-none px-0 group-data-[orientation=horizontal]/tabs:h-12 md:gap-6 lg:gap-8"
-          >
-            {dashboardTabs.map((tab) => (
-              <TabsTrigger
-                key={tab}
-                value={tab}
-                className="tracking-xl data-[state=active]:text-foreground data-[state=active]:after:bg-foreground h-12 flex-none rounded-none px-0 py-0 text-sm whitespace-nowrap after:bg-transparent data-[state=active]:font-bold"
-              >
-                {tab}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </Tabs>
-      </div>
-    </div>
+    <ProductTopTabs
+      activeTab={resolvedMainTab}
+      containerRef={mainTabsContainerRef}
+    />
   );
   const renderResolvedTabContent = () => {
     if (resolvedMainTab === "Dashboard") {

@@ -21,20 +21,11 @@ import thumb3 from "@/images/thumb-3.webp";
 import thumb4 from "@/images/thumb-4.webp";
 import thumb5 from "@/images/thumb-5.webp";
 import thumb6 from "@/images/thumb-6.webp";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { ProductTopTabs } from "@/features/product/components/product-top-tabs";
 import { ModelDetailInputForm } from "./model-detail-input-form";
-
-const productTabs = [
-  { label: "Dashboard", href: "/dashboard" },
-  { label: "Usage", href: "/usage" },
-  { label: "History", href: "/history" },
-  { label: "LLM", href: "/llm" },
-  { label: "Serverless", href: "/serverless" },
-  { label: "API Keys", href: "/api-keys" },
-  { label: "Billing", href: "/billing" },
-  { label: "Settings", href: "/settings" },
-];
 
 const examples = [
   "Glass hamburger on white backdrop",
@@ -85,21 +76,7 @@ export default function ModelDetailPage() {
   return (
     <main>
       <Navbar />
-      <div className="border-foreground/10 bg-background/95 supports-backdrop-filter:bg-background/80 flex justify-center border-y px-6 backdrop-blur md:px-12 lg:px-20">
-        <div className="w-full max-w-7xl">
-          <div className="scrollbar-none flex h-12 w-full items-center justify-start gap-4 overflow-x-auto rounded-none px-0 md:gap-6 lg:gap-8">
-            {productTabs.map((tab) => (
-              <Link
-                key={tab.label}
-                href={tab.href}
-                className="text-foreground/60 hover:text-foreground tracking-xl relative flex h-12 flex-none items-center rounded-none px-0 py-0 text-sm whitespace-nowrap transition-colors"
-              >
-                {tab.label}
-              </Link>
-            ))}
-          </div>
-        </div>
-      </div>
+      <ProductTopTabs activeTab={null} />
       <section className="px-6 pt-2 pb-16 md:px-12 lg:px-20">
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
           <div className="flex flex-col gap-2">
@@ -115,8 +92,6 @@ export default function ModelDetailPage() {
                 >
                   Explore
                 </Link>
-                <span>/</span>
-                <span>Google Models</span>
                 <span>/</span>
                 <span className="text-foreground">google/nano-banana-pro/edit</span>
               </div>
@@ -159,7 +134,7 @@ export default function ModelDetailPage() {
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
-              <h1 className="text-heading text-3xl font-semibold tracking-tight">
+              <h1 className="text-heading font-display text-3xl leading-none font-bold">
                 google/nano-banana-pro/edit
               </h1>
               <Button
@@ -210,9 +185,17 @@ export default function ModelDetailPage() {
             <div className="lg:col-span-8">
               <div className="bg-surface rounded-xs p-4">
                 <div className="mb-4 flex items-center justify-between">
-                  <span className="text-foreground text-sm font-medium">
-                    Preview
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-foreground text-sm font-medium">
+                      Result
+                    </span>
+                    <Badge
+                      variant="outline"
+                      className="text-foreground/70 border-foreground/10 h-5 rounded-xs px-1.5 text-xs font-medium"
+                    >
+                      Idle
+                    </Badge>
+                  </div>
                   <div className="text-foreground/70 flex items-center gap-2">
                     <Button
                       variant="ghost"
@@ -290,7 +273,7 @@ export default function ModelDetailPage() {
 
           <section className="flex flex-col gap-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-heading text-2xl font-semibold tracking-tight">
+              <h2 className="text-foreground font-display text-xl font-bold">
                 Examples
               </h2>
               <Button
@@ -314,7 +297,7 @@ export default function ModelDetailPage() {
           </section>
 
           <section className="flex flex-col gap-4">
-            <h2 className="text-heading text-2xl font-semibold tracking-tight">
+            <h2 className="text-foreground font-display text-xl font-bold">
               Related Models
             </h2>
             <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
