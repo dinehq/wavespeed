@@ -10,49 +10,33 @@ const resourceGroups = [
   {
     label: "Products",
     items: [
-      { name: "Studio", desc: "Create with AI models", href: "/studio" },
-      { name: "Tools", desc: "Image & video utilities", href: "/tools" },
-      {
-        name: "Download App",
-        desc: "Desktop application",
-        href: "/download",
-      },
+      { name: "Desktop", href: "/download" },
+      { name: "Studio", href: "/studio" },
+      { name: "Tools", href: "/tools" },
     ],
   },
   {
     label: "Developers",
     items: [
-      { name: "Doc", desc: "API reference & guides", href: "/docs" },
-      { name: "GitHub", desc: "Open source repos", href: "/github" },
-      { name: "Blog", desc: "Engineering updates", href: "/blog" },
+      { name: "Doc", href: "/docs" },
+      { name: "GitHub", href: "/github" },
+      { name: "Blog", href: "/blog" },
     ],
   },
   {
     label: "Company",
     items: [
-      { name: "Contact Sales", desc: "Talk to our team", href: "/contact" },
-      {
-        name: "Customer Stories",
-        desc: "Case studies",
-        href: "/customers",
-      },
-      { name: "Affiliate", desc: "Partner program", href: "/affiliate" },
+      { name: "Contact Sales", href: "/contact" },
+      { name: "Customer Stories", href: "/customers" },
+      { name: "Affiliate", href: "/affiliate" },
     ],
   },
   {
     label: "Community",
     items: [
-      { name: "Support", desc: "Help & troubleshooting", href: "/support" },
-      {
-        name: "Inspiration",
-        desc: "Gallery & showcases",
-        href: "/inspiration",
-      },
-      {
-        name: "Be a Creator",
-        desc: "Join the creator program",
-        href: "/creators",
-      },
+      { name: "Support", href: "/support" },
+      { name: "Inspiration", href: "/inspiration" },
+      { name: "Be a Creator", href: "/creators" },
     ],
   },
 ];
@@ -126,25 +110,20 @@ export function Navbar({ mode = "default" }: NavbarProps) {
                 />
               </button>
               {resourcesOpen && (
-                <div className="absolute top-full right-0 z-50 pt-4">
-                  <div className="border-foreground/5 bg-background grid w-105 grid-cols-2 gap-6 rounded-xs border p-5 pt-3 shadow-lg">
+                <div className="absolute top-full -left-5 z-50 pt-4">
+                  <div className="border-foreground/5 bg-background grid w-105 grid-cols-2 gap-x-6 gap-y-4 rounded-xs border p-3 shadow-lg">
                     {resourceGroups.map((group) => (
-                      <div key={group.label} className="flex flex-col gap-1">
-                        <p className="text-foreground/60 tracking-xl mb-1 font-mono text-xs">
+                      <div key={group.label} className="flex flex-col">
+                        <p className="text-foreground/40 tracking-xl mb-1 px-2 font-mono text-xs uppercase">
                           {group.label}
                         </p>
                         {group.items.map((item) => (
                           <Link
                             key={item.name}
                             href={item.href}
-                            className="hover:bg-foreground/5 rounded-xs px-2 py-1.5 transition-colors duration-150"
+                            className="text-foreground/80 hover:text-foreground hover:bg-foreground/5 rounded-xs px-2 py-1.5 font-mono text-sm transition-colors duration-150"
                           >
-                            <p className="text-foreground tracking-xl font-mono text-xs leading-4">
-                              {item.name}
-                            </p>
-                            <p className="text-foreground/60 font-mono text-xs leading-4">
-                              {item.desc}
-                            </p>
+                            {item.name}
                           </Link>
                         ))}
                       </div>
@@ -461,15 +440,15 @@ export function Navbar({ mode = "default" }: NavbarProps) {
           {resourcesOpen && (
             <div className="grid grid-cols-2 gap-4 pl-2">
               {resourceGroups.map((group) => (
-                <div key={group.label} className="flex flex-col gap-1">
-                  <p className="text-foreground/60 tracking-xl mb-1 font-mono text-xs">
+                <div key={group.label} className="flex flex-col">
+                  <p className="text-foreground/40 tracking-xl mb-1 font-mono text-xs uppercase">
                     {group.label}
                   </p>
                   {group.items.map((item) => (
                     <Link
                       key={item.name}
                       href={item.href}
-                      className="text-foreground hover:text-foreground/50 tracking-xl py-1 font-mono text-xs leading-4 transition-colors duration-150"
+                      className="text-foreground/80 hover:text-foreground py-1.5 font-mono text-sm transition-colors duration-150"
                     >
                       {item.name}
                     </Link>

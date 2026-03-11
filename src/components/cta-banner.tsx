@@ -14,9 +14,10 @@ export function CTABanner() {
           className="size-full scale-105 object-cover blur-sm"
         />
       </div>
+      <div className="absolute inset-0 dark:bg-black/50" />
 
       <div className="relative mx-auto flex h-full max-w-360 flex-col items-center justify-center gap-6 px-6 py-12 md:flex-row md:justify-between md:px-12 md:py-0 lg:px-20">
-        <h2 className="font-display text-center text-2xl leading-none font-medium tracking-tight text-balance text-black md:text-left md:text-5xl">
+        <h2 className="font-display text-center text-2xl leading-none font-medium tracking-tight text-balance text-black md:text-left md:text-5xl dark:text-white">
           Unlock Your AI Potential Today
         </h2>
 

@@ -940,6 +940,7 @@ export function HeroDemo() {
           className="size-full scale-105 object-cover blur-sm"
         />
       </div>
+      <div className="absolute inset-0 dark:bg-black/50" />
 
       <div className="relative mx-auto max-w-240 px-4 py-4 md:px-0 md:py-12">
         <div className="bg-background flex flex-col gap-2 rounded-[5px] p-2">

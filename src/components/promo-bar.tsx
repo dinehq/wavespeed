@@ -112,7 +112,7 @@ export function PromoBar() {
 
   const badgeEl = config.badge && (
     <span
-      className="hidden shrink-0 rounded-sm px-1.5 py-1 text-[10px] leading-none font-bold tracking-wide sm:inline-block"
+      className="hidden shrink-0 rounded-sm px-1.5 py-0.75 text-[10px] leading-none font-bold tracking-wide sm:inline-block"
       style={{
         backgroundColor: `color-mix(in srgb, ${textColor} 20%, transparent)`,
         color: textColor,
@@ -130,7 +130,7 @@ export function PromoBar() {
           <span className="line-clamp-1 text-left">{config.text}</span>
           <PromoLink
             href={config.href}
-            className="shrink-0 rounded-full px-2 py-1 text-[10px] leading-none font-bold tracking-wide transition-opacity duration-150 hover:opacity-80 sm:text-xs"
+            className="shrink-0 rounded-full px-2 py-0.75 text-[11px] leading-none font-semibold transition-opacity duration-150 hover:opacity-80 sm:text-xs"
             style={{ backgroundColor: textColor, color: bgColor }}
           >
             {config.ctaLabel}
