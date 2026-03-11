@@ -60,6 +60,7 @@ import { ProductBillingTab } from "@/features/product/tabs/billing-tab";
 import { ProductDashboardTab } from "@/features/product/tabs/dashboard-tab";
 import { ProductSettingsTab } from "@/features/product/tabs/settings-tab";
 import { ProductUsageTab } from "@/features/product/tabs/usage-tab";
+import { ProductModelsTab } from "@/features/product/tabs/models-tab";
 import type { DashboardIntent } from "@/features/product/types/product-main";
 import { toast } from "@/hooks/use-toast";
 
@@ -773,6 +774,10 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
           controlButtonSmClass={controlButtonSmClass}
         />
       );
+    }
+
+    if (resolvedMainTab === "Models") {
+      return <ProductModelsTab />;
     }
 
     if (resolvedMainTab === "History") {

@@ -13,8 +13,8 @@ export default function ExplorePage() {
               Explore Models
             </h1>
             <p className="text-subtle max-w-2xl font-mono text-sm">
-              Browse production-ready models and open each model playground,
-              API config, and usage history in one place.
+              Browse production-ready models and open each model playground, API
+              config, and usage history in one place.
             </p>
           </div>
 

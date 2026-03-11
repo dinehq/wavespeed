@@ -12,8 +12,6 @@ import {
   Star,
   WandSparkles,
 } from "lucide-react";
-import { Footer } from "@/components/footer";
-import { Navbar } from "@/components/navbar";
 import editorPreview from "@/images/editor-image-preview.webp";
 import thumb1 from "@/images/thumb-1.webp";
 import thumb2 from "@/images/thumb-2.webp";
@@ -74,9 +72,8 @@ const controlButtonSmClass =
 
 export default function ModelDetailPage() {
   return (
-    <main>
-      <Navbar />
-      <ProductTopTabs activeTab={null} />
+    <>
+      <ProductTopTabs activeTab="Models" />
       <section className="px-6 pt-2 pb-16 md:px-12 lg:px-20">
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
           <div className="flex flex-col gap-2">
@@ -329,7 +326,6 @@ export default function ModelDetailPage() {
           </section>
         </div>
       </section>
-      <Footer />
-    </main>
+    </>
   );
 }
