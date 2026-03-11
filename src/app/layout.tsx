@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import Script from "next/script";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/toaster";
+import { PromoBar } from "@/components/promo-bar";
 import "./globals.css";
 
 const inter = Inter({
@@ -76,6 +77,7 @@ export default function RootLayout({
         className={`${inter.variable} ${azeret.variable} ${azeretSemiMono.variable} antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <PromoBar />
           {children}
           <Toaster />
         </ThemeProvider>
