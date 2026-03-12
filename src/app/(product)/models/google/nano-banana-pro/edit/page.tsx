@@ -96,7 +96,7 @@ export default function ModelDetailPage() {
                     className="text-muted-foreground hover:text-foreground shrink-0 rounded-xs"
                     aria-label="Copy"
                   >
-                    <Copy className="size-5" />
+                    <Copy className="size-5 stroke-[1.75]" />
                   </Button>
                   <Button
                     variant="ghost"
@@ -104,7 +104,7 @@ export default function ModelDetailPage() {
                     className="text-muted-foreground hover:text-foreground shrink-0 rounded-xs"
                     aria-label="Doc"
                   >
-                    <BookOpen className="size-5" />
+                    <BookOpen className="size-5 stroke-[1.75]" />
                   </Button>
                 </div>
                 <p className="text-subtle line-clamp-2 max-w-3xl text-sm">

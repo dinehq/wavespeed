@@ -24,11 +24,11 @@ import { Switch } from "@/components/ui/switch";
 import thumbR7 from "@/images/thumb-r7.webp";
 
 const controlButtonSmClass =
-  "border-foreground/10 text-foreground/80 hover:bg-foreground/5 h-9 rounded-xs px-3 text-sm font-bold shadow-xs";
+  "border-foreground/10 text-foreground/80 hover:bg-foreground/5 h-8 rounded-xs px-3 text-xs font-bold shadow-xs";
 const controlSelectClass =
-  "border-foreground/10 bg-background text-foreground/80 hover:bg-foreground/5 h-9 w-fit min-w-28 max-w-72 rounded-xs px-3 text-sm shadow-xs";
+  "border-foreground/10 bg-background text-foreground/80 hover:bg-foreground/5 h-8 w-fit min-w-28 max-w-72 rounded-xs px-3 text-xs shadow-xs";
 const controlSelectTriggerCompactClass =
-  "border-foreground/10 bg-background text-foreground/80 hover:bg-foreground/5 h-9 w-fit min-w-20 rounded-xs px-3 text-sm shadow-xs justify-between";
+  "border-foreground/10 bg-background text-foreground/80 hover:bg-foreground/5 h-6 w-fit min-w-16 rounded-xs px-2 text-xs shadow-xs justify-between";
 const previewCardClass =
   "bg-muted/40 border-input relative w-full max-w-40 overflow-hidden rounded-xs border";
 const sliderClass = cn(
@@ -179,7 +179,7 @@ export function ModelSwitcher() {
       <SelectTrigger
         size="sm"
         aria-label="Switch model"
-        className="text-muted-foreground hover:bg-accent hover:text-foreground dark:hover:bg-accent/50 [&_svg]:text-muted-foreground hover:[&_svg]:text-foreground inline-flex size-8 min-w-8 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-xs border-0 bg-transparent px-0 py-0 text-sm font-bold whitespace-nowrap shadow-none transition-all outline-none **:data-[slot=select-value]:hidden [&_svg]:size-5 [&_svg]:opacity-100"
+        className="text-muted-foreground hover:bg-accent hover:text-foreground dark:hover:bg-accent/50 [&_svg]:text-muted-foreground hover:[&_svg]:text-foreground inline-flex size-8 min-w-8 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-xs border-0 bg-transparent px-0 py-0 text-sm font-bold whitespace-nowrap shadow-none transition-all outline-none **:data-[slot=select-value]:hidden [&_svg]:size-5 [&_svg]:stroke-[1.75] [&_svg]:opacity-100"
       >
         <SelectValue />
       </SelectTrigger>
@@ -477,7 +477,7 @@ export function ModelDetailInputForm() {
               onBlur={handleAddSingleImageUrl}
               placeholder="Add image from URL or paste from clipboard"
               className={cn(
-                "border-input bg-background placeholder:text-muted-foreground text-foreground h-9 flex-1 rounded-xs border px-3 text-sm shadow-xs outline-none",
+                "border-input bg-background placeholder:text-muted-foreground text-foreground h-8 flex-1 rounded-xs border px-3 text-xs shadow-xs outline-none",
                 "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
                 "aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40",
               )}
@@ -488,7 +488,7 @@ export function ModelDetailInputForm() {
               size="icon-sm"
               onClick={handleOpenSingleImageFilePicker}
               aria-label="Choose image file"
-              className="border-foreground/10 text-foreground/80 hover:bg-foreground/5 h-9 w-9 rounded-xs shadow-xs"
+              className="border-foreground/10 text-foreground/80 hover:bg-foreground/5 h-8 w-8 rounded-xs shadow-xs"
             >
               <FolderOpen className="size-4" />
             </Button>
@@ -547,7 +547,7 @@ export function ModelDetailInputForm() {
               onChange={handleImagesSelected}
               className="hidden"
             />
-            <div className="bg-border h-6 w-px shrink-0" />
+            <div className="bg-border h-5 w-px shrink-0" />
             <div className="flex min-w-0 flex-1 items-center gap-2">
               <input
                 type="text"
@@ -561,7 +561,7 @@ export function ModelDetailInputForm() {
                 }}
                 placeholder="Add image from URL or paste from clipboard"
                 className={cn(
-                  "border-input bg-background placeholder:text-muted-foreground text-foreground h-9 flex-1 rounded-xs border px-3 text-sm shadow-xs outline-none",
+                  "border-input bg-background placeholder:text-muted-foreground text-foreground h-8 flex-1 rounded-xs border px-3 text-xs shadow-xs outline-none",
                   "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
                   "aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40",
                 )}
@@ -632,7 +632,7 @@ export function ModelDetailInputForm() {
               type="button"
               variant="outline"
               size="sm"
-              className="border-foreground/10 text-foreground/80 hover:bg-foreground/5 h-8 rounded-xs px-3 text-xs font-bold shadow-xs"
+              className={controlButtonSmClass}
             >
               <Sparkles className="size-3.5" />
               Prompt Enhancer
@@ -642,7 +642,7 @@ export function ModelDetailInputForm() {
             defaultValue="Make the hamburger made of glass."
             rows={4}
             className={cn(
-              "border-input bg-background placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground w-full min-w-0 resize-y rounded-xs border px-3 py-2 text-sm shadow-xs transition-[color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
+              "border-input bg-background placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground w-full min-w-0 resize-y rounded-xs border px-3 py-2 text-xs shadow-xs transition-[color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
               "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
               "aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40",
               "min-h-24",
@@ -794,13 +794,13 @@ export function ModelDetailInputForm() {
                   }
                 }}
                 placeholder="https://..."
-                className="border-input bg-background text-foreground placeholder:text-muted-foreground h-9 flex-1 rounded-xs border px-3 text-sm shadow-xs outline-none"
+                className="border-input bg-background text-foreground placeholder:text-muted-foreground h-8 flex-1 rounded-xs border px-2 text-xs shadow-xs outline-none"
               />
               <Button
                 type="button"
                 variant="outline"
                 size="icon-sm"
-                className="h-9 w-9 rounded-xs shadow-xs"
+                className="h-8 w-8 rounded-xs shadow-xs"
                 aria-label="Choose audio file"
                 onClick={handleOpenAudioFilePicker}
               >
@@ -817,7 +817,7 @@ export function ModelDetailInputForm() {
                 type="button"
                 variant="outline"
                 size="icon-sm"
-                className="h-9 w-9 rounded-xs shadow-xs"
+                className="h-8 w-8 rounded-xs shadow-xs"
                 aria-label="Record audio"
               >
                 <Mic className="size-3.5" />
@@ -854,7 +854,7 @@ export function ModelDetailInputForm() {
               value={lorasPath}
               onChange={(event) => setLorasPath(event.target.value)}
               placeholder="<owner>/<model-name> or URL"
-              className="border-input bg-background text-foreground placeholder:text-muted-foreground h-9 w-full rounded-xs border px-3 text-sm shadow-xs outline-none"
+              className="border-input bg-background text-foreground placeholder:text-muted-foreground h-8 w-full rounded-xs border px-3 text-xs shadow-xs outline-none"
             />
             <div className="flex items-center gap-2">
               <span className="text-foreground/70 w-10 text-xs">scale</span>
