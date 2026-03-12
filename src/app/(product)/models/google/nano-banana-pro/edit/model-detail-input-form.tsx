@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { CircleHelp, ImagePlus, Link2, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -48,6 +49,47 @@ const inputModeOptions = [
   { value: "python", label: "Python" },
   { value: "javascript", label: "JavaScript" },
 ] as const;
+
+const modelOptions = [
+  "avatar-omni-human",
+  "avatar-omni-human-1.5",
+  "dreamactor-v2",
+  "dreamina-v3.0-pro/image-to-video",
+  "dreamina-v3.0-pro/text-to-video",
+  "dreamina-v3.0/edit",
+  "dreamina-v3.0/image-to-video-1080p",
+  "dreamina-v3.0/image-to-video-720p",
+  "dreamina-v3.0/text-to-image",
+  "dreamina-v3.0/text-to-video-1080p",
+  "dreamina-v3.0/text-to-video-720p",
+  "dreamina-v3.1/text-to-image",
+] as const;
+
+export function ModelSwitcher() {
+  const [model, setModel] = useState<string>("nano-banana-pro/edit");
+
+  return (
+    <Select value={model} onValueChange={setModel}>
+      <SelectTrigger
+        size="sm"
+        aria-label="Switch model"
+        className="text-muted-foreground hover:bg-accent hover:text-foreground dark:hover:bg-accent/50 [&_svg]:text-muted-foreground hover:[&_svg]:text-foreground inline-flex size-8 min-w-8 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-xs border-0 bg-transparent px-0 py-0 text-sm font-bold whitespace-nowrap shadow-none transition-all outline-none **:data-[slot=select-value]:hidden [&_svg]:size-5 [&_svg]:opacity-100"
+      >
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent className="border-foreground/10 rounded-xs">
+        <SelectItem value="nano-banana-pro/edit">
+          nano-banana-pro/edit
+        </SelectItem>
+        {modelOptions.map((option) => (
+          <SelectItem key={option} value={option}>
+            {option}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  );
+}
 
 export function ModelDetailInputForm() {
   return (

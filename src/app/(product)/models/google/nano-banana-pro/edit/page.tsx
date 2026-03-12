@@ -22,8 +22,9 @@ import thumb6 from "@/images/thumb-6.webp";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ProductTopTabs } from "@/features/product/components/product-top-tabs";
-import { ModelDetailInputForm } from "./model-detail-input-form";
+import { ModelDetailInputForm, ModelSwitcher } from "./model-detail-input-form";
 
 const examples = [
   "Glass hamburger on white backdrop",
@@ -74,41 +75,46 @@ export default function ModelDetailPage() {
   return (
     <>
       <ProductTopTabs activeTab="Explore" />
-      <section className="px-6 pt-2 pb-16 md:px-12 lg:px-20">
+      <section className="px-6 pb-16 md:px-12 lg:px-20">
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
-          <div className="flex flex-col gap-2">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div className="text-foreground/60 flex items-center gap-2 text-xs">
-                <Link
-                  href="/"
-                  className="hover:text-foreground transition-colors"
-                >
-                  Home
-                </Link>
-                <span>/</span>
-                <Link
-                  href="/explore"
-                  className="hover:text-foreground transition-colors"
-                >
-                  Explore
-                </Link>
-                <span>/</span>
-                <span className="text-foreground">
-                  google/nano-banana-pro/edit
-                </span>
+          <div className="flex flex-col gap-4 pt-5">
+            <div className="flex flex-col gap-3 md:flex-row md:items-baseline md:justify-between md:gap-4">
+              <div className="flex min-w-0 flex-1 flex-col items-start gap-2 md:pr-4 lg:pr-6">
+                <div className="flex min-w-0 flex-wrap items-center gap-2">
+                  <h1 className="text-heading font-display text-3xl leading-none font-bold">
+                    google/nano-banana-pro/edit
+                  </h1>
+                  <ModelSwitcher />
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    className="text-muted-foreground hover:text-foreground shrink-0 rounded-xs"
+                    aria-label="Copy"
+                  >
+                    <Copy className="size-5" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    className="text-muted-foreground hover:text-foreground shrink-0 rounded-xs"
+                    aria-label="Doc"
+                  >
+                    <BookOpen className="size-5" />
+                  </Button>
+                </div>
+                <p className="text-subtle line-clamp-2 max-w-3xl text-sm">
+                  Google Nano Banana Pro (Gemini 3.0 Pro Image) Edit supports
+                  high-quality image editing workflows with consistent output and
+                  production-friendly API response modes.
+                </p>
+                <div className="flex flex-wrap gap-1">
+                  <span className="text-foreground/70 bg-surface/70 inline-flex h-6 w-fit items-center gap-1 rounded-xs px-2 text-xs font-medium">
+                    <Images className="size-3" />
+                    image-to-image
+                  </span>
+                </div>
               </div>
-              <button className="text-brand hover:text-brand/80 inline-flex h-8 items-center gap-1 rounded-xs px-3 text-xs font-bold transition-colors">
-                Documentation
-                <BookOpen className="size-3" />
-              </button>
-            </div>
-
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <span className="bg-surface text-foreground/80 inline-flex h-8 items-center gap-2 rounded-xs border border-transparent px-3 text-xs font-bold">
-                <Images className="size-3" />
-                image-to-image
-              </span>
-              <div className="flex flex-wrap items-center gap-2">
+              <div className="flex w-full flex-wrap items-center gap-2 md:w-auto md:shrink-0 md:justify-end lg:ml-6">
                 <Button
                   variant="outline"
                   size="sm"
@@ -124,44 +130,59 @@ export default function ModelDetailPage() {
                 >
                   Schema
                 </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className={controlButtonSmClass}
-                >
-                  LLMs
-                  <ChevronDown className="size-3" />
-                </Button>
+                <Popover>
+                  <div className="flex items-center">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className={`${controlButtonSmClass} rounded-r-none`}
+                    >
+                      LLMs
+                    </Button>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="icon-sm"
+                        aria-label="Open LLM actions"
+                        className="border-foreground/10 text-muted-foreground hover:bg-foreground/5 hover:text-foreground h-8 rounded-l-none rounded-r-xs border-l-0 shadow-xs"
+                      >
+                        <ChevronDown className="size-3" />
+                      </Button>
+                    </PopoverTrigger>
+                  </div>
+                  <PopoverContent
+                    align="end"
+                    className="border-foreground/10 w-64 rounded-xs p-2"
+                  >
+                    <div className="flex flex-col gap-1">
+                      <button
+                        type="button"
+                        className="hover:bg-accent text-foreground flex h-10 items-center rounded-xs px-3 text-sm"
+                      >
+                        Open Markdown content
+                      </button>
+                      <button
+                        type="button"
+                        className="hover:bg-accent text-foreground flex h-10 items-center rounded-xs px-3 text-sm"
+                      >
+                        Copy content
+                      </button>
+                      <button
+                        type="button"
+                        className="hover:bg-accent text-foreground flex h-10 items-center rounded-xs px-3 text-sm"
+                      >
+                        Open in ChatGPT
+                      </button>
+                      <button
+                        type="button"
+                        className="hover:bg-accent text-foreground flex h-10 items-center rounded-xs px-3 text-sm"
+                      >
+                        Open in Claude
+                      </button>
+                    </div>
+                  </PopoverContent>
+                </Popover>
               </div>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-2">
-              <h1 className="text-heading font-display text-3xl leading-none font-bold">
-                google/nano-banana-pro/edit
-              </h1>
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                className="text-foreground/50 hover:text-foreground shrink-0 rounded-xs"
-              >
-                <Copy className="size-5" />
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                className={controlButtonSmClass}
-              >
-                nano-banana-pro/edit
-                <ChevronDown className="size-3 shrink-0" />
-              </Button>
-            </div>
-
-            <div className="flex flex-col gap-3">
-              <p className="text-subtle w-full text-sm">
-                Google Nano Banana Pro (Gemini 3.0 Pro Image) Edit supports
-                high-quality image editing workflows with consistent output and
-                production-friendly API response modes.
-              </p>
             </div>
 
             <div className="border-foreground/10 flex items-center gap-5 border-b pt-1">
