@@ -353,7 +353,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                         setIsModelFilterOpen(false);
                         setModelFilterQuery("");
                       }}
-                      className={`hover:bg-foreground/5 flex w-full cursor-pointer items-center rounded-xs px-2 py-1.5 text-left text-xs ${
+                      className={`hover:bg-foreground/5 flex h-8 w-full cursor-pointer items-center rounded-xs px-2 text-left text-xs ${
                         modelFilterValue === "all-models"
                           ? "bg-foreground/5 text-foreground"
                           : "text-foreground/80"
@@ -371,7 +371,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                             setIsModelFilterOpen(false);
                             setModelFilterQuery("");
                           }}
-                          className={`hover:bg-foreground/5 flex w-full cursor-pointer items-center rounded-xs px-2 py-1.5 text-left text-xs ${
+                          className={`hover:bg-foreground/5 flex h-8 w-full cursor-pointer items-center rounded-xs px-2 text-left text-xs ${
                             modelFilterValue === model
                               ? "bg-foreground/5 text-foreground"
                               : "text-foreground/80"
@@ -381,7 +381,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                         </button>
                       ))
                     ) : (
-                      <p className="text-foreground/50 px-2 py-1.5 text-xs">
+                      <p className="text-foreground/50 flex h-8 items-center px-2 text-xs">
                         No models found
                       </p>
                     )}
@@ -395,14 +395,14 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                 >
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
-                <SelectContent className="bg-background rounded-xs border-0 shadow-sm">
-                  <SelectItem value="all" className="rounded-xs text-xs">
+                <SelectContent className="border-foreground/10">
+                  <SelectItem value="all">
                     All
                   </SelectItem>
-                  <SelectItem value="succeeded" className="rounded-xs text-xs">
+                  <SelectItem value="succeeded">
                     Succeeded
                   </SelectItem>
-                  <SelectItem value="running" className="rounded-xs text-xs">
+                  <SelectItem value="running">
                     Running
                   </SelectItem>
                 </SelectContent>

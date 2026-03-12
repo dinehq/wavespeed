@@ -81,17 +81,11 @@ export function ProductDashboardTab({
                   >
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-background rounded-xs border-0 shadow-sm">
-                    <SelectItem
-                      value="create-with-ai"
-                      className="rounded-xs text-xs"
-                    >
+                  <SelectContent className="border-foreground/10">
+                    <SelectItem value="create-with-ai">
                       Create with AI
                     </SelectItem>
-                    <SelectItem
-                      value="build-with-api"
-                      className="rounded-xs text-xs"
-                    >
+                    <SelectItem value="build-with-api">
                       Build with API
                     </SelectItem>
                   </SelectContent>

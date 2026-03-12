@@ -23,10 +23,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { ProductTopTabs } from "@/features/product/components/product-top-tabs";
 import { ModelDetailInputForm, ModelSwitcher } from "./model-detail-input-form";
 
@@ -134,7 +135,7 @@ export default function ModelDetailPage() {
                 >
                   Schema
                 </Button>
-                <Popover>
+                <DropdownMenu>
                   <div className="flex items-center">
                     <Button
                       variant="outline"
@@ -143,7 +144,7 @@ export default function ModelDetailPage() {
                     >
                       LLMs
                     </Button>
-                    <PopoverTrigger asChild>
+                    <DropdownMenuTrigger asChild>
                       <Button
                         variant="outline"
                         size="icon-sm"
@@ -152,68 +153,43 @@ export default function ModelDetailPage() {
                       >
                         <ChevronDown className="size-3" />
                       </Button>
-                    </PopoverTrigger>
+                    </DropdownMenuTrigger>
                   </div>
-                  <PopoverContent
-                    align="end"
-                    className="border-foreground/10 w-64 rounded-xs p-2"
-                  >
-                    <div className="flex flex-col gap-1">
-                      <button
-                        type="button"
-                        className="hover:bg-accent text-foreground flex h-10 items-center rounded-xs px-3 text-sm"
-                      >
-                        Open Markdown content
-                      </button>
-                      <button
-                        type="button"
-                        className="hover:bg-accent text-foreground flex h-10 items-center rounded-xs px-3 text-sm"
-                      >
-                        Copy content
-                      </button>
-                      <button
-                        type="button"
-                        className="hover:bg-accent text-foreground flex h-10 items-center rounded-xs px-3 text-sm"
-                      >
-                        Open in ChatGPT
-                      </button>
-                      <button
-                        type="button"
-                        className="hover:bg-accent text-foreground flex h-10 items-center rounded-xs px-3 text-sm"
-                      >
-                        Open in Claude
-                      </button>
-                    </div>
-                  </PopoverContent>
-                </Popover>
+                  <DropdownMenuContent className="border-foreground/10">
+                    <DropdownMenuItem>Open Markdown content</DropdownMenuItem>
+                    <DropdownMenuItem>Copy content</DropdownMenuItem>
+                    <DropdownMenuItem>Open in ChatGPT</DropdownMenuItem>
+                    <DropdownMenuItem>Open in Claude</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             </div>
 
-            <div className="border-foreground/10 flex items-center gap-5 border-b pt-1">
-              <button className="text-foreground border-foreground h-8 border-b-2 text-xs font-bold">
+            <div className="border-foreground/10 flex items-center gap-2 border-b pt-1">
+              <button className="text-foreground border-foreground h-10 border-b-2 px-3 text-sm font-bold">
                 Playground
               </button>
-              <button className="text-foreground/60 hover:text-foreground h-8 text-xs font-bold transition-colors">
+              <button className="text-foreground/60 hover:text-foreground h-10 px-3 text-sm font-bold transition-colors">
                 API
               </button>
-              <button className="text-foreground/60 hover:text-foreground h-8 text-xs font-bold transition-colors">
+              <button className="text-foreground/60 hover:text-foreground h-10 px-3 text-sm font-bold transition-colors">
                 History
               </button>
             </div>
           </div>
 
           <div className="grid gap-6 lg:grid-cols-12">
-            <aside className="lg:col-span-4">
+            <aside className="lg:col-span-6">
               <div className="bg-surface rounded-xs p-4">
                 <ModelDetailInputForm />
               </div>
             </aside>
 
-            <div className="lg:col-span-8">
+            <div className="lg:col-span-6">
               <div className="bg-surface rounded-xs p-4">
                 <div className="mb-4 flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <span className="text-foreground text-sm font-medium">
+                    <span className="text-foreground text-sm font-semibold">
                       Result
                     </span>
                     <Badge
