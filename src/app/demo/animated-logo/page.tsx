@@ -22,7 +22,7 @@ function DemoCard({
 
   return (
     <div className="flex flex-col items-center gap-6">
-      <p className="font-mono text-xs tracking-widest text-subtle uppercase">
+      <p className="text-subtle font-mono text-xs tracking-widest uppercase">
         {label}
       </p>
       <div className="flex size-40 items-center justify-center">
@@ -31,7 +31,7 @@ function DemoCard({
       {!loop && (
         <button
           onClick={() => setKey((k) => k + 1)}
-          className="rounded-lg border border-border bg-background px-5 py-2.5 font-mono text-sm text-foreground transition-colors hover:bg-muted"
+          className="border-border bg-background text-foreground hover:bg-muted rounded-lg border px-5 py-2.5 font-mono text-sm transition-colors"
         >
           Replay
         </button>
@@ -42,14 +42,11 @@ function DemoCard({
 
 export default function AnimatedLogoDemo() {
   return (
-    <div className="flex min-h-svh flex-col items-center justify-center gap-16 bg-background p-8">
+    <div className="bg-background flex min-h-svh flex-col items-center justify-center gap-16 p-8">
       <div className="grid grid-cols-1 gap-16 sm:grid-cols-2 lg:grid-cols-3">
         <DemoCard label="SVG Animated">
           {(key) => (
-            <AnimatedLogo
-              key={key}
-              className="w-full text-foreground"
-            />
+            <AnimatedLogo key={key} className="text-foreground w-full" />
           )}
         </DemoCard>
 
