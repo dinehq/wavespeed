@@ -504,6 +504,7 @@ export function ModelDetailInputForm() {
             <div className="mt-3">
               <div className={previewCardClass}>
                 <div className="relative aspect-square w-full">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={singleImage.src}
                     alt="Primary input image preview"
@@ -591,6 +592,7 @@ export function ModelDetailInputForm() {
                 className={cn(previewCardClass, "justify-self-start")}
               >
                 <div className="relative aspect-square w-full">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={item.src}
                     alt="Input image preview"
