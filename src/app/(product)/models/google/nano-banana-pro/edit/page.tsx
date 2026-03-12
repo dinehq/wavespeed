@@ -73,7 +73,7 @@ const controlButtonSmClass =
 export default function ModelDetailPage() {
   return (
     <>
-      <ProductTopTabs activeTab="Models" />
+      <ProductTopTabs activeTab="Explore" />
       <section className="px-6 pt-2 pb-16 md:px-12 lg:px-20">
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
           <div className="flex flex-col gap-2">

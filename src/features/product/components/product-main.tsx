@@ -776,7 +776,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
       );
     }
 
-    if (resolvedMainTab === "Models") {
+    if (resolvedMainTab === "Explore") {
       return <ProductModelsTab />;
     }
 
