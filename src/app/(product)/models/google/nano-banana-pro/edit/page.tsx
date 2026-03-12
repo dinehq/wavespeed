@@ -22,7 +22,11 @@ import thumb6 from "@/images/thumb-6.webp";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { ProductTopTabs } from "@/features/product/components/product-top-tabs";
 import { ModelDetailInputForm, ModelSwitcher } from "./model-detail-input-form";
 
@@ -104,8 +108,8 @@ export default function ModelDetailPage() {
                 </div>
                 <p className="text-subtle line-clamp-2 max-w-3xl text-sm">
                   Google Nano Banana Pro (Gemini 3.0 Pro Image) Edit supports
-                  high-quality image editing workflows with consistent output and
-                  production-friendly API response modes.
+                  high-quality image editing workflows with consistent output
+                  and production-friendly API response modes.
                 </p>
                 <div className="flex flex-wrap gap-1">
                   <span className="text-foreground/70 bg-surface/70 inline-flex h-6 w-fit items-center gap-1 rounded-xs px-2 text-xs font-medium">
