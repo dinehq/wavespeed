@@ -96,7 +96,7 @@ function FieldLabel({
         </button>
         <span
           role="tooltip"
-          className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-1.5 w-64 -translate-x-1/2 rounded-xs bg-slate-950 px-2.5 py-1.5 text-xs leading-snug text-white opacity-0 shadow-md transition-opacity duration-150 group-hover:opacity-100 group-focus-within:opacity-100"
+          className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-1.5 w-64 -translate-x-1/2 rounded-xs bg-slate-950 px-2.5 py-1.5 text-xs leading-snug text-white opacity-0 shadow-md transition-opacity duration-150 group-focus-within:opacity-100 group-hover:opacity-100"
         >
           {tooltip}
         </span>
@@ -313,10 +313,7 @@ export function ModelDetailInputForm() {
       }));
 
     if (nextItems.length > 0) {
-      setImages((prev) => [
-        ...prev,
-        ...nextItems,
-      ]);
+      setImages((prev) => [...prev, ...nextItems]);
     }
     event.target.value = "";
   };
@@ -369,7 +366,9 @@ export function ModelDetailInputForm() {
     audioFileInputRef.current?.click();
   };
 
-  const handleAudioFileSelected = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAudioFileSelected = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const files = event.target.files;
     if (!files || files.length === 0) {
       return;
@@ -461,7 +460,9 @@ export function ModelDetailInputForm() {
       </div>
       <div className="space-y-6">
         <div>
-          <FieldLabel tooltip="One primary input image for editing.">image*</FieldLabel>
+          <FieldLabel tooltip="One primary input image for editing.">
+            image*
+          </FieldLabel>
           <div className="flex min-w-0 items-center gap-2">
             <input
               type="text"

@@ -396,15 +396,9 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
                 <SelectContent className="border-foreground/10">
-                  <SelectItem value="all">
-                    All
-                  </SelectItem>
-                  <SelectItem value="succeeded">
-                    Succeeded
-                  </SelectItem>
-                  <SelectItem value="running">
-                    Running
-                  </SelectItem>
+                  <SelectItem value="all">All</SelectItem>
+                  <SelectItem value="succeeded">Succeeded</SelectItem>
+                  <SelectItem value="running">Running</SelectItem>
                 </SelectContent>
               </Select>
               {isIdSearchOpen ? (
