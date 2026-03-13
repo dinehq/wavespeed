@@ -15,29 +15,14 @@ const inter = Inter({
 const azeret = localFont({
   src: [
     {
-      path: "../fonts/Azeret-TRIAL-Regular.woff2",
-      weight: "400",
-      style: "normal",
-    },
-    {
       path: "../fonts/Azeret-TRIAL-Medium.woff2",
       weight: "500",
       style: "normal",
     },
     {
-      path: "../fonts/Azeret-TRIAL-MediumItalic.woff2",
-      weight: "500",
-      style: "italic",
-    },
-    {
       path: "../fonts/Azeret-TRIAL-SemiBold.woff2",
       weight: "600",
       style: "normal",
-    },
-    {
-      path: "../fonts/Azeret-TRIAL-SemiBoldItalic.woff2",
-      weight: "600",
-      style: "italic",
     },
   ],
   variable: "--font-azeret",
@@ -48,11 +33,6 @@ const azeretSemiMono = localFont({
     {
       path: "../fonts/AzeretSemiMono-TRIAL-Regular.woff2",
       weight: "400",
-      style: "normal",
-    },
-    {
-      path: "../fonts/AzeretSemiMono-TRIAL-Medium.woff2",
-      weight: "500",
       style: "normal",
     },
   ],

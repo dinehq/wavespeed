@@ -30,7 +30,7 @@ export function FeaturesSection() {
       <div className="mx-auto max-w-7xl">
         <div className="mb-10 flex max-w-[876px] flex-col gap-4">
           <h2 className="text-heading font-display text-2xl leading-none font-medium tracking-tight text-balance md:text-5xl">
-            Engineered for <em className="italic">Velocity</em>
+            Engineered for Velocity
           </h2>
           <p className="text-foreground/60 font-mono text-base text-pretty">
             WaveSpeed is a purpose-built inference engine

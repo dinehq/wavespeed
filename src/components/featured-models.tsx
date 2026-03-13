@@ -353,7 +353,7 @@ export function FeaturedModels() {
       <div className="mx-auto mt-10 flex max-w-290 justify-center">
         <a
           href="#"
-          className="bg-foreground text-background hover:bg-foreground/80 tracking-xl rounded-xs px-6 py-3 font-mono text-sm font-medium transition-colors duration-150"
+          className="bg-foreground text-background hover:bg-foreground/80 tracking-xl rounded-xs px-6 py-3 font-mono text-sm transition-colors duration-150"
         >
           Explore all 1326 models
         </a>

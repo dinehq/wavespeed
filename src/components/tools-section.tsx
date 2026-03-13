@@ -519,7 +519,7 @@ export function ToolsSection() {
       {/* Header */}
       <div className="mx-auto mb-10 max-w-244 px-6 text-center md:px-12 lg:px-20">
         <h2 className="text-heading font-display mb-6 text-2xl leading-none font-medium tracking-tight text-balance md:text-5xl">
-          Get <em className="italic">any</em> tool you want
+          Get any tool you want
         </h2>
         <p className="text-subtle font-mono text-base text-pretty">
           Transform your creative workflow with AI tools for

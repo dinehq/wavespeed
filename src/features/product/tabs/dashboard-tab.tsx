@@ -112,7 +112,7 @@ export function ProductDashboardTab({
                 <div className="divide-foreground/10 grid divide-y md:grid-cols-3 md:divide-x md:divide-y-0">
                   <section className="flex h-full flex-col justify-between px-4 pt-4 pb-1 md:px-5 md:pt-5 md:pb-2">
                     <div className="mb-4">
-                      <CardTitle className="text-foreground font-display text-base">
+                      <CardTitle className="text-foreground font-display text-base font-bold">
                         Welcome to WaveSpeed
                       </CardTitle>
                       <CardDescription className="text-subtle mt-1.5 text-sm leading-5">
@@ -170,7 +170,7 @@ export function ProductDashboardTab({
 
                   <section className="flex h-full flex-col justify-between px-4 pt-4 pb-1 md:px-5 md:pt-5 md:pb-2">
                     <div className="mb-4">
-                      <CardTitle className="text-foreground font-display text-base">
+                      <CardTitle className="text-foreground font-display text-base font-bold">
                         {currentGettingStartedContent.title}
                       </CardTitle>
                       <CardDescription className="text-subtle mt-1.5 text-sm leading-5">
@@ -209,7 +209,7 @@ export function ProductDashboardTab({
 
                   <section className="flex h-full flex-col justify-between px-4 pt-4 pb-1 md:px-5 md:pt-5 md:pb-2">
                     <div className="mb-4">
-                      <CardTitle className="text-foreground font-display text-base">
+                      <CardTitle className="text-foreground font-display text-base font-bold">
                         Explore Models
                       </CardTitle>
                       <CardDescription className="text-subtle mt-1.5 text-sm leading-5">
