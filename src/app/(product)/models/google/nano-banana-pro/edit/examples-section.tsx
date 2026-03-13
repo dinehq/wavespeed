@@ -47,41 +47,43 @@ export function ExamplesSection() {
             View all
           </Button>
         </div>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-          {examples.map((item) => (
-            <div
-              key={item.id}
-              className="group border-foreground/10 bg-surface relative aspect-square w-full overflow-hidden rounded-xs border"
-            >
-              <Image
-                src={item.image}
-                alt=""
-                fill
-                className="object-cover transition-transform duration-200 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/0 opacity-0 transition-opacity duration-200 group-hover:bg-black/40 group-hover:opacity-100">
-                <Button
-                  type="button"
-                  variant="secondary"
-                  size="icon-sm"
-                  aria-label="View large"
-                  className="text-foreground h-9 w-9 rounded-xs bg-white/90 shadow-sm hover:bg-white"
-                  onClick={() => setOpenId(item.id)}
-                >
-                  <Expand className="size-4" />
-                </Button>
-                <Button
-                  type="button"
-                  variant="secondary"
-                  size="icon-sm"
-                  aria-label="Edit"
-                  className="text-foreground h-9 w-9 rounded-xs bg-white/90 shadow-sm hover:bg-white"
-                >
-                  <Pencil className="size-4" />
-                </Button>
+        <div className="-mx-1 overflow-x-auto px-1">
+          <div className="flex flex-nowrap gap-3 pb-1">
+            {examples.map((item) => (
+              <div
+                key={item.id}
+                className="group border-foreground/10 bg-surface relative aspect-square w-32 shrink-0 overflow-hidden rounded-xs border"
+              >
+                <Image
+                  src={item.image}
+                  alt=""
+                  fill
+                  className="object-cover transition-transform duration-200 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/0 opacity-0 transition-opacity duration-200 group-hover:bg-black/40 group-hover:opacity-100">
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    size="icon-sm"
+                    aria-label="View large"
+                    className="text-foreground h-9 w-9 rounded-xs bg-white/90 shadow-sm hover:bg-white"
+                    onClick={() => setOpenId(item.id)}
+                  >
+                    <Expand className="size-4" />
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    size="icon-sm"
+                    aria-label="Edit"
+                    className="text-foreground h-9 w-9 rounded-xs bg-white/90 shadow-sm hover:bg-white"
+                  >
+                    <Pencil className="size-4" />
+                  </Button>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 

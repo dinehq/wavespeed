@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 const tocItems = [
   { id: "intro", label: "Google Nano Banana 2 Edit", featured: true },
   { id: "why-choose-this", label: "Why Choose This?" },
@@ -47,21 +51,60 @@ const parameterRows = [
 ] as const;
 
 export function ReadmeSection() {
+  const [activeId, setActiveId] = useState<string>(tocItems[0].id);
+
+  useEffect(() => {
+    const sectionElements = tocItems
+      .map((item) => document.getElementById(item.id))
+      .filter((el): el is HTMLElement => Boolean(el));
+
+    if (sectionElements.length === 0) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleEntries = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+        if (visibleEntries.length > 0) {
+          setActiveId(visibleEntries[0].target.id);
+        }
+      },
+      {
+        root: null,
+        // Track the section that is currently nearest to top viewport.
+        rootMargin: "-20% 0px -65% 0px",
+        threshold: [0.1, 0.3, 0.6],
+      },
+    );
+
+    sectionElements.forEach((el) => observer.observe(el));
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   return (
     <section className="flex flex-col gap-4">
-      <h2 className="text-foreground font-display text-xl font-bold">README</h2>
+      <h2 className="text-foreground font-display text-xl font-semibold">
+        README
+      </h2>
 
       <div className="grid items-start gap-4 md:grid-cols-4">
-        <aside className="border-foreground/10 sticky top-14 rounded-xs border p-3 md:col-span-1">
-          <nav aria-label="README table of contents" className="space-y-1">
+        <aside className="border-foreground/10 sticky top-14 hidden rounded-xs border p-3 md:col-span-1 md:block">
+          <nav aria-label="README table of contents" className="-mx-3 space-y-1">
             {tocItems.map((item) => (
               <a
                 key={item.id}
                 href={`#${item.id}`}
-                className={`block px-2 py-1.5 text-sm transition-colors ${
-                  "featured" in item && item.featured
-                    ? "text-foreground border-foreground border-l-2"
-                    : "text-foreground/70 hover:text-foreground hover:bg-foreground/5 rounded-xs"
+                onClick={() => setActiveId(item.id)}
+                className={`block border-l-2 py-1.5 pr-2 pl-3 text-sm transition-colors ${
+                  activeId === item.id
+                    ? "text-foreground border-foreground"
+                    : "text-foreground/70 border-transparent hover:text-foreground hover:bg-foreground/5 rounded-xs"
                 }`}
               >
                 <span className="block">{item.label}</span>
@@ -72,7 +115,7 @@ export function ReadmeSection() {
 
         <article className="border-foreground/10 space-y-8 rounded-xs border p-6 md:col-span-3">
           <section id="intro" className="scroll-mt-28 space-y-3">
-            <h3 className="text-foreground text-2xl font-bold">
+            <h3 className="text-foreground text-2xl font-semibold">
               Google Nano Banana 2 Edit
             </h3>
             <p className="text-foreground/80 leading-7">
@@ -86,54 +129,55 @@ export function ReadmeSection() {
           </section>
 
           <section id="why-choose-this" className="scroll-mt-28 space-y-3">
-            <h4 className="text-foreground border-foreground/10 border-b pb-2 text-xl font-bold">
+            <h4 className="text-foreground border-foreground/10 border-b pb-2 text-xl font-semibold">
               Why Choose This?
             </h4>
             <ul className="text-foreground/90 list-disc space-y-2 pl-6 leading-7">
               <li>
-                <span className="font-bold">Natural language editing</span>{" "}
+                <span className="font-semibold">Natural language editing</span>{" "}
                 Modify images using simple text instructions and preserve
                 context.
               </li>
               <li>
-                <span className="font-bold">Multi-image reference</span> Upload
+                <span className="font-semibold">Multi-image reference</span>{" "}
+                Upload
                 up to 14 reference images for complex edits and compositions.
               </li>
               <li>
-                <span className="font-bold">Multi-resolution support</span>{" "}
+                <span className="font-semibold">Multi-resolution support</span>{" "}
                 Output in 1k, 2k, or 4k resolution based on your needs.
               </li>
               <li>
-                <span className="font-bold">Flexible aspect ratios</span>{" "}
+                <span className="font-semibold">Flexible aspect ratios</span>{" "}
                 Multiple options including 1:1, 3:2, 2:3, 3:4, 4:3, 4:5, 5:4,
                 9:16, 16:9, 21:9, 1:4, 4:1, 1:8, and 8:1.
               </li>
               <li>
-                <span className="font-bold">Prompt Enhancer</span> Built-in tool
-                to automatically improve your edit descriptions.
+                <span className="font-semibold">Prompt Enhancer</span> Built-in
+                tool to automatically improve your edit descriptions.
               </li>
               <li>
-                <span className="font-bold">Format choice</span> Export in PNG
-                or JPEG format.
+                <span className="font-semibold">Format choice</span> Export in
+                PNG or JPEG format.
               </li>
             </ul>
           </section>
 
           <section id="parameters" className="scroll-mt-28 space-y-3">
-            <h4 className="text-foreground border-foreground/10 border-b pb-2 text-xl font-bold">
+            <h4 className="text-foreground border-foreground/10 border-b pb-2 text-xl font-semibold">
               Parameters
             </h4>
             <div className="border-foreground/10 overflow-hidden rounded-xs border">
               <table className="w-full border-collapse text-sm">
                 <thead className="bg-foreground/5 text-foreground">
                   <tr>
-                    <th className="border-foreground/10 border-b px-3 py-2 text-left font-bold">
+                    <th className="border-foreground/10 border-b px-3 py-2 text-left font-semibold">
                       Parameter
                     </th>
-                    <th className="border-foreground/10 border-b px-3 py-2 text-left font-bold">
+                    <th className="border-foreground/10 border-b px-3 py-2 text-left font-semibold">
                       Required
                     </th>
-                    <th className="border-foreground/10 border-b px-3 py-2 text-left font-bold">
+                    <th className="border-foreground/10 border-b px-3 py-2 text-left font-semibold">
                       Description
                     </th>
                   </tr>
@@ -158,47 +202,47 @@ export function ReadmeSection() {
           </section>
 
           <section id="how-to-use" className="scroll-mt-28 space-y-3">
-            <h4 className="text-foreground border-foreground/10 border-b pb-2 text-xl font-bold">
+            <h4 className="text-foreground border-foreground/10 border-b pb-2 text-xl font-semibold">
               How to Use
             </h4>
             <ol className="text-foreground/90 list-decimal space-y-2 pl-6 leading-7">
               <li>
-                <span className="font-bold">Upload reference images</span> add
-                the images you want to edit (up to 14 images).
+                <span className="font-semibold">Upload reference images</span>{" "}
+                add the images you want to edit (up to 14 images).
               </li>
               <li>
-                <span className="font-bold">Write your prompt</span> describe
-                the edit clearly.
+                <span className="font-semibold">Write your prompt</span>{" "}
+                describe the edit clearly.
               </li>
               <li>
-                <span className="font-bold">
+                <span className="font-semibold">
                   Choose aspect ratio (optional)
                 </span>{" "}
                 select a preset or leave empty for default.
               </li>
               <li>
-                <span className="font-bold">Select resolution</span> choose 1k,
-                2k, or 4k based on your needs.
+                <span className="font-semibold">Select resolution</span> choose
+                1k, 2k, or 4k based on your needs.
               </li>
               <li>
-                <span className="font-bold">Choose output format</span> PNG for
-                transparency support, JPEG for smaller file size.
+                <span className="font-semibold">Choose output format</span> PNG
+                for transparency support, JPEG for smaller file size.
               </li>
               <li>
-                <span className="font-bold">
+                <span className="font-semibold">
                   Use Prompt Enhancer (optional)
                 </span>{" "}
                 click to automatically refine your description.
               </li>
               <li>
-                <span className="font-bold">Run</span> submit and download your
-                edited image.
+                <span className="font-semibold">Run</span> submit and download
+                your edited image.
               </li>
             </ol>
           </section>
 
           <section id="pricing" className="scroll-mt-28 space-y-2">
-            <h4 className="text-foreground border-foreground/10 border-b pb-2 text-xl font-bold">
+            <h4 className="text-foreground border-foreground/10 border-b pb-2 text-xl font-semibold">
               Pricing
             </h4>
             <p className="text-foreground/80 leading-7">
@@ -209,7 +253,7 @@ export function ReadmeSection() {
           </section>
 
           <section id="best-use-cases" className="scroll-mt-28 space-y-2">
-            <h4 className="text-foreground border-foreground/10 border-b pb-2 text-xl font-bold">
+            <h4 className="text-foreground border-foreground/10 border-b pb-2 text-xl font-semibold">
               Best Use Cases
             </h4>
             <ul className="text-foreground/90 list-disc space-y-2 pl-6 leading-7">
@@ -222,7 +266,7 @@ export function ReadmeSection() {
           </section>
 
           <section id="pro-tips" className="scroll-mt-28 space-y-2">
-            <h4 className="text-foreground border-foreground/10 border-b pb-2 text-xl font-bold">
+            <h4 className="text-foreground border-foreground/10 border-b pb-2 text-xl font-semibold">
               Pro Tips
             </h4>
             <ul className="text-foreground/90 list-disc space-y-2 pl-6 leading-7">
@@ -241,7 +285,7 @@ export function ReadmeSection() {
           </section>
 
           <section id="notes" className="scroll-mt-28 space-y-2">
-            <h4 className="text-foreground border-foreground/10 border-b pb-2 text-xl font-bold">
+            <h4 className="text-foreground border-foreground/10 border-b pb-2 text-xl font-semibold">
               Notes
             </h4>
             <p className="text-foreground/80 leading-7">
@@ -252,7 +296,7 @@ export function ReadmeSection() {
           </section>
 
           <section id="related-models" className="scroll-mt-28 space-y-2">
-            <h4 className="text-foreground border-foreground/10 border-b pb-2 text-xl font-bold">
+            <h4 className="text-foreground border-foreground/10 border-b pb-2 text-xl font-semibold">
               Related Models
             </h4>
             <ul className="text-foreground/80 list-disc space-y-2 pl-6 leading-7">

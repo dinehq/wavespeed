@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
+  Clipboard,
   ChevronDown,
   Eraser,
   FolderOpen,
@@ -15,11 +16,13 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { toast } from "@/hooks/use-toast";
 import {
   Select,
   SelectContent,
@@ -75,6 +78,165 @@ const imageSizePresetDimensions: Record<string, { w: number; h: number }> = {
   "landscape-4-3": { w: 1024, h: 768 },
   "landscape-16-9": { w: 1024, h: 576 },
 };
+
+const jsonPreview = `{
+  "enable_base64_output": false,
+  "enable_sync_mode": false,
+  "enable_web_search": false,
+  "images": [
+    "https://d1q70pf5vjeyhc.cloudfront.net/media/92ecf66930134a49a5a425b9def0c266/images/1772127466078555123_5C2bluDN.png"
+  ],
+  "output_format": "png",
+  "prompt": "Change the man to a woman, and hold a digital-style banana.",
+  "resolution": "1k"
+}`;
+
+const pythonPreview = `import os
+import requests
+import json
+import time
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
+def main():
+    print("Hello from WaveSpeedAI!")
+    API_KEY = os.getenv("WAVESPEED_API_KEY")
+    print(f"API_KEY: {API_KEY}")
+
+    url = "https://api.wavespeed.ai/api/v3/google/nano-banana-2/edit"
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {API_KEY}",
+    }
+    payload = {
+        "enable_base64_output": False,
+        "enable_sync_mode": False,
+        "enable_web_search": False,
+        "images": [
+            "https://d1q70pf5vjeyhc.cloudfront.net/media/92ecf66930134a49a5a425b9def0c266/images/1772127466078555123_5C2bluDN.png"
+        ],
+        "output_format": "png",
+        "prompt": "Change the man to a woman, and hold a digital-style banana.",
+        "resolution": "1k"
+    }
+
+    begin = time.time()
+    response = requests.post(url, headers=headers, data=json.dumps(payload))
+    if response.status_code == 200:
+        result = response.json()["data"]
+        request_id = result["id"]
+        print(f"Task submitted successfully. Request ID: {request_id}")
+    else:
+        print(f"Error: {response.status_code}, {response.text}")
+        return
+
+    url = f"https://api.wavespeed.ai/api/v3/predictions/{request_id}/result"
+    headers = {"Authorization": f"Bearer {API_KEY}"}
+
+    # Poll for results
+    while True:
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+            result = response.json()["data"]
+            status = result["status"]
+
+            if status == "completed":
+                end = time.time()
+                print(f"Task completed in {end - begin} seconds.")
+                url = result["outputs"][0]
+                print(f"Task completed. URL: {url}")
+                break
+            elif status == "failed":
+                print(f"Task failed: {result.get('error')}")
+                break
+            else:
+                print(f"Task still processing. Status: {status}")
+        else:
+            print(f"Error: {response.status_code}, {response.text}")
+            break
+
+        time.sleep(0.1)
+
+
+if __name__ == "__main__":
+    main()`;
+
+function highlightJsonToHtml(source: string) {
+  const escaped = source
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+
+  return escaped
+    .replaceAll(
+      /(&quot;[^"\n]+&quot;)(?=\s*:)/g,
+      '<span class="text-sky-500">$1</span>',
+    )
+    .replaceAll(
+      /:\s*(&quot;[^"\n]*&quot;)/g,
+      ': <span class="text-emerald-500">$1</span>',
+    )
+    .replaceAll(
+      /\b(true|false|null)\b/g,
+      '<span class="text-amber-500">$1</span>',
+    )
+    .replaceAll(
+      /(?<![\w"]) (-?\d+(?:\.\d+)?)(?![\w"])/g,
+      '<span class="text-violet-500">$1</span>',
+    );
+}
+
+function highlightShellToHtml(source: string) {
+  const escaped = source
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+
+  return escaped
+    .replaceAll(
+      /\b(curl|--location|--request|--header|--data-raw)\b/g,
+      '<span class="text-violet-500">$1</span>',
+    )
+    .replaceAll(
+      /'(https?:\/\/[^']+)'/g,
+      "'<span class=\"text-emerald-500\">$1</span>'",
+    )
+    .replaceAll(
+      /'Authorization:\s*Bearer\s*\$\{[^}]+\}'/g,
+      '<span class="text-amber-500">$&</span>',
+    )
+    .replaceAll(
+      /'Content-Type:\s*application\/json'/g,
+      '<span class="text-sky-500">$&</span>',
+    )
+    .replaceAll(/\$\{[^}]+\}/g, '<span class="text-amber-500">$&</span>');
+}
+
+function highlightPythonToHtml(source: string) {
+  const escaped = source
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+
+  return escaped
+    .replaceAll(
+      /\b(def|if|else|elif|while|for|in|from|import|as|return|break|continue|True|False|None)\b/g,
+      '<span class="text-violet-500">$1</span>',
+    )
+    .replaceAll(
+      /\b(print|requests|json|time|os|load_dotenv|response|status_code)\b/g,
+      '<span class="text-sky-500">$1</span>',
+    )
+    .replaceAll(
+      /(f?"[^"\n]*"|f?'[^'\n]*')/g,
+      '<span class="text-emerald-500">$1</span>',
+    )
+    .replaceAll(/(\s#.*)$/gm, '<span class="text-amber-500">$1</span>');
+}
 
 function FieldLabel({
   children,
@@ -259,6 +421,8 @@ export function ModelDetailInputForm() {
     { id: createImageId(), path: "", scale: 1 },
   ]);
   const [enableBatchMode, setEnableBatchMode] = useState(false);
+  const [inputMode, setInputMode] =
+    useState<(typeof inputModeOptions)[number]["value"]>("form");
 
   useEffect(() => {
     singleImageRef.current = singleImage;
@@ -514,11 +678,58 @@ export function ModelDetailInputForm() {
     handleLoraScaleChange(id, 1);
   };
 
+  const highlightedJsonPreview = useMemo(
+    () => highlightJsonToHtml(jsonPreview),
+    [],
+  );
+  const httpSubmitPreview = [
+    "curl --location --request POST 'https://api.wavespeed.ai/api/v3/google/nano-banana-2/edit' \\",
+    "  --header 'Content-Type: application/json' \\",
+    "  --header 'Authorization: Bearer ${WAVESPEED_API_KEY}' \\",
+    `  --data-raw '${jsonPreview}'`,
+  ].join("\n");
+  const httpResultPreview = [
+    "curl --location --request GET 'https://api.wavespeed.ai/api/v3/predictions/${requestId}/result' \\",
+    "  --header 'Authorization: Bearer ${WAVESPEED_API_KEY}'",
+  ].join("\n");
+  const highlightedHttpSubmitPreview = useMemo(
+    () => highlightShellToHtml(httpSubmitPreview),
+    [httpSubmitPreview],
+  );
+  const highlightedHttpResultPreview = useMemo(
+    () => highlightShellToHtml(httpResultPreview),
+    [httpResultPreview],
+  );
+  const highlightedPythonPreview = useMemo(
+    () => highlightPythonToHtml(pythonPreview),
+    [],
+  );
+  const handleCopyText = async (text: string, label: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      toast({
+        title: "Copied",
+        description: `${label} copied to clipboard.`,
+      });
+    } catch {
+      toast({
+        title: "Copy failed",
+        description: "Clipboard is unavailable in this browser.",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <div className="flex h-full flex-col">
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-foreground text-sm font-semibold">Input</h2>
-        <Select defaultValue="form">
+        <Select
+          value={inputMode}
+          onValueChange={(value) =>
+            setInputMode(value as (typeof inputModeOptions)[number]["value"])
+          }
+        >
           <SelectTrigger size="sm" className={controlSelectTriggerCompactClass}>
             <SelectValue />
           </SelectTrigger>
@@ -531,108 +742,27 @@ export function ModelDetailInputForm() {
           </SelectContent>
         </Select>
       </div>
-      <div className="flex min-h-0 flex-1 flex-col">
-        <div className="min-h-0 flex-1 space-y-6 overflow-y-auto pr-1">
-          <div>
-            <FieldLabel tooltip="One primary input image for editing.">
-              image*
-            </FieldLabel>
-            <div className="flex min-w-0 items-center gap-2">
-              <input
-                type="text"
-                value={singleImageUrlInput}
-                onChange={(event) => setSingleImageUrlInput(event.target.value)}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter") {
-                    event.preventDefault();
-                    handleAddSingleImageUrl();
-                  }
-                }}
-                onBlur={handleAddSingleImageUrl}
-                placeholder="Add image from URL or paste from clipboard"
-                className={cn(
-                  "border-input bg-background placeholder:text-muted-foreground text-foreground h-8 flex-1 rounded-xs border px-3 text-xs shadow-xs outline-none",
-                  "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
-                  "aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40",
-                )}
-              />
-              <Button
-                type="button"
-                variant="outline"
-                size="icon-sm"
-                onClick={handleOpenSingleImageFilePicker}
-                aria-label="Choose image file"
-                className="border-foreground/10 text-foreground/80 hover:bg-foreground/5 h-8 w-8 rounded-xs shadow-xs"
-              >
-                <FolderOpen className="size-4" />
-              </Button>
-              <input
-                ref={singleImageFileInputRef}
-                type="file"
-                accept="image/*"
-                onChange={handleSingleImageSelected}
-                className="hidden"
-              />
-            </div>
-            {singleImage ? (
-              <div className="mt-3">
-                <div className={previewCardClass}>
-                  <div className="relative aspect-square w-full">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={singleImage.src}
-                      alt="Primary input image preview"
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                  <button
-                    type="button"
-                    aria-label="Remove primary image"
-                    className="bg-background/80 text-foreground/70 absolute top-2 right-2 inline-flex size-6 items-center justify-center rounded-xs border border-white/10"
-                    onClick={handleRemoveSingleImage}
-                  >
-                    <Trash2 className="size-3.5" />
-                  </button>
-                </div>
-              </div>
-            ) : null}
-          </div>
-
-          <div>
-            <FieldLabel tooltip="One or more reference images for editing.">
-              images*
-            </FieldLabel>
-            <div className="flex items-center gap-3">
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                className={controlButtonSmClass}
-                onClick={handleOpenImagesFilePicker}
-              >
-                <ImagePlus className="size-3.5" />
-                Add Image
-              </Button>
-              <input
-                ref={imagesFileInputRef}
-                type="file"
-                accept="image/*"
-                multiple
-                onChange={handleImagesSelected}
-                className="hidden"
-              />
-              <div className="bg-border h-5 w-px shrink-0" />
-              <div className="flex min-w-0 flex-1 items-center gap-2">
+      {inputMode === "form" ? (
+        <div className="flex min-h-0 flex-1 flex-col">
+          <div className="min-h-0 flex-1 space-y-6 overflow-y-auto pr-1">
+            <div>
+              <FieldLabel tooltip="One primary input image for editing.">
+                image*
+              </FieldLabel>
+              <div className="flex min-w-0 items-center gap-2">
                 <input
                   type="text"
-                  value={urlInput}
-                  onChange={(event) => setUrlInput(event.target.value)}
+                  value={singleImageUrlInput}
+                  onChange={(event) =>
+                    setSingleImageUrlInput(event.target.value)
+                  }
                   onKeyDown={(event) => {
                     if (event.key === "Enter") {
                       event.preventDefault();
-                      handleAddUrl();
+                      handleAddSingleImageUrl();
                     }
                   }}
+                  onBlur={handleAddSingleImageUrl}
                   placeholder="Add image from URL or paste from clipboard"
                   className={cn(
                     "border-input bg-background placeholder:text-muted-foreground text-foreground h-8 flex-1 rounded-xs border px-3 text-xs shadow-xs outline-none",
@@ -643,472 +773,692 @@ export function ModelDetailInputForm() {
                 <Button
                   type="button"
                   variant="outline"
-                  size="sm"
-                  disabled={!urlInput.trim()}
-                  onClick={handleAddUrl}
-                  className={controlButtonSmClass}
-                >
-                  Add URL
-                </Button>
-              </div>
-            </div>
-
-            <p className="text-foreground/60 mt-3 text-xs">
-              <span className="font-semibold">Hint:</span> Drag and drop files
-              from your computer, images from web pages, paste from clipboard
-              (Ctrl/Cmd+V), or provide a URL.
-            </p>
-
-            <div className="mt-3 grid grid-cols-3 gap-3">
-              {images.map((item) => (
-                <div
-                  key={item.id}
-                  className={cn(previewCardClass, "justify-self-start")}
-                >
-                  <div className="relative aspect-square w-full">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={item.src}
-                      alt="Input image preview"
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                  <button
-                    type="button"
-                    aria-label="Remove image"
-                    className="bg-background/80 text-foreground/70 absolute top-2 right-2 inline-flex size-6 items-center justify-center rounded-xs border border-white/10"
-                    onClick={() => handleRemoveImage(item.id)}
-                  >
-                    <Trash2 className="size-3.5" />
-                  </button>
-                  <div className="text-foreground/70 absolute right-2 bottom-2 left-2 flex items-center justify-between text-xs">
-                    <span>{item.sizeLabel}</span>
-                    <Link2 className="size-3.5" />
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <p className="text-foreground/80 mt-3 text-sm">
-              {images.length} images added
-            </p>
-          </div>
-
-          <div>
-            <div className="mb-2 flex items-center justify-between gap-2">
-              <FieldLabel
-                tooltip="Describe the edit you want the model to apply."
-                className="mb-0"
-              >
-                prompt*
-              </FieldLabel>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                className={controlButtonSmClass}
-              >
-                <Sparkles className="size-3.5" />
-                Prompt Enhancer
-              </Button>
-            </div>
-            <textarea
-              defaultValue="Make the hamburger made of glass."
-              rows={4}
-              className={cn(
-                "border-input bg-background placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground w-full min-w-0 resize-y rounded-xs border px-3 py-2 text-xs shadow-xs transition-[color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
-                "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
-                "aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40",
-                "min-h-24",
-              )}
-            />
-          </div>
-
-          <div>
-            <FieldLabel tooltip="Target aspect ratio for the generated result.">
-              aspect_ratio
-            </FieldLabel>
-            <Select defaultValue="1:1">
-              <SelectTrigger size="sm" className={controlSelectClass}>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="border-foreground/10 rounded-xs">
-                <SelectItem value="1:1">1:1</SelectItem>
-                <SelectItem value="16:9">16:9</SelectItem>
-                <SelectItem value="9:16">9:16</SelectItem>
-                <SelectItem value="4:3">4:3</SelectItem>
-                <SelectItem value="3:4">3:4</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div>
-            <FieldLabel tooltip="Output resolution level for generated images.">
-              resolution
-            </FieldLabel>
-            <Select defaultValue="2k">
-              <SelectTrigger size="sm" className={controlSelectClass}>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="border-foreground/10 rounded-xs">
-                <SelectItem value="1k">1k</SelectItem>
-                <SelectItem value="2k">2k</SelectItem>
-                <SelectItem value="4k">4k</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div>
-            <FieldLabel tooltip="The file format returned by the model output.">
-              output_format
-            </FieldLabel>
-            <Select defaultValue="jpeg">
-              <SelectTrigger size="sm" className={controlSelectClass}>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="border-foreground/10 rounded-xs">
-                <SelectItem value="jpeg">jpeg</SelectItem>
-                <SelectItem value="png">png</SelectItem>
-                <SelectItem value="webp">webp</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div>
-            <FieldLabel tooltip="The size of the generated image. Default value: landscape_4_3">
-              Image size
-            </FieldLabel>
-            <div className="space-y-2">
-              <div className="flex flex-wrap items-center gap-2">
-                <Select
-                  value={imageSizePreset}
-                  onValueChange={handleImageSizePresetChange}
-                >
-                  <SelectTrigger size="sm" className={controlSelectClass}>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="border-foreground/10 rounded-xs">
-                    {imageSizeOptions.map((opt) => (
-                      <SelectItem key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="number"
-                    min={IMAGE_SIZE_MIN}
-                    max={IMAGE_SIZE_MAX}
-                    value={sizeWidth}
-                    onChange={(event) =>
-                      handleSizeWidthChange(Number(event.target.value))
-                    }
-                    onBlur={(event) =>
-                      handleSizeWidthChange(Number(event.target.value))
-                    }
-                    disabled={imageSizePreset !== "custom"}
-                    className={cn(
-                      "border-input bg-background text-foreground h-8 w-24 rounded-xs border px-3 text-xs shadow-xs outline-none",
-                      imageSizePreset !== "custom" &&
-                        "cursor-not-allowed opacity-60",
-                    )}
-                  />
-                  <span className="text-foreground/70 text-xs" aria-hidden>
-                    ×
-                  </span>
-                  <input
-                    type="number"
-                    min={IMAGE_SIZE_MIN}
-                    max={IMAGE_SIZE_MAX}
-                    value={sizeHeight}
-                    onChange={(event) =>
-                      handleSizeHeightChange(Number(event.target.value))
-                    }
-                    onBlur={(event) =>
-                      handleSizeHeightChange(Number(event.target.value))
-                    }
-                    disabled={imageSizePreset !== "custom"}
-                    className={cn(
-                      "border-input bg-background text-foreground h-8 w-24 rounded-xs border px-3 text-xs shadow-xs outline-none",
-                      imageSizePreset !== "custom" &&
-                        "cursor-not-allowed opacity-60",
-                    )}
-                  />
-                </div>
-              </div>
-              <p className="text-foreground/60 text-xs">Range: 256 – 1536</p>
-            </div>
-          </div>
-
-          <div>
-            <FieldLabel tooltip="Optional audio URL input for multimodal workflows.">
-              audio*
-            </FieldLabel>
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <input
-                  type="text"
-                  value={audioUrl}
-                  onChange={(event) => setAudioUrl(event.target.value)}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter") {
-                      event.preventDefault();
-                      handleAddAudioUrl();
-                    }
-                  }}
-                  placeholder="https://..."
-                  className="border-input bg-background text-foreground placeholder:text-muted-foreground h-8 flex-1 rounded-xs border px-2 text-xs shadow-xs outline-none"
-                />
-                <Button
-                  type="button"
-                  variant="outline"
                   size="icon-sm"
-                  className="h-8 w-8 rounded-xs shadow-xs"
-                  aria-label="Choose audio file"
-                  onClick={handleOpenAudioFilePicker}
+                  onClick={handleOpenSingleImageFilePicker}
+                  aria-label="Choose image file"
+                  className="border-foreground/10 text-foreground/80 hover:bg-foreground/5 h-8 w-8 rounded-xs shadow-xs"
                 >
-                  <FolderOpen className="size-3.5" />
+                  <FolderOpen className="size-4" />
                 </Button>
                 <input
-                  ref={audioFileInputRef}
+                  ref={singleImageFileInputRef}
                   type="file"
-                  accept="audio/*"
-                  onChange={handleAudioFileSelected}
+                  accept="image/*"
+                  onChange={handleSingleImageSelected}
                   className="hidden"
                 />
+              </div>
+              {singleImage ? (
+                <div className="mt-3">
+                  <div className={previewCardClass}>
+                    <div className="relative aspect-square w-full">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={singleImage.src}
+                        alt="Primary input image preview"
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      aria-label="Remove primary image"
+                      className="bg-background/80 text-foreground/70 absolute top-2 right-2 inline-flex size-6 items-center justify-center rounded-xs border border-white/10"
+                      onClick={handleRemoveSingleImage}
+                    >
+                      <Trash2 className="size-3.5" />
+                    </button>
+                  </div>
+                </div>
+              ) : null}
+            </div>
+
+            <div>
+              <FieldLabel tooltip="One or more reference images for editing.">
+                images*
+              </FieldLabel>
+              <div className="flex items-center gap-3">
                 <Button
                   type="button"
                   variant="outline"
-                  size="icon-sm"
-                  className="h-8 w-8 rounded-xs shadow-xs"
-                  aria-label="Record audio"
+                  size="sm"
+                  className={controlButtonSmClass}
+                  onClick={handleOpenImagesFilePicker}
                 >
-                  <Mic className="size-3.5" />
+                  <ImagePlus className="size-3.5" />
+                  Add Image
+                </Button>
+                <input
+                  ref={imagesFileInputRef}
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleImagesSelected}
+                  className="hidden"
+                />
+                <div className="bg-border h-5 w-px shrink-0" />
+                <div className="flex min-w-0 flex-1 items-center gap-2">
+                  <input
+                    type="text"
+                    value={urlInput}
+                    onChange={(event) => setUrlInput(event.target.value)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") {
+                        event.preventDefault();
+                        handleAddUrl();
+                      }
+                    }}
+                    placeholder="Add image from URL or paste from clipboard"
+                    className={cn(
+                      "border-input bg-background placeholder:text-muted-foreground text-foreground h-8 flex-1 rounded-xs border px-3 text-xs shadow-xs outline-none",
+                      "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
+                      "aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40",
+                    )}
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    disabled={!urlInput.trim()}
+                    onClick={handleAddUrl}
+                    className={controlButtonSmClass}
+                  >
+                    Add URL
+                  </Button>
+                </div>
+              </div>
+
+              <p className="text-foreground/60 mt-3 text-xs">
+                <span className="font-semibold">Hint:</span> Drag and drop files
+                from your computer, images from web pages, paste from clipboard
+                (Ctrl/Cmd+V), or provide a URL.
+              </p>
+
+              <div className="mt-3 grid grid-cols-3 gap-3">
+                {images.map((item) => (
+                  <div
+                    key={item.id}
+                    className={cn(previewCardClass, "justify-self-start")}
+                  >
+                    <div className="relative aspect-square w-full">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={item.src}
+                        alt="Input image preview"
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      aria-label="Remove image"
+                      className="bg-background/80 text-foreground/70 absolute top-2 right-2 inline-flex size-6 items-center justify-center rounded-xs border border-white/10"
+                      onClick={() => handleRemoveImage(item.id)}
+                    >
+                      <Trash2 className="size-3.5" />
+                    </button>
+                    <div className="text-foreground/70 absolute right-2 bottom-2 left-2 flex items-center justify-between text-xs">
+                      <span>{item.sizeLabel}</span>
+                      <Link2 className="size-3.5" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <p className="text-foreground/80 mt-3 text-sm">
+                {images.length} images added
+              </p>
+            </div>
+
+            <div>
+              <div className="mb-2 flex items-center justify-between gap-2">
+                <FieldLabel
+                  tooltip="Describe the edit you want the model to apply."
+                  className="mb-0"
+                >
+                  prompt*
+                </FieldLabel>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className={controlButtonSmClass}
+                >
+                  <Sparkles className="size-3.5" />
+                  Prompt Enhancer
                 </Button>
               </div>
-              <p className="text-foreground/60 text-xs">
-                Hint: You can drag and drop a file or click to upload.
-              </p>
-              {audioItem ? (
+              <textarea
+                defaultValue="Make the hamburger made of glass."
+                rows={4}
+                className={cn(
+                  "border-input bg-background placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground w-full min-w-0 resize-y rounded-xs border px-3 py-2 text-xs shadow-xs transition-[color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
+                  "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
+                  "aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40",
+                  "min-h-24",
+                )}
+              />
+            </div>
+
+            <div>
+              <FieldLabel tooltip="Target aspect ratio for the generated result.">
+                aspect_ratio
+              </FieldLabel>
+              <Select defaultValue="1:1">
+                <SelectTrigger size="sm" className={controlSelectClass}>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="border-foreground/10 rounded-xs">
+                  <SelectItem value="1:1">1:1</SelectItem>
+                  <SelectItem value="16:9">16:9</SelectItem>
+                  <SelectItem value="9:16">9:16</SelectItem>
+                  <SelectItem value="4:3">4:3</SelectItem>
+                  <SelectItem value="3:4">3:4</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <FieldLabel tooltip="Output resolution level for generated images.">
+                resolution
+              </FieldLabel>
+              <Select defaultValue="2k">
+                <SelectTrigger size="sm" className={controlSelectClass}>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="border-foreground/10 rounded-xs">
+                  <SelectItem value="1k">1k</SelectItem>
+                  <SelectItem value="2k">2k</SelectItem>
+                  <SelectItem value="4k">4k</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <FieldLabel tooltip="The file format returned by the model output.">
+                output_format
+              </FieldLabel>
+              <Select defaultValue="jpeg">
+                <SelectTrigger size="sm" className={controlSelectClass}>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="border-foreground/10 rounded-xs">
+                  <SelectItem value="jpeg">jpeg</SelectItem>
+                  <SelectItem value="png">png</SelectItem>
+                  <SelectItem value="webp">webp</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <FieldLabel tooltip="The size of the generated image. Default value: landscape_4_3">
+                Image size
+              </FieldLabel>
+              <div className="space-y-2">
+                <div className="flex flex-wrap items-center gap-2">
+                  <Select
+                    value={imageSizePreset}
+                    onValueChange={handleImageSizePresetChange}
+                  >
+                    <SelectTrigger size="sm" className={controlSelectClass}>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="border-foreground/10 rounded-xs">
+                      {imageSizeOptions.map((opt) => (
+                        <SelectItem key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="number"
+                      min={IMAGE_SIZE_MIN}
+                      max={IMAGE_SIZE_MAX}
+                      value={sizeWidth}
+                      onChange={(event) =>
+                        handleSizeWidthChange(Number(event.target.value))
+                      }
+                      onBlur={(event) =>
+                        handleSizeWidthChange(Number(event.target.value))
+                      }
+                      disabled={imageSizePreset !== "custom"}
+                      className={cn(
+                        "border-input bg-background text-foreground h-8 w-24 rounded-xs border px-3 text-xs shadow-xs outline-none",
+                        imageSizePreset !== "custom" &&
+                          "cursor-not-allowed opacity-60",
+                      )}
+                    />
+                    <span className="text-foreground/70 text-xs" aria-hidden>
+                      ×
+                    </span>
+                    <input
+                      type="number"
+                      min={IMAGE_SIZE_MIN}
+                      max={IMAGE_SIZE_MAX}
+                      value={sizeHeight}
+                      onChange={(event) =>
+                        handleSizeHeightChange(Number(event.target.value))
+                      }
+                      onBlur={(event) =>
+                        handleSizeHeightChange(Number(event.target.value))
+                      }
+                      disabled={imageSizePreset !== "custom"}
+                      className={cn(
+                        "border-input bg-background text-foreground h-8 w-24 rounded-xs border px-3 text-xs shadow-xs outline-none",
+                        imageSizePreset !== "custom" &&
+                          "cursor-not-allowed opacity-60",
+                      )}
+                    />
+                  </div>
+                </div>
+                <p className="text-foreground/60 text-xs">Range: 256 – 1536</p>
+              </div>
+            </div>
+
+            <div>
+              <FieldLabel tooltip="Optional audio URL input for multimodal workflows.">
+                audio*
+              </FieldLabel>
+              <div className="space-y-2">
                 <div className="flex items-center gap-2">
-                  <audio controls src={audioItem.src} className="h-8 flex-1" />
+                  <input
+                    type="text"
+                    value={audioUrl}
+                    onChange={(event) => setAudioUrl(event.target.value)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") {
+                        event.preventDefault();
+                        handleAddAudioUrl();
+                      }
+                    }}
+                    placeholder="https://..."
+                    className="border-input bg-background text-foreground placeholder:text-muted-foreground h-8 flex-1 rounded-xs border px-2 text-xs shadow-xs outline-none"
+                  />
                   <Button
                     type="button"
                     variant="outline"
                     size="icon-sm"
-                    aria-label="Remove audio"
-                    onClick={handleRemoveAudio}
-                    className="h-8 w-8 rounded-xs"
+                    className="h-8 w-8 rounded-xs shadow-xs"
+                    aria-label="Choose audio file"
+                    onClick={handleOpenAudioFilePicker}
                   >
-                    <Trash2 className="size-3.5" />
+                    <FolderOpen className="size-3.5" />
+                  </Button>
+                  <input
+                    ref={audioFileInputRef}
+                    type="file"
+                    accept="audio/*"
+                    onChange={handleAudioFileSelected}
+                    className="hidden"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="icon-sm"
+                    className="h-8 w-8 rounded-xs shadow-xs"
+                    aria-label="Record audio"
+                  >
+                    <Mic className="size-3.5" />
                   </Button>
                 </div>
-              ) : null}
+                <p className="text-foreground/60 text-xs">
+                  Hint: You can drag and drop a file or click to upload.
+                </p>
+                {audioItem ? (
+                  <div className="flex items-center gap-2">
+                    <audio
+                      controls
+                      src={audioItem.src}
+                      className="h-8 flex-1"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon-sm"
+                      aria-label="Remove audio"
+                      onClick={handleRemoveAudio}
+                      className="h-8 w-8 rounded-xs"
+                    >
+                      <Trash2 className="size-3.5" />
+                    </Button>
+                  </div>
+                ) : null}
+              </div>
+            </div>
+
+            <div>
+              <FieldLabel tooltip="Configure LoRA path and influence scale.">
+                loras
+              </FieldLabel>
+              <div className="border-border border-l pl-3">
+                <div className="space-y-3">
+                  {loraItems.map((item, index) => (
+                    <div key={item.id} className="space-y-2">
+                      {index > 0 ? (
+                        <div className="bg-border my-3 h-px w-full shrink-0" />
+                      ) : null}
+                      <div className="flex items-center gap-2">
+                        <div className="min-w-0 flex-1">
+                          <div className="space-y-1">
+                            <p className="text-foreground/80 text-xs">
+                              Path
+                              <span className="text-brand font-bold">*</span>
+                            </p>
+                            <input
+                              type="text"
+                              value={item.path}
+                              onChange={(event) =>
+                                handleLoraPathChange(
+                                  item.id,
+                                  event.target.value,
+                                )
+                              }
+                              placeholder="<owner>/<model-name> or URL"
+                              className="border-input bg-background text-foreground placeholder:text-muted-foreground h-8 w-full rounded-xs border px-3 text-xs shadow-xs outline-none"
+                            />
+                          </div>
+                          <div className="mt-3 space-y-1">
+                            <p className="text-foreground/80 text-xs">Scale</p>
+                            <div className="flex items-center gap-2">
+                              <input
+                                type="range"
+                                min={0}
+                                max={5}
+                                step={0.1}
+                                value={item.scale}
+                                onChange={(event) =>
+                                  handleLoraScaleChange(
+                                    item.id,
+                                    Number(event.target.value),
+                                  )
+                                }
+                                className={sliderClass}
+                                style={getSliderStyle(item.scale, 0, 5)}
+                              />
+                              <input
+                                type="number"
+                                min={0}
+                                max={5}
+                                step={0.1}
+                                value={item.scale}
+                                onChange={(event) =>
+                                  handleLoraScaleChange(
+                                    item.id,
+                                    Number(event.target.value),
+                                  )
+                                }
+                                className="border-input bg-background text-foreground h-8 w-16 rounded-xs border px-2 text-xs shadow-xs outline-none"
+                              />
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="icon-sm"
+                                aria-label="Reset lora scale"
+                                onClick={() => handleLoraScaleReset(item.id)}
+                                className="h-8 w-8 shrink-0 rounded-xs"
+                              >
+                                <Eraser className="size-3.5" />
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="bg-border flex min-h-18 w-px shrink-0 self-stretch" />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon-sm"
+                          aria-label="Remove lora item"
+                          onClick={() => handleRemoveLoraItem(item.id)}
+                          className="h-8 w-8 shrink-0 rounded-xs"
+                        >
+                          <Trash2 className="size-3.5" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                  <div className="bg-border my-3 h-px w-full shrink-0" />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className={controlButtonSmClass}
+                    onClick={handleAddLoraItem}
+                  >
+                    <Plus className="size-3.5" />
+                    Add Item
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <FieldLabel tooltip="If enabled, API waits for generation and returns results directly in the same response.">
+                enable_sync_mode
+              </FieldLabel>
+              <div className="mb-2 flex items-center">
+                <Switch
+                  checked={enableSyncMode}
+                  onCheckedChange={setEnableSyncMode}
+                  aria-label="Toggle enable sync mode"
+                />
+              </div>
+            </div>
+
+            <div>
+              <FieldLabel tooltip="If enabled, output is embedded as base64 string instead of URL.">
+                enable_base64_output
+              </FieldLabel>
+              <div className="mb-2 flex items-center">
+                <Switch
+                  checked={enableBase64Output}
+                  onCheckedChange={setEnableBase64Output}
+                  aria-label="Toggle enable base64 output"
+                />
+              </div>
             </div>
           </div>
 
-          <div>
-            <FieldLabel tooltip="Configure LoRA path and influence scale.">
-              loras
-            </FieldLabel>
-            <div className="border-border border-l pl-3">
-              <div className="space-y-3">
-                {loraItems.map((item, index) => (
-                  <div key={item.id} className="space-y-2">
-                    {index > 0 ? (
-                      <div className="bg-border my-3 h-px w-full shrink-0" />
-                    ) : null}
-                    <div className="flex items-center gap-2">
-                      <div className="min-w-0 flex-1">
-                        <div className="space-y-1">
-                          <p className="text-foreground/80 text-xs">
-                            Path<span className="text-brand font-bold">*</span>
-                          </p>
-                          <input
-                            type="text"
-                            value={item.path}
-                            onChange={(event) =>
-                              handleLoraPathChange(item.id, event.target.value)
-                            }
-                            placeholder="<owner>/<model-name> or URL"
-                            className="border-input bg-background text-foreground placeholder:text-muted-foreground h-8 w-full rounded-xs border px-3 text-xs shadow-xs outline-none"
-                          />
-                        </div>
-                        <div className="mt-3 space-y-1">
-                          <p className="text-foreground/80 text-xs">Scale</p>
-                          <div className="flex items-center gap-2">
-                            <input
-                              type="range"
-                              min={0}
-                              max={5}
-                              step={0.1}
-                              value={item.scale}
-                              onChange={(event) =>
-                                handleLoraScaleChange(
-                                  item.id,
-                                  Number(event.target.value),
-                                )
-                              }
-                              className={sliderClass}
-                              style={getSliderStyle(item.scale, 0, 5)}
-                            />
-                            <input
-                              type="number"
-                              min={0}
-                              max={5}
-                              step={0.1}
-                              value={item.scale}
-                              onChange={(event) =>
-                                handleLoraScaleChange(
-                                  item.id,
-                                  Number(event.target.value),
-                                )
-                              }
-                              className="border-input bg-background text-foreground h-8 w-16 rounded-xs border px-2 text-xs shadow-xs outline-none"
-                            />
-                            <Button
-                              type="button"
-                              variant="outline"
-                              size="icon-sm"
-                              aria-label="Reset lora scale"
-                              onClick={() => handleLoraScaleReset(item.id)}
-                              className="h-8 w-8 shrink-0 rounded-xs"
-                            >
-                              <Eraser className="size-3.5" />
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="bg-border flex min-h-18 w-px shrink-0 self-stretch" />
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="icon-sm"
-                        aria-label="Remove lora item"
-                        onClick={() => handleRemoveLoraItem(item.id)}
-                        className="h-8 w-8 shrink-0 rounded-xs"
-                      >
-                        <Trash2 className="size-3.5" />
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-                <div className="bg-border my-3 h-px w-full shrink-0" />
+          <footer className="border-border bg-surface sticky bottom-0 z-10 mt-4 flex shrink-0 flex-col gap-3 border-t pt-4 pb-4">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="flex flex-wrap items-center gap-3">
                 <Button
                   type="button"
                   variant="outline"
                   size="sm"
                   className={controlButtonSmClass}
-                  onClick={handleAddLoraItem}
                 >
-                  <Plus className="size-3.5" />
-                  Add Item
+                  Reset
                 </Button>
+                <label className="text-foreground/80 flex cursor-pointer items-center gap-1.5 text-xs">
+                  <input
+                    type="checkbox"
+                    checked
+                    disabled
+                    className="border-foreground accent-foreground size-4 cursor-not-allowed rounded-xs border opacity-60"
+                  />
+                  <span>Enable Safety Checker</span>
+                  <span className="group relative inline-flex items-center">
+                    <span
+                      role="tooltip"
+                      className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-1.5 w-64 -translate-x-1/2 rounded-xs bg-slate-950 px-2.5 py-1.5 text-xs leading-snug text-white opacity-0 shadow-md transition-opacity duration-150 group-hover:opacity-100"
+                    >
+                      The safety checker cannot be disabled on the playground.
+                      This property is only available through the API.
+                    </span>
+                    <Info className="text-foreground/50 size-3.5" />
+                  </span>
+                </label>
+              </div>
+              <div className="flex items-center">
+                <Button
+                  type="button"
+                  className="bg-foreground text-background hover:bg-foreground/90 h-8 min-w-28 rounded-l-xs rounded-r-none px-3 text-xs shadow-xs"
+                >
+                  Run $0.025
+                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      type="button"
+                      aria-label="Batch settings"
+                      className="bg-foreground text-background hover:bg-foreground/90 h-8 rounded-l-none rounded-r-xs border-l border-white/20 px-1.5 shadow-xs"
+                    >
+                      <ChevronDown className="size-3.5" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent
+                    className="border-foreground/10 w-56 rounded-xs p-0"
+                    align="end"
+                  >
+                    <div className="border-border border-b px-3 py-2">
+                      <p className="text-foreground text-xs font-semibold">
+                        Batch Settings
+                      </p>
+                    </div>
+                    <div className="flex items-center justify-between gap-2 px-3 py-2">
+                      <span className="text-foreground/80 text-xs">
+                        Enable batch mode
+                      </span>
+                      <Switch
+                        checked={enableBatchMode}
+                        onCheckedChange={setEnableBatchMode}
+                        aria-label="Toggle batch mode"
+                      />
+                    </div>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             </div>
-          </div>
-
-          <div>
-            <FieldLabel tooltip="If enabled, API waits for generation and returns results directly in the same response.">
-              enable_sync_mode
-            </FieldLabel>
-            <div className="mb-2 flex items-center">
-              <Switch
-                checked={enableSyncMode}
-                onCheckedChange={setEnableSyncMode}
-                aria-label="Toggle enable sync mode"
-              />
-            </div>
-          </div>
-
-          <div>
-            <FieldLabel tooltip="If enabled, output is embedded as base64 string instead of URL.">
-              enable_base64_output
-            </FieldLabel>
-            <div className="mb-2 flex items-center">
-              <Switch
-                checked={enableBase64Output}
-                onCheckedChange={setEnableBase64Output}
-                aria-label="Toggle enable base64 output"
-              />
-            </div>
-          </div>
+          </footer>
         </div>
-
-        <footer className="border-border bg-surface sticky bottom-0 z-10 mt-4 flex shrink-0 flex-col gap-3 border-t pt-4 pb-4">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="flex flex-wrap items-center gap-3">
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                className={controlButtonSmClass}
-              >
-                Reset
-              </Button>
-              <label className="text-foreground/80 flex cursor-pointer items-center gap-1.5 text-xs">
-                <input
-                  type="checkbox"
-                  checked
-                  disabled
-                  className="border-foreground accent-foreground size-3 cursor-not-allowed rounded-xs border opacity-60"
-                />
-                <span>Enable Safety Checker</span>
-                <span className="group relative inline-flex items-center">
-                  <span
-                    role="tooltip"
-                    className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-1.5 w-64 -translate-x-1/2 rounded-xs bg-slate-950 px-2.5 py-1.5 text-xs leading-snug text-white opacity-0 shadow-md transition-opacity duration-150 group-hover:opacity-100"
-                  >
-                    The safety checker cannot be disabled on the playground.
-                    This property is only available through the API.
-                  </span>
-                  <Info className="text-foreground/50 size-3.5" />
-                </span>
-              </label>
-            </div>
-            <div className="flex items-center">
-              <Button
-                type="button"
-                className="bg-foreground text-background hover:bg-foreground/90 h-8 min-w-28 rounded-l-xs rounded-r-none px-3 text-xs font-bold shadow-xs"
-              >
-                Run $0.025
-              </Button>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
+      ) : (
+        <div className="flex min-h-0 flex-1 flex-col">
+          <div
+            className={cn(
+              "min-h-0 flex-1 space-y-6 overflow-y-auto",
+              inputMode !== "json" && "pb-4",
+            )}
+          >
+            {inputMode === "json" ? (
+              <>
+                <div className="relative pt-2">
                   <Button
                     type="button"
-                    aria-label="Batch settings"
-                    className="bg-foreground text-background hover:bg-foreground/90 h-8 rounded-l-none rounded-r-xs border-l border-white/20 px-1.5 shadow-xs"
+                    variant="ghost"
+                    size="icon-sm"
+                    aria-label="Copy json"
+                    className="text-foreground/70 hover:bg-foreground/5 absolute top-1 right-0 rounded-xs"
+                    onClick={() => handleCopyText(jsonPreview, "JSON")}
                   >
-                    <ChevronDown className="size-3.5" />
+                    <Clipboard className="size-4" />
                   </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  className="border-foreground/10 w-56 rounded-xs p-0"
-                  align="end"
+                  <pre
+                    className="text-foreground/90 overflow-x-auto pr-10 font-mono text-sm leading-8 break-all whitespace-pre-wrap"
+                    dangerouslySetInnerHTML={{ __html: highlightedJsonPreview }}
+                  />
+                </div>
+              </>
+            ) : inputMode === "http" ? (
+              <>
+                <section className="space-y-3">
+                  <h3 className="text-foreground text-sm font-normal">
+                    Submit Task
+                  </h3>
+                  <Card className="border-foreground/10 bg-muted/30 gap-0 rounded-xs py-0 shadow-none">
+                    <CardContent className="relative p-4">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon-sm"
+                        aria-label="Copy submit task request"
+                        className="text-foreground/70 hover:bg-foreground/5 absolute top-2 right-2 rounded-xs"
+                        onClick={() =>
+                          handleCopyText(
+                            httpSubmitPreview,
+                            "Submit task request",
+                          )
+                        }
+                      >
+                        <Clipboard className="size-4" />
+                      </Button>
+                      <pre
+                        className="text-foreground/90 overflow-x-auto pr-10 font-mono text-sm leading-8 break-all whitespace-pre-wrap"
+                        dangerouslySetInnerHTML={{
+                          __html: highlightedHttpSubmitPreview,
+                        }}
+                      />
+                    </CardContent>
+                  </Card>
+                </section>
+                <section className="space-y-3">
+                  <h3 className="text-foreground text-sm font-normal">
+                    Query Result
+                  </h3>
+                  <Card className="border-foreground/10 bg-muted/30 gap-0 rounded-xs py-0 shadow-none">
+                    <CardContent className="relative p-4">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon-sm"
+                        aria-label="Copy query result request"
+                        className="text-foreground/70 hover:bg-foreground/5 absolute top-2 right-2 rounded-xs"
+                        onClick={() =>
+                          handleCopyText(
+                            httpResultPreview,
+                            "Query result request",
+                          )
+                        }
+                      >
+                        <Clipboard className="size-4" />
+                      </Button>
+                      <pre
+                        className="text-foreground/90 overflow-x-auto pr-10 font-mono text-sm leading-8 break-all whitespace-pre-wrap"
+                        dangerouslySetInnerHTML={{
+                          __html: highlightedHttpResultPreview,
+                        }}
+                      />
+                    </CardContent>
+                  </Card>
+                </section>
+              </>
+            ) : inputMode === "python" ? (
+              <div className="relative pt-2">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label="Copy python code"
+                  className="text-foreground/70 hover:bg-foreground/5 absolute top-1 right-0 rounded-xs"
+                  onClick={() => handleCopyText(pythonPreview, "Python code")}
                 >
-                  <div className="border-border border-b px-3 py-2">
-                    <p className="text-foreground text-xs font-semibold">
-                      Batch Settings
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between gap-2 px-3 py-2">
-                    <span className="text-foreground/80 text-xs">
-                      Enable batch mode
-                    </span>
-                    <Switch
-                      checked={enableBatchMode}
-                      onCheckedChange={setEnableBatchMode}
-                      aria-label="Toggle batch mode"
-                    />
-                  </div>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
+                  <Clipboard className="size-4" />
+                </Button>
+                <pre
+                  className="text-foreground/90 overflow-x-auto pr-10 font-mono text-sm leading-8 break-all whitespace-pre-wrap"
+                  dangerouslySetInnerHTML={{ __html: highlightedPythonPreview }}
+                />
+              </div>
+            ) : (
+              <div className="text-foreground/70 py-2 text-sm">
+                JavaScript snippet coming soon.
+              </div>
+            )}
           </div>
-        </footer>
-      </div>
+          {inputMode === "json" ? (
+            <footer className="border-border bg-surface sticky bottom-0 z-10 mt-4 border-t py-4">
+              <div className="flex justify-end">
+                <Button
+                  type="button"
+                  size="sm"
+                  className="h-8 w-full max-w-40 rounded-xs text-xs shadow-xs"
+                >
+                  Run $0.07
+                </Button>
+              </div>
+            </footer>
+          ) : null}
+        </div>
+      )}
     </div>
   );
 }

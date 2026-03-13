@@ -1,15 +1,25 @@
+"use client";
+
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
+  AlertCircle,
+  Braces,
   BookOpen,
   ChevronDown,
   Copy,
+  Download,
   Expand,
+  ExternalLink,
   Eye,
+  ImageIcon,
+  Info,
   Images,
   RefreshCw,
   Sparkles,
   Star,
+  Trash2,
   WandSparkles,
 } from "lucide-react";
 import editorPreview from "@/images/editor-image-preview.webp";
@@ -28,6 +38,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { toast } from "@/hooks/use-toast";
 import { ProductTopTabs } from "@/features/product/components/product-top-tabs";
 import { ExamplesSection } from "./examples-section";
 import { ModelDetailInputForm, ModelSwitcher } from "./model-detail-input-form";
@@ -66,10 +85,411 @@ const relatedModels = [
   },
 ];
 
+const mockRequestHistory = [
+  {
+    id: "a1f3c9d2e4b6",
+    model: "google/nano-banana-pro/edit",
+    status: "Succeeded",
+    createdAt: "2 min ago",
+    selected: true,
+    preview: thumb1,
+  },
+  {
+    id: "bc77d4a1920f",
+    model: "google/nano-banana-2/edit",
+    status: "Running",
+    createdAt: "8 min ago",
+    selected: false,
+    preview: editorPreview,
+  },
+  {
+    id: "d91e02b5c3a8",
+    model: "google/nano-banana-pro/retouch",
+    status: "Running",
+    createdAt: "14 min ago",
+    selected: true,
+    preview: thumb5,
+  },
+  {
+    id: "f0a42be6c7d1",
+    model: "google/nano-banana-pro/restore",
+    status: "Failed",
+    createdAt: "35 min ago",
+    selected: false,
+    preview: thumb6,
+  },
+  {
+    id: "9c31aa4e7fb2",
+    model: "google/nano-banana-2/text-to-image",
+    status: "Succeeded",
+    createdAt: "1 hour ago",
+    selected: false,
+    preview: thumb2,
+  },
+] as const;
+
 const controlButtonSmClass =
   "border-foreground/10 text-foreground/80 hover:bg-foreground/5 h-8 rounded-xs px-3 text-xs font-semibold shadow-xs";
 
+const resultJsonPreview = `{
+  "image": {
+    "file_size": 959,
+    "file_name": "180c718ac5d8407092d0688ea2605f0c.svg",
+    "content_type": "image/svg+xml",
+    "url": "https://v3b.fal.media/files/b/0a90bfc3/0f8Su2aQUzPQy4NZMDQpp_180c718ac5d8407092d0688ea2605f0c.svg"
+  },
+  "svg_content": "",
+  "seed": 1835785439,
+  "timings": {
+    "inference": 10.83
+  }
+}`;
+
+function highlightJsonToHtml(source: string) {
+  const escaped = source
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+
+  return escaped
+    .replaceAll(
+      /(&quot;[^"\n]+&quot;)(?=\s*:)/g,
+      '<span class="text-rose-500">$1</span>',
+    )
+    .replaceAll(
+      /:\s*(&quot;[^"\n]*&quot;)/g,
+      ': <span class="text-emerald-500">$1</span>',
+    )
+    .replaceAll(/\b(true|false|null)\b/g, '<span class="text-amber-500">$1</span>')
+    .replaceAll(/(?<![\w"]) (-?\d+(?:\.\d+)?)(?![\w"])/g, '<span class="text-orange-500">$1</span>');
+}
+
+function highlightShellToHtml(source: string) {
+  const escaped = source
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+
+  return escaped
+    .replaceAll(
+      /\b(curl|--location|--request|--header|--data-raw)\b/g,
+      '<span class="text-fuchsia-500">$1</span>',
+    )
+    .replaceAll(
+      /'(https?:\/\/[^']+)'/g,
+      "'<span class=\"text-emerald-600\">$1</span>'",
+    )
+    .replaceAll(
+      /'Authorization:\s*Bearer\s*\$\{[^}]+\}'/g,
+      '<span class="text-amber-600">$&</span>',
+    )
+    .replaceAll(
+      /'Content-Type:\s*application\/json'/g,
+      '<span class="text-rose-500">$&</span>',
+    )
+    .replaceAll(/\$\{[^}]+\}/g, '<span class="text-amber-600">$&</span>');
+}
+
+function highlightNodeToHtml(source: string) {
+  const escaped = source
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+
+  return escaped
+    .replaceAll(
+      /\b(const|let|var|async|await|function|return)\b/g,
+      '<span class="text-fuchsia-500">$1</span>',
+    )
+    .replaceAll(
+      /\b(require|console|process)\b/g,
+      '<span class="text-rose-500">$1</span>',
+    )
+    .replaceAll(
+      /(\.create|\.predictions|\.log|\.env)\b/g,
+      '<span class="text-orange-500">$1</span>',
+    )
+    .replaceAll(
+      /(["'][^"'\n]*["'])/g,
+      '<span class="text-emerald-600">$1</span>',
+    )
+    .replaceAll(/\b(\d+(?:\.\d+)?)\b/g, '<span class="text-amber-600">$1</span>');
+}
+
+function highlightPythonToHtml(source: string) {
+  const escaped = source
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+
+  return escaped
+    .replaceAll(
+      /\b(def|if|else|elif|while|for|in|from|import|as|return|break|continue|True|False|None)\b/g,
+      '<span class="text-fuchsia-500">$1</span>',
+    )
+    .replaceAll(
+      /\b(print|requests|json|time|os|response|status_code)\b/g,
+      '<span class="text-rose-500">$1</span>',
+    )
+    .replaceAll(
+      /(f?"[^"\n]*"|f?'[^'\n]*')/g,
+      '<span class="text-emerald-600">$1</span>',
+    )
+    .replaceAll(/\b(\d+(?:\.\d+)?)\b/g, '<span class="text-amber-600">$1</span>')
+    .replaceAll(/(\s#.*)$/gm, '<span class="text-zinc-500">$1</span>');
+}
+
 export default function ModelDetailPage() {
+  const [activeTopTab, setActiveTopTab] = useState<
+    "playground" | "api" | "history"
+  >("playground");
+  const [resultView, setResultView] = useState<"preview" | "json">("preview");
+  const [enableImageMagnification, setEnableImageMagnification] = useState(false);
+  const [apiLanguage, setApiLanguage] = useState<"http" | "node" | "python">(
+    "node",
+  );
+  const [selectedRequestIds, setSelectedRequestIds] = useState<string[]>(() =>
+    mockRequestHistory
+      .filter((item) => item.selected)
+      .map((item) => item.id),
+  );
+  const [activeApiAnchor, setActiveApiAnchor] = useState("api-install-client");
+  const highlightedResultJson = useMemo(
+    () => highlightJsonToHtml(resultJsonPreview),
+    [],
+  );
+  const apiJsonPayload = `{
+  "enable_base64_output": false,
+  "enable_sync_mode": false,
+  "enable_web_search": false,
+  "images": [
+    "https://d1q70pf5vjeyhc.cloudfront.net/media/92ecf66930134a49a5a425b9def0c266/images/1772127466078555123_5C2bluDN.png"
+  ],
+  "output_format": "png",
+  "prompt": "Change the man to a woman, and hold a digital-style banana.",
+  "resolution": "1k"
+}`;
+  const apiNodeCode = `const WaveSpeed = require('wavespeed');
+
+const client = new WaveSpeed({
+  apiKey: process.env.WAVESPEED_API_KEY
+});
+
+async function run() {
+  const response = await client.predictions.create({
+    model: 'google/nano-banana-2/edit',
+    input: ${apiJsonPayload}
+  });
+
+  console.log('Request ID:', response.data.id);
+}
+
+run();`;
+  const apiNavItems = useMemo(
+    () =>
+      [
+        {
+          title: "1. Calling the API",
+          titleId: "api-calling-the-api",
+          children: [
+            { id: "api-install-client", label: "Install the client" },
+            { id: "api-submit-request", label: "Submit a request" },
+          ],
+        },
+        {
+          title: "2. Authentication",
+          titleId: "api-authentication",
+          children: [{ id: "api-auth-key", label: "Get your API Key" }],
+        },
+        {
+          title: "3. Queue & Webhooks",
+          titleId: "api-queue-webhooks",
+          children: [
+            { id: "api-queue-submit", label: "Submit request" },
+            { id: "api-queue-response", label: "Response" },
+          ],
+        },
+        {
+          title: "4. Verifying Webhooks",
+          titleId: "api-verifying-webhooks",
+          children: [
+            { id: "api-webhook-headers", label: "Webhook headers" },
+            { id: "api-signature", label: "Signature computation" },
+            { id: "api-verify-example", label: "Verification example" },
+          ],
+        },
+        {
+          title: "5. Files",
+          titleId: "api-files",
+          children: [
+            { id: "api-files-public-url", label: "Public URL" },
+            { id: "api-files-base64", label: "Base64 data URI" },
+            { id: "api-files-upload", label: "Upload API" },
+          ],
+        },
+        {
+          title: "6. Schema",
+          titleId: "api-schema",
+          children: [
+            { id: "api-schema-input", label: "Input" },
+            { id: "api-schema-example", label: "Example request" },
+            { id: "api-schema-output", label: "Output" },
+          ],
+        },
+      ] as const,
+    [],
+  );
+  const apiPayload = `{
+  "enable_base64_output": false,
+  "enable_sync_mode": false,
+  "images": [
+    "https://example.com/input.png"
+  ],
+  "output_format": "png",
+  "prompt": "Change the man to a woman, and hold a digital-style banana.",
+  "resolution": "1k"
+}`;
+  const apiHttpCode = `curl --location --request POST 'https://api.wavespeed.ai/api/v3/google/nano-banana-2/edit' \\
+  --header 'Content-Type: application/json' \\
+  --header 'Authorization: Bearer \${WAVESPEED_API_KEY}' \\
+  --data-raw '${apiPayload}'`;
+  const apiNodeCodeHighlighted = useMemo(
+    () => highlightNodeToHtml(apiNodeCode),
+    [apiNodeCode],
+  );
+  const apiHttpCodeHighlighted = useMemo(
+    () => highlightShellToHtml(apiHttpCode),
+    [apiHttpCode],
+  );
+  const apiPythonCode = `import os
+import json
+import requests
+
+url = "https://api.wavespeed.ai/api/v3/google/nano-banana-2/edit"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('WAVESPEED_API_KEY')}",
+}
+payload = ${apiPayload}
+
+response = requests.post(url, headers=headers, data=json.dumps(payload))
+print(response.json())`;
+  const apiPythonCodeHighlighted = useMemo(
+    () => highlightPythonToHtml(apiPythonCode),
+    [apiPythonCode],
+  );
+  const apiAnchorIds = useMemo(
+    () =>
+      ["api-overview", ...apiNavItems.flatMap((group) => [group.titleId, ...group.children.map((item) => item.id)])],
+    [apiNavItems],
+  );
+  const selectedRequestCount = selectedRequestIds.length;
+  const areAllRequestsSelected =
+    mockRequestHistory.length > 0 &&
+    selectedRequestCount === mockRequestHistory.length;
+  const selectedItemsLabel = `${selectedRequestCount} ${
+    selectedRequestCount === 1 ? "item" : "items"
+  } selected`;
+  const programmaticScrollTargetRef = useRef<string | null>(null);
+  const programmaticScrollTimeoutRef = useRef<number | null>(null);
+  const toggleRequestSelection = (requestId: string) => {
+    setSelectedRequestIds((prev) =>
+      prev.includes(requestId)
+        ? prev.filter((id) => id !== requestId)
+        : [...prev, requestId],
+    );
+  };
+  const toggleSelectAllRequests = () => {
+    setSelectedRequestIds((prev) =>
+      prev.length === mockRequestHistory.length
+        ? []
+        : mockRequestHistory.map((item) => item.id),
+    );
+  };
+  const getRequestCheckboxClassName = (checked: boolean) =>
+    `cursor-pointer inline-flex size-3.5 items-center justify-center rounded-xs border transition-colors ${
+      checked
+        ? "border-[#8ea8ff] bg-[#e9efff] text-[#5f7dff]"
+        : "border-foreground/15 bg-background hover:bg-foreground/[0.03] text-transparent"
+    }`;
+  const handleCopyText = async (text: string, label: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      toast({
+        title: "Copied",
+        description: `${label} copied to clipboard.`,
+      });
+    } catch {
+      toast({
+        title: "Copy failed",
+        description: "Clipboard is unavailable in this browser.",
+        variant: "destructive",
+      });
+    }
+  };
+  const scrollToApiSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (!el) {
+      return;
+    }
+    if (programmaticScrollTimeoutRef.current !== null) {
+      window.clearTimeout(programmaticScrollTimeoutRef.current);
+    }
+    programmaticScrollTargetRef.current = id;
+    setActiveApiAnchor(id);
+    el.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+    programmaticScrollTimeoutRef.current = window.setTimeout(() => {
+      programmaticScrollTargetRef.current = null;
+      programmaticScrollTimeoutRef.current = null;
+    }, 900);
+  };
+
+  useEffect(() => {
+    if (activeTopTab !== "api") {
+      return;
+    }
+
+    const sectionElements = apiAnchorIds
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => Boolean(el));
+    if (sectionElements.length === 0) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (programmaticScrollTargetRef.current) {
+          return;
+        }
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible.length > 0) {
+          setActiveApiAnchor(visible[0].target.id);
+        }
+      },
+      {
+        root: null,
+        rootMargin: "-15% 0px -70% 0px",
+        threshold: [0.2, 0.5, 0.8],
+      },
+    );
+
+    sectionElements.forEach((el) => observer.observe(el));
+    return () => {
+      observer.disconnect();
+      if (programmaticScrollTimeoutRef.current !== null) {
+        window.clearTimeout(programmaticScrollTimeoutRef.current);
+        programmaticScrollTimeoutRef.current = null;
+      }
+      programmaticScrollTargetRef.current = null;
+    };
+  }, [activeTopTab, apiAnchorIds]);
+
   return (
     <>
       <ProductTopTabs activeTab="Explore" />
@@ -159,149 +579,840 @@ export default function ModelDetailPage() {
             </div>
 
             <div className="border-foreground/10 flex items-center gap-2 border-b pt-1">
-              <button className="text-foreground border-foreground h-10 border-b-2 px-3 text-sm font-semibold">
+              <button
+                type="button"
+                onClick={() => setActiveTopTab("playground")}
+                className={`h-10 border-b-2 px-3 text-sm font-semibold transition-colors ${
+                  activeTopTab === "playground"
+                    ? "text-foreground border-foreground"
+                    : "border-transparent text-foreground/60 hover:text-foreground"
+                }`}
+              >
                 Playground
               </button>
-              <button className="text-foreground/60 hover:text-foreground h-10 px-3 text-sm font-semibold transition-colors">
+              <button
+                type="button"
+                onClick={() => setActiveTopTab("api")}
+                className={`h-10 border-b-2 px-3 text-sm font-semibold transition-colors ${
+                  activeTopTab === "api"
+                    ? "text-foreground border-foreground"
+                    : "border-transparent text-foreground/60 hover:text-foreground"
+                }`}
+              >
                 API
               </button>
-              <button className="text-foreground/60 hover:text-foreground h-10 px-3 text-sm font-semibold transition-colors">
+              <button
+                type="button"
+                onClick={() => setActiveTopTab("history")}
+                className={`h-10 border-b-2 px-3 text-sm font-semibold transition-colors ${
+                  activeTopTab === "history"
+                    ? "text-foreground border-foreground"
+                    : "border-transparent text-foreground/60 hover:text-foreground"
+                }`}
+              >
                 History
               </button>
             </div>
           </div>
 
-          <div className="grid min-h-0 flex-1 gap-6 lg:grid-cols-12">
-            <aside className="flex min-h-0 lg:col-span-6">
-              <div className="bg-surface flex h-full min-h-0 flex-col rounded-xs px-4 pt-4 pb-0">
-                <ModelDetailInputForm />
-              </div>
-            </aside>
-
-            <div className="lg:col-span-6">
-              <div className="bg-surface rounded-xs p-4">
-                <div className="mb-4 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="text-foreground text-sm font-semibold">
-                      Result
-                    </span>
-                    <Badge
-                      variant="outline"
-                      className="text-foreground/70 border-foreground/10 h-5 rounded-xs px-1.5 text-xs font-medium"
-                    >
-                      Idle
-                    </Badge>
+          {activeTopTab === "playground" ? (
+            <>
+              <div className="grid min-h-0 flex-1 gap-6 lg:grid-cols-12">
+                <aside className="flex min-h-0 lg:col-span-6">
+                  <div className="bg-surface flex h-full min-h-0 flex-col rounded-xs px-4 pt-4 pb-0">
+                    <ModelDetailInputForm />
                   </div>
-                  <div className="text-foreground/70 flex items-center gap-2">
-                    <Button
-                      variant="ghost"
-                      size="icon-sm"
-                      className="text-foreground/70 hover:bg-background rounded-xs"
-                    >
-                      <Copy className="size-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon-sm"
-                      className="text-foreground/70 hover:bg-background rounded-xs"
-                    >
-                      <RefreshCw className="size-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon-sm"
-                      className="text-foreground/70 hover:bg-background rounded-xs"
-                    >
-                      <Expand className="size-4" />
-                    </Button>
-                  </div>
-                </div>
+                </aside>
 
-                <div className="border-input relative mt-4 h-80 overflow-hidden rounded-xs border">
-                  <Image
-                    src={editorPreview}
-                    alt="Generated preview placeholder"
-                    fill
-                    className="object-cover"
-                  />
-                  <div className="from-background/0 to-background/40 absolute inset-0 bg-linear-to-t" />
-                  <div className="absolute right-3 bottom-3 inline-flex items-center gap-1 rounded-xs bg-black/50 px-2 py-1 text-xs text-white">
-                    <Sparkles className="size-3" />
-                    Preview
-                  </div>
-                </div>
+                <div className="lg:col-span-6">
+                  <div className="bg-surface rounded-xs p-4">
+                    <div className="mb-4 flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="text-foreground text-sm font-semibold">
+                          Result
+                        </span>
+                        <Badge
+                          variant="outline"
+                          className="text-foreground/70 border-foreground/10 h-5 rounded-xs px-1.5 text-xs font-medium"
+                        >
+                          Idle
+                        </Badge>
+                      </div>
+                      <div className="text-foreground/70 flex items-center gap-2">
+                        <Button
+                          variant="ghost"
+                          size="icon-sm"
+                          className="text-foreground/70 hover:bg-background rounded-xs"
+                        >
+                          <Copy className="size-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon-sm"
+                          className="text-foreground/70 hover:bg-background rounded-xs"
+                        >
+                          <RefreshCw className="size-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon-sm"
+                          className="text-foreground/70 hover:bg-background rounded-xs"
+                        >
+                          <Expand className="size-4" />
+                        </Button>
 
-                <div className="mt-4 flex flex-wrap items-center gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className={controlButtonSmClass}
-                  >
-                    <WandSparkles className="size-3" />
-                    Image Upscaler
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className={controlButtonSmClass}
-                  >
-                    Remove Background
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className={controlButtonSmClass}
-                  >
-                    Image Eraser
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className={controlButtonSmClass}
-                  >
-                    <Eye className="size-3" />
-                    Generate Video
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
+                        <div className="border-foreground/10 bg-muted inline-flex h-9 items-center rounded-xs border px-0.5 py-px">
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setResultView("preview")}
+                            className={`h-8 rounded-xs px-2 py-2 text-xs leading-none gap-1 has-[>svg]:px-2 ${
+                              resultView === "preview"
+                                ? "bg-background text-foreground shadow-xs hover:bg-background hover:text-foreground"
+                                : "text-foreground/60 hover:bg-foreground/5 hover:text-foreground/80"
+                            }`}
+                          >
+                            <ImageIcon className="size-3.5" />
+                            Preview
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setResultView("json")}
+                            className={`h-8 rounded-xs px-2 py-2 text-xs leading-none gap-1 has-[>svg]:px-2 ${
+                              resultView === "json"
+                                ? "bg-background text-foreground shadow-xs hover:bg-background hover:text-foreground"
+                                : "text-foreground/60 hover:bg-foreground/5 hover:text-foreground/80"
+                            }`}
+                          >
+                            <Braces className="size-3.5" />
+                            JSON
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
 
-          <ExamplesSection />
+                    {resultView === "preview" ? (
+                      <>
+                        <div className="border-input relative mt-4 h-80 overflow-hidden rounded-xs border">
+                          <Image
+                            src={editorPreview}
+                            alt="Generated preview placeholder"
+                            fill
+                            className="object-cover"
+                          />
+                          <div className="from-background/0 to-background/40 absolute inset-0 bg-linear-to-t" />
+                          <div className="absolute right-3 bottom-3 inline-flex items-center gap-1 rounded-xs bg-black/50 px-2 py-1 text-xs text-white">
+                            <Sparkles className="size-3" />
+                            Preview
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="border-input mt-4 overflow-hidden rounded-xs border bg-muted/40 p-4">
+                          <pre
+                            className="text-foreground/90 overflow-x-auto whitespace-pre-wrap break-all font-mono text-sm leading-8"
+                            dangerouslySetInnerHTML={{ __html: highlightedResultJson }}
+                          />
+                        </div>
+                      </>
+                    )}
 
-          <section className="flex flex-col gap-4">
-            <h2 className="text-foreground text-xl font-semibold">
-              Related Models
-            </h2>
-            <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-              {relatedModels.map((model) => (
-                <Link key={model.name} href="#" className="block">
-                  <Card className="group border-foreground/10 gap-0 overflow-hidden rounded-xs py-0 shadow-none transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:hover:shadow-black/25">
-                    <CardContent className="flex items-center gap-2.5 p-2">
-                      <div className="relative size-14 shrink-0 overflow-hidden rounded-xs">
-                        <Image
-                          src={model.image}
-                          alt={model.name}
-                          fill
-                          className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    <div className="border-border mt-4 border-t pt-4">
+                      <label className="text-foreground/80 flex cursor-pointer items-center gap-2 text-xs">
+                        <input
+                          type="checkbox"
+                          checked={enableImageMagnification}
+                          onChange={(event) =>
+                            setEnableImageMagnification(event.target.checked)
+                          }
+                          className="size-4 rounded-xs border border-foreground/20 accent-foreground"
                         />
-                      </div>
-                      <div className="min-w-0">
-                        <p className="text-foreground line-clamp-1 text-sm">
-                          google/{model.name}
-                        </p>
-                        <p className="text-foreground/50 mt-0.5 text-xs leading-tight">
-                          {model.type}
-                        </p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Link>
-              ))}
-            </div>
-          </section>
+                        <span>Enable Image Magnification</span>
+                      </label>
+                    </div>
 
-          <ReadmeSection />
+                    <div className="bg-background text-foreground mt-4 flex items-start gap-2 rounded-xs px-2 py-2 text-xs">
+                      <Info className="mt-0.5 size-3.5 shrink-0" />
+                      <p>
+                        Your request will cost{" "}
+                        <span className="text-brand font-semibold">$0.14</span> per
+                        run.
+                        <br />
+                        For <span className="text-brand font-semibold">$10</span> you
+                        can run this model approximately{" "}
+                        <span className="text-brand font-semibold">71</span> times.
+                      </p>
+                    </div>
+
+                    <div className="border-border mt-4 border-t pt-4">
+                      <p className="text-foreground mb-3 text-sm">One more thing:</p>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className={controlButtonSmClass}
+                        >
+                          <WandSparkles className="size-3" />
+                          Image Upscaler
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className={controlButtonSmClass}
+                        >
+                          Remove Background
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className={controlButtonSmClass}
+                        >
+                          Image Eraser
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className={controlButtonSmClass}
+                        >
+                          <Eye className="size-3" />
+                          Generate Video
+                          <ChevronDown className="size-3" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <ExamplesSection />
+
+              <section className="flex flex-col gap-4">
+                <h2 className="text-foreground text-xl font-semibold">
+                  Related Models
+                </h2>
+                <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+                  {relatedModels.map((model) => (
+                    <Link key={model.name} href="#" className="block">
+                      <Card className="group border-foreground/10 gap-0 overflow-hidden rounded-xs py-0 shadow-none transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:hover:shadow-black/25">
+                        <CardContent className="flex items-center gap-2.5 p-2">
+                          <div className="relative size-14 shrink-0 overflow-hidden rounded-xs">
+                            <Image
+                              src={model.image}
+                              alt={model.name}
+                              fill
+                              className="object-cover transition-transform duration-300 group-hover:scale-105"
+                            />
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-foreground line-clamp-1 text-sm">
+                              google/{model.name}
+                            </p>
+                            <p className="text-foreground/50 mt-0.5 text-xs leading-tight">
+                              {model.type}
+                            </p>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </Link>
+                  ))}
+                </div>
+              </section>
+
+              <ReadmeSection />
+            </>
+          ) : activeTopTab === "api" ? (
+            <section className="grid items-start gap-6 md:grid-cols-12 md:gap-8">
+              <aside className="border-foreground/10 sticky top-14 hidden rounded-xs border p-3 md:col-span-3 md:min-w-60 md:block">
+                <nav className="-mx-3 space-y-1" aria-label="API docs toc">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      scrollToApiSection("api-overview");
+                    }}
+                    className={`block w-full border-l-2 py-1.5 pr-2 pl-4 text-left text-sm transition-colors ${
+                      activeApiAnchor === "api-overview"
+                        ? "text-foreground border-foreground font-semibold"
+                        : "text-foreground/70 border-transparent hover:text-foreground hover:bg-foreground/5 rounded-xs"
+                    }`}
+                  >
+                    Google Nano-banana-2 Edit
+                  </button>
+                  {apiNavItems.map((item) => (
+                    <div key={item.title} className="space-y-1 py-1">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          scrollToApiSection(item.titleId);
+                        }}
+                        className={`block w-full border-l-2 py-1.5 pr-2 pl-4 text-left text-sm transition-colors ${
+                          activeApiAnchor === item.titleId
+                            ? "text-foreground border-foreground font-semibold"
+                            : "text-foreground/80 border-transparent hover:text-foreground hover:bg-foreground/5 rounded-xs"
+                        }`}
+                      >
+                        {item.title}
+                      </button>
+                      <div className="space-y-0.5">
+                        {item.children.map((child) => (
+                          <button
+                            key={child.id}
+                            type="button"
+                            onClick={() => {
+                              scrollToApiSection(child.id);
+                            }}
+                            className={`block w-full border-l-2 py-1.5 pr-2 pl-7 text-left text-sm font-normal transition-colors ${
+                              activeApiAnchor === child.id
+                                ? "text-foreground border-foreground font-semibold"
+                                : "text-foreground/65 border-transparent hover:text-foreground hover:bg-foreground/5 rounded-xs"
+                            }`}
+                          >
+                            {child.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </nav>
+              </aside>
+              <article className="border-foreground/10 space-y-6 rounded-xs border p-6 md:col-span-9">
+                <p className="text-foreground/70 text-sm">
+                  Use one of our client libraries to get started quickly.
+                </p>
+                <div className="border-foreground/10 bg-muted inline-flex h-9 items-center rounded-xs border px-0.5 py-px">
+                  <button
+                    type="button"
+                    onClick={() => setApiLanguage("http")}
+                    className={`h-8 rounded-xs px-2 py-2 text-xs leading-none has-[>svg]:px-2 ${
+                      apiLanguage === "http"
+                        ? "bg-background text-foreground shadow-xs"
+                        : "text-foreground/60 hover:bg-foreground/5 hover:text-foreground/80"
+                    }`}
+                  >
+                    HTTP
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setApiLanguage("node")}
+                    className={`h-8 rounded-xs px-2 py-2 text-xs leading-none has-[>svg]:px-2 ${
+                      apiLanguage === "node"
+                        ? "bg-background text-foreground shadow-xs"
+                        : "text-foreground/60 hover:bg-foreground/5 hover:text-foreground/80"
+                    }`}
+                  >
+                    Node.js
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setApiLanguage("python")}
+                    className={`h-8 rounded-xs px-2 py-2 text-xs leading-none has-[>svg]:px-2 ${
+                      apiLanguage === "python"
+                        ? "bg-background text-foreground shadow-xs"
+                        : "text-foreground/60 hover:bg-foreground/5 hover:text-foreground/80"
+                    }`}
+                  >
+                    Python
+                  </button>
+                </div>
+                <section id="api-overview" className="space-y-3 scroll-mt-28">
+                  <h3 className="text-foreground text-4xl font-semibold tracking-tight">
+                    Google Nano-banana-2 Edit
+                  </h3>
+                  <p className="text-foreground/80 text-sm leading-7">
+                    Google Nano Banana 2 Edit (Gemini 3.1 Flash Image) enables
+                    advanced image editing with 4K-capable output, fast iteration,
+                    and precise instruction following. Supports text translation,
+                    localization within images, and maintains subject consistency
+                    during edits. Ready-to-use REST inference API, best
+                    performance, no coldstarts, affordable pricing.
+                  </p>
+                </section>
+                <section className="space-y-3">
+                  <h4
+                    id="api-calling-the-api"
+                    className="text-foreground border-border border-b pb-2 text-3xl font-semibold tracking-tight scroll-mt-28"
+                  >
+                    1. Calling the API
+                  </h4>
+                  <div id="api-install-client" className="space-y-3 scroll-mt-28">
+                    <p className="text-foreground text-sm font-semibold">
+                      Install the client
+                    </p>
+                    <div className="bg-muted/50 relative rounded-xs p-4">
+                      <button
+                        type="button"
+                        className="text-foreground/60 hover:text-foreground absolute top-2 right-2"
+                        aria-label="Copy install command"
+                      >
+                        <Copy className="size-4" />
+                      </button>
+                      <pre className="text-foreground font-mono text-sm leading-7">
+                        npm install wavespeed
+                      </pre>
+                    </div>
+                  </div>
+                  <div id="api-submit-request" className="space-y-3 scroll-mt-28">
+                    <p className="text-foreground text-sm font-semibold">
+                      Submit a request
+                    </p>
+                    <p className="text-foreground/70 text-sm">
+                      The client handles polling automatically and returns the
+                      result when complete.
+                    </p>
+                    <div className="border-foreground/10 bg-muted inline-flex h-9 items-center rounded-xs border px-0.5 py-px">
+                      <button
+                        type="button"
+                        onClick={() => setApiLanguage("http")}
+                        className={`h-8 rounded-xs px-2 py-2 text-xs leading-none ${
+                          apiLanguage === "http"
+                            ? "bg-background text-foreground shadow-xs"
+                            : "text-foreground/60 hover:bg-foreground/5 hover:text-foreground/80"
+                        }`}
+                      >
+                        HTTP
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setApiLanguage("node")}
+                        className={`h-8 rounded-xs px-2 py-2 text-xs leading-none ${
+                          apiLanguage === "node"
+                            ? "bg-background text-foreground shadow-xs"
+                            : "text-foreground/60 hover:bg-foreground/5 hover:text-foreground/80"
+                        }`}
+                      >
+                        Node.js
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setApiLanguage("python")}
+                        className={`h-8 rounded-xs px-2 py-2 text-xs leading-none ${
+                          apiLanguage === "python"
+                            ? "bg-background text-foreground shadow-xs"
+                            : "text-foreground/60 hover:bg-foreground/5 hover:text-foreground/80"
+                        }`}
+                      >
+                        Python
+                      </button>
+                    </div>
+                    <div className="bg-muted/50 relative rounded-xs p-4">
+                      <button
+                        type="button"
+                        className="text-foreground/60 hover:text-foreground absolute top-2 right-2"
+                        aria-label="Copy node sample"
+                        onClick={() =>
+                          handleCopyText(
+                            apiLanguage === "http"
+                              ? apiHttpCode
+                              : apiLanguage === "python"
+                                ? apiPythonCode
+                                : apiNodeCode,
+                            `${apiLanguage} snippet`,
+                          )
+                        }
+                      >
+                        <Copy className="size-4" />
+                      </button>
+                      <pre
+                        className="text-foreground/90 overflow-x-auto pr-8 font-mono text-sm leading-7 whitespace-pre-wrap"
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            apiLanguage === "http"
+                              ? apiHttpCodeHighlighted
+                              : apiLanguage === "python"
+                                ? apiPythonCodeHighlighted
+                                : apiNodeCodeHighlighted,
+                        }}
+                      />
+                    </div>
+                  </div>
+                </section>
+
+                <section id="api-auth-key" className="space-y-2 scroll-mt-28">
+                  <h4
+                    id="api-authentication"
+                    className="text-foreground border-border border-b pb-2 text-xl font-semibold scroll-mt-28"
+                  >
+                    2. Authentication
+                  </h4>
+                  <p className="text-foreground/80 text-sm leading-7">
+                    Generate an API key in your dashboard and pass it in the
+                    `Authorization` header as `Bearer YOUR_API_KEY`.
+                  </p>
+                </section>
+
+                <section id="api-queue-submit" className="space-y-2 scroll-mt-28">
+                  <h4
+                    id="api-queue-webhooks"
+                    className="text-foreground border-border border-b pb-2 text-xl font-semibold scroll-mt-28"
+                  >
+                    3. Queue & Webhooks
+                  </h4>
+                  <p className="text-foreground/80 text-sm leading-7">
+                    Request submission returns a task ID. Use polling or webhook
+                    callbacks to consume final results in async workflows.
+                  </p>
+                </section>
+                <section id="api-queue-response" className="space-y-2 scroll-mt-28">
+                  <p className="text-foreground text-sm font-semibold">Response</p>
+                  <p className="text-foreground/80 text-sm leading-7">
+                    The response includes status, request metadata, and output
+                    URLs when generation completes.
+                  </p>
+                </section>
+
+                <section id="api-webhook-headers" className="space-y-2 scroll-mt-28">
+                  <h4
+                    id="api-verifying-webhooks"
+                    className="text-foreground border-border border-b pb-2 text-xl font-semibold scroll-mt-28"
+                  >
+                    4. Verifying Webhooks
+                  </h4>
+                  <p className="text-foreground text-sm font-semibold">Webhook headers</p>
+                  <p className="text-foreground/80 text-sm leading-7">
+                    Validate signature headers and timestamp before trusting
+                    webhook payloads.
+                  </p>
+                </section>
+                <section id="api-signature" className="space-y-2 scroll-mt-28">
+                  <p className="text-foreground text-sm font-semibold">
+                    Signature computation
+                  </p>
+                  <p className="text-foreground/80 text-sm leading-7">
+                    Compute HMAC with your webhook secret and compare against the
+                    signature header.
+                  </p>
+                </section>
+                <section id="api-verify-example" className="space-y-2 scroll-mt-28">
+                  <p className="text-foreground text-sm font-semibold">
+                    Verification example
+                  </p>
+                  <p className="text-foreground/80 text-sm leading-7">
+                    Reject mismatched signatures and stale timestamps to avoid
+                    replay attacks.
+                  </p>
+                </section>
+
+                <section id="api-files-public-url" className="space-y-2 scroll-mt-28">
+                  <h4
+                    id="api-files"
+                    className="text-foreground border-border border-b pb-2 text-xl font-semibold scroll-mt-28"
+                  >
+                    5. Files
+                  </h4>
+                  <p className="text-foreground text-sm font-semibold">Public URL</p>
+                  <p className="text-foreground/80 text-sm leading-7">
+                    Pass file URLs directly for hosted assets.
+                  </p>
+                </section>
+                <section id="api-files-base64" className="space-y-2 scroll-mt-28">
+                  <p className="text-foreground text-sm font-semibold">Base64 data URI</p>
+                  <p className="text-foreground/80 text-sm leading-7">
+                    Use data URI payloads for local uploads when direct hosting is
+                    unavailable.
+                  </p>
+                </section>
+                <section id="api-files-upload" className="space-y-2 scroll-mt-28">
+                  <p className="text-foreground text-sm font-semibold">Upload API</p>
+                  <p className="text-foreground/80 text-sm leading-7">
+                    Upload first, then reference uploaded URLs in prediction
+                    requests for stable processing.
+                  </p>
+                </section>
+
+                <section id="api-schema-input" className="space-y-2 scroll-mt-28">
+                  <h4
+                    id="api-schema"
+                    className="text-foreground border-border border-b pb-2 text-xl font-semibold scroll-mt-28"
+                  >
+                    6. Schema
+                  </h4>
+                  <p className="text-foreground text-sm font-semibold">Input</p>
+                  <p className="text-foreground/80 text-sm leading-7">
+                    Required fields include `images` and `prompt`; optional
+                    controls include `resolution`, `output_format`, and sync mode.
+                  </p>
+                </section>
+                <section id="api-schema-example" className="space-y-2 scroll-mt-28">
+                  <p className="text-foreground text-sm font-semibold">Example request</p>
+                  <div className="bg-muted/50 rounded-xs p-4">
+                    <pre
+                      className="text-foreground/90 overflow-x-auto font-mono text-sm leading-7 whitespace-pre-wrap"
+                      dangerouslySetInnerHTML={{
+                        __html: highlightJsonToHtml(apiPayload),
+                      }}
+                    />
+                  </div>
+                </section>
+                <section id="api-schema-output" className="space-y-2 scroll-mt-28">
+                  <p className="text-foreground text-sm font-semibold">Output</p>
+                  <p className="text-foreground/80 text-sm leading-7">
+                    Output includes status, task ID, and generated asset links.
+                    When `enable_base64_output` is true, output data is embedded.
+                  </p>
+                </section>
+              </article>
+            </section>
+          ) : (
+            <section>
+              <div className="mb-4">
+                <div className="mb-2 flex flex-wrap items-start justify-between gap-3">
+                  <h2 className="text-foreground text-lg font-semibold">Requests</h2>
+                  <div className="flex flex-wrap items-center gap-2 self-start">
+                    <div className="flex h-8 items-center gap-2 rounded-xs px-1.5">
+                      <span className="text-foreground/80 text-xs">
+                        Show API requests
+                      </span>
+                      <button
+                        type="button"
+                        role="switch"
+                        aria-checked="true"
+                        className="bg-foreground/25 relative inline-flex h-4.5 w-8 items-center rounded-full p-0.5"
+                      >
+                        <span className="bg-foreground ml-auto block size-3.5 rounded-full" />
+                      </button>
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className={controlButtonSmClass}
+                    >
+                      All models
+                      <ChevronDown className="size-3.5" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className={controlButtonSmClass}
+                    >
+                      Status
+                      <ChevronDown className="size-3.5" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+
+              <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
+                <CardContent className="flex items-center gap-1.5 bg-amber-500/6 py-2.5 pr-4 pl-3 md:pr-5 dark:bg-amber-400/8">
+                  <AlertCircle className="size-3.5 shrink-0 text-amber-600 dark:text-amber-400" />
+                  <p className="text-xs leading-[1.35] text-amber-900/70 dark:text-amber-200/80">
+                    Your outputs are stored for <strong>7 days only</strong>.
+                    Download and save important files before they expire.
+                  </p>
+                </CardContent>
+
+                <div className="border-foreground/10 border-t">
+                  <div
+                    className={`border-foreground/10 overflow-hidden border-b transition-all duration-200 ease-out ${
+                      selectedRequestCount > 0
+                        ? "max-h-14 translate-y-0 opacity-100"
+                        : "max-h-0 -translate-y-1 opacity-0"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between px-2 py-2">
+                      <span className="text-foreground/60 ml-2 text-xs">
+                        {selectedItemsLabel}
+                      </span>
+                      <div className="flex items-center gap-2">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="border-foreground/10 h-8 rounded-xs px-3 text-xs"
+                        >
+                          <Download className="size-3.5" />
+                          Download
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          className="h-8 rounded-xs px-3 text-xs"
+                        >
+                          <Trash2 className="size-3.5" />
+                          Delete
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="hidden md:block">
+                    <Table className="min-w-170">
+                      <TableHeader>
+                        <TableRow className="border-foreground/10 hover:bg-transparent">
+                          <TableHead className="w-10 pr-2 pl-3 align-middle lg:pl-4">
+                            <div className="flex items-center justify-center">
+                              <button
+                                type="button"
+                                role="checkbox"
+                                aria-label="Select all requests"
+                                aria-checked={areAllRequestsSelected}
+                                onClick={toggleSelectAllRequests}
+                                className={getRequestCheckboxClassName(
+                                  areAllRequestsSelected,
+                                )}
+                              >
+                                {areAllRequestsSelected ? (
+                                  <svg
+                                    viewBox="0 0 16 16"
+                                    fill="none"
+                                    className="size-2.5"
+                                    aria-hidden="true"
+                                  >
+                                    <path
+                                      d="M3.5 8.5L6.5 11.5L12.5 4.8"
+                                      stroke="currentColor"
+                                      strokeWidth="1.5"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                    />
+                                  </svg>
+                                ) : null}
+                              </button>
+                            </div>
+                          </TableHead>
+                          <TableHead className="text-foreground/50 tracking-lg w-20 px-3 lg:px-4">
+                            Output
+                          </TableHead>
+                          <TableHead className="text-foreground/50 tracking-lg px-3 lg:px-4">
+                            ID
+                          </TableHead>
+                          <TableHead className="text-foreground/50 tracking-lg px-3 lg:px-4">
+                            Model
+                          </TableHead>
+                          <TableHead className="text-foreground/50 tracking-lg px-3 lg:px-4">
+                            Status
+                          </TableHead>
+                          <TableHead className="text-foreground/50 tracking-lg px-3 lg:px-4">
+                            Created
+                          </TableHead>
+                          <TableHead className="text-foreground/50 tracking-lg pr-3 pl-3 lg:pr-4 lg:pl-4">
+                            Action
+                          </TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {mockRequestHistory.map((item) => (
+                          <TableRow
+                            key={item.id}
+                            className="border-foreground/10 hover:bg-surface"
+                          >
+                            <TableCell className="py-0 pr-2 pl-3 align-middle lg:pl-4">
+                              <div className="flex items-center justify-center py-2">
+                                <button
+                                  type="button"
+                                  role="checkbox"
+                                  aria-label={`Select request ${item.id}`}
+                                  aria-checked={selectedRequestIds.includes(item.id)}
+                                  onClick={() => toggleRequestSelection(item.id)}
+                                  className={getRequestCheckboxClassName(
+                                    selectedRequestIds.includes(item.id),
+                                  )}
+                                >
+                                  {selectedRequestIds.includes(item.id) ? (
+                                    <svg
+                                      viewBox="0 0 16 16"
+                                      fill="none"
+                                      className="size-2.5"
+                                      aria-hidden="true"
+                                    >
+                                      <path
+                                        d="M3.5 8.5L6.5 11.5L12.5 4.8"
+                                        stroke="currentColor"
+                                        strokeWidth="1.5"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                      />
+                                    </svg>
+                                  ) : null}
+                                </button>
+                              </div>
+                            </TableCell>
+                            <TableCell className="px-3 lg:px-4">
+                              <div className="bg-surface relative size-12 overflow-hidden rounded-xs">
+                                <Image
+                                  src={item.preview}
+                                  alt={`${item.model} output preview`}
+                                  fill
+                                  className="object-cover"
+                                />
+                              </div>
+                            </TableCell>
+                            <TableCell className="px-3 lg:px-4">
+                              <div className="flex items-center gap-1">
+                                <span className="text-foreground/70 font-mono text-sm">
+                                  {item.id}
+                                </span>
+                                <Button
+                                  variant="ghost"
+                                  size="icon-xs"
+                                  aria-label="Copy request ID"
+                                  onClick={() => handleCopyText(item.id, "Request ID")}
+                                  className="text-foreground/60 hover:text-foreground"
+                                >
+                                  <Copy className="size-3.5" />
+                                </Button>
+                              </div>
+                            </TableCell>
+                            <TableCell className="px-3 lg:px-4">
+                              {item.model}
+                            </TableCell>
+                            <TableCell className="px-3 lg:px-4">
+                              <Badge
+                                variant="outline"
+                                className={`tracking-lg rounded-xs border-0 px-2 py-1 text-xs ${
+                                  item.status === "Succeeded"
+                                    ? "bg-emerald-500/15 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-300"
+                                    : item.status === "Running"
+                                      ? "bg-amber-500/15 text-amber-700 dark:bg-amber-400/15 dark:text-amber-300"
+                                      : "bg-rose-500/15 text-rose-700 dark:bg-rose-400/15 dark:text-rose-300"
+                                }`}
+                              >
+                                {item.status === "Running" ? (
+                                  <span className="mr-1 inline-block size-1.5 animate-pulse rounded-full bg-current" />
+                                ) : null}
+                                {item.status}
+                              </Badge>
+                            </TableCell>
+                            <TableCell className="text-foreground/70 px-3 text-sm lg:px-4">
+                              {item.createdAt}
+                            </TableCell>
+                            <TableCell className="pr-3 pl-3 lg:pr-4 lg:pl-4">
+                              <div className="flex items-center gap-1">
+                                <Button
+                                  variant="ghost"
+                                  size="icon-xs"
+                                  aria-label="Open request detail"
+                                  className="text-foreground/60 hover:text-foreground"
+                                >
+                                  <ExternalLink className="size-3.5" />
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon-xs"
+                                  aria-label="Download output"
+                                  className="text-foreground/60 hover:text-foreground"
+                                >
+                                  <Download className="size-3.5" />
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon-xs"
+                                  aria-label="Delete request"
+                                  className="text-foreground/60 hover:text-red-500"
+                                >
+                                  <Trash2 className="size-3.5" />
+                                </Button>
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </div>
+              </Card>
+            </section>
+          )}
         </div>
       </section>
     </>
