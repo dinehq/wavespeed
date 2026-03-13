@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Logo from "@/images/logo.svg";
 import SearchIcon from "@/images/search-icon.svg";
 import ChevronDown from "@/images/chevron-down.svg";
@@ -65,7 +65,15 @@ type NavbarProps = {
   overlay?: boolean;
 };
 
-export function Navbar({ mode = "default", overlay }: NavbarProps) {
+export function Navbar(props: NavbarProps) {
+  return (
+    <Suspense>
+      <NavbarInner {...props} />
+    </Suspense>
+  );
+}
+
+function NavbarInner({ mode = "default", overlay }: NavbarProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const isExploreGuestModelEntry =
