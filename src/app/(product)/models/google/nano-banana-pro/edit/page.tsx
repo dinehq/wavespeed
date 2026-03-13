@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import {
   AlertCircle,
   Braces,
@@ -253,9 +254,12 @@ function highlightPythonToHtml(source: string) {
 }
 
 export default function ModelDetailPage() {
+  const searchParams = useSearchParams();
+  const isUnauthedEntry = searchParams.get("entry") === "explore";
   const [activeTopTab, setActiveTopTab] = useState<
     "playground" | "api" | "history"
   >("playground");
+  const currentTopTab = isUnauthedEntry ? "playground" : activeTopTab;
   const [resultView, setResultView] = useState<"preview" | "json">("preview");
   const [enableImageMagnification, setEnableImageMagnification] =
     useState(false);
@@ -465,7 +469,7 @@ print(response.json())`;
   };
 
   useEffect(() => {
-    if (activeTopTab !== "api") {
+    if (currentTopTab !== "api") {
       return;
     }
 
@@ -504,11 +508,11 @@ print(response.json())`;
       }
       programmaticScrollTargetRef.current = null;
     };
-  }, [activeTopTab, apiAnchorIds]);
+  }, [currentTopTab, apiAnchorIds]);
 
   return (
     <>
-      <ProductTopTabs activeTab="Explore" />
+      {isUnauthedEntry ? null : <ProductTopTabs activeTab="Explore" />}
       <section className="px-6 pb-16 md:px-12 lg:px-20">
         <div className="mx-auto flex min-h-[calc(100vh-8rem)] w-full max-w-7xl flex-col gap-8">
           <div className="flex flex-col gap-4 pt-5">
@@ -594,44 +598,46 @@ print(response.json())`;
               </div>
             </div>
 
-            <div className="border-foreground/10 flex items-center gap-2 border-b pt-1">
-              <button
-                type="button"
-                onClick={() => setActiveTopTab("playground")}
-                className={`h-10 border-b-2 px-3 text-sm font-semibold transition-colors ${
-                  activeTopTab === "playground"
-                    ? "text-foreground border-foreground"
-                    : "text-foreground/60 hover:text-foreground border-transparent"
-                }`}
-              >
-                Playground
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveTopTab("api")}
-                className={`h-10 border-b-2 px-3 text-sm font-semibold transition-colors ${
-                  activeTopTab === "api"
-                    ? "text-foreground border-foreground"
-                    : "text-foreground/60 hover:text-foreground border-transparent"
-                }`}
-              >
-                API
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveTopTab("history")}
-                className={`h-10 border-b-2 px-3 text-sm font-semibold transition-colors ${
-                  activeTopTab === "history"
-                    ? "text-foreground border-foreground"
-                    : "text-foreground/60 hover:text-foreground border-transparent"
-                }`}
-              >
-                History
-              </button>
-            </div>
+            {isUnauthedEntry ? null : (
+              <div className="border-foreground/10 flex items-center gap-2 border-b pt-1">
+                <button
+                  type="button"
+                  onClick={() => setActiveTopTab("playground")}
+                  className={`h-10 border-b-2 px-3 text-sm font-semibold transition-colors ${
+                    activeTopTab === "playground"
+                      ? "text-foreground border-foreground"
+                      : "text-foreground/60 hover:text-foreground border-transparent"
+                  }`}
+                >
+                  Playground
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveTopTab("api")}
+                  className={`h-10 border-b-2 px-3 text-sm font-semibold transition-colors ${
+                    activeTopTab === "api"
+                      ? "text-foreground border-foreground"
+                      : "text-foreground/60 hover:text-foreground border-transparent"
+                  }`}
+                >
+                  API
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveTopTab("history")}
+                  className={`h-10 border-b-2 px-3 text-sm font-semibold transition-colors ${
+                    activeTopTab === "history"
+                      ? "text-foreground border-foreground"
+                      : "text-foreground/60 hover:text-foreground border-transparent"
+                  }`}
+                >
+                  History
+                </button>
+              </div>
+            )}
           </div>
 
-          {activeTopTab === "playground" ? (
+          {currentTopTab === "playground" ? (
             <>
               <div className="grid min-h-0 flex-1 gap-6 lg:grid-cols-12">
                 <aside className="flex min-h-0 lg:col-span-6">
@@ -847,7 +853,7 @@ print(response.json())`;
 
               <ReadmeSection />
             </>
-          ) : activeTopTab === "api" ? (
+          ) : currentTopTab === "api" ? (
             <section className="grid items-start gap-6 md:grid-cols-12 md:gap-8">
               <aside className="border-foreground/10 sticky top-14 hidden rounded-xs border p-3 md:col-span-3 md:block md:min-w-60">
                 <nav className="-mx-3 space-y-1" aria-label="API docs toc">

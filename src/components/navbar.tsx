@@ -5,6 +5,7 @@ import Logo from "@/images/logo.svg";
 import SearchIcon from "@/images/search-icon.svg";
 import ChevronDown from "@/images/chevron-down.svg";
 import Link from "next/link";
+import { usePathname, useSearchParams } from "next/navigation";
 
 const resourceGroups = [
   {
@@ -65,7 +66,12 @@ type NavbarProps = {
 };
 
 export function Navbar({ mode = "default", overlay }: NavbarProps) {
-  const isDashboardMode = mode === "dashboard";
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const isExploreGuestModelEntry =
+    pathname === "/models/google/nano-banana-pro/edit" &&
+    searchParams.get("entry") === "explore";
+  const isDashboardMode = mode === "dashboard" && !isExploreGuestModelEntry;
   const [menuOpen, setMenuOpen] = useState(false);
   const [resourcesOpen, setResourcesOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);

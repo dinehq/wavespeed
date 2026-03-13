@@ -19,7 +19,7 @@ export default function ExplorePage() {
           </div>
 
           <Link
-            href="/models/google/nano-banana-pro/edit"
+            href="/models/google/nano-banana-pro/edit?entry=explore"
             className="border-foreground/10 bg-background hover:bg-surface flex flex-col gap-4 rounded-md border p-6 transition-colors md:flex-row md:items-center md:justify-between"
           >
             <div className="flex flex-col gap-2">
