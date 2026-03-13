@@ -15,7 +15,7 @@ export function ForCreators() {
   return (
     <section className="bg-dark dark:bg-dark relative overflow-hidden">
       <div className="px-6 pt-16 pb-16 md:px-12 md:pt-24 md:pb-24 lg:px-20">
-        <div className="mx-auto flex max-w-7xl flex-col gap-20 md:gap-30">
+        <div className="mx-auto flex max-w-7xl flex-col gap-20 md:gap-24">
           {/* Row 1: For Developers — text left, code right */}
           <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-12">
             <div className="flex flex-col gap-4 lg:w-80 lg:shrink-0 lg:pt-6">

@@ -583,7 +583,7 @@ video = wavespeed.run(
         {
           content: (
             <>
-              <span className={st}>{'  "wavespeed-ai/llama-4-scout"'}</span>
+              <span className={st}>{'  "minimax/minimax-m2.5"'}</span>
               <span className={tx}>,</span>
             </>
           ),
@@ -622,7 +622,7 @@ video = wavespeed.run(
       raw: `import wavespeed from "wavespeed"
 
 const output = await wavespeed.run(
-  "wavespeed-ai/llama-4-scout",
+  "minimax/minimax-m2.5",
   {
     prompt: "Summarize this conversation",
     max_tokens: 512,
@@ -655,7 +655,7 @@ const output = await wavespeed.run(
         {
           content: (
             <>
-              <span className={py_st}>{'  "wavespeed-ai/llama-4-scout"'}</span>
+              <span className={py_st}>{'  "minimax/minimax-m2.5"'}</span>
               <span className={tx}>,</span>
             </>
           ),
@@ -691,7 +691,7 @@ const output = await wavespeed.run(
       raw: `import wavespeed
 
 result = wavespeed.run(
-  "wavespeed-ai/llama-4-scout",
+  "minimax/minimax-m2.5",
   prompt="Summarize this conversation",
   max_tokens=512,
   temperature=0.7
@@ -753,7 +753,7 @@ result = wavespeed.run(
               <span className={tx}>{"    "}</span>
               <span className={sh_st}>{'"model"'}</span>
               <span className={tx}>{": "}</span>
-              <span className={sh_st}>{'"wavespeed-ai/llama-4-scout"'}</span>
+              <span className={sh_st}>{'"minimax/minimax-m2.5"'}</span>
               <span className={tx}>,</span>
             </>
           ),
@@ -781,7 +781,7 @@ result = wavespeed.run(
   -H "Authorization: Bearer $API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "model": "wavespeed-ai/llama-4-scout",
+    "model": "minimax/minimax-m2.5",
     "prompt": "Summarize this conversation"
   }'`,
       output: "Chat completion",
