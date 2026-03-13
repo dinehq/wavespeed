@@ -251,7 +251,8 @@ export function ModelDetailInputForm() {
   const [enableBase64Output, setEnableBase64Output] = useState(true);
   const [sizeWidth, setSizeWidth] = useState(1024);
   const [sizeHeight, setSizeHeight] = useState(768);
-  const [imageSizePreset, setImageSizePreset] = useState<string>("landscape-4-3");
+  const [imageSizePreset, setImageSizePreset] =
+    useState<string>("landscape-4-3");
   const [audioUrl, setAudioUrl] = useState("");
   const [audioItem, setAudioItem] = useState<AudioItem | null>(null);
   const [loraItems, setLoraItems] = useState<LoraItem[]>([
@@ -476,13 +477,21 @@ export function ModelDetailInputForm() {
   };
 
   const clampSize = (n: number) =>
-    Math.min(IMAGE_SIZE_MAX, Math.max(IMAGE_SIZE_MIN, Number.isFinite(n) ? n : IMAGE_SIZE_MIN));
+    Math.min(
+      IMAGE_SIZE_MAX,
+      Math.max(IMAGE_SIZE_MIN, Number.isFinite(n) ? n : IMAGE_SIZE_MIN),
+    );
 
-  const handleSizeWidthChange = (value: number) => setSizeWidth(clampSize(value));
-  const handleSizeHeightChange = (value: number) => setSizeHeight(clampSize(value));
+  const handleSizeWidthChange = (value: number) =>
+    setSizeWidth(clampSize(value));
+  const handleSizeHeightChange = (value: number) =>
+    setSizeHeight(clampSize(value));
 
   const handleAddLoraItem = () => {
-    setLoraItems((prev) => [...prev, { id: createImageId(), path: "", scale: 1 }]);
+    setLoraItems((prev) => [
+      ...prev,
+      { id: createImageId(), path: "", scale: 1 },
+    ]);
   };
 
   const handleRemoveLoraItem = (id: string) => {
@@ -522,108 +531,24 @@ export function ModelDetailInputForm() {
           </SelectContent>
         </Select>
       </div>
-      <div className="min-h-0 flex flex-1 flex-col">
+      <div className="flex min-h-0 flex-1 flex-col">
         <div className="min-h-0 flex-1 space-y-6 overflow-y-auto pr-1">
           <div>
-          <FieldLabel tooltip="One primary input image for editing.">
-            image*
-          </FieldLabel>
-          <div className="flex min-w-0 items-center gap-2">
-            <input
-              type="text"
-              value={singleImageUrlInput}
-              onChange={(event) => setSingleImageUrlInput(event.target.value)}
-              onKeyDown={(event) => {
-                if (event.key === "Enter") {
-                  event.preventDefault();
-                  handleAddSingleImageUrl();
-                }
-              }}
-              onBlur={handleAddSingleImageUrl}
-              placeholder="Add image from URL or paste from clipboard"
-              className={cn(
-                "border-input bg-background placeholder:text-muted-foreground text-foreground h-8 flex-1 rounded-xs border px-3 text-xs shadow-xs outline-none",
-                "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
-                "aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40",
-              )}
-            />
-            <Button
-              type="button"
-              variant="outline"
-              size="icon-sm"
-              onClick={handleOpenSingleImageFilePicker}
-              aria-label="Choose image file"
-              className="border-foreground/10 text-foreground/80 hover:bg-foreground/5 h-8 w-8 rounded-xs shadow-xs"
-            >
-              <FolderOpen className="size-4" />
-            </Button>
-            <input
-              ref={singleImageFileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={handleSingleImageSelected}
-              className="hidden"
-            />
-          </div>
-          {singleImage ? (
-            <div className="mt-3">
-              <div className={previewCardClass}>
-                <div className="relative aspect-square w-full">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={singleImage.src}
-                    alt="Primary input image preview"
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-                <button
-                  type="button"
-                  aria-label="Remove primary image"
-                  className="bg-background/80 text-foreground/70 absolute top-2 right-2 inline-flex size-6 items-center justify-center rounded-xs border border-white/10"
-                  onClick={handleRemoveSingleImage}
-                >
-                  <Trash2 className="size-3.5" />
-                </button>
-              </div>
-            </div>
-          ) : null}
-          </div>
-
-          <div>
-          <FieldLabel tooltip="One or more reference images for editing.">
-            images*
-          </FieldLabel>
-          <div className="flex items-center gap-3">
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              className={controlButtonSmClass}
-              onClick={handleOpenImagesFilePicker}
-            >
-              <ImagePlus className="size-3.5" />
-              Add Image
-            </Button>
-            <input
-              ref={imagesFileInputRef}
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handleImagesSelected}
-              className="hidden"
-            />
-            <div className="bg-border h-5 w-px shrink-0" />
-            <div className="flex min-w-0 flex-1 items-center gap-2">
+            <FieldLabel tooltip="One primary input image for editing.">
+              image*
+            </FieldLabel>
+            <div className="flex min-w-0 items-center gap-2">
               <input
                 type="text"
-                value={urlInput}
-                onChange={(event) => setUrlInput(event.target.value)}
+                value={singleImageUrlInput}
+                onChange={(event) => setSingleImageUrlInput(event.target.value)}
                 onKeyDown={(event) => {
                   if (event.key === "Enter") {
                     event.preventDefault();
-                    handleAddUrl();
+                    handleAddSingleImageUrl();
                   }
                 }}
+                onBlur={handleAddSingleImageUrl}
                 placeholder="Add image from URL or paste from clipboard"
                 className={cn(
                   "border-input bg-background placeholder:text-muted-foreground text-foreground h-8 flex-1 rounded-xs border px-3 text-xs shadow-xs outline-none",
@@ -634,381 +559,484 @@ export function ModelDetailInputForm() {
               <Button
                 type="button"
                 variant="outline"
-                size="sm"
-                disabled={!urlInput.trim()}
-                onClick={handleAddUrl}
-                className={controlButtonSmClass}
-              >
-                Add URL
-              </Button>
-            </div>
-          </div>
-
-          <p className="text-foreground/60 mt-3 text-xs">
-            <span className="font-semibold">Hint:</span> Drag and drop files from
-            your computer, images from web pages, paste from clipboard
-            (Ctrl/Cmd+V), or provide a URL.
-          </p>
-
-          <div className="mt-3 grid grid-cols-3 gap-3">
-            {images.map((item) => (
-              <div
-                key={item.id}
-                className={cn(previewCardClass, "justify-self-start")}
-              >
-                <div className="relative aspect-square w-full">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={item.src}
-                    alt="Input image preview"
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-                <button
-                  type="button"
-                  aria-label="Remove image"
-                  className="bg-background/80 text-foreground/70 absolute top-2 right-2 inline-flex size-6 items-center justify-center rounded-xs border border-white/10"
-                  onClick={() => handleRemoveImage(item.id)}
-                >
-                  <Trash2 className="size-3.5" />
-                </button>
-                <div className="text-foreground/70 absolute right-2 bottom-2 left-2 flex items-center justify-between text-xs">
-                  <span>{item.sizeLabel}</span>
-                  <Link2 className="size-3.5" />
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <p className="text-foreground/80 mt-3 text-sm">
-            {images.length} images added
-          </p>
-          </div>
-
-          <div>
-          <div className="mb-2 flex items-center justify-between gap-2">
-            <FieldLabel
-              tooltip="Describe the edit you want the model to apply."
-              className="mb-0"
-            >
-              prompt*
-            </FieldLabel>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              className={controlButtonSmClass}
-            >
-              <Sparkles className="size-3.5" />
-              Prompt Enhancer
-            </Button>
-          </div>
-          <textarea
-            defaultValue="Make the hamburger made of glass."
-            rows={4}
-            className={cn(
-              "border-input bg-background placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground w-full min-w-0 resize-y rounded-xs border px-3 py-2 text-xs shadow-xs transition-[color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
-              "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
-              "aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40",
-              "min-h-24",
-            )}
-          />
-          </div>
-
-          <div>
-          <FieldLabel tooltip="Target aspect ratio for the generated result.">
-            aspect_ratio
-          </FieldLabel>
-          <Select defaultValue="1:1">
-<SelectTrigger size="sm" className={controlSelectClass}>
-            <SelectValue />
-          </SelectTrigger>
-            <SelectContent className="border-foreground/10 rounded-xs">
-              <SelectItem value="1:1">1:1</SelectItem>
-              <SelectItem value="16:9">16:9</SelectItem>
-              <SelectItem value="9:16">9:16</SelectItem>
-              <SelectItem value="4:3">4:3</SelectItem>
-              <SelectItem value="3:4">3:4</SelectItem>
-            </SelectContent>
-          </Select>
-          </div>
-
-          <div>
-          <FieldLabel tooltip="Output resolution level for generated images.">
-            resolution
-          </FieldLabel>
-          <Select defaultValue="2k">
-<SelectTrigger size="sm" className={controlSelectClass}>
-            <SelectValue />
-          </SelectTrigger>
-            <SelectContent className="border-foreground/10 rounded-xs">
-              <SelectItem value="1k">1k</SelectItem>
-              <SelectItem value="2k">2k</SelectItem>
-              <SelectItem value="4k">4k</SelectItem>
-            </SelectContent>
-          </Select>
-          </div>
-
-          <div>
-          <FieldLabel tooltip="The file format returned by the model output.">
-            output_format
-          </FieldLabel>
-          <Select defaultValue="jpeg">
-<SelectTrigger size="sm" className={controlSelectClass}>
-            <SelectValue />
-          </SelectTrigger>
-            <SelectContent className="border-foreground/10 rounded-xs">
-              <SelectItem value="jpeg">jpeg</SelectItem>
-              <SelectItem value="png">png</SelectItem>
-              <SelectItem value="webp">webp</SelectItem>
-            </SelectContent>
-          </Select>
-          </div>
-
-          <div>
-          <FieldLabel tooltip="The size of the generated image. Default value: landscape_4_3">
-            Image size
-          </FieldLabel>
-          <div className="space-y-2">
-            <div className="flex flex-wrap items-center gap-2">
-              <Select value={imageSizePreset} onValueChange={handleImageSizePresetChange}>
-                <SelectTrigger size="sm" className={controlSelectClass}>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="border-foreground/10 rounded-xs">
-                  {imageSizeOptions.map((opt) => (
-                    <SelectItem key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <div className="flex items-center gap-2">
-                <input
-                  type="number"
-                  min={IMAGE_SIZE_MIN}
-                  max={IMAGE_SIZE_MAX}
-                  value={sizeWidth}
-                  onChange={(event) => handleSizeWidthChange(Number(event.target.value))}
-                  onBlur={(event) => handleSizeWidthChange(Number(event.target.value))}
-                  disabled={imageSizePreset !== "custom"}
-                  className={cn(
-                    "border-input bg-background text-foreground h-8 w-24 rounded-xs border px-3 text-xs shadow-xs outline-none",
-                    imageSizePreset !== "custom" && "cursor-not-allowed opacity-60",
-                  )}
-                />
-                <span className="text-foreground/70 text-xs" aria-hidden>×</span>
-                <input
-                  type="number"
-                  min={IMAGE_SIZE_MIN}
-                  max={IMAGE_SIZE_MAX}
-                  value={sizeHeight}
-                  onChange={(event) => handleSizeHeightChange(Number(event.target.value))}
-                  onBlur={(event) => handleSizeHeightChange(Number(event.target.value))}
-                  disabled={imageSizePreset !== "custom"}
-                  className={cn(
-                    "border-input bg-background text-foreground h-8 w-24 rounded-xs border px-3 text-xs shadow-xs outline-none",
-                    imageSizePreset !== "custom" && "cursor-not-allowed opacity-60",
-                  )}
-                />
-              </div>
-            </div>
-            <p className="text-foreground/60 text-xs">
-              Range: 256 – 1536
-            </p>
-          </div>
-          </div>
-
-          <div>
-          <FieldLabel tooltip="Optional audio URL input for multimodal workflows.">
-            audio*
-          </FieldLabel>
-          <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <input
-                type="text"
-                value={audioUrl}
-                onChange={(event) => setAudioUrl(event.target.value)}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter") {
-                    event.preventDefault();
-                    handleAddAudioUrl();
-                  }
-                }}
-                placeholder="https://..."
-                className="border-input bg-background text-foreground placeholder:text-muted-foreground h-8 flex-1 rounded-xs border px-2 text-xs shadow-xs outline-none"
-              />
-              <Button
-                type="button"
-                variant="outline"
                 size="icon-sm"
-                className="h-8 w-8 rounded-xs shadow-xs"
-                aria-label="Choose audio file"
-                onClick={handleOpenAudioFilePicker}
+                onClick={handleOpenSingleImageFilePicker}
+                aria-label="Choose image file"
+                className="border-foreground/10 text-foreground/80 hover:bg-foreground/5 h-8 w-8 rounded-xs shadow-xs"
               >
-                <FolderOpen className="size-3.5" />
+                <FolderOpen className="size-4" />
               </Button>
               <input
-                ref={audioFileInputRef}
+                ref={singleImageFileInputRef}
                 type="file"
-                accept="audio/*"
-                onChange={handleAudioFileSelected}
+                accept="image/*"
+                onChange={handleSingleImageSelected}
                 className="hidden"
               />
+            </div>
+            {singleImage ? (
+              <div className="mt-3">
+                <div className={previewCardClass}>
+                  <div className="relative aspect-square w-full">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={singleImage.src}
+                      alt="Primary input image preview"
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    aria-label="Remove primary image"
+                    className="bg-background/80 text-foreground/70 absolute top-2 right-2 inline-flex size-6 items-center justify-center rounded-xs border border-white/10"
+                    onClick={handleRemoveSingleImage}
+                  >
+                    <Trash2 className="size-3.5" />
+                  </button>
+                </div>
+              </div>
+            ) : null}
+          </div>
+
+          <div>
+            <FieldLabel tooltip="One or more reference images for editing.">
+              images*
+            </FieldLabel>
+            <div className="flex items-center gap-3">
               <Button
                 type="button"
                 variant="outline"
-                size="icon-sm"
-                className="h-8 w-8 rounded-xs shadow-xs"
-                aria-label="Record audio"
+                size="sm"
+                className={controlButtonSmClass}
+                onClick={handleOpenImagesFilePicker}
               >
-                <Mic className="size-3.5" />
+                <ImagePlus className="size-3.5" />
+                Add Image
+              </Button>
+              <input
+                ref={imagesFileInputRef}
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleImagesSelected}
+                className="hidden"
+              />
+              <div className="bg-border h-5 w-px shrink-0" />
+              <div className="flex min-w-0 flex-1 items-center gap-2">
+                <input
+                  type="text"
+                  value={urlInput}
+                  onChange={(event) => setUrlInput(event.target.value)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      event.preventDefault();
+                      handleAddUrl();
+                    }
+                  }}
+                  placeholder="Add image from URL or paste from clipboard"
+                  className={cn(
+                    "border-input bg-background placeholder:text-muted-foreground text-foreground h-8 flex-1 rounded-xs border px-3 text-xs shadow-xs outline-none",
+                    "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
+                    "aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40",
+                  )}
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  disabled={!urlInput.trim()}
+                  onClick={handleAddUrl}
+                  className={controlButtonSmClass}
+                >
+                  Add URL
+                </Button>
+              </div>
+            </div>
+
+            <p className="text-foreground/60 mt-3 text-xs">
+              <span className="font-semibold">Hint:</span> Drag and drop files
+              from your computer, images from web pages, paste from clipboard
+              (Ctrl/Cmd+V), or provide a URL.
+            </p>
+
+            <div className="mt-3 grid grid-cols-3 gap-3">
+              {images.map((item) => (
+                <div
+                  key={item.id}
+                  className={cn(previewCardClass, "justify-self-start")}
+                >
+                  <div className="relative aspect-square w-full">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={item.src}
+                      alt="Input image preview"
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    aria-label="Remove image"
+                    className="bg-background/80 text-foreground/70 absolute top-2 right-2 inline-flex size-6 items-center justify-center rounded-xs border border-white/10"
+                    onClick={() => handleRemoveImage(item.id)}
+                  >
+                    <Trash2 className="size-3.5" />
+                  </button>
+                  <div className="text-foreground/70 absolute right-2 bottom-2 left-2 flex items-center justify-between text-xs">
+                    <span>{item.sizeLabel}</span>
+                    <Link2 className="size-3.5" />
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <p className="text-foreground/80 mt-3 text-sm">
+              {images.length} images added
+            </p>
+          </div>
+
+          <div>
+            <div className="mb-2 flex items-center justify-between gap-2">
+              <FieldLabel
+                tooltip="Describe the edit you want the model to apply."
+                className="mb-0"
+              >
+                prompt*
+              </FieldLabel>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className={controlButtonSmClass}
+              >
+                <Sparkles className="size-3.5" />
+                Prompt Enhancer
               </Button>
             </div>
-            <p className="text-foreground/60 text-xs">
-              Hint: You can drag and drop a file or click to upload.
-            </p>
-            {audioItem ? (
+            <textarea
+              defaultValue="Make the hamburger made of glass."
+              rows={4}
+              className={cn(
+                "border-input bg-background placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground w-full min-w-0 resize-y rounded-xs border px-3 py-2 text-xs shadow-xs transition-[color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
+                "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
+                "aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40",
+                "min-h-24",
+              )}
+            />
+          </div>
+
+          <div>
+            <FieldLabel tooltip="Target aspect ratio for the generated result.">
+              aspect_ratio
+            </FieldLabel>
+            <Select defaultValue="1:1">
+              <SelectTrigger size="sm" className={controlSelectClass}>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="border-foreground/10 rounded-xs">
+                <SelectItem value="1:1">1:1</SelectItem>
+                <SelectItem value="16:9">16:9</SelectItem>
+                <SelectItem value="9:16">9:16</SelectItem>
+                <SelectItem value="4:3">4:3</SelectItem>
+                <SelectItem value="3:4">3:4</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div>
+            <FieldLabel tooltip="Output resolution level for generated images.">
+              resolution
+            </FieldLabel>
+            <Select defaultValue="2k">
+              <SelectTrigger size="sm" className={controlSelectClass}>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="border-foreground/10 rounded-xs">
+                <SelectItem value="1k">1k</SelectItem>
+                <SelectItem value="2k">2k</SelectItem>
+                <SelectItem value="4k">4k</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div>
+            <FieldLabel tooltip="The file format returned by the model output.">
+              output_format
+            </FieldLabel>
+            <Select defaultValue="jpeg">
+              <SelectTrigger size="sm" className={controlSelectClass}>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="border-foreground/10 rounded-xs">
+                <SelectItem value="jpeg">jpeg</SelectItem>
+                <SelectItem value="png">png</SelectItem>
+                <SelectItem value="webp">webp</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div>
+            <FieldLabel tooltip="The size of the generated image. Default value: landscape_4_3">
+              Image size
+            </FieldLabel>
+            <div className="space-y-2">
+              <div className="flex flex-wrap items-center gap-2">
+                <Select
+                  value={imageSizePreset}
+                  onValueChange={handleImageSizePresetChange}
+                >
+                  <SelectTrigger size="sm" className={controlSelectClass}>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="border-foreground/10 rounded-xs">
+                    {imageSizeOptions.map((opt) => (
+                      <SelectItem key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="number"
+                    min={IMAGE_SIZE_MIN}
+                    max={IMAGE_SIZE_MAX}
+                    value={sizeWidth}
+                    onChange={(event) =>
+                      handleSizeWidthChange(Number(event.target.value))
+                    }
+                    onBlur={(event) =>
+                      handleSizeWidthChange(Number(event.target.value))
+                    }
+                    disabled={imageSizePreset !== "custom"}
+                    className={cn(
+                      "border-input bg-background text-foreground h-8 w-24 rounded-xs border px-3 text-xs shadow-xs outline-none",
+                      imageSizePreset !== "custom" &&
+                        "cursor-not-allowed opacity-60",
+                    )}
+                  />
+                  <span className="text-foreground/70 text-xs" aria-hidden>
+                    ×
+                  </span>
+                  <input
+                    type="number"
+                    min={IMAGE_SIZE_MIN}
+                    max={IMAGE_SIZE_MAX}
+                    value={sizeHeight}
+                    onChange={(event) =>
+                      handleSizeHeightChange(Number(event.target.value))
+                    }
+                    onBlur={(event) =>
+                      handleSizeHeightChange(Number(event.target.value))
+                    }
+                    disabled={imageSizePreset !== "custom"}
+                    className={cn(
+                      "border-input bg-background text-foreground h-8 w-24 rounded-xs border px-3 text-xs shadow-xs outline-none",
+                      imageSizePreset !== "custom" &&
+                        "cursor-not-allowed opacity-60",
+                    )}
+                  />
+                </div>
+              </div>
+              <p className="text-foreground/60 text-xs">Range: 256 – 1536</p>
+            </div>
+          </div>
+
+          <div>
+            <FieldLabel tooltip="Optional audio URL input for multimodal workflows.">
+              audio*
+            </FieldLabel>
+            <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <audio controls src={audioItem.src} className="h-8 flex-1" />
+                <input
+                  type="text"
+                  value={audioUrl}
+                  onChange={(event) => setAudioUrl(event.target.value)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      event.preventDefault();
+                      handleAddAudioUrl();
+                    }
+                  }}
+                  placeholder="https://..."
+                  className="border-input bg-background text-foreground placeholder:text-muted-foreground h-8 flex-1 rounded-xs border px-2 text-xs shadow-xs outline-none"
+                />
                 <Button
                   type="button"
                   variant="outline"
                   size="icon-sm"
-                  aria-label="Remove audio"
-                  onClick={handleRemoveAudio}
-                  className="h-8 w-8 rounded-xs"
+                  className="h-8 w-8 rounded-xs shadow-xs"
+                  aria-label="Choose audio file"
+                  onClick={handleOpenAudioFilePicker}
                 >
-                  <Trash2 className="size-3.5" />
+                  <FolderOpen className="size-3.5" />
+                </Button>
+                <input
+                  ref={audioFileInputRef}
+                  type="file"
+                  accept="audio/*"
+                  onChange={handleAudioFileSelected}
+                  className="hidden"
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon-sm"
+                  className="h-8 w-8 rounded-xs shadow-xs"
+                  aria-label="Record audio"
+                >
+                  <Mic className="size-3.5" />
                 </Button>
               </div>
-            ) : null}
-          </div>
-          </div>
-
-          <div>
-          <FieldLabel tooltip="Configure LoRA path and influence scale.">
-            loras
-          </FieldLabel>
-          <div className="border-border border-l pl-3">
-            <div className="space-y-3">
-              {loraItems.map((item, index) => (
-                <div key={item.id} className="space-y-2">
-                  {index > 0 ? (
-                    <div className="bg-border my-3 h-px w-full shrink-0" />
-                  ) : null}
-                  <div className="flex items-center gap-2">
-                    <div className="min-w-0 flex-1">
-                      <div className="space-y-1">
-                        <p className="text-foreground/80 text-xs">
-                          Path<span className="text-brand font-bold">*</span>
-                        </p>
-                        <input
-                          type="text"
-                          value={item.path}
-                          onChange={(event) =>
-                            handleLoraPathChange(item.id, event.target.value)
-                          }
-                          placeholder="<owner>/<model-name> or URL"
-                          className="border-input bg-background text-foreground placeholder:text-muted-foreground h-8 w-full rounded-xs border px-3 text-xs shadow-xs outline-none"
-                        />
-                      </div>
-                      <div className="mt-3 space-y-1">
-                        <p className="text-foreground/80 text-xs">Scale</p>
-                        <div className="flex items-center gap-2">
-                          <input
-                            type="range"
-                            min={0}
-                            max={5}
-                            step={0.1}
-                            value={item.scale}
-                            onChange={(event) =>
-                              handleLoraScaleChange(item.id, Number(event.target.value))
-                            }
-                            className={sliderClass}
-                            style={getSliderStyle(item.scale, 0, 5)}
-                          />
-                          <input
-                            type="number"
-                            min={0}
-                            max={5}
-                            step={0.1}
-                            value={item.scale}
-                            onChange={(event) =>
-                              handleLoraScaleChange(item.id, Number(event.target.value))
-                            }
-                            className="border-input bg-background text-foreground h-8 w-16 rounded-xs border px-2 text-xs shadow-xs outline-none"
-                          />
-                          <Button
-                            type="button"
-                            variant="outline"
-                            size="icon-sm"
-                            aria-label="Reset lora scale"
-                            onClick={() => handleLoraScaleReset(item.id)}
-                            className="h-8 w-8 shrink-0 rounded-xs"
-                          >
-                            <Eraser className="size-3.5" />
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="bg-border flex min-h-18 w-px shrink-0 self-stretch" />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="icon-sm"
-                      aria-label="Remove lora item"
-                      onClick={() => handleRemoveLoraItem(item.id)}
-                      className="h-8 w-8 shrink-0 rounded-xs"
-                    >
-                      <Trash2 className="size-3.5" />
-                    </Button>
-                  </div>
+              <p className="text-foreground/60 text-xs">
+                Hint: You can drag and drop a file or click to upload.
+              </p>
+              {audioItem ? (
+                <div className="flex items-center gap-2">
+                  <audio controls src={audioItem.src} className="h-8 flex-1" />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="icon-sm"
+                    aria-label="Remove audio"
+                    onClick={handleRemoveAudio}
+                    className="h-8 w-8 rounded-xs"
+                  >
+                    <Trash2 className="size-3.5" />
+                  </Button>
                 </div>
-              ))}
-              <div className="bg-border my-3 h-px w-full shrink-0" />
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                className={controlButtonSmClass}
-                onClick={handleAddLoraItem}
-              >
-                <Plus className="size-3.5" />
-                Add Item
-              </Button>
+              ) : null}
             </div>
           </div>
+
+          <div>
+            <FieldLabel tooltip="Configure LoRA path and influence scale.">
+              loras
+            </FieldLabel>
+            <div className="border-border border-l pl-3">
+              <div className="space-y-3">
+                {loraItems.map((item, index) => (
+                  <div key={item.id} className="space-y-2">
+                    {index > 0 ? (
+                      <div className="bg-border my-3 h-px w-full shrink-0" />
+                    ) : null}
+                    <div className="flex items-center gap-2">
+                      <div className="min-w-0 flex-1">
+                        <div className="space-y-1">
+                          <p className="text-foreground/80 text-xs">
+                            Path<span className="text-brand font-bold">*</span>
+                          </p>
+                          <input
+                            type="text"
+                            value={item.path}
+                            onChange={(event) =>
+                              handleLoraPathChange(item.id, event.target.value)
+                            }
+                            placeholder="<owner>/<model-name> or URL"
+                            className="border-input bg-background text-foreground placeholder:text-muted-foreground h-8 w-full rounded-xs border px-3 text-xs shadow-xs outline-none"
+                          />
+                        </div>
+                        <div className="mt-3 space-y-1">
+                          <p className="text-foreground/80 text-xs">Scale</p>
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="range"
+                              min={0}
+                              max={5}
+                              step={0.1}
+                              value={item.scale}
+                              onChange={(event) =>
+                                handleLoraScaleChange(
+                                  item.id,
+                                  Number(event.target.value),
+                                )
+                              }
+                              className={sliderClass}
+                              style={getSliderStyle(item.scale, 0, 5)}
+                            />
+                            <input
+                              type="number"
+                              min={0}
+                              max={5}
+                              step={0.1}
+                              value={item.scale}
+                              onChange={(event) =>
+                                handleLoraScaleChange(
+                                  item.id,
+                                  Number(event.target.value),
+                                )
+                              }
+                              className="border-input bg-background text-foreground h-8 w-16 rounded-xs border px-2 text-xs shadow-xs outline-none"
+                            />
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="icon-sm"
+                              aria-label="Reset lora scale"
+                              onClick={() => handleLoraScaleReset(item.id)}
+                              className="h-8 w-8 shrink-0 rounded-xs"
+                            >
+                              <Eraser className="size-3.5" />
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="bg-border flex min-h-18 w-px shrink-0 self-stretch" />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon-sm"
+                        aria-label="Remove lora item"
+                        onClick={() => handleRemoveLoraItem(item.id)}
+                        className="h-8 w-8 shrink-0 rounded-xs"
+                      >
+                        <Trash2 className="size-3.5" />
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+                <div className="bg-border my-3 h-px w-full shrink-0" />
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className={controlButtonSmClass}
+                  onClick={handleAddLoraItem}
+                >
+                  <Plus className="size-3.5" />
+                  Add Item
+                </Button>
+              </div>
+            </div>
           </div>
 
           <div>
-          <FieldLabel tooltip="If enabled, API waits for generation and returns results directly in the same response.">
-            enable_sync_mode
-          </FieldLabel>
-          <div className="mb-2 flex items-center">
-            <Switch
-              checked={enableSyncMode}
-              onCheckedChange={setEnableSyncMode}
-              aria-label="Toggle enable sync mode"
-            />
-          </div>
+            <FieldLabel tooltip="If enabled, API waits for generation and returns results directly in the same response.">
+              enable_sync_mode
+            </FieldLabel>
+            <div className="mb-2 flex items-center">
+              <Switch
+                checked={enableSyncMode}
+                onCheckedChange={setEnableSyncMode}
+                aria-label="Toggle enable sync mode"
+              />
+            </div>
           </div>
 
           <div>
-          <FieldLabel tooltip="If enabled, output is embedded as base64 string instead of URL.">
-            enable_base64_output
-          </FieldLabel>
-          <div className="mb-2 flex items-center">
-            <Switch
-              checked={enableBase64Output}
-              onCheckedChange={setEnableBase64Output}
-              aria-label="Toggle enable base64 output"
-            />
-          </div>
+            <FieldLabel tooltip="If enabled, output is embedded as base64 string instead of URL.">
+              enable_base64_output
+            </FieldLabel>
+            <div className="mb-2 flex items-center">
+              <Switch
+                checked={enableBase64Output}
+                onCheckedChange={setEnableBase64Output}
+                aria-label="Toggle enable base64 output"
+              />
+            </div>
           </div>
         </div>
 
-        <footer className="border-border bg-surface sticky bottom-0 z-10 mt-4 flex shrink-0 flex-col gap-3 border-t pb-4 pt-4">
+        <footer className="border-border bg-surface sticky bottom-0 z-10 mt-4 flex shrink-0 flex-col gap-3 border-t pt-4 pb-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex flex-wrap items-center gap-3">
               <Button
@@ -1024,7 +1052,7 @@ export function ModelDetailInputForm() {
                   type="checkbox"
                   checked
                   disabled
-                  className="size-3 cursor-not-allowed rounded-xs border border-foreground opacity-60 accent-foreground"
+                  className="border-foreground accent-foreground size-3 cursor-not-allowed rounded-xs border opacity-60"
                 />
                 <span>Enable Safety Checker</span>
                 <span className="group relative inline-flex items-center">
@@ -1032,7 +1060,8 @@ export function ModelDetailInputForm() {
                     role="tooltip"
                     className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-1.5 w-64 -translate-x-1/2 rounded-xs bg-slate-950 px-2.5 py-1.5 text-xs leading-snug text-white opacity-0 shadow-md transition-opacity duration-150 group-hover:opacity-100"
                   >
-                    The safety checker cannot be disabled on the playground. This property is only available through the API.
+                    The safety checker cannot be disabled on the playground.
+                    This property is only available through the API.
                   </span>
                   <Info className="text-foreground/50 size-3.5" />
                 </span>
@@ -1050,7 +1079,7 @@ export function ModelDetailInputForm() {
                   <Button
                     type="button"
                     aria-label="Batch settings"
-                    className="bg-foreground text-background hover:bg-foreground/90 h-8 rounded-r-xs rounded-l-none border-l border-white/20 px-1.5 shadow-xs"
+                    className="bg-foreground text-background hover:bg-foreground/90 h-8 rounded-l-none rounded-r-xs border-l border-white/20 px-1.5 shadow-xs"
                   >
                     <ChevronDown className="size-3.5" />
                   </Button>

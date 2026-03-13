@@ -2,12 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import {
-  Download,
-  Expand,
-  Pencil,
-  X,
-} from "lucide-react";
+import { Download, Expand, Pencil, X } from "lucide-react";
 import type { StaticImageData } from "next/image";
 import thumb1 from "@/images/thumb-1.webp";
 import thumb2 from "@/images/thumb-2.webp";
@@ -96,9 +91,7 @@ export function ExamplesSection() {
           onPointerDownOutside={() => setOpenId(null)}
           onEscapeKeyDown={() => setOpenId(null)}
         >
-          <DialogTitle className="sr-only">
-            Example image preview
-          </DialogTitle>
+          <DialogTitle className="sr-only">Example image preview</DialogTitle>
           <DialogDescription className="sr-only">
             Example image for this model.
           </DialogDescription>

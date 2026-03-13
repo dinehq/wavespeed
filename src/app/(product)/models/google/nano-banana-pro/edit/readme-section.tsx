@@ -14,7 +14,8 @@ const parameterRows = [
   {
     parameter: "images",
     required: "Yes",
-    description: "Reference images to edit (max: 14, click Add Item to add more)",
+    description:
+      "Reference images to edit (max: 14, click Add Item to add more)",
   },
   {
     parameter: "prompt",
@@ -35,7 +36,8 @@ const parameterRows = [
   {
     parameter: "enable_web_search",
     required: "No",
-    description: "Enable web search to enhance generation with real-time info (default: false)",
+    description:
+      "Enable web search to enhance generation with real-time info (default: false)",
   },
   {
     parameter: "output_format",
@@ -57,7 +59,7 @@ export function ReadmeSection() {
                 key={item.id}
                 href={`#${item.id}`}
                 className={`block px-2 py-1.5 text-sm transition-colors ${
-                  item.featured
+                  "featured" in item && item.featured
                     ? "text-foreground border-foreground border-l-2"
                     : "text-foreground/70 hover:text-foreground hover:bg-foreground/5 rounded-xs"
                 }`}
@@ -69,50 +71,55 @@ export function ReadmeSection() {
         </aside>
 
         <article className="border-foreground/10 space-y-8 rounded-xs border p-6 md:col-span-3">
-          <section id="intro" className="space-y-3 scroll-mt-28">
-            <h3 className="text-foreground text-2xl font-bold">Google Nano Banana 2 Edit</h3>
+          <section id="intro" className="scroll-mt-28 space-y-3">
+            <h3 className="text-foreground text-2xl font-bold">
+              Google Nano Banana 2 Edit
+            </h3>
             <p className="text-foreground/80 leading-7">
-              Nano Banana 2 Edit (Gemini 3.1 Flash Image) is Google&apos;s advanced AI-powered
-              image editing and generation model, designed to make visual transformation as
-              intuitive as describing it in words. Built on Google&apos;s cutting-edge computer
-              vision and generative research, it combines precision, flexibility, and semantic
-              awareness for professional-grade editing.
+              Nano Banana 2 Edit (Gemini 3.1 Flash Image) is Google&apos;s
+              advanced AI-powered image editing and generation model, designed
+              to make visual transformation as intuitive as describing it in
+              words. Built on Google&apos;s cutting-edge computer vision and
+              generative research, it combines precision, flexibility, and
+              semantic awareness for professional-grade editing.
             </p>
           </section>
 
-          <section id="why-choose-this" className="space-y-3 scroll-mt-28">
+          <section id="why-choose-this" className="scroll-mt-28 space-y-3">
             <h4 className="text-foreground border-foreground/10 border-b pb-2 text-xl font-bold">
               Why Choose This?
             </h4>
             <ul className="text-foreground/90 list-disc space-y-2 pl-6 leading-7">
               <li>
-                <span className="font-bold">Natural language editing</span> Modify images using
-                simple text instructions and preserve context.
+                <span className="font-bold">Natural language editing</span>{" "}
+                Modify images using simple text instructions and preserve
+                context.
               </li>
               <li>
-                <span className="font-bold">Multi-image reference</span> Upload up to 14 reference
-                images for complex edits and compositions.
+                <span className="font-bold">Multi-image reference</span> Upload
+                up to 14 reference images for complex edits and compositions.
               </li>
               <li>
-                <span className="font-bold">Multi-resolution support</span> Output in 1k, 2k, or
-                4k resolution based on your needs.
+                <span className="font-bold">Multi-resolution support</span>{" "}
+                Output in 1k, 2k, or 4k resolution based on your needs.
               </li>
               <li>
-                <span className="font-bold">Flexible aspect ratios</span> Multiple options
-                including 1:1, 3:2, 2:3, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9, 21:9, 1:4, 4:1, 1:8, and
-                8:1.
+                <span className="font-bold">Flexible aspect ratios</span>{" "}
+                Multiple options including 1:1, 3:2, 2:3, 3:4, 4:3, 4:5, 5:4,
+                9:16, 16:9, 21:9, 1:4, 4:1, 1:8, and 8:1.
               </li>
               <li>
-                <span className="font-bold">Prompt Enhancer</span> Built-in tool to automatically
-                improve your edit descriptions.
+                <span className="font-bold">Prompt Enhancer</span> Built-in tool
+                to automatically improve your edit descriptions.
               </li>
               <li>
-                <span className="font-bold">Format choice</span> Export in PNG or JPEG format.
+                <span className="font-bold">Format choice</span> Export in PNG
+                or JPEG format.
               </li>
             </ul>
           </section>
 
-          <section id="parameters" className="space-y-3 scroll-mt-28">
+          <section id="parameters" className="scroll-mt-28 space-y-3">
             <h4 className="text-foreground border-foreground/10 border-b pb-2 text-xl font-bold">
               Parameters
             </h4>
@@ -150,83 +157,101 @@ export function ReadmeSection() {
             </div>
           </section>
 
-          <section id="how-to-use" className="space-y-3 scroll-mt-28">
+          <section id="how-to-use" className="scroll-mt-28 space-y-3">
             <h4 className="text-foreground border-foreground/10 border-b pb-2 text-xl font-bold">
               How to Use
             </h4>
             <ol className="text-foreground/90 list-decimal space-y-2 pl-6 leading-7">
               <li>
-                <span className="font-bold">Upload reference images</span> add the images you want
-                to edit (up to 14 images).
+                <span className="font-bold">Upload reference images</span> add
+                the images you want to edit (up to 14 images).
               </li>
               <li>
-                <span className="font-bold">Write your prompt</span> describe the edit clearly.
+                <span className="font-bold">Write your prompt</span> describe
+                the edit clearly.
               </li>
               <li>
-                <span className="font-bold">Choose aspect ratio (optional)</span> select a preset
-                or leave empty for default.
+                <span className="font-bold">
+                  Choose aspect ratio (optional)
+                </span>{" "}
+                select a preset or leave empty for default.
               </li>
               <li>
-                <span className="font-bold">Select resolution</span> choose 1k, 2k, or 4k based on
-                your needs.
+                <span className="font-bold">Select resolution</span> choose 1k,
+                2k, or 4k based on your needs.
               </li>
               <li>
-                <span className="font-bold">Choose output format</span> PNG for transparency
-                support, JPEG for smaller file size.
+                <span className="font-bold">Choose output format</span> PNG for
+                transparency support, JPEG for smaller file size.
               </li>
               <li>
-                <span className="font-bold">Use Prompt Enhancer (optional)</span> click to
-                automatically refine your description.
+                <span className="font-bold">
+                  Use Prompt Enhancer (optional)
+                </span>{" "}
+                click to automatically refine your description.
               </li>
               <li>
-                <span className="font-bold">Run</span> submit and download your edited image.
+                <span className="font-bold">Run</span> submit and download your
+                edited image.
               </li>
             </ol>
           </section>
 
-          <section id="pricing" className="space-y-2 scroll-mt-28">
+          <section id="pricing" className="scroll-mt-28 space-y-2">
             <h4 className="text-foreground border-foreground/10 border-b pb-2 text-xl font-bold">
               Pricing
             </h4>
             <p className="text-foreground/80 leading-7">
-              Pay per run with transparent metering. Final cost varies by selected resolution,
-              reference image count, and advanced enhancement options.
+              Pay per run with transparent metering. Final cost varies by
+              selected resolution, reference image count, and advanced
+              enhancement options.
             </p>
           </section>
 
-          <section id="best-use-cases" className="space-y-2 scroll-mt-28">
+          <section id="best-use-cases" className="scroll-mt-28 space-y-2">
             <h4 className="text-foreground border-foreground/10 border-b pb-2 text-xl font-bold">
               Best Use Cases
             </h4>
             <ul className="text-foreground/90 list-disc space-y-2 pl-6 leading-7">
               <li>Product image touch-up and background replacement.</li>
-              <li>Style transfer for campaign assets and social media content.</li>
+              <li>
+                Style transfer for campaign assets and social media content.
+              </li>
               <li>Iterative concept exploration for designers and creators.</li>
             </ul>
           </section>
 
-          <section id="pro-tips" className="space-y-2 scroll-mt-28">
+          <section id="pro-tips" className="scroll-mt-28 space-y-2">
             <h4 className="text-foreground border-foreground/10 border-b pb-2 text-xl font-bold">
               Pro Tips
             </h4>
             <ul className="text-foreground/90 list-disc space-y-2 pl-6 leading-7">
-              <li>Keep prompts explicit about subject, background, and target style.</li>
-              <li>Use multiple references when preserving identity is important.</li>
-              <li>Start with 1k for fast iteration, then scale to higher resolution.</li>
+              <li>
+                Keep prompts explicit about subject, background, and target
+                style.
+              </li>
+              <li>
+                Use multiple references when preserving identity is important.
+              </li>
+              <li>
+                Start with 1k for fast iteration, then scale to higher
+                resolution.
+              </li>
             </ul>
           </section>
 
-          <section id="notes" className="space-y-2 scroll-mt-28">
+          <section id="notes" className="scroll-mt-28 space-y-2">
             <h4 className="text-foreground border-foreground/10 border-b pb-2 text-xl font-bold">
               Notes
             </h4>
             <p className="text-foreground/80 leading-7">
-              Model behavior may vary by prompt wording and source image quality. Test with a small
-              batch first when running production workflows.
+              Model behavior may vary by prompt wording and source image
+              quality. Test with a small batch first when running production
+              workflows.
             </p>
           </section>
 
-          <section id="related-models" className="space-y-2 scroll-mt-28">
+          <section id="related-models" className="scroll-mt-28 space-y-2">
             <h4 className="text-foreground border-foreground/10 border-b pb-2 text-xl font-bold">
               Related Models
             </h4>
