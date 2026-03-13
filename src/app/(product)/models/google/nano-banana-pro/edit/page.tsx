@@ -74,7 +74,7 @@ const relatedModels = [
 ];
 
 const controlButtonSmClass =
-  "border-foreground/10 text-foreground/80 hover:bg-foreground/5 h-8 rounded-xs px-3 text-xs font-bold shadow-xs";
+  "border-foreground/10 text-foreground/80 hover:bg-foreground/5 h-8 rounded-xs px-3 text-xs font-semibold shadow-xs";
 
 export default function ModelDetailPage() {
   return (
@@ -86,7 +86,7 @@ export default function ModelDetailPage() {
             <div className="flex flex-col gap-3 md:flex-row md:items-baseline md:justify-between md:gap-4">
               <div className="flex min-w-0 flex-1 flex-col items-start gap-2 md:pr-4 lg:pr-6">
                 <div className="flex min-w-0 flex-wrap items-center gap-2">
-                  <h1 className="text-heading text-3xl leading-none font-bold">
+                  <h1 className="text-heading text-3xl leading-none font-semibold">
                     google/nano-banana-pro/edit
                   </h1>
                   <ModelSwitcher />
@@ -166,13 +166,13 @@ export default function ModelDetailPage() {
             </div>
 
             <div className="border-foreground/10 flex items-center gap-2 border-b pt-1">
-              <button className="text-foreground border-foreground h-10 border-b-2 px-3 text-sm font-bold">
+              <button className="text-foreground border-foreground h-10 border-b-2 px-3 text-sm font-semibold">
                 Playground
               </button>
-              <button className="text-foreground/60 hover:text-foreground h-10 px-3 text-sm font-bold transition-colors">
+              <button className="text-foreground/60 hover:text-foreground h-10 px-3 text-sm font-semibold transition-colors">
                 API
               </button>
-              <button className="text-foreground/60 hover:text-foreground h-10 px-3 text-sm font-bold transition-colors">
+              <button className="text-foreground/60 hover:text-foreground h-10 px-3 text-sm font-semibold transition-colors">
                 History
               </button>
             </div>
@@ -276,7 +276,7 @@ export default function ModelDetailPage() {
 
           <section className="flex flex-col gap-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-foreground text-xl font-bold">
+              <h2 className="text-foreground text-xl font-semibold">
                 Examples
               </h2>
               <Button
@@ -300,7 +300,7 @@ export default function ModelDetailPage() {
           </section>
 
           <section className="flex flex-col gap-4">
-            <h2 className="text-foreground text-xl font-bold">
+            <h2 className="text-foreground text-xl font-semibold">
               Related Models
             </h2>
             <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">

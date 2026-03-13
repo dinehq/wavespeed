@@ -200,7 +200,7 @@ export function ProductUsageTab({
 
         <Card className="bg-surface gap-0 rounded-xs border-0 py-0 shadow-none">
           <CardHeader className="px-4 pt-4 pb-0">
-            <CardTitle className="text-foreground text-xl font-bold">
+            <CardTitle className="text-foreground text-xl font-semibold">
               Usage breakdown
             </CardTitle>
           </CardHeader>
@@ -303,7 +303,7 @@ export function ProductUsageTab({
         <div ref={usagePerModelSectionRef} className="scroll-mt-24">
           <Card className="bg-surface gap-0 rounded-xs border-0 py-0 shadow-none">
             <CardHeader className="px-4 pt-4 pb-0">
-              <CardTitle className="text-foreground text-xl font-bold">
+              <CardTitle className="text-foreground text-xl font-semibold">
                 Usage per model
               </CardTitle>
             </CardHeader>
@@ -381,7 +381,7 @@ export function ProductUsageTab({
                 <p className="text-foreground/70 text-xs">
                   Total {usagePerModelTotalPredictions} predictions
                 </p>
-                <p className="text-foreground text-base font-bold">
+                <p className="text-foreground text-base font-semibold">
                   ${usagePerModelTotalCost.toFixed(4)}
                 </p>
               </div>
@@ -391,7 +391,7 @@ export function ProductUsageTab({
 
         <Card className="bg-surface gap-0 rounded-xs border-0 py-0 shadow-none">
           <CardHeader className="px-4 pt-4 pb-0">
-            <CardTitle className="text-foreground text-xl font-bold">
+            <CardTitle className="text-foreground text-xl font-semibold">
               Daily Usage
             </CardTitle>
           </CardHeader>

@@ -103,10 +103,10 @@ export function Navbar({ mode = "default" }: NavbarProps) {
               onMouseEnter={() => setResourcesOpen(true)}
               onMouseLeave={() => setResourcesOpen(false)}
             >
-              <button className="text-foreground hover:text-foreground/50 tracking-xl flex cursor-pointer items-center gap-1 font-mono text-sm leading-4 transition-colors duration-150">
+              <button className="text-foreground hover:text-foreground/50 tracking-xl flex cursor-pointer items-center gap-1 font-mono text-sm leading-4 font-medium transition-colors duration-150">
                 Resources
                 <ChevronDown
-                  className={`size-4 transition-transform duration-150 ${resourcesOpen ? "rotate-180" : ""}`}
+                  className={`size-4 transition-transform duration-150${resourcesOpen ? " rotate-180" : ""}`}
                 />
               </button>
               {resourcesOpen && (
@@ -434,7 +434,7 @@ export function Navbar({ mode = "default" }: NavbarProps) {
           >
             Resources
             <ChevronDown
-              className={`size-4 transition-transform duration-150 ${resourcesOpen ? "rotate-180" : ""}`}
+              className={`size-4 transition-transform duration-150${resourcesOpen ? " rotate-180" : ""}`}
             />
           </button>
           {resourcesOpen && (
@@ -476,7 +476,7 @@ export function Navbar({ mode = "default" }: NavbarProps) {
               Language
               <span className="text-foreground/50 text-xs">({activeLang})</span>
               <ChevronDown
-                className={`size-4 transition-transform duration-150 ${langOpen ? "rotate-180" : ""}`}
+                className={`size-4 transition-transform duration-150${langOpen ? " rotate-180" : ""}`}
               />
             </button>
             {langOpen && (

@@ -24,7 +24,7 @@ import { Switch } from "@/components/ui/switch";
 import thumbR7 from "@/images/thumb-r7.webp";
 
 const controlButtonSmClass =
-  "border-foreground/10 text-foreground/80 hover:bg-foreground/5 h-8 rounded-xs px-3 text-xs font-bold shadow-xs";
+  "border-foreground/10 text-foreground/80 hover:bg-foreground/5 h-8 rounded-xs px-3 text-xs font-semibold shadow-xs";
 const controlSelectClass =
   "border-foreground/10 bg-background text-foreground/80 hover:bg-foreground/5 h-8 w-fit min-w-28 max-w-72 rounded-xs px-3 text-xs shadow-xs";
 const controlSelectTriggerCompactClass =
@@ -71,7 +71,7 @@ function FieldLabel({
           ? children.charAt(0).toUpperCase() + children.slice(1, -1)
           : children.charAt(0).toUpperCase() + children.slice(1)}
         {children.endsWith("*") ? (
-          <span className="text-brand font-bold">*</span>
+          <span className="text-brand font-semibold">*</span>
         ) : null}
       </>
     ) : (
@@ -179,7 +179,7 @@ export function ModelSwitcher() {
       <SelectTrigger
         size="sm"
         aria-label="Switch model"
-        className="text-muted-foreground hover:bg-accent hover:text-foreground dark:hover:bg-accent/50 [&_svg]:text-muted-foreground hover:[&_svg]:text-foreground inline-flex size-8 min-w-8 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-xs border-0 bg-transparent px-0 py-0 text-sm font-bold whitespace-nowrap shadow-none transition-all outline-none **:data-[slot=select-value]:hidden [&_svg]:size-5 [&_svg]:stroke-[1.75] [&_svg]:opacity-100"
+        className="text-muted-foreground hover:bg-accent hover:text-foreground dark:hover:bg-accent/50 [&_svg]:text-muted-foreground hover:[&_svg]:text-foreground inline-flex size-8 min-w-8 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-xs border-0 bg-transparent px-0 py-0 text-sm font-semibold whitespace-nowrap shadow-none transition-all outline-none **:data-[slot=select-value]:hidden [&_svg]:size-5 [&_svg]:stroke-[1.75] [&_svg]:opacity-100"
       >
         <SelectValue />
       </SelectTrigger>
@@ -580,7 +580,7 @@ export function ModelDetailInputForm() {
           </div>
 
           <p className="text-foreground/60 mt-3 text-xs">
-            <span className="font-bold">Hint:</span> Drag and drop files from
+            <span className="font-semibold">Hint:</span> Drag and drop files from
             your computer, images from web pages, paste from clipboard
             (Ctrl/Cmd+V), or provide a URL.
           </p>
@@ -714,7 +714,7 @@ export function ModelDetailInputForm() {
                     type="button"
                     onClick={() => handleSelectRatio(ratio.value)}
                     className={cn(
-                      "border-input bg-background text-foreground/80 hover:bg-foreground/5 inline-flex h-8 items-center gap-1.5 rounded-xs border px-2.5 text-xs font-bold shadow-xs transition-colors",
+                      "border-input bg-background text-foreground/80 hover:bg-foreground/5 inline-flex h-8 items-center gap-1.5 rounded-xs border px-2.5 text-xs font-semibold shadow-xs transition-colors",
                       checked &&
                         "border-foreground bg-foreground text-background hover:bg-foreground/85 hover:text-background",
                     )}

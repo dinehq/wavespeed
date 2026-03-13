@@ -43,7 +43,7 @@ export function ProductTopTabs({
                 className={cn(
                   "tracking-xl relative flex h-12 flex-none items-center rounded-none px-0 py-0 text-sm whitespace-nowrap transition-colors",
                   isActive
-                    ? "text-foreground font-bold"
+                    ? "text-foreground font-semibold"
                     : "text-foreground/60 hover:text-foreground",
                 )}
                 aria-current={isActive ? "page" : undefined}

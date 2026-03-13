@@ -281,7 +281,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
           title="Requests"
           titleClassName={
             headerLevel === "secondary"
-              ? "text-foreground text-xl font-bold"
+              ? "text-foreground text-xl font-semibold"
               : undefined
           }
           bottomPaddingClassName="pb-0"

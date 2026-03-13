@@ -24,7 +24,7 @@ export default async function RequestDetailPage({
         <p className="text-foreground mt-2 font-mono text-sm break-all">
           {requestId}
         </p>
-        <h1 className="text-foreground mt-5 text-2xl font-bold tracking-tight">
+        <h1 className="text-foreground mt-5 text-2xl font-semibold tracking-tight">
           Request details page is coming soon
         </h1>
         <p className="text-foreground/70 mt-2 text-sm">

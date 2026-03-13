@@ -112,7 +112,7 @@ export function ProductDashboardTab({
                 <div className="divide-foreground/10 grid divide-y md:grid-cols-3 md:divide-x md:divide-y-0">
                   <section className="flex h-full flex-col justify-between px-4 pt-4 pb-1 md:px-5 md:pt-5 md:pb-2">
                     <div className="mb-4">
-                      <CardTitle className="text-foreground text-base font-bold">
+                      <CardTitle className="text-foreground text-base font-semibold">
                         Welcome to WaveSpeed
                       </CardTitle>
                       <CardDescription className="text-subtle mt-1.5 text-sm leading-5">
@@ -170,7 +170,7 @@ export function ProductDashboardTab({
 
                   <section className="flex h-full flex-col justify-between px-4 pt-4 pb-1 md:px-5 md:pt-5 md:pb-2">
                     <div className="mb-4">
-                      <CardTitle className="text-foreground text-base font-bold">
+                      <CardTitle className="text-foreground text-base font-semibold">
                         {currentGettingStartedContent.title}
                       </CardTitle>
                       <CardDescription className="text-subtle mt-1.5 text-sm leading-5">
@@ -209,7 +209,7 @@ export function ProductDashboardTab({
 
                   <section className="flex h-full flex-col justify-between px-4 pt-4 pb-1 md:px-5 md:pt-5 md:pb-2">
                     <div className="mb-4">
-                      <CardTitle className="text-foreground text-base font-bold">
+                      <CardTitle className="text-foreground text-base font-semibold">
                         Explore Models
                       </CardTitle>
                       <CardDescription className="text-subtle mt-1.5 text-sm leading-5">
@@ -326,13 +326,13 @@ export function ProductDashboardTab({
             >
               <TabsTrigger
                 value="latest-models"
-                className="data-[state=active]:text-foreground data-[state=active]:after:bg-foreground h-10 flex-none rounded-none px-1.5 font-bold whitespace-nowrap group-data-[orientation=horizontal]/tabs:after:h-px"
+                className="data-[state=active]:text-foreground data-[state=active]:after:bg-foreground h-10 flex-none rounded-none px-1.5 font-semibold whitespace-nowrap group-data-[orientation=horizontal]/tabs:after:h-px"
               >
                 Latest models
               </TabsTrigger>
               <TabsTrigger
                 value="favorite-models"
-                className="data-[state=active]:text-foreground data-[state=active]:after:bg-foreground h-10 flex-none rounded-none px-1.5 font-bold whitespace-nowrap group-data-[orientation=horizontal]/tabs:after:h-px"
+                className="data-[state=active]:text-foreground data-[state=active]:after:bg-foreground h-10 flex-none rounded-none px-1.5 font-semibold whitespace-nowrap group-data-[orientation=horizontal]/tabs:after:h-px"
               >
                 Favorite models
               </TabsTrigger>

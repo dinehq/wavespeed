@@ -85,7 +85,7 @@ function renderWithEmphasizedNumbers(text: string) {
   return text.split(/(\+?[\d,]+)/g).map((part, index) => {
     if (/^\+?[\d,]+$/.test(part)) {
       return (
-        <span key={`${part}-${index}`} className="font-bold">
+        <span key={`${part}-${index}`} className="font-semibold">
           {part}
         </span>
       );
@@ -352,7 +352,7 @@ export function ProductBillingTab({
             }`}
           />
         </span>
-        <span className="text-foreground relative z-10 block w-16 shrink-0 text-sm leading-none font-bold tabular-nums">
+        <span className="text-foreground relative z-10 block w-16 shrink-0 text-sm leading-none font-semibold tabular-nums">
           {option.amount}
         </span>
         <span className="relative z-10 flex-1 text-right text-xs">
@@ -406,7 +406,7 @@ export function ProductBillingTab({
         <div className="grid gap-4 lg:grid-cols-2">
           <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
             <CardHeader className="px-4 pt-4 pb-3">
-              <CardTitle className="text-foreground text-xl font-bold">
+              <CardTitle className="text-foreground text-xl font-semibold">
                 Top Up
               </CardTitle>
             </CardHeader>
@@ -500,7 +500,7 @@ export function ProductBillingTab({
           <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
             <CardHeader className="px-4 pt-4 pb-3">
               <div className="flex items-center gap-2">
-                <CardTitle className="text-foreground text-xl font-bold">
+                <CardTitle className="text-foreground text-xl font-semibold">
                   Auto Top-up
                 </CardTitle>
                 <Badge
@@ -573,14 +573,14 @@ export function ProductBillingTab({
               </div>
 
               <div className="bg-muted rounded-xs px-2.5 py-3 text-sm leading-none">
-                <span className="text-foreground font-bold">
+                <span className="text-foreground font-semibold">
                   ${autoTopUpAmountLabel}
                 </span>
                 <span className="text-subtle">
                   {" "}
                   will be added when balance reaches{" "}
                 </span>
-                <span className="text-foreground font-bold">
+                <span className="text-foreground font-semibold">
                   ${autoTopUpThresholdLabel}
                 </span>
               </div>
@@ -633,13 +633,13 @@ export function ProductBillingTab({
             >
               <TabsTrigger
                 value="top-up"
-                className="data-[state=active]:text-foreground data-[state=active]:after:bg-foreground h-8 flex-none rounded-none px-1.5 font-bold whitespace-nowrap group-data-[orientation=horizontal]/tabs:after:h-px"
+                className="data-[state=active]:text-foreground data-[state=active]:after:bg-foreground h-8 flex-none rounded-none px-1.5 font-semibold whitespace-nowrap group-data-[orientation=horizontal]/tabs:after:h-px"
               >
                 Top Up
               </TabsTrigger>
               <TabsTrigger
                 value="billing"
-                className="data-[state=active]:text-foreground data-[state=active]:after:bg-foreground h-8 flex-none rounded-none px-1.5 font-bold whitespace-nowrap group-data-[orientation=horizontal]/tabs:after:h-px"
+                className="data-[state=active]:text-foreground data-[state=active]:after:bg-foreground h-8 flex-none rounded-none px-1.5 font-semibold whitespace-nowrap group-data-[orientation=horizontal]/tabs:after:h-px"
               >
                 Billing
               </TabsTrigger>
