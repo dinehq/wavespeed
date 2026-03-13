@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
 import localFont from "next/font/local";
 import Script from "next/script";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/toaster";
 import { PromoBar } from "@/components/promo-bar";
 import "./globals.css";
-
 
 const azeret = localFont({
   src: [
@@ -38,7 +39,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <meta name="apple-mobile-web-app-title" content="WaveSpeed" />
       <body
-        className={`${azeret.variable} antialiased`}
+        className={`${GeistSans.variable} ${azeret.variable} ${GeistMono.variable} antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <PromoBar />
