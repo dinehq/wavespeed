@@ -111,7 +111,9 @@ function MobileFrame() {
       style={{ width: 375 }}
     >
       <div className="bg-foreground/3 flex items-center justify-between px-4 py-1">
-        <span className="text-foreground/30 font-mono text-[9px]">9:41</span>
+        <span className="text-foreground/30 font-mono text-[9px]">
+          9:41
+        </span>
         <div className="bg-foreground/20 h-4 w-20 rounded-full" />
         <div className="flex gap-1">
           <span className="bg-foreground/25 h-1.5 w-3 rounded-xs" />

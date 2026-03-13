@@ -36,7 +36,7 @@ export function ProductSettingsTab() {
         <ProductSectionHeader title="Settings" />
         <div className="grid gap-4 md:grid-cols-2">
           <section className="space-y-2">
-            <h2 className="text-foreground font-display text-base font-bold">
+            <h2 className="text-foreground text-base font-bold">
               Basic Info
             </h2>
             <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
@@ -82,7 +82,7 @@ export function ProductSettingsTab() {
           </section>
 
           <section className="space-y-2">
-            <h2 className="text-foreground font-display text-base font-bold">
+            <h2 className="text-foreground text-base font-bold">
               My Team
             </h2>
             <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
@@ -108,7 +108,7 @@ export function ProductSettingsTab() {
 
         <section className="space-y-2">
           <div className="flex items-center justify-between gap-2">
-            <h2 className="text-foreground font-display text-base font-bold">
+            <h2 className="text-foreground text-base font-bold">
               Account Level
             </h2>
             <Badge

@@ -86,7 +86,7 @@ export default function ModelDetailPage() {
             <div className="flex flex-col gap-3 md:flex-row md:items-baseline md:justify-between md:gap-4">
               <div className="flex min-w-0 flex-1 flex-col items-start gap-2 md:pr-4 lg:pr-6">
                 <div className="flex min-w-0 flex-wrap items-center gap-2">
-                  <h1 className="text-heading font-display text-3xl leading-none font-bold">
+                  <h1 className="text-heading text-3xl leading-none font-bold">
                     google/nano-banana-pro/edit
                   </h1>
                   <ModelSwitcher />
@@ -276,7 +276,7 @@ export default function ModelDetailPage() {
 
           <section className="flex flex-col gap-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-foreground font-display text-xl font-bold">
+              <h2 className="text-foreground text-xl font-bold">
                 Examples
               </h2>
               <Button
@@ -300,7 +300,7 @@ export default function ModelDetailPage() {
           </section>
 
           <section className="flex flex-col gap-4">
-            <h2 className="text-foreground font-display text-xl font-bold">
+            <h2 className="text-foreground text-xl font-bold">
               Related Models
             </h2>
             <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">

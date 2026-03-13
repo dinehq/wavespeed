@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
 import localFont from "next/font/local";
 import Script from "next/script";
 import { ThemeProvider } from "next-themes";
@@ -7,10 +8,6 @@ import { Toaster } from "@/components/ui/toaster";
 import { PromoBar } from "@/components/promo-bar";
 import "./globals.css";
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-});
 
 const azeret = localFont({
   src: [
@@ -28,19 +25,8 @@ const azeret = localFont({
   variable: "--font-azeret",
 });
 
-const azeretSemiMono = localFont({
-  src: [
-    {
-      path: "../fonts/AzeretSemiMono-TRIAL-Regular.woff2",
-      weight: "400",
-      style: "normal",
-    },
-  ],
-  variable: "--font-azeret-semimono",
-});
-
 export const metadata: Metadata = {
-  title: "WaveSpeed - The Ultimate AI Media Generation Platform",
+  title: "WaveSpeed - Ultimate AI Media Generation Platform",
   description:
     "Build multimodal applications with a single high-speed interface.",
 };
@@ -54,7 +40,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <meta name="apple-mobile-web-app-title" content="WaveSpeed" />
       <body
-        className={`${inter.variable} ${azeret.variable} ${azeretSemiMono.variable} antialiased`}
+        className={`${GeistSans.variable} ${azeret.variable} ${GeistMono.variable} antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <PromoBar />

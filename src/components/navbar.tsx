@@ -93,7 +93,7 @@ export function Navbar({ mode = "default" }: NavbarProps) {
               <Link
                 key={item.label}
                 href={item.href}
-                className="text-foreground hover:text-foreground/50 tracking-xl font-mono text-sm leading-4 transition-colors duration-150"
+                className="text-foreground hover:text-foreground/50 tracking-xl font-mono text-sm leading-4 font-medium transition-colors duration-150"
               >
                 {item.label}
               </Link>
@@ -114,7 +114,7 @@ export function Navbar({ mode = "default" }: NavbarProps) {
                   <div className="border-foreground/5 bg-background grid w-105 grid-cols-2 gap-x-6 gap-y-4 rounded-xs border p-3 shadow-lg">
                     {resourceGroups.map((group) => (
                       <div key={group.label} className="flex flex-col">
-                        <p className="text-foreground/40 tracking-xl mb-1 px-2 font-mono text-xs uppercase">
+                        <p className="text-foreground/40 tracking-xl mb-1 px-2 font-mono text-xs">
                           {group.label}
                         </p>
                         {group.items.map((item) => (
@@ -335,7 +335,7 @@ export function Navbar({ mode = "default" }: NavbarProps) {
           ) : (
             <Link
               href="/sign-in"
-              className="bg-foreground text-background hover:bg-foreground/80 tracking-xl flex items-center justify-center rounded-xs px-4 py-1.5 font-mono text-sm transition-colors duration-150"
+              className="bg-foreground text-background hover:bg-foreground/80 tracking-xl flex items-center justify-center rounded-xs px-4 py-1.5 font-mono text-sm font-medium transition-colors duration-150"
             >
               Sign In
             </Link>

@@ -28,14 +28,13 @@ export function FeaturesSection() {
   return (
     <section className="px-6 py-16 md:px-12 md:py-30 lg:px-20">
       <div className="mx-auto max-w-7xl">
-        <div className="mb-10 flex max-w-[876px] flex-col gap-4">
+        <div className="mb-10 flex max-w-xl flex-col gap-4">
           <h2 className="text-heading font-display text-2xl leading-none font-medium tracking-tight text-balance md:text-5xl">
             Engineered for Velocity
           </h2>
           <p className="text-foreground/60 font-mono text-base text-pretty">
-            WaveSpeed is a purpose-built inference engine
-            <br className="hidden md:block" />
-            designed to minimize latency and maximize throughput.
+            WaveSpeed is a purpose-built inference engine designed to minimize
+            latency and maximize throughput.
           </p>
         </div>
 
@@ -64,7 +63,7 @@ export function FeaturesSection() {
                 <h3 className="text-ink font-display mb-2 text-2xl leading-7 font-medium">
                   Vast Model Library
                 </h3>
-                <p className="text-foreground/60 w-auto font-mono text-sm text-pretty lg:w-[526px]">
+                <p className="text-foreground/60 text-base text-pretty">
                   Access the entire HuggingFace hub and top proprietary models
                   with a single unified API key.
                 </p>
@@ -77,7 +76,7 @@ export function FeaturesSection() {
                 <h3 className="text-ink font-display mb-2 text-2xl leading-7 font-medium">
                   Blazing Fast Inference
                 </h3>
-                <p className="text-foreground/60 font-mono text-sm leading-tight text-pretty">
+                <p className="text-foreground/60 text-base text-pretty">
                   Optimized GPU clusters deliver up to 4x faster token
                   generation for LLMs and sub-second rendering for image models.
                 </p>
@@ -91,13 +90,13 @@ export function FeaturesSection() {
                   autoPlay
                   muted
                   playsInline
-                  className="w-full scale-105 dark:mix-blend-screen dark:filter-[invert(1)_contrast(1.2)_hue-rotate(180deg)]"
+                  className="w-full scale-105 mix-blend-darken dark:mix-blend-screen dark:filter-[invert(1)_contrast(1.2)_hue-rotate(180deg)]"
                 />
               </div>
             </div>
           </div>
 
-          {/* Row 2: Built for Scale (larger) + Enterprise Security (smaller) */}
+          {/* Row 2: Built for Scale (larger) + Enterprise Security */}
           <div className="flex flex-col gap-4 lg:flex-row">
             <div className="bg-surface relative h-95 w-full shrink-0 overflow-hidden rounded-xs lg:h-105 lg:w-[55%]">
               {/* Title + description */}
@@ -105,7 +104,7 @@ export function FeaturesSection() {
                 <h3 className="text-ink font-display mb-2 text-2xl leading-7 font-medium">
                   Built for Scale
                 </h3>
-                <p className="text-foreground/60 max-w-100 font-mono text-sm text-pretty">
+                <p className="text-foreground/60 text-base text-pretty">
                   Enterprise-grade reliability with 99.99% uptime guarantees and
                   dedicated throughput for high-volume applications.
                 </p>
@@ -119,7 +118,7 @@ export function FeaturesSection() {
                   autoPlay
                   muted
                   playsInline
-                  className="scale-105 dark:mix-blend-screen dark:filter-[invert(1)_contrast(1.2)_hue-rotate(180deg)]"
+                  className="scale-105 mix-blend-darken dark:mix-blend-screen dark:filter-[invert(1)_contrast(1.2)_hue-rotate(180deg)]"
                 />
               </div>
             </div>
@@ -145,11 +144,11 @@ export function FeaturesSection() {
                 </div>
               </div>
               {/* Title + description */}
-              <div className="absolute right-6 bottom-6 left-6 z-10 lg:w-[526px]">
+              <div className="absolute right-6 bottom-6 left-6 z-10">
                 <h3 className="text-ink font-display mb-2 text-2xl leading-7 font-medium">
                   Security
                 </h3>
-                <p className="text-foreground/60 font-mono text-sm leading-tight text-pretty">
+                <p className="text-foreground/60 text-base text-pretty">
                   SOC 2 Type II compliant with end-to-end encryption and private
                   VPC deployment options.
                 </p>

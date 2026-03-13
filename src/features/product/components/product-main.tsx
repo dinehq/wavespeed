@@ -281,7 +281,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
           title="Requests"
           titleClassName={
             headerLevel === "secondary"
-              ? "text-foreground font-display text-xl font-bold"
+              ? "text-foreground text-xl font-bold"
               : undefined
           }
           bottomPaddingClassName="pb-0"
@@ -654,7 +654,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                         <button
                           type="button"
                           onClick={() => openRequestDetail(request.id)}
-                          className="text-foreground/70 hover:text-foreground cursor-pointer font-mono text-xs underline-offset-2 hover:underline"
+                          className="text-foreground/70 hover:text-foreground cursor-pointer font-mono text-sm underline-offset-2 hover:underline"
                         >
                           {request.id}
                         </button>

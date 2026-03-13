@@ -25,7 +25,7 @@ export function CTABanner() {
           href="#"
           className="flex shrink-0 items-center gap-3 rounded-xs bg-black px-8 py-4 text-white transition-colors duration-150 hover:bg-black/80"
         >
-          <span className="tracking-xl font-mono text-sm leading-4 uppercase">
+          <span className="tracking-xl font-mono text-sm leading-4 font-medium uppercase">
             Start Building
           </span>
           <ArrowRight className="size-4" />
