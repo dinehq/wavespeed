@@ -11,7 +11,7 @@ import { Footer } from "@/components/footer";
 export default function Home() {
   return (
     <main>
-      <Navbar />
+      <Navbar overlay />
       <HeroSlideshow />
       <FeaturedModels />
       <ToolsSection />

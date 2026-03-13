@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Logo from "@/images/logo.svg";
 import SearchIcon from "@/images/search-icon.svg";
 import ChevronDown from "@/images/chevron-down.svg";
@@ -61,9 +61,10 @@ const languages = [
 
 type NavbarProps = {
   mode?: "default" | "dashboard";
+  overlay?: boolean;
 };
 
-export function Navbar({ mode = "default" }: NavbarProps) {
+export function Navbar({ mode = "default", overlay }: NavbarProps) {
   const isDashboardMode = mode === "dashboard";
   const [menuOpen, setMenuOpen] = useState(false);
   const [resourcesOpen, setResourcesOpen] = useState(false);
@@ -71,9 +72,23 @@ export function Navbar({ mode = "default" }: NavbarProps) {
   const [activeLang, setActiveLang] = useState("English");
   const [activeTeam, setActiveTeam] = useState("Dine Team");
   const [userOpen, setUserOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 500);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const isOverlay = overlay && !scrolled;
 
   return (
-    <nav className="relative flex h-16 w-full items-center justify-center px-6 md:px-12 lg:px-20">
+    <nav
+      className={`sticky top-0 z-40 flex h-16 w-full items-center justify-center px-6 transition-all duration-300 md:px-12 lg:px-20 ${
+        isOverlay ? "text-white" : "bg-background shadow-sm"
+      }`}
+    >
       <div className="flex w-full max-w-7xl items-center justify-between gap-6">
         {/* Left: Logo + Nav links */}
         <div className="flex min-w-0 items-center gap-10">
@@ -82,7 +97,9 @@ export function Navbar({ mode = "default" }: NavbarProps) {
             aria-label="WaveSpeed home"
             className="inline-flex items-center transition-opacity duration-150 hover:opacity-70"
           >
-            <Logo className="text-foreground h-6 w-auto" />
+            <Logo
+              className={`h-6 w-auto ${isOverlay ? "text-white" : "text-foreground"}`}
+            />
           </Link>
           <div className="hidden items-center gap-6 lg:flex">
             {[
@@ -93,7 +110,7 @@ export function Navbar({ mode = "default" }: NavbarProps) {
               <Link
                 key={item.label}
                 href={item.href}
-                className="text-foreground hover:text-foreground/50 tracking-xl font-mono text-sm leading-4 font-medium transition-colors duration-150"
+                className={`tracking-xl font-mono text-sm leading-4 font-medium transition-colors duration-150 ${isOverlay ? "text-white hover:text-white/70" : "text-foreground hover:text-foreground/50"}`}
               >
                 {item.label}
               </Link>
@@ -103,7 +120,9 @@ export function Navbar({ mode = "default" }: NavbarProps) {
               onMouseEnter={() => setResourcesOpen(true)}
               onMouseLeave={() => setResourcesOpen(false)}
             >
-              <button className="text-foreground hover:text-foreground/50 tracking-xl flex cursor-pointer items-center gap-1 font-mono text-sm leading-4 font-medium transition-colors duration-150">
+              <button
+                className={`tracking-xl flex cursor-pointer items-center gap-1 font-mono text-sm leading-4 font-medium transition-colors duration-150 ${isOverlay ? "text-white hover:text-white/70" : "text-foreground hover:text-foreground/50"}`}
+              >
                 Resources
                 <ChevronDown
                   className={`size-4 transition-transform duration-150${resourcesOpen ? "rotate-180" : ""}`}
@@ -140,16 +159,20 @@ export function Navbar({ mode = "default" }: NavbarProps) {
           <Link
             href="/explore"
             aria-label="Search"
-            className="bg-surface hover:bg-foreground/10 hidden size-8 items-center justify-center rounded-xs transition-colors duration-150 md:flex xl:hidden"
+            className={`hidden size-8 items-center justify-center rounded-xs transition-colors duration-150 md:flex xl:hidden ${isOverlay ? "bg-white/25 hover:bg-white/35" : "bg-surface hover:bg-foreground/10"}`}
           >
-            <SearchIcon className="opacity-60" />
+            <SearchIcon className={isOverlay ? "text-white" : "opacity-60"} />
           </Link>
-          <div className="bg-surface hover:bg-foreground/10 hidden items-center gap-1.5 rounded-xs px-2 py-1.5 transition-colors duration-150 xl:flex">
-            <SearchIcon className="opacity-40" />
+          <div
+            className={`hidden items-center gap-1.5 rounded-xs px-2 py-1.5 transition-colors duration-150 xl:flex ${isOverlay ? "bg-white/25 hover:bg-white/35" : "bg-surface hover:bg-foreground/10"}`}
+          >
+            <SearchIcon
+              className={isOverlay ? "text-white/70" : "opacity-40"}
+            />
             <input
               type="text"
               placeholder="Search model..."
-              className="text-foreground placeholder:text-faint tracking-xl w-35 bg-transparent font-mono text-sm outline-none"
+              className={`tracking-xl w-35 bg-transparent font-mono text-sm outline-none ${isOverlay ? "text-white placeholder:text-white/70" : "text-foreground placeholder:text-faint"}`}
             />
           </div>
           <div
@@ -159,7 +182,7 @@ export function Navbar({ mode = "default" }: NavbarProps) {
           >
             <button
               aria-label="Language"
-              className="bg-surface hover:bg-foreground/10 flex size-8 cursor-pointer items-center justify-center rounded-xs transition-colors duration-150"
+              className={`flex size-8 cursor-pointer items-center justify-center rounded-xs transition-colors duration-150 ${isOverlay ? "bg-white/25 text-white hover:bg-white/35" : "bg-surface hover:bg-foreground/10"}`}
             >
               <svg
                 className="size-3"
@@ -335,7 +358,7 @@ export function Navbar({ mode = "default" }: NavbarProps) {
           ) : (
             <Link
               href="/sign-in"
-              className="bg-foreground text-background hover:bg-foreground/80 tracking-xl flex items-center justify-center rounded-xs px-4 py-1.5 font-mono text-sm font-medium transition-colors duration-150"
+              className={`tracking-xl flex items-center justify-center rounded-xs px-4 py-1.5 font-mono text-sm font-medium transition-colors duration-150 ${isOverlay ? "bg-white text-black hover:bg-white/90" : "bg-foreground text-background hover:bg-foreground/80"}`}
             >
               Sign In
             </Link>

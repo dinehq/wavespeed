@@ -234,7 +234,7 @@ export function FeaturedModels() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
-    <section className="bg-background pt-20 md:pt-30">
+    <section className="bg-background pt-20 md:pt-24">
       {/* Header */}
       <div className="mx-auto flex max-w-290 flex-col items-center gap-10">
         <div className="flex max-w-[876px] flex-col items-center gap-4 text-center">

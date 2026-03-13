@@ -107,7 +107,7 @@ export function HeroSlideshow() {
   };
 
   return (
-    <section className="relative h-[480px] w-full overflow-hidden md:h-[600px]">
+    <section className="relative -mt-16 h-[480px] w-full overflow-hidden md:h-[600px]">
       {/* Slide backgrounds */}
       {slides.map((slide, i) => (
         <div

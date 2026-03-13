@@ -515,7 +515,7 @@ function DragRow({
 
 export function ToolsSection() {
   return (
-    <section className="pt-20 pb-20 md:pt-30 md:pb-30">
+    <section className="pt-20 pb-20 md:pt-24 md:pb-24">
       {/* Header */}
       <div className="mx-auto mb-10 max-w-244 px-6 text-center md:px-12 lg:px-20">
         <h2 className="text-heading font-display mb-6 text-2xl leading-none font-medium tracking-tight text-balance md:text-5xl">
