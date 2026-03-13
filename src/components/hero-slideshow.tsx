@@ -30,7 +30,7 @@ const slides: Slide[] = [
     title: "Ultimate AI Media\nGeneration Platform",
     description:
       "WaveSpeedAI accelerates AI Image and Video generation for you to build, create, and scale faster.",
-    cta: { label: "Start Building", href: "#" },
+    cta: { label: "Explore Models", href: "#" },
     secondaryCta: { label: "Documentation", href: "#" },
     bg: slideHeroBg,
     video: {
@@ -45,7 +45,8 @@ const slides: Slide[] = [
     title: "Google Veo 3.1",
     description:
       "Next-generation video synthesis. Cinematic quality output at unprecedented speed, now available on WaveSpeed.",
-    cta: { label: "Try Now", href: "#" },
+    cta: { label: "Try Model", href: "#" },
+    secondaryCta: { label: "Documentation", href: "#" },
     bg: slideModelBg,
     previewLabel: "Veo 3.1",
   },
@@ -55,7 +56,8 @@ const slides: Slide[] = [
     title: "Runway Gen4 Turbo",
     description:
       "Cinematic video generation with motion control. Create professional-grade footage from text or image prompts.",
-    cta: { label: "Generate Video", href: "#" },
+    cta: { label: "Try Model", href: "#" },
+    secondaryCta: { label: "Documentation", href: "#" },
     bg: runwayBg,
     previewLabel: "Gen4 Turbo",
   },
@@ -65,7 +67,8 @@ const slides: Slide[] = [
     title: "FLUX 2 Pro",
     description:
       "State-of-the-art image generation with unmatched prompt adherence. Sub-2s inference on WaveSpeed infrastructure.",
-    cta: { label: "Generate Image", href: "#" },
+    cta: { label: "Try Model", href: "#" },
+    secondaryCta: { label: "Documentation", href: "#" },
     bg: bflBg,
     previewLabel: "FLUX 2",
   },
@@ -75,7 +78,8 @@ const slides: Slide[] = [
     title: "Nano Banana Pro",
     description:
       "Ultra-fast image generation at 0.8s per image. Optimized for real-time applications and high-volume pipelines.",
-    cta: { label: "Try Nano", href: "#" },
+    cta: { label: "Try Model", href: "#" },
+    secondaryCta: { label: "Documentation", href: "#" },
     bg: googleBg,
     previewLabel: "Nano Banana",
   },
@@ -107,7 +111,7 @@ export function HeroSlideshow() {
   };
 
   return (
-    <section className="relative -mt-16 h-[480px] w-full overflow-hidden md:h-[600px]">
+    <section className="relative -mt-16 h-[480px] w-full overflow-hidden md:h-[560px]">
       {/* Slide backgrounds */}
       {slides.map((slide, i) => (
         <div
@@ -161,9 +165,9 @@ export function HeroSlideshow() {
             <div className="mt-1 flex gap-2">
               <a
                 href={slides[active].cta.href}
-                className="flex items-center gap-2.5 rounded-xs bg-white px-6 py-3 text-black transition-colors duration-150 hover:bg-white/90"
+                className="flex items-center gap-2.5 rounded-xs border border-transparent bg-white px-6 py-3 text-black transition-colors duration-150 hover:bg-white/90"
               >
-                <span className="tracking-xl font-mono text-xs leading-4 font-bold uppercase">
+                <span className="tracking-xl font-mono text-sm leading-4 font-bold uppercase">
                   {slides[active].cta.label}
                 </span>
                 <ArrowRight className="size-3.5" />
@@ -173,7 +177,7 @@ export function HeroSlideshow() {
                   href={slides[active].secondaryCta.href}
                   className="flex items-center rounded-xs border border-white/20 px-6 py-3 text-white transition-colors duration-150 hover:bg-white/10"
                 >
-                  <span className="tracking-xl font-mono text-xs leading-4 font-bold uppercase">
+                  <span className="tracking-xl font-mono text-sm leading-4 font-bold uppercase">
                     {slides[active].secondaryCta.label}
                   </span>
                 </a>
@@ -200,12 +204,6 @@ export function HeroSlideshow() {
                     fill
                     className="object-cover"
                   />
-                  <div className="absolute inset-0 bg-black/50" />
-                  <div className="relative flex h-full items-end p-1">
-                    <p className="font-mono text-[9px] leading-tight font-medium text-white">
-                      {slide.previewLabel}
-                    </p>
-                  </div>
                 </div>
                 {active === i && (
                   <div className="absolute right-0 bottom-0 left-0 h-0.5 bg-white/10">
