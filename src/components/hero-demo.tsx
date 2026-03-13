@@ -22,14 +22,14 @@ type LangKey = "node" | "python" | "curl";
 const tabs: { key: TabKey; base: string; icon: FC<SVGProps<SVGSVGElement>> }[] =
   [
     {
-      key: "video",
-      base: "video",
-      icon: TabIconVideo,
-    },
-    {
       key: "image",
       base: "image",
       icon: TabIconImage,
+    },
+    {
+      key: "video",
+      base: "video",
+      icon: TabIconVideo,
     },
     {
       key: "chat",
@@ -896,7 +896,7 @@ const codeData: Record<
 
 const AUTO_ADVANCE_MS = 5000;
 
-export function HeroDemo() {
+export function CodeEditorCard() {
   const [activeTab, setActiveTab] = useState<TabKey>("video");
   const [activeLang, setActiveLang] = useState<LangKey>("node");
   const timerRef = useRef<ReturnType<typeof setInterval>>(null);
@@ -928,6 +928,181 @@ export function HeroDemo() {
   const current = codeData[activeTab][activeLang];
 
   return (
+    <div className="bg-background flex flex-col gap-2 rounded-[5px] p-2">
+      <div className="flex flex-col items-start justify-between gap-2 sm:flex-row sm:items-center sm:gap-0">
+        <div className="flex w-full gap-1 overflow-x-auto [scrollbar-width:none] sm:w-auto [&::-webkit-scrollbar]:hidden">
+          {tabs.map((tab) => (
+            <button
+              key={tab.key}
+              onClick={() => handleTabClick(tab.key)}
+              className={`relative flex cursor-pointer items-center gap-1 rounded-[3px] px-4 py-2 font-mono text-xs transition-colors ${
+                activeTab === tab.key
+                  ? "bg-panel text-ink"
+                  : "text-ink/60 hover:bg-panel hover:text-ink"
+              }`}
+            >
+              {activeTab === tab.key && (
+                <div
+                  key={activeTab}
+                  className="bg-progress-track absolute inset-y-0 left-0 animate-[progress-fill_linear] rounded-[3px]"
+                  style={{
+                    animationDuration: `${AUTO_ADVANCE_MS}ms`,
+                  }}
+                />
+              )}
+              <tab.icon className="relative size-4 shrink-0" />
+              <span className="relative">
+                {tab.base}
+                {langExt[activeLang]}
+              </span>
+            </button>
+          ))}
+        </div>
+        <div className="hidden gap-1 sm:flex">
+          {langTabs.map((lang) => (
+            <button
+              key={lang}
+              onClick={() => setActiveLang(lang)}
+              className={`cursor-pointer rounded-[2px] px-2 py-1 font-mono text-xs transition-colors ${
+                activeLang === lang
+                  ? "bg-ink/15 text-ink"
+                  : "text-ink/50 hover:text-ink"
+              }`}
+            >
+              {lang}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="bg-panel-alt flex flex-col overflow-hidden rounded-[3px] md:flex-row">
+        <div className="bg-panel relative h-65 md:h-87 md:flex-1">
+          <div className="absolute top-10 left-6 flex">
+            <div className="text-subtle flex w-6 flex-col gap-1 font-mono text-xs leading-tight">
+              {current.lines.map((_, i) => (
+                <p key={i} className="opacity-40">
+                  {i + 1}
+                </p>
+              ))}
+            </div>
+            <div className="flex flex-col gap-1 font-mono text-sm leading-tight whitespace-pre">
+              {current.lines.map((line, i) => (
+                <p key={i}>{line.content}</p>
+              ))}
+            </div>
+          </div>
+          <div className="bg-background absolute bottom-3 left-6 flex items-center gap-2 rounded px-2 py-1 md:top-77 md:bottom-auto">
+            <span className="bg-green size-1.5 rounded-full" />
+            <span className="text-subtle font-mono text-xs leading-tight">
+              {current.status}
+            </span>
+          </div>
+        </div>
+
+        <div className="relative flex h-65 flex-col items-center justify-end overflow-hidden p-2 md:h-87 md:flex-1">
+          {activeTab === "image" && (
+            <Image
+              src={editorPreview}
+              alt="Generated output"
+              fill
+              className="pointer-events-none object-cover"
+            />
+          )}
+          {activeTab === "video" && (
+            <video
+              src="https://d1q70pf5vjeyhc.wavespeed.ai/media/videos/1753847917474064981_X4mifEAx.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="pointer-events-none absolute inset-0 size-full object-cover"
+            />
+          )}
+          {activeTab === "chat" && (
+            <div className="bg-panel absolute inset-0 flex flex-col overflow-hidden p-5">
+              <p className="text-subtle tracking-lg mb-3 font-mono text-xs text-pretty uppercase">
+                Response
+              </p>
+              <div className="text-code-text flex flex-col gap-2 font-mono text-xs leading-normal">
+                <p>The conversation covered four key areas:</p>
+                <div className="flex flex-col gap-1.5 pl-1">
+                  <p className="text-subtle text-pretty">
+                    <span className="text-code-text">1.</span> Q3 revenue
+                    increased 23% year-over-year
+                  </p>
+                  <p className="text-subtle text-pretty">
+                    <span className="text-code-text">2.</span> New API launch
+                    scheduled for October
+                  </p>
+                  <p className="text-subtle text-pretty">
+                    <span className="text-code-text">3.</span> Infrastructure
+                    team hiring 5 engineers
+                  </p>
+                  <p className="text-subtle text-pretty">
+                    <span className="text-code-text">4.</span> Partnership
+                    agreement signed with Acme
+                  </p>
+                </div>
+                <div className="border-foreground/5 mt-2 border-t pt-2">
+                  <p className="text-subtle text-xs text-pretty">
+                    Action item: Scale GPU cluster to 256 nodes by Q4, targeting
+                    p99 latency &lt; 200ms.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+          {activeTab === "speech" && (
+            <div className="bg-panel absolute inset-0 flex flex-col items-center justify-center gap-5 px-8">
+              <div className="flex w-full items-center gap-3">
+                <div className="bg-code-text flex size-8 shrink-0 items-center justify-center rounded-full">
+                  <svg width="10" height="12" viewBox="0 0 10 12" fill="none">
+                    <path d="M1 1L9 6L1 11V1Z" fill="white" />
+                  </svg>
+                </div>
+                <div className="flex h-10 flex-1 items-end gap-0.5">
+                  {[
+                    0.3, 0.5, 0.8, 0.6, 1, 0.7, 0.4, 0.9, 0.5, 0.3, 0.7, 0.85,
+                    0.6, 0.4, 0.9, 1, 0.7, 0.5, 0.3, 0.6, 0.8, 0.5, 0.7, 0.4,
+                    0.6, 0.9, 0.5, 0.3, 0.7, 0.8, 0.6, 0.4, 0.5, 0.7, 0.3, 0.6,
+                    0.8, 0.5, 0.9, 0.4, 0.6, 0.8, 0.5, 0.3, 0.7, 0.9, 0.4, 0.6,
+                  ].map((h, i) => (
+                    <div
+                      key={i}
+                      className="bg-code-text/20 flex-1 rounded-full"
+                      style={{ height: `${h * 100}%` }}
+                    />
+                  ))}
+                </div>
+              </div>
+              <div className="text-subtle flex w-full justify-between font-mono text-xs">
+                <span>0:00</span>
+                <span>0:04</span>
+              </div>
+              <p className="text-code-text/40 text-center font-mono text-xs leading-[1.4] text-pretty">
+                &ldquo;Hello from WaveSpeed&rdquo;
+              </p>
+            </div>
+          )}
+
+          <div className="relative flex h-13 w-full items-center gap-3 rounded-[2px] border border-white/10 bg-black/80 px-2 py-px backdrop-blur-md">
+            <div className="flex flex-col">
+              <p className="font-sans text-xs leading-4 text-pretty text-white">
+                {current.output}
+              </p>
+              <p className="text-footer-label font-mono text-xs leading-4 text-pretty">
+                {current.meta}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function HeroDemo() {
+  return (
     <section className="relative w-full overflow-hidden">
       <div className="absolute inset-0">
         <video
@@ -941,196 +1116,8 @@ export function HeroDemo() {
         />
       </div>
       <div className="absolute inset-0 dark:bg-black/50" />
-
       <div className="relative mx-auto max-w-240 px-4 py-4 md:px-0 md:py-12">
-        <div className="bg-background flex flex-col gap-2 rounded-[5px] p-2">
-          {/* Tab bar */}
-          <div className="flex flex-col items-start justify-between gap-2 sm:flex-row sm:items-center sm:gap-0">
-            <div className="flex w-full gap-1 overflow-x-auto [scrollbar-width:none] sm:w-auto [&::-webkit-scrollbar]:hidden">
-              {tabs.map((tab) => (
-                <button
-                  key={tab.key}
-                  onClick={() => handleTabClick(tab.key)}
-                  className={`relative flex cursor-pointer items-center gap-1 rounded-[3px] px-4 py-2 font-mono text-xs transition-colors ${
-                    activeTab === tab.key
-                      ? "bg-panel text-ink"
-                      : "text-ink/60 hover:bg-panel hover:text-ink"
-                  }`}
-                >
-                  {activeTab === tab.key && (
-                    <div
-                      key={activeTab}
-                      className="bg-progress-track absolute inset-y-0 left-0 animate-[progress-fill_linear] rounded-[3px]"
-                      style={{
-                        animationDuration: `${AUTO_ADVANCE_MS}ms`,
-                      }}
-                    />
-                  )}
-                  <tab.icon className="relative size-4 shrink-0" />
-                  <span className="relative">
-                    {tab.base}
-                    {langExt[activeLang]}
-                  </span>
-                </button>
-              ))}
-            </div>
-            <div className="hidden gap-1 sm:flex">
-              {langTabs.map((lang) => (
-                <button
-                  key={lang}
-                  onClick={() => setActiveLang(lang)}
-                  className={`cursor-pointer rounded-[2px] px-2 py-1 font-mono text-xs transition-colors ${
-                    activeLang === lang ? "bg-code-dark text-white" : "text-ink"
-                  }`}
-                >
-                  {lang}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Editor content */}
-          <div className="bg-panel-alt flex flex-col overflow-hidden rounded-[3px] md:flex-row">
-            {/* Code panel */}
-            <div className="bg-panel relative h-65 md:h-87 md:flex-1">
-              <div className="absolute top-10 left-6 flex">
-                {/* Line numbers */}
-                <div className="text-subtle flex w-6 flex-col gap-1 font-mono text-xs leading-tight">
-                  {current.lines.map((_, i) => (
-                    <p key={i} className="opacity-40">
-                      {i + 1}
-                    </p>
-                  ))}
-                </div>
-                {/* Code */}
-                <div className="flex flex-col gap-1 font-mono text-sm leading-tight whitespace-pre">
-                  {current.lines.map((line, i) => (
-                    <p key={i}>{line.content}</p>
-                  ))}
-                </div>
-              </div>
-              {/* Status */}
-              <div className="bg-background absolute bottom-3 left-6 flex items-center gap-2 rounded px-2 py-1 md:top-77 md:bottom-auto">
-                <span className="bg-green size-1.5 rounded-full" />
-                <span className="text-subtle font-mono text-xs leading-tight">
-                  {current.status}
-                </span>
-              </div>
-            </div>
-
-            {/* Preview panel */}
-            <div className="relative flex h-65 flex-col items-center justify-end overflow-hidden p-2 md:h-87 md:flex-1">
-              {/* Image preview */}
-              {activeTab === "image" && (
-                <Image
-                  src={editorPreview}
-                  alt="Generated output"
-                  fill
-                  className="pointer-events-none object-cover"
-                />
-              )}
-
-              {/* Video preview */}
-              {activeTab === "video" && (
-                <video
-                  src="https://d1q70pf5vjeyhc.wavespeed.ai/media/videos/1753847917474064981_X4mifEAx.mp4"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="pointer-events-none absolute inset-0 size-full object-cover"
-                />
-              )}
-
-              {/* Chat preview */}
-              {activeTab === "chat" && (
-                <div className="bg-panel absolute inset-0 flex flex-col overflow-hidden p-5">
-                  <p className="text-subtle tracking-lg mb-3 font-mono text-xs text-pretty uppercase">
-                    Response
-                  </p>
-                  <div className="text-code-text flex flex-col gap-2 font-mono text-xs leading-normal">
-                    <p>The conversation covered four key areas:</p>
-                    <div className="flex flex-col gap-1.5 pl-1">
-                      <p className="text-subtle text-pretty">
-                        <span className="text-code-text">1.</span> Q3 revenue
-                        increased 23% year-over-year
-                      </p>
-                      <p className="text-subtle text-pretty">
-                        <span className="text-code-text">2.</span> New API
-                        launch scheduled for October
-                      </p>
-                      <p className="text-subtle text-pretty">
-                        <span className="text-code-text">3.</span>{" "}
-                        Infrastructure team hiring 5 engineers
-                      </p>
-                      <p className="text-subtle text-pretty">
-                        <span className="text-code-text">4.</span> Partnership
-                        agreement signed with Acme
-                      </p>
-                    </div>
-                    <div className="border-foreground/5 mt-2 border-t pt-2">
-                      <p className="text-subtle text-xs text-pretty">
-                        Action item: Scale GPU cluster to 256 nodes by Q4,
-                        targeting p99 latency &lt; 200ms.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Audio preview */}
-              {activeTab === "speech" && (
-                <div className="bg-panel absolute inset-0 flex flex-col items-center justify-center gap-5 px-8">
-                  <div className="flex w-full items-center gap-3">
-                    <div className="bg-code-text flex size-8 shrink-0 items-center justify-center rounded-full">
-                      <svg
-                        width="10"
-                        height="12"
-                        viewBox="0 0 10 12"
-                        fill="none"
-                      >
-                        <path d="M1 1L9 6L1 11V1Z" fill="white" />
-                      </svg>
-                    </div>
-                    <div className="flex h-10 flex-1 items-end gap-0.5">
-                      {[
-                        0.3, 0.5, 0.8, 0.6, 1, 0.7, 0.4, 0.9, 0.5, 0.3, 0.7,
-                        0.85, 0.6, 0.4, 0.9, 1, 0.7, 0.5, 0.3, 0.6, 0.8, 0.5,
-                        0.7, 0.4, 0.6, 0.9, 0.5, 0.3, 0.7, 0.8, 0.6, 0.4, 0.5,
-                        0.7, 0.3, 0.6, 0.8, 0.5, 0.9, 0.4, 0.6, 0.8, 0.5, 0.3,
-                        0.7, 0.9, 0.4, 0.6,
-                      ].map((h, i) => (
-                        <div
-                          key={i}
-                          className="bg-code-text/20 flex-1 rounded-full"
-                          style={{ height: `${h * 100}%` }}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                  <div className="text-subtle flex w-full justify-between font-mono text-xs">
-                    <span>0:00</span>
-                    <span>0:04</span>
-                  </div>
-                  <p className="text-code-text/40 text-center font-mono text-xs leading-[1.4] text-pretty">
-                    &ldquo;Hello from WaveSpeed&rdquo;
-                  </p>
-                </div>
-              )}
-
-              <div className="relative flex h-13 w-full items-center gap-3 rounded-[2px] border border-white/10 bg-black/80 px-2 py-px backdrop-blur-md">
-                <div className="flex flex-col">
-                  <p className="font-sans text-xs leading-4 text-pretty text-white">
-                    {current.output}
-                  </p>
-                  <p className="text-footer-label font-mono text-xs leading-4 text-pretty">
-                    {current.meta}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <CodeEditorCard />
       </div>
     </section>
   );

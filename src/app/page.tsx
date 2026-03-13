@@ -1,6 +1,5 @@
 import { Navbar } from "@/components/navbar";
-import { Hero } from "@/components/hero";
-import { HeroDemo } from "@/components/hero-demo";
+import { HeroSlideshow } from "@/components/hero-slideshow";
 import { FeaturedModels } from "@/components/featured-models";
 import { ToolsSection } from "@/components/tools-section";
 import { FeaturesSection } from "@/components/features-section";
@@ -13,12 +12,11 @@ export default function Home() {
   return (
     <main>
       <Navbar />
-      <Hero />
-      <HeroDemo />
+      <HeroSlideshow />
       <FeaturedModels />
       <ToolsSection />
-      <FeaturesSection />
       <ForCreators />
+      <FeaturesSection />
       <Testimonials />
       <CTABanner />
       <Footer />

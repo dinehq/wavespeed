@@ -252,7 +252,7 @@ export function FeaturedModels() {
       {/* Full-width table area with edge-pinned thumbnails */}
       <div className="relative mt-10">
         {/* Left thumbnail strip */}
-        <div className="pointer-events-none absolute top-0 left-0 hidden flex-col items-start xl:flex">
+        <div className="pointer-events-none absolute top-0 left-0 hidden flex-col items-start 2xl:flex">
           {leftThumbs.map((src, i) => {
             const isActive = hoveredIndex === i;
             const size = isActive ? 120 : 80;
@@ -273,7 +273,7 @@ export function FeaturedModels() {
         </div>
 
         {/* Right thumbnail strip */}
-        <div className="pointer-events-none absolute top-0 right-0 hidden flex-col items-end xl:flex">
+        <div className="pointer-events-none absolute top-0 right-0 hidden flex-col items-end 2xl:flex">
           {rightThumbs.map((src, i) => {
             const isActive = hoveredIndex === i;
             const size = isActive ? 120 : 80;
@@ -294,7 +294,7 @@ export function FeaturedModels() {
         </div>
 
         {/* Table rows */}
-        <div className="mx-auto max-w-290">
+        <div className="mx-auto max-w-7xl">
           <div className="flex flex-col">
             {models.map((model, i) => (
               <a
@@ -306,7 +306,7 @@ export function FeaturedModels() {
                   hoveredIndex === i ? "bg-surface" : ""
                 }`}
               >
-                <div className="relative size-10 shrink-0 overflow-hidden rounded-xs xl:hidden">
+                <div className="relative size-10 shrink-0 overflow-hidden rounded-xs 2xl:hidden">
                   <Image
                     src={leftThumbs[i]}
                     alt=""
@@ -355,7 +355,7 @@ export function FeaturedModels() {
           href="#"
           className="bg-foreground text-background hover:bg-foreground/80 tracking-xl rounded-xs px-6 py-3 font-mono text-sm transition-colors duration-150"
         >
-          Explore all 1326 models
+          Explore all models
         </a>
       </div>
     </section>

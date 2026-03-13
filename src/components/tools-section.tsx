@@ -515,7 +515,7 @@ function DragRow({
 
 export function ToolsSection() {
   return (
-    <section className="pt-20 md:pt-30">
+    <section className="pt-20 pb-20 md:pt-30 md:pb-30">
       {/* Header */}
       <div className="mx-auto mb-10 max-w-244 px-6 text-center md:px-12 lg:px-20">
         <h2 className="text-heading font-display mb-6 text-2xl leading-none font-medium tracking-tight text-balance md:text-5xl">
@@ -579,6 +579,16 @@ export function ToolsSection() {
             </div>
           ))}
         </DragRow>
+      </div>
+
+      {/* CTA button */}
+      <div className="mx-auto mt-10 flex max-w-290 justify-center">
+        <a
+          href="#"
+          className="bg-foreground text-background hover:bg-foreground/80 tracking-xl rounded-xs px-6 py-3 font-mono text-sm transition-colors duration-150"
+        >
+          Explore all tools
+        </a>
       </div>
     </section>
   );
