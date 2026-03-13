@@ -15,7 +15,7 @@ export function ForCreators() {
   return (
     <section className="bg-dark dark:bg-dark relative overflow-hidden">
       <div className="px-6 pt-16 pb-16 md:px-12 md:pt-24 md:pb-24 lg:px-20">
-        <div className="mx-auto flex max-w-7xl flex-col gap-20 md:gap-24">
+        <div className="mx-auto flex max-w-7xl flex-col gap-16 md:gap-24">
           {/* Row 1: For Developers — text left, code right */}
           <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-12">
             <div className="flex flex-col gap-4 lg:w-80 lg:shrink-0 lg:pt-6">
@@ -48,15 +48,6 @@ export function ForCreators() {
 
           {/* Row 2: For Creators — preview left, text right */}
           <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-12">
-            <div className="min-w-0 overflow-hidden rounded-md shadow-[0_0_60px_-12px_rgba(255,255,255,0.1)] lg:flex-1">
-              <Image
-                src={desktopBg}
-                alt="WaveSpeed Studio"
-                width={1280}
-                height={800}
-                className="w-full"
-              />
-            </div>
             <div className="flex flex-col gap-8 lg:w-80 lg:shrink-0 lg:pt-6">
               <div className="flex flex-col gap-4">
                 <h2 className="font-display text-2xl leading-none font-medium tracking-tight text-balance text-white md:text-5xl">
@@ -106,6 +97,15 @@ export function ForCreators() {
                   </div>
                 ))}
               </div> */}
+            </div>
+            <div className="min-w-0 overflow-hidden rounded-md shadow-[0_0_60px_-12px_rgba(255,255,255,0.1)] lg:order-first lg:flex-1">
+              <Image
+                src={desktopBg}
+                alt="WaveSpeed Studio"
+                width={1280}
+                height={800}
+                className="w-full"
+              />
             </div>
           </div>
         </div>
