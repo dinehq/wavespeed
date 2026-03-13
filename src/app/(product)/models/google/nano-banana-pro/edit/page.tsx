@@ -29,16 +29,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ProductTopTabs } from "@/features/product/components/product-top-tabs";
+import { ExamplesSection } from "./examples-section";
 import { ModelDetailInputForm, ModelSwitcher } from "./model-detail-input-form";
-
-const examples = [
-  "Glass hamburger on white backdrop",
-  "Snow globe city at sunset",
-  "Painterly mountain village",
-  "Cinematic fox in moonlight",
-  "Concept art character sheet",
-  "Sketch-to-comic conversion",
-];
+import { ReadmeSection } from "./readme-section";
 
 const relatedModels = [
   {
@@ -81,7 +74,7 @@ export default function ModelDetailPage() {
     <>
       <ProductTopTabs activeTab="Explore" />
       <section className="px-6 pb-16 md:px-12 lg:px-20">
-        <div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
+        <div className="mx-auto flex min-h-[calc(100vh-8rem)] w-full max-w-7xl flex-col gap-8">
           <div className="flex flex-col gap-4 pt-5">
             <div className="flex flex-col gap-3 md:flex-row md:items-baseline md:justify-between md:gap-4">
               <div className="flex min-w-0 flex-1 flex-col items-start gap-2 md:pr-4 lg:pr-6">
@@ -178,9 +171,9 @@ export default function ModelDetailPage() {
             </div>
           </div>
 
-          <div className="grid gap-6 lg:grid-cols-12">
-            <aside className="lg:col-span-6">
-              <div className="bg-surface rounded-xs p-4">
+          <div className="grid min-h-0 flex-1 gap-6 lg:grid-cols-12">
+            <aside className="flex min-h-0 lg:col-span-6">
+              <div className="bg-surface flex h-full min-h-0 flex-col rounded-xs px-4 pt-4 pb-0">
                 <ModelDetailInputForm />
               </div>
             </aside>
@@ -274,30 +267,7 @@ export default function ModelDetailPage() {
             </div>
           </div>
 
-          <section className="flex flex-col gap-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-foreground text-xl font-semibold">
-                Examples
-              </h2>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-foreground/60 hover:text-foreground h-8 rounded-xs px-3"
-              >
-                View all
-              </Button>
-            </div>
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-              {examples.map((item) => (
-                <div
-                  key={item}
-                  className="border-foreground/10 bg-surface hover:bg-background flex min-h-28 items-end rounded-xs border p-3 transition-colors"
-                >
-                  <p className="text-foreground/80 text-xs">{item}</p>
-                </div>
-              ))}
-            </div>
-          </section>
+          <ExamplesSection />
 
           <section className="flex flex-col gap-4">
             <h2 className="text-foreground text-xl font-semibold">
@@ -330,6 +300,8 @@ export default function ModelDetailPage() {
               ))}
             </div>
           </section>
+
+          <ReadmeSection />
         </div>
       </section>
     </>

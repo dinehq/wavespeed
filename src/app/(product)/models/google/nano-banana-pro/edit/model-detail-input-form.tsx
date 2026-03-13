@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import {
+  ChevronDown,
+  Eraser,
   FolderOpen,
   ImagePlus,
   Info,
@@ -13,6 +15,11 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Select,
   SelectContent,
@@ -26,7 +33,7 @@ import thumbR7 from "@/images/thumb-r7.webp";
 const controlButtonSmClass =
   "border-foreground/10 text-foreground/80 hover:bg-foreground/5 h-8 rounded-xs px-3 text-xs font-semibold shadow-xs";
 const controlSelectClass =
-  "border-foreground/10 bg-background text-foreground/80 hover:bg-foreground/5 h-8 w-fit min-w-28 max-w-72 rounded-xs px-3 text-xs shadow-xs";
+  "border-foreground/10 bg-background text-foreground/80 hover:bg-foreground/5 h-8 w-fit min-w-28 max-w-72 rounded-xs pl-3 pr-2 text-xs shadow-xs";
 const controlSelectTriggerCompactClass =
   "border-foreground/10 bg-background text-foreground/80 hover:bg-foreground/5 h-6 w-fit min-w-16 rounded-xs px-2 text-xs shadow-xs justify-between";
 const previewCardClass =
@@ -45,15 +52,29 @@ function getSliderStyle(value: number, min: number, max: number) {
     background: `linear-gradient(to right, rgb(15 23 42) 0%, rgb(15 23 42) ${percent}%, rgb(255 255 255) ${percent}%, rgb(255 255 255) 100%)`,
   };
 }
-const ratioOptions = [
-  { value: "1:1", iconClass: "size-4" },
-  { value: "16:9", iconClass: "h-3 w-5" },
-  { value: "9:16", iconClass: "h-5 w-3" },
-  { value: "4:3", iconClass: "h-3 w-4" },
-  { value: "3:4", iconClass: "h-4 w-3" },
-  { value: "3:2", iconClass: "h-3 w-5" },
-  { value: "2:3", iconClass: "h-5 w-3" },
+const IMAGE_SIZE_MIN = 256;
+const IMAGE_SIZE_MAX = 1536;
+
+const imageSizeOptions = [
+  { value: "default", label: "Default" },
+  { value: "custom", label: "Custom" },
+  { value: "square-hd", label: "Square HD" },
+  { value: "square", label: "Square" },
+  { value: "portrait-3-4", label: "Portrait 3:4" },
+  { value: "portrait-9-16", label: "Portrait 9:16" },
+  { value: "landscape-4-3", label: "Landscape 4:3" },
+  { value: "landscape-16-9", label: "Landscape 16:9" },
 ] as const;
+
+const imageSizePresetDimensions: Record<string, { w: number; h: number }> = {
+  default: { w: 1536, h: 1536 },
+  "square-hd": { w: 1024, h: 1024 },
+  square: { w: 768, h: 768 },
+  "portrait-3-4": { w: 768, h: 1024 },
+  "portrait-9-16": { w: 576, h: 1024 },
+  "landscape-4-3": { w: 1024, h: 768 },
+  "landscape-16-9": { w: 1024, h: 576 },
+};
 
 function FieldLabel({
   children,
@@ -142,6 +163,12 @@ type AudioItem = {
   shouldRevoke: boolean;
 };
 
+type LoraItem = {
+  id: string;
+  path: string;
+  scale: number;
+};
+
 function createImageId() {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
     return crypto.randomUUID();
@@ -177,9 +204,9 @@ export function ModelSwitcher() {
   return (
     <Select value={model} onValueChange={setModel}>
       <SelectTrigger
-        size="sm"
         aria-label="Switch model"
-        className="text-muted-foreground hover:bg-accent hover:text-foreground dark:hover:bg-accent/50 [&_svg]:text-muted-foreground hover:[&_svg]:text-foreground inline-flex size-8 min-w-8 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-xs border-0 bg-transparent px-0 py-0 text-sm font-semibold whitespace-nowrap shadow-none transition-all outline-none **:data-[slot=select-value]:hidden [&_svg]:size-5 [&_svg]:stroke-[1.75] [&_svg]:opacity-100"
+        size="sm"
+        className="text-muted-foreground hover:bg-accent hover:text-foreground dark:hover:bg-accent/50 [&_svg]:text-muted-foreground hover:[&_svg]:text-foreground inline-flex size-8 min-w-8 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-xs border-0 bg-transparent px-0 py-0 text-sm font-bold whitespace-nowrap shadow-none transition-all outline-none **:data-[slot=select-value]:hidden [&_svg]:size-5 [&_svg]:stroke-[1.75] [&_svg]:opacity-100"
       >
         <SelectValue />
       </SelectTrigger>
@@ -222,13 +249,15 @@ export function ModelDetailInputForm() {
   ]);
   const [enableSyncMode, setEnableSyncMode] = useState(false);
   const [enableBase64Output, setEnableBase64Output] = useState(true);
-  const [sizeWidth, setSizeWidth] = useState(1536);
-  const [sizeHeight, setSizeHeight] = useState(1536);
-  const [selectedRatio, setSelectedRatio] = useState("1:1");
+  const [sizeWidth, setSizeWidth] = useState(1024);
+  const [sizeHeight, setSizeHeight] = useState(768);
+  const [imageSizePreset, setImageSizePreset] = useState<string>("landscape-4-3");
   const [audioUrl, setAudioUrl] = useState("");
   const [audioItem, setAudioItem] = useState<AudioItem | null>(null);
-  const [lorasPath, setLorasPath] = useState("");
-  const [lorasScale, setLorasScale] = useState(2.3);
+  const [loraItems, setLoraItems] = useState<LoraItem[]>([
+    { id: createImageId(), path: "", scale: 1 },
+  ]);
+  const [enableBatchMode, setEnableBatchMode] = useState(false);
 
   useEffect(() => {
     singleImageRef.current = singleImage;
@@ -437,16 +466,51 @@ export function ModelDetailInputForm() {
     });
   };
 
-  const handleSelectRatio = (ratio: string) => {
-    setSelectedRatio(ratio);
+  const handleImageSizePresetChange = (value: string) => {
+    setImageSizePreset(value);
+    const preset = imageSizePresetDimensions[value];
+    if (preset) {
+      setSizeWidth(preset.w);
+      setSizeHeight(preset.h);
+    }
+  };
+
+  const clampSize = (n: number) =>
+    Math.min(IMAGE_SIZE_MAX, Math.max(IMAGE_SIZE_MIN, Number.isFinite(n) ? n : IMAGE_SIZE_MIN));
+
+  const handleSizeWidthChange = (value: number) => setSizeWidth(clampSize(value));
+  const handleSizeHeightChange = (value: number) => setSizeHeight(clampSize(value));
+
+  const handleAddLoraItem = () => {
+    setLoraItems((prev) => [...prev, { id: createImageId(), path: "", scale: 1 }]);
+  };
+
+  const handleRemoveLoraItem = (id: string) => {
+    setLoraItems((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const handleLoraPathChange = (id: string, path: string) => {
+    setLoraItems((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, path } : item)),
+    );
+  };
+
+  const handleLoraScaleChange = (id: string, scale: number) => {
+    setLoraItems((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, scale } : item)),
+    );
+  };
+
+  const handleLoraScaleReset = (id: string) => {
+    handleLoraScaleChange(id, 1);
   };
 
   return (
-    <>
+    <div className="flex h-full flex-col">
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-foreground text-sm font-semibold">Input</h2>
         <Select defaultValue="form">
-          <SelectTrigger className={controlSelectTriggerCompactClass}>
+          <SelectTrigger size="sm" className={controlSelectTriggerCompactClass}>
             <SelectValue />
           </SelectTrigger>
           <SelectContent className="border-foreground/10 rounded-xs">
@@ -458,8 +522,9 @@ export function ModelDetailInputForm() {
           </SelectContent>
         </Select>
       </div>
-      <div className="space-y-6">
-        <div>
+      <div className="min-h-0 flex flex-1 flex-col">
+        <div className="min-h-0 flex-1 space-y-6 overflow-y-auto pr-1">
+          <div>
           <FieldLabel tooltip="One primary input image for editing.">
             image*
           </FieldLabel>
@@ -522,9 +587,9 @@ export function ModelDetailInputForm() {
               </div>
             </div>
           ) : null}
-        </div>
+          </div>
 
-        <div>
+          <div>
           <FieldLabel tooltip="One or more reference images for editing.">
             images*
           </FieldLabel>
@@ -618,9 +683,9 @@ export function ModelDetailInputForm() {
           <p className="text-foreground/80 mt-3 text-sm">
             {images.length} images added
           </p>
-        </div>
+          </div>
 
-        <div>
+          <div>
           <div className="mb-2 flex items-center justify-between gap-2">
             <FieldLabel
               tooltip="Describe the edit you want the model to apply."
@@ -648,16 +713,16 @@ export function ModelDetailInputForm() {
               "min-h-24",
             )}
           />
-        </div>
+          </div>
 
-        <div>
+          <div>
           <FieldLabel tooltip="Target aspect ratio for the generated result.">
             aspect_ratio
           </FieldLabel>
           <Select defaultValue="1:1">
-            <SelectTrigger className={controlSelectClass}>
-              <SelectValue />
-            </SelectTrigger>
+<SelectTrigger size="sm" className={controlSelectClass}>
+            <SelectValue />
+          </SelectTrigger>
             <SelectContent className="border-foreground/10 rounded-xs">
               <SelectItem value="1:1">1:1</SelectItem>
               <SelectItem value="16:9">16:9</SelectItem>
@@ -666,118 +731,95 @@ export function ModelDetailInputForm() {
               <SelectItem value="3:4">3:4</SelectItem>
             </SelectContent>
           </Select>
-        </div>
+          </div>
 
-        <div>
+          <div>
           <FieldLabel tooltip="Output resolution level for generated images.">
             resolution
           </FieldLabel>
           <Select defaultValue="2k">
-            <SelectTrigger className={controlSelectClass}>
-              <SelectValue />
-            </SelectTrigger>
+<SelectTrigger size="sm" className={controlSelectClass}>
+            <SelectValue />
+          </SelectTrigger>
             <SelectContent className="border-foreground/10 rounded-xs">
               <SelectItem value="1k">1k</SelectItem>
               <SelectItem value="2k">2k</SelectItem>
               <SelectItem value="4k">4k</SelectItem>
             </SelectContent>
           </Select>
-        </div>
+          </div>
 
-        <div>
+          <div>
           <FieldLabel tooltip="The file format returned by the model output.">
             output_format
           </FieldLabel>
           <Select defaultValue="jpeg">
-            <SelectTrigger className={controlSelectClass}>
-              <SelectValue />
-            </SelectTrigger>
+<SelectTrigger size="sm" className={controlSelectClass}>
+            <SelectValue />
+          </SelectTrigger>
             <SelectContent className="border-foreground/10 rounded-xs">
               <SelectItem value="jpeg">jpeg</SelectItem>
               <SelectItem value="png">png</SelectItem>
               <SelectItem value="webp">webp</SelectItem>
             </SelectContent>
           </Select>
-        </div>
+          </div>
 
-        <div>
-          <FieldLabel tooltip="Set target canvas size and ratio constraints.">
-            size
+          <div>
+          <FieldLabel tooltip="The size of the generated image. Default value: landscape_4_3">
+            Image size
           </FieldLabel>
           <div className="space-y-2">
-            <div className="flex flex-wrap gap-2">
-              {ratioOptions.map((ratio) => {
-                const checked = selectedRatio === ratio.value;
-                return (
-                  <button
-                    key={ratio.value}
-                    type="button"
-                    onClick={() => handleSelectRatio(ratio.value)}
-                    className={cn(
-                      "border-input bg-background text-foreground/80 hover:bg-foreground/5 inline-flex h-8 items-center gap-1.5 rounded-xs border px-2.5 text-xs font-semibold shadow-xs transition-colors",
-                      checked &&
-                        "border-foreground bg-foreground text-background hover:bg-foreground/85 hover:text-background",
-                    )}
-                    aria-pressed={checked}
-                  >
-                    <span
-                      className={cn(
-                        "inline-flex items-center justify-center rounded-xs border border-current",
-                        ratio.iconClass,
-                      )}
-                    />
-                    {ratio.value}
-                  </button>
-                );
-              })}
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-foreground/70 w-10 text-xs">width</span>
-              <input
-                type="range"
-                min={256}
-                max={1536}
-                value={sizeWidth}
-                onChange={(event) => setSizeWidth(Number(event.target.value))}
-                className={sliderClass}
-                style={getSliderStyle(sizeWidth, 256, 1536)}
-              />
-              <input
-                type="number"
-                min={256}
-                max={1536}
-                value={sizeWidth}
-                onChange={(event) => setSizeWidth(Number(event.target.value))}
-                className="border-input bg-background text-foreground h-8 w-20 rounded-xs border px-2 text-xs shadow-xs outline-none"
-              />
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-foreground/70 w-10 text-xs">height</span>
-              <input
-                type="range"
-                min={256}
-                max={1536}
-                value={sizeHeight}
-                onChange={(event) => setSizeHeight(Number(event.target.value))}
-                className={sliderClass}
-                style={getSliderStyle(sizeHeight, 256, 1536)}
-              />
-              <input
-                type="number"
-                min={256}
-                max={1536}
-                value={sizeHeight}
-                onChange={(event) => setSizeHeight(Number(event.target.value))}
-                className="border-input bg-background text-foreground h-8 w-20 rounded-xs border px-2 text-xs shadow-xs outline-none"
-              />
+            <div className="flex flex-wrap items-center gap-2">
+              <Select value={imageSizePreset} onValueChange={handleImageSizePresetChange}>
+                <SelectTrigger size="sm" className={controlSelectClass}>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="border-foreground/10 rounded-xs">
+                  {imageSizeOptions.map((opt) => (
+                    <SelectItem key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <div className="flex items-center gap-2">
+                <input
+                  type="number"
+                  min={IMAGE_SIZE_MIN}
+                  max={IMAGE_SIZE_MAX}
+                  value={sizeWidth}
+                  onChange={(event) => handleSizeWidthChange(Number(event.target.value))}
+                  onBlur={(event) => handleSizeWidthChange(Number(event.target.value))}
+                  disabled={imageSizePreset !== "custom"}
+                  className={cn(
+                    "border-input bg-background text-foreground h-8 w-24 rounded-xs border px-3 text-xs shadow-xs outline-none",
+                    imageSizePreset !== "custom" && "cursor-not-allowed opacity-60",
+                  )}
+                />
+                <span className="text-foreground/70 text-xs" aria-hidden>×</span>
+                <input
+                  type="number"
+                  min={IMAGE_SIZE_MIN}
+                  max={IMAGE_SIZE_MAX}
+                  value={sizeHeight}
+                  onChange={(event) => handleSizeHeightChange(Number(event.target.value))}
+                  onBlur={(event) => handleSizeHeightChange(Number(event.target.value))}
+                  disabled={imageSizePreset !== "custom"}
+                  className={cn(
+                    "border-input bg-background text-foreground h-8 w-24 rounded-xs border px-3 text-xs shadow-xs outline-none",
+                    imageSizePreset !== "custom" && "cursor-not-allowed opacity-60",
+                  )}
+                />
+              </div>
             </div>
             <p className="text-foreground/60 text-xs">
-              {sizeWidth} x {sizeHeight} px
+              Range: 256 – 1536
             </p>
           </div>
-        </div>
+          </div>
 
-        <div>
+          <div>
           <FieldLabel tooltip="Optional audio URL input for multimodal workflows.">
             audio*
           </FieldLabel>
@@ -842,56 +884,105 @@ export function ModelDetailInputForm() {
               </div>
             ) : null}
           </div>
-        </div>
+          </div>
 
-        <div>
+          <div>
           <FieldLabel tooltip="Configure LoRA path and influence scale.">
             loras
           </FieldLabel>
-          <div className="space-y-2">
-            <input
-              type="text"
-              value={lorasPath}
-              onChange={(event) => setLorasPath(event.target.value)}
-              placeholder="<owner>/<model-name> or URL"
-              className="border-input bg-background text-foreground placeholder:text-muted-foreground h-8 w-full rounded-xs border px-3 text-xs shadow-xs outline-none"
-            />
-            <div className="flex items-center gap-2">
-              <span className="text-foreground/70 w-10 text-xs">scale</span>
-              <input
-                type="range"
-                min={0}
-                max={5}
-                step={0.1}
-                value={lorasScale}
-                onChange={(event) => setLorasScale(Number(event.target.value))}
-                className={sliderClass}
-                style={getSliderStyle(lorasScale, 0, 5)}
-              />
-              <input
-                type="number"
-                min={0}
-                max={5}
-                step={0.1}
-                value={lorasScale}
-                onChange={(event) => setLorasScale(Number(event.target.value))}
-                className="border-input bg-background text-foreground h-8 w-16 rounded-xs border px-2 text-xs shadow-xs outline-none"
-              />
+          <div className="border-border border-l pl-3">
+            <div className="space-y-3">
+              {loraItems.map((item, index) => (
+                <div key={item.id} className="space-y-2">
+                  {index > 0 ? (
+                    <div className="bg-border my-3 h-px w-full shrink-0" />
+                  ) : null}
+                  <div className="flex items-center gap-2">
+                    <div className="min-w-0 flex-1">
+                      <div className="space-y-1">
+                        <p className="text-foreground/80 text-xs">
+                          Path<span className="text-brand font-bold">*</span>
+                        </p>
+                        <input
+                          type="text"
+                          value={item.path}
+                          onChange={(event) =>
+                            handleLoraPathChange(item.id, event.target.value)
+                          }
+                          placeholder="<owner>/<model-name> or URL"
+                          className="border-input bg-background text-foreground placeholder:text-muted-foreground h-8 w-full rounded-xs border px-3 text-xs shadow-xs outline-none"
+                        />
+                      </div>
+                      <div className="mt-3 space-y-1">
+                        <p className="text-foreground/80 text-xs">Scale</p>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="range"
+                            min={0}
+                            max={5}
+                            step={0.1}
+                            value={item.scale}
+                            onChange={(event) =>
+                              handleLoraScaleChange(item.id, Number(event.target.value))
+                            }
+                            className={sliderClass}
+                            style={getSliderStyle(item.scale, 0, 5)}
+                          />
+                          <input
+                            type="number"
+                            min={0}
+                            max={5}
+                            step={0.1}
+                            value={item.scale}
+                            onChange={(event) =>
+                              handleLoraScaleChange(item.id, Number(event.target.value))
+                            }
+                            className="border-input bg-background text-foreground h-8 w-16 rounded-xs border px-2 text-xs shadow-xs outline-none"
+                          />
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="icon-sm"
+                            aria-label="Reset lora scale"
+                            onClick={() => handleLoraScaleReset(item.id)}
+                            className="h-8 w-8 shrink-0 rounded-xs"
+                          >
+                            <Eraser className="size-3.5" />
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="bg-border flex min-h-18 w-px shrink-0 self-stretch" />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon-sm"
+                      aria-label="Remove lora item"
+                      onClick={() => handleRemoveLoraItem(item.id)}
+                      className="h-8 w-8 shrink-0 rounded-xs"
+                    >
+                      <Trash2 className="size-3.5" />
+                    </Button>
+                  </div>
+                </div>
+              ))}
+              <div className="bg-border my-3 h-px w-full shrink-0" />
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className={controlButtonSmClass}
+                onClick={handleAddLoraItem}
+              >
+                <Plus className="size-3.5" />
+                Add Item
+              </Button>
             </div>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              className={controlButtonSmClass}
-            >
-              <Plus className="size-3.5" />
-              Add Item
-            </Button>
           </div>
-        </div>
+          </div>
 
-        <div>
-          <FieldLabel tooltip="Wait for completion and return the result in one response.">
+          <div>
+          <FieldLabel tooltip="If enabled, API waits for generation and returns results directly in the same response.">
             enable_sync_mode
           </FieldLabel>
           <div className="mb-2 flex items-center">
@@ -901,14 +992,10 @@ export function ModelDetailInputForm() {
               aria-label="Toggle enable sync mode"
             />
           </div>
-          <p className="text-foreground/60 text-xs">
-            If enabled, API waits for generation and returns results directly in
-            the same response.
-          </p>
-        </div>
+          </div>
 
-        <div>
-          <FieldLabel tooltip="Return image data as base64 instead of a URL.">
+          <div>
+          <FieldLabel tooltip="If enabled, output is embedded as base64 string instead of URL.">
             enable_base64_output
           </FieldLabel>
           <div className="mb-2 flex items-center">
@@ -918,11 +1005,81 @@ export function ModelDetailInputForm() {
               aria-label="Toggle enable base64 output"
             />
           </div>
-          <p className="text-foreground/60 text-xs">
-            If enabled, output is embedded as base64 string instead of URL.
-          </p>
+          </div>
         </div>
+
+        <footer className="border-border bg-surface sticky bottom-0 z-10 mt-4 flex shrink-0 flex-col gap-3 border-t pb-4 pt-4">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex flex-wrap items-center gap-3">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className={controlButtonSmClass}
+              >
+                Reset
+              </Button>
+              <label className="text-foreground/80 flex cursor-pointer items-center gap-1.5 text-xs">
+                <input
+                  type="checkbox"
+                  checked
+                  disabled
+                  className="size-3 cursor-not-allowed rounded-xs border border-foreground opacity-60 accent-foreground"
+                />
+                <span>Enable Safety Checker</span>
+                <span className="group relative inline-flex items-center">
+                  <span
+                    role="tooltip"
+                    className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-1.5 w-64 -translate-x-1/2 rounded-xs bg-slate-950 px-2.5 py-1.5 text-xs leading-snug text-white opacity-0 shadow-md transition-opacity duration-150 group-hover:opacity-100"
+                  >
+                    The safety checker cannot be disabled on the playground. This property is only available through the API.
+                  </span>
+                  <Info className="text-foreground/50 size-3.5" />
+                </span>
+              </label>
+            </div>
+            <div className="flex items-center">
+              <Button
+                type="button"
+                className="bg-foreground text-background hover:bg-foreground/90 h-8 min-w-28 rounded-l-xs rounded-r-none px-3 text-xs font-bold shadow-xs"
+              >
+                Run $0.025
+              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    type="button"
+                    aria-label="Batch settings"
+                    className="bg-foreground text-background hover:bg-foreground/90 h-8 rounded-r-xs rounded-l-none border-l border-white/20 px-1.5 shadow-xs"
+                  >
+                    <ChevronDown className="size-3.5" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  className="border-foreground/10 w-56 rounded-xs p-0"
+                  align="end"
+                >
+                  <div className="border-border border-b px-3 py-2">
+                    <p className="text-foreground text-xs font-semibold">
+                      Batch Settings
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-between gap-2 px-3 py-2">
+                    <span className="text-foreground/80 text-xs">
+                      Enable batch mode
+                    </span>
+                    <Switch
+                      checked={enableBatchMode}
+                      onCheckedChange={setEnableBatchMode}
+                      aria-label="Toggle batch mode"
+                    />
+                  </div>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </div>
+        </footer>
       </div>
-    </>
+    </div>
   );
 }
