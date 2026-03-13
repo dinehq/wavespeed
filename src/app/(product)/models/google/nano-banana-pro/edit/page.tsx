@@ -161,8 +161,14 @@ function highlightJsonToHtml(source: string) {
       /:\s*(&quot;[^"\n]*&quot;)/g,
       ': <span class="text-emerald-500">$1</span>',
     )
-    .replaceAll(/\b(true|false|null)\b/g, '<span class="text-amber-500">$1</span>')
-    .replaceAll(/(?<![\w"]) (-?\d+(?:\.\d+)?)(?![\w"])/g, '<span class="text-orange-500">$1</span>');
+    .replaceAll(
+      /\b(true|false|null)\b/g,
+      '<span class="text-amber-500">$1</span>',
+    )
+    .replaceAll(
+      /(?<![\w"]) (-?\d+(?:\.\d+)?)(?![\w"])/g,
+      '<span class="text-orange-500">$1</span>',
+    );
 }
 
 function highlightShellToHtml(source: string) {
@@ -214,7 +220,10 @@ function highlightNodeToHtml(source: string) {
       /(["'][^"'\n]*["'])/g,
       '<span class="text-emerald-600">$1</span>',
     )
-    .replaceAll(/\b(\d+(?:\.\d+)?)\b/g, '<span class="text-amber-600">$1</span>');
+    .replaceAll(
+      /\b(\d+(?:\.\d+)?)\b/g,
+      '<span class="text-amber-600">$1</span>',
+    );
 }
 
 function highlightPythonToHtml(source: string) {
@@ -236,7 +245,10 @@ function highlightPythonToHtml(source: string) {
       /(f?"[^"\n]*"|f?'[^'\n]*')/g,
       '<span class="text-emerald-600">$1</span>',
     )
-    .replaceAll(/\b(\d+(?:\.\d+)?)\b/g, '<span class="text-amber-600">$1</span>')
+    .replaceAll(
+      /\b(\d+(?:\.\d+)?)\b/g,
+      '<span class="text-amber-600">$1</span>',
+    )
     .replaceAll(/(\s#.*)$/gm, '<span class="text-zinc-500">$1</span>');
 }
 
@@ -245,14 +257,13 @@ export default function ModelDetailPage() {
     "playground" | "api" | "history"
   >("playground");
   const [resultView, setResultView] = useState<"preview" | "json">("preview");
-  const [enableImageMagnification, setEnableImageMagnification] = useState(false);
+  const [enableImageMagnification, setEnableImageMagnification] =
+    useState(false);
   const [apiLanguage, setApiLanguage] = useState<"http" | "node" | "python">(
     "node",
   );
   const [selectedRequestIds, setSelectedRequestIds] = useState<string[]>(() =>
-    mockRequestHistory
-      .filter((item) => item.selected)
-      .map((item) => item.id),
+    mockRequestHistory.filter((item) => item.selected).map((item) => item.id),
   );
   const [activeApiAnchor, setActiveApiAnchor] = useState("api-install-client");
   const highlightedResultJson = useMemo(
@@ -380,8 +391,13 @@ print(response.json())`;
     [apiPythonCode],
   );
   const apiAnchorIds = useMemo(
-    () =>
-      ["api-overview", ...apiNavItems.flatMap((group) => [group.titleId, ...group.children.map((item) => item.id)])],
+    () => [
+      "api-overview",
+      ...apiNavItems.flatMap((group) => [
+        group.titleId,
+        ...group.children.map((item) => item.id),
+      ]),
+    ],
     [apiNavItems],
   );
   const selectedRequestCount = selectedRequestIds.length;
@@ -585,7 +601,7 @@ print(response.json())`;
                 className={`h-10 border-b-2 px-3 text-sm font-semibold transition-colors ${
                   activeTopTab === "playground"
                     ? "text-foreground border-foreground"
-                    : "border-transparent text-foreground/60 hover:text-foreground"
+                    : "text-foreground/60 hover:text-foreground border-transparent"
                 }`}
               >
                 Playground
@@ -596,7 +612,7 @@ print(response.json())`;
                 className={`h-10 border-b-2 px-3 text-sm font-semibold transition-colors ${
                   activeTopTab === "api"
                     ? "text-foreground border-foreground"
-                    : "border-transparent text-foreground/60 hover:text-foreground"
+                    : "text-foreground/60 hover:text-foreground border-transparent"
                 }`}
               >
                 API
@@ -607,7 +623,7 @@ print(response.json())`;
                 className={`h-10 border-b-2 px-3 text-sm font-semibold transition-colors ${
                   activeTopTab === "history"
                     ? "text-foreground border-foreground"
-                    : "border-transparent text-foreground/60 hover:text-foreground"
+                    : "text-foreground/60 hover:text-foreground border-transparent"
                 }`}
               >
                 History
@@ -667,9 +683,9 @@ print(response.json())`;
                             variant="ghost"
                             size="sm"
                             onClick={() => setResultView("preview")}
-                            className={`h-8 rounded-xs px-2 py-2 text-xs leading-none gap-1 has-[>svg]:px-2 ${
+                            className={`h-8 gap-1 rounded-xs px-2 py-2 text-xs leading-none has-[>svg]:px-2 ${
                               resultView === "preview"
-                                ? "bg-background text-foreground shadow-xs hover:bg-background hover:text-foreground"
+                                ? "bg-background text-foreground hover:bg-background hover:text-foreground shadow-xs"
                                 : "text-foreground/60 hover:bg-foreground/5 hover:text-foreground/80"
                             }`}
                           >
@@ -681,9 +697,9 @@ print(response.json())`;
                             variant="ghost"
                             size="sm"
                             onClick={() => setResultView("json")}
-                            className={`h-8 rounded-xs px-2 py-2 text-xs leading-none gap-1 has-[>svg]:px-2 ${
+                            className={`h-8 gap-1 rounded-xs px-2 py-2 text-xs leading-none has-[>svg]:px-2 ${
                               resultView === "json"
-                                ? "bg-background text-foreground shadow-xs hover:bg-background hover:text-foreground"
+                                ? "bg-background text-foreground hover:bg-background hover:text-foreground shadow-xs"
                                 : "text-foreground/60 hover:bg-foreground/5 hover:text-foreground/80"
                             }`}
                           >
@@ -712,10 +728,12 @@ print(response.json())`;
                       </>
                     ) : (
                       <>
-                        <div className="border-input mt-4 overflow-hidden rounded-xs border bg-muted/40 p-4">
+                        <div className="border-input bg-muted/40 mt-4 overflow-hidden rounded-xs border p-4">
                           <pre
-                            className="text-foreground/90 overflow-x-auto whitespace-pre-wrap break-all font-mono text-sm leading-8"
-                            dangerouslySetInnerHTML={{ __html: highlightedResultJson }}
+                            className="text-foreground/90 overflow-x-auto font-mono text-sm leading-8 break-all whitespace-pre-wrap"
+                            dangerouslySetInnerHTML={{
+                              __html: highlightedResultJson,
+                            }}
                           />
                         </div>
                       </>
@@ -729,7 +747,7 @@ print(response.json())`;
                           onChange={(event) =>
                             setEnableImageMagnification(event.target.checked)
                           }
-                          className="size-4 rounded-xs border border-foreground/20 accent-foreground"
+                          className="border-foreground/20 accent-foreground size-4 rounded-xs border"
                         />
                         <span>Enable Image Magnification</span>
                       </label>
@@ -739,17 +757,23 @@ print(response.json())`;
                       <Info className="mt-0.5 size-3.5 shrink-0" />
                       <p>
                         Your request will cost{" "}
-                        <span className="text-brand font-semibold">$0.14</span> per
-                        run.
+                        <span className="text-brand font-semibold">$0.14</span>{" "}
+                        per run.
                         <br />
-                        For <span className="text-brand font-semibold">$10</span> you
-                        can run this model approximately{" "}
-                        <span className="text-brand font-semibold">71</span> times.
+                        For{" "}
+                        <span className="text-brand font-semibold">
+                          $10
+                        </span>{" "}
+                        you can run this model approximately{" "}
+                        <span className="text-brand font-semibold">71</span>{" "}
+                        times.
                       </p>
                     </div>
 
                     <div className="border-border mt-4 border-t pt-4">
-                      <p className="text-foreground mb-3 text-sm">One more thing:</p>
+                      <p className="text-foreground mb-3 text-sm">
+                        One more thing:
+                      </p>
                       <div className="flex flex-wrap items-center gap-2">
                         <Button
                           variant="outline"
@@ -825,7 +849,7 @@ print(response.json())`;
             </>
           ) : activeTopTab === "api" ? (
             <section className="grid items-start gap-6 md:grid-cols-12 md:gap-8">
-              <aside className="border-foreground/10 sticky top-14 hidden rounded-xs border p-3 md:col-span-3 md:min-w-60 md:block">
+              <aside className="border-foreground/10 sticky top-14 hidden rounded-xs border p-3 md:col-span-3 md:block md:min-w-60">
                 <nav className="-mx-3 space-y-1" aria-label="API docs toc">
                   <button
                     type="button"
@@ -835,7 +859,7 @@ print(response.json())`;
                     className={`block w-full border-l-2 py-1.5 pr-2 pl-4 text-left text-sm transition-colors ${
                       activeApiAnchor === "api-overview"
                         ? "text-foreground border-foreground font-semibold"
-                        : "text-foreground/70 border-transparent hover:text-foreground hover:bg-foreground/5 rounded-xs"
+                        : "text-foreground/70 hover:text-foreground hover:bg-foreground/5 rounded-xs border-transparent"
                     }`}
                   >
                     Google Nano-banana-2 Edit
@@ -850,7 +874,7 @@ print(response.json())`;
                         className={`block w-full border-l-2 py-1.5 pr-2 pl-4 text-left text-sm transition-colors ${
                           activeApiAnchor === item.titleId
                             ? "text-foreground border-foreground font-semibold"
-                            : "text-foreground/80 border-transparent hover:text-foreground hover:bg-foreground/5 rounded-xs"
+                            : "text-foreground/80 hover:text-foreground hover:bg-foreground/5 rounded-xs border-transparent"
                         }`}
                       >
                         {item.title}
@@ -866,7 +890,7 @@ print(response.json())`;
                             className={`block w-full border-l-2 py-1.5 pr-2 pl-7 text-left text-sm font-normal transition-colors ${
                               activeApiAnchor === child.id
                                 ? "text-foreground border-foreground font-semibold"
-                                : "text-foreground/65 border-transparent hover:text-foreground hover:bg-foreground/5 rounded-xs"
+                                : "text-foreground/65 hover:text-foreground hover:bg-foreground/5 rounded-xs border-transparent"
                             }`}
                           >
                             {child.label}
@@ -916,27 +940,31 @@ print(response.json())`;
                     Python
                   </button>
                 </div>
-                <section id="api-overview" className="space-y-3 scroll-mt-28">
+                <section id="api-overview" className="scroll-mt-28 space-y-3">
                   <h3 className="text-foreground text-4xl font-semibold tracking-tight">
                     Google Nano-banana-2 Edit
                   </h3>
                   <p className="text-foreground/80 text-sm leading-7">
                     Google Nano Banana 2 Edit (Gemini 3.1 Flash Image) enables
-                    advanced image editing with 4K-capable output, fast iteration,
-                    and precise instruction following. Supports text translation,
-                    localization within images, and maintains subject consistency
-                    during edits. Ready-to-use REST inference API, best
-                    performance, no coldstarts, affordable pricing.
+                    advanced image editing with 4K-capable output, fast
+                    iteration, and precise instruction following. Supports text
+                    translation, localization within images, and maintains
+                    subject consistency during edits. Ready-to-use REST
+                    inference API, best performance, no coldstarts, affordable
+                    pricing.
                   </p>
                 </section>
                 <section className="space-y-3">
                   <h4
                     id="api-calling-the-api"
-                    className="text-foreground border-border border-b pb-2 text-3xl font-semibold tracking-tight scroll-mt-28"
+                    className="text-foreground border-border scroll-mt-28 border-b pb-2 text-3xl font-semibold tracking-tight"
                   >
                     1. Calling the API
                   </h4>
-                  <div id="api-install-client" className="space-y-3 scroll-mt-28">
+                  <div
+                    id="api-install-client"
+                    className="scroll-mt-28 space-y-3"
+                  >
                     <p className="text-foreground text-sm font-semibold">
                       Install the client
                     </p>
@@ -953,7 +981,10 @@ print(response.json())`;
                       </pre>
                     </div>
                   </div>
-                  <div id="api-submit-request" className="space-y-3 scroll-mt-28">
+                  <div
+                    id="api-submit-request"
+                    className="scroll-mt-28 space-y-3"
+                  >
                     <p className="text-foreground text-sm font-semibold">
                       Submit a request
                     </p>
@@ -1029,10 +1060,10 @@ print(response.json())`;
                   </div>
                 </section>
 
-                <section id="api-auth-key" className="space-y-2 scroll-mt-28">
+                <section id="api-auth-key" className="scroll-mt-28 space-y-2">
                   <h4
                     id="api-authentication"
-                    className="text-foreground border-border border-b pb-2 text-xl font-semibold scroll-mt-28"
+                    className="text-foreground border-border scroll-mt-28 border-b pb-2 text-xl font-semibold"
                   >
                     2. Authentication
                   </h4>
@@ -1042,10 +1073,13 @@ print(response.json())`;
                   </p>
                 </section>
 
-                <section id="api-queue-submit" className="space-y-2 scroll-mt-28">
+                <section
+                  id="api-queue-submit"
+                  className="scroll-mt-28 space-y-2"
+                >
                   <h4
                     id="api-queue-webhooks"
-                    className="text-foreground border-border border-b pb-2 text-xl font-semibold scroll-mt-28"
+                    className="text-foreground border-border scroll-mt-28 border-b pb-2 text-xl font-semibold"
                   >
                     3. Queue & Webhooks
                   </h4>
@@ -1054,37 +1088,50 @@ print(response.json())`;
                     callbacks to consume final results in async workflows.
                   </p>
                 </section>
-                <section id="api-queue-response" className="space-y-2 scroll-mt-28">
-                  <p className="text-foreground text-sm font-semibold">Response</p>
+                <section
+                  id="api-queue-response"
+                  className="scroll-mt-28 space-y-2"
+                >
+                  <p className="text-foreground text-sm font-semibold">
+                    Response
+                  </p>
                   <p className="text-foreground/80 text-sm leading-7">
                     The response includes status, request metadata, and output
                     URLs when generation completes.
                   </p>
                 </section>
 
-                <section id="api-webhook-headers" className="space-y-2 scroll-mt-28">
+                <section
+                  id="api-webhook-headers"
+                  className="scroll-mt-28 space-y-2"
+                >
                   <h4
                     id="api-verifying-webhooks"
-                    className="text-foreground border-border border-b pb-2 text-xl font-semibold scroll-mt-28"
+                    className="text-foreground border-border scroll-mt-28 border-b pb-2 text-xl font-semibold"
                   >
                     4. Verifying Webhooks
                   </h4>
-                  <p className="text-foreground text-sm font-semibold">Webhook headers</p>
+                  <p className="text-foreground text-sm font-semibold">
+                    Webhook headers
+                  </p>
                   <p className="text-foreground/80 text-sm leading-7">
                     Validate signature headers and timestamp before trusting
                     webhook payloads.
                   </p>
                 </section>
-                <section id="api-signature" className="space-y-2 scroll-mt-28">
+                <section id="api-signature" className="scroll-mt-28 space-y-2">
                   <p className="text-foreground text-sm font-semibold">
                     Signature computation
                   </p>
                   <p className="text-foreground/80 text-sm leading-7">
-                    Compute HMAC with your webhook secret and compare against the
-                    signature header.
+                    Compute HMAC with your webhook secret and compare against
+                    the signature header.
                   </p>
                 </section>
-                <section id="api-verify-example" className="space-y-2 scroll-mt-28">
+                <section
+                  id="api-verify-example"
+                  className="scroll-mt-28 space-y-2"
+                >
                   <p className="text-foreground text-sm font-semibold">
                     Verification example
                   </p>
@@ -1094,48 +1141,72 @@ print(response.json())`;
                   </p>
                 </section>
 
-                <section id="api-files-public-url" className="space-y-2 scroll-mt-28">
+                <section
+                  id="api-files-public-url"
+                  className="scroll-mt-28 space-y-2"
+                >
                   <h4
                     id="api-files"
-                    className="text-foreground border-border border-b pb-2 text-xl font-semibold scroll-mt-28"
+                    className="text-foreground border-border scroll-mt-28 border-b pb-2 text-xl font-semibold"
                   >
                     5. Files
                   </h4>
-                  <p className="text-foreground text-sm font-semibold">Public URL</p>
+                  <p className="text-foreground text-sm font-semibold">
+                    Public URL
+                  </p>
                   <p className="text-foreground/80 text-sm leading-7">
                     Pass file URLs directly for hosted assets.
                   </p>
                 </section>
-                <section id="api-files-base64" className="space-y-2 scroll-mt-28">
-                  <p className="text-foreground text-sm font-semibold">Base64 data URI</p>
+                <section
+                  id="api-files-base64"
+                  className="scroll-mt-28 space-y-2"
+                >
+                  <p className="text-foreground text-sm font-semibold">
+                    Base64 data URI
+                  </p>
                   <p className="text-foreground/80 text-sm leading-7">
-                    Use data URI payloads for local uploads when direct hosting is
-                    unavailable.
+                    Use data URI payloads for local uploads when direct hosting
+                    is unavailable.
                   </p>
                 </section>
-                <section id="api-files-upload" className="space-y-2 scroll-mt-28">
-                  <p className="text-foreground text-sm font-semibold">Upload API</p>
+                <section
+                  id="api-files-upload"
+                  className="scroll-mt-28 space-y-2"
+                >
+                  <p className="text-foreground text-sm font-semibold">
+                    Upload API
+                  </p>
                   <p className="text-foreground/80 text-sm leading-7">
                     Upload first, then reference uploaded URLs in prediction
                     requests for stable processing.
                   </p>
                 </section>
 
-                <section id="api-schema-input" className="space-y-2 scroll-mt-28">
+                <section
+                  id="api-schema-input"
+                  className="scroll-mt-28 space-y-2"
+                >
                   <h4
                     id="api-schema"
-                    className="text-foreground border-border border-b pb-2 text-xl font-semibold scroll-mt-28"
+                    className="text-foreground border-border scroll-mt-28 border-b pb-2 text-xl font-semibold"
                   >
                     6. Schema
                   </h4>
                   <p className="text-foreground text-sm font-semibold">Input</p>
                   <p className="text-foreground/80 text-sm leading-7">
                     Required fields include `images` and `prompt`; optional
-                    controls include `resolution`, `output_format`, and sync mode.
+                    controls include `resolution`, `output_format`, and sync
+                    mode.
                   </p>
                 </section>
-                <section id="api-schema-example" className="space-y-2 scroll-mt-28">
-                  <p className="text-foreground text-sm font-semibold">Example request</p>
+                <section
+                  id="api-schema-example"
+                  className="scroll-mt-28 space-y-2"
+                >
+                  <p className="text-foreground text-sm font-semibold">
+                    Example request
+                  </p>
                   <div className="bg-muted/50 rounded-xs p-4">
                     <pre
                       className="text-foreground/90 overflow-x-auto font-mono text-sm leading-7 whitespace-pre-wrap"
@@ -1145,11 +1216,17 @@ print(response.json())`;
                     />
                   </div>
                 </section>
-                <section id="api-schema-output" className="space-y-2 scroll-mt-28">
-                  <p className="text-foreground text-sm font-semibold">Output</p>
+                <section
+                  id="api-schema-output"
+                  className="scroll-mt-28 space-y-2"
+                >
+                  <p className="text-foreground text-sm font-semibold">
+                    Output
+                  </p>
                   <p className="text-foreground/80 text-sm leading-7">
                     Output includes status, task ID, and generated asset links.
-                    When `enable_base64_output` is true, output data is embedded.
+                    When `enable_base64_output` is true, output data is
+                    embedded.
                   </p>
                 </section>
               </article>
@@ -1158,7 +1235,9 @@ print(response.json())`;
             <section>
               <div className="mb-4">
                 <div className="mb-2 flex flex-wrap items-start justify-between gap-3">
-                  <h2 className="text-foreground text-lg font-semibold">Requests</h2>
+                  <h2 className="text-foreground text-lg font-semibold">
+                    Requests
+                  </h2>
                   <div className="flex flex-wrap items-center gap-2 self-start">
                     <div className="flex h-8 items-center gap-2 rounded-xs px-1.5">
                       <span className="text-foreground/80 text-xs">
@@ -1302,8 +1381,12 @@ print(response.json())`;
                                   type="button"
                                   role="checkbox"
                                   aria-label={`Select request ${item.id}`}
-                                  aria-checked={selectedRequestIds.includes(item.id)}
-                                  onClick={() => toggleRequestSelection(item.id)}
+                                  aria-checked={selectedRequestIds.includes(
+                                    item.id,
+                                  )}
+                                  onClick={() =>
+                                    toggleRequestSelection(item.id)
+                                  }
                                   className={getRequestCheckboxClassName(
                                     selectedRequestIds.includes(item.id),
                                   )}
@@ -1346,7 +1429,9 @@ print(response.json())`;
                                   variant="ghost"
                                   size="icon-xs"
                                   aria-label="Copy request ID"
-                                  onClick={() => handleCopyText(item.id, "Request ID")}
+                                  onClick={() =>
+                                    handleCopyText(item.id, "Request ID")
+                                  }
                                   className="text-foreground/60 hover:text-foreground"
                                 >
                                   <Copy className="size-3.5" />

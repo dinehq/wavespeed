@@ -95,7 +95,10 @@ export function ReadmeSection() {
 
       <div className="grid items-start gap-4 md:grid-cols-4">
         <aside className="border-foreground/10 sticky top-14 hidden rounded-xs border p-3 md:col-span-1 md:block">
-          <nav aria-label="README table of contents" className="-mx-3 space-y-1">
+          <nav
+            aria-label="README table of contents"
+            className="-mx-3 space-y-1"
+          >
             {tocItems.map((item) => (
               <a
                 key={item.id}
@@ -104,7 +107,7 @@ export function ReadmeSection() {
                 className={`block border-l-2 py-1.5 pr-2 pl-3 text-sm transition-colors ${
                   activeId === item.id
                     ? "text-foreground border-foreground"
-                    : "text-foreground/70 border-transparent hover:text-foreground hover:bg-foreground/5 rounded-xs"
+                    : "text-foreground/70 hover:text-foreground hover:bg-foreground/5 rounded-xs border-transparent"
                 }`}
               >
                 <span className="block">{item.label}</span>
@@ -140,8 +143,8 @@ export function ReadmeSection() {
               </li>
               <li>
                 <span className="font-semibold">Multi-image reference</span>{" "}
-                Upload
-                up to 14 reference images for complex edits and compositions.
+                Upload up to 14 reference images for complex edits and
+                compositions.
               </li>
               <li>
                 <span className="font-semibold">Multi-resolution support</span>{" "}
