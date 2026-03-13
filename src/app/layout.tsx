@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import { GeistSans } from "geist/font/sans";
-import { GeistMono } from "geist/font/mono";
 import localFont from "next/font/local";
 import Script from "next/script";
 import { ThemeProvider } from "next-themes";
@@ -40,7 +38,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <meta name="apple-mobile-web-app-title" content="WaveSpeed" />
       <body
-        className={`${GeistSans.variable} ${azeret.variable} ${GeistMono.variable} antialiased`}
+        className={`${azeret.variable} antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <PromoBar />
