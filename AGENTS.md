@@ -3,6 +3,7 @@
 ## General
 
 - **Prefer Tailwind presets over arbitrary values.** Use built-in Tailwind utility classes (e.g. `tracking-tighter`, `rounded-md`, `text-sm`) instead of arbitrary values like `tracking-[-1px]`, `rounded-[3px]`, or `text-[13px]`. Only use arbitrary values when no suitable preset exists.
+- **Never produce different HTML between server and client.** Read browser-only values (`window`, `localStorage`, search params, etc.) inside `useEffect`, never during render.
 
 ## Buttons
 

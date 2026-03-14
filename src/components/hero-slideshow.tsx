@@ -13,7 +13,7 @@ const SLIDE_DURATION = 7000;
 
 type Slide = {
   id: string;
-  badge: string;
+  badge?: string;
   title: string;
   description: string;
   cta: { label: string; href: string };
@@ -26,7 +26,6 @@ type Slide = {
 const slides: Slide[] = [
   {
     id: "hero",
-    badge: "Platform",
     title: "Ultimate AI Media\nGeneration Platform",
     description:
       "WaveSpeedAI accelerates AI Image and Video generation for you to build, create, and scale faster.",
@@ -74,7 +73,7 @@ const slides: Slide[] = [
   },
   {
     id: "banana",
-    badge: "Fastest",
+    badge: "20% Off",
     title: "Nano Banana Pro",
     description:
       "Ultra-fast image generation at 0.8s per image. Optimized for real-time applications and high-volume pipelines.",
@@ -148,9 +147,11 @@ export function HeroSlideshow() {
         <div className="mx-auto flex w-full max-w-7xl flex-col items-start gap-6 md:flex-row md:items-end md:justify-between">
           {/* Text + CTA */}
           <div className="flex flex-col items-start gap-3">
-            <span className="bg-brand rounded-xs px-2 py-0.5 font-mono text-[11px] font-bold text-white uppercase">
-              {slides[active].badge}
-            </span>
+            {slides[active].badge && (
+              <span className="bg-brand rounded-xs px-2 py-0.5 font-mono text-[11px] font-bold text-white uppercase">
+                {slides[active].badge}
+              </span>
+            )}
             <h1 className="font-display text-3xl leading-none font-bold tracking-tighter text-balance text-white md:text-6xl">
               {slides[active].title.split("\n").map((line, i) => (
                 <span key={i}>
