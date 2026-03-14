@@ -145,17 +145,17 @@ export function Footer() {
     <footer className="bg-dark border-t border-white/10 px-6 py-12 md:px-12 md:py-16 lg:px-20">
       <div className="mx-auto max-w-7xl">
         <div className="mb-12 flex flex-col gap-10">
-          <div className="flex items-center justify-between">
-            <Link href="/">
-              <Logo className="h-6 w-auto text-white" />
+          <div className="grid grid-cols-2 gap-x-6 md:grid-cols-3 lg:grid-cols-6">
+            <Link href="/" className="whitespace-nowrap">
+              <Logo className="h-5 w-auto text-white transition-opacity hover:opacity-80" />
             </Link>
             <a
               href="https://status.wavespeed.ai/"
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center gap-2"
+              className="group flex items-center gap-2 whitespace-nowrap"
             >
-              <span className="size-2 rounded-full bg-green-400" />
+              <span className="size-2 shrink-0 rounded-full bg-green-400" />
               <span className="tracking-lg font-mono text-xs leading-4 text-white/40 uppercase transition-colors group-hover:text-white">
                 All Service Online
               </span>
@@ -175,7 +175,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="flex flex-col items-center justify-between gap-4 border-t border-white/20 pt-4 sm:flex-row sm:items-end sm:gap-0">
+        <div className="flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-4 sm:flex-row sm:items-end sm:gap-0">
           <p className="tracking-lg font-mono text-xs leading-4 text-pretty text-white/40 uppercase">
             &copy; 2026 WAVESPEED
           </p>

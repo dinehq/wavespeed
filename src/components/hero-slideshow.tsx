@@ -2,25 +2,23 @@
 
 import Image, { type StaticImageData } from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
-import slideModelBg from "@/images/slide-model.png";
-import slideHeroBg from "@/images/slide-hero-bg.png";
-import runwayBg from "@/images/tools-runway-bg.webp";
-import bflBg from "@/images/tools-bfl-bg.webp";
-import googleBg from "@/images/tools-google-bg.webp";
-import ArrowRight from "@/images/arrow-right.svg";
+import modelImage from "@/images/tool-01.webp";
+import runwayImage from "@/images/tool-02.webp";
+import fluxImage from "@/images/tool-03.webp";
+import bananaImage from "@/images/tool-04.webp";
+import ArrowRightIcon from "@/images/arrow-right.svg";
 
-const SLIDE_DURATION = 7000;
+const SLIDE_DURATION = 5000;
 
 type Slide = {
   id: string;
   badge?: string;
   title: string;
   description: string;
-  cta: { label: string; href: string };
-  secondaryCta?: { label: string; href: string };
-  bg: StaticImageData;
+  action: { label: string; href: string };
+  secondaryAction?: { label: string; href: string };
+  image: StaticImageData;
   video?: { src: string; poster: string };
-  previewLabel: string;
 };
 
 const slides: Slide[] = [
@@ -29,14 +27,13 @@ const slides: Slide[] = [
     title: "Ultimate AI Media\nGeneration Platform",
     description:
       "WaveSpeedAI accelerates AI Image and Video generation for you to build, create, and scale faster.",
-    cta: { label: "Explore Models", href: "#" },
-    secondaryCta: { label: "Documentation", href: "#" },
-    bg: slideHeroBg,
+    action: { label: "Explore Models", href: "#" },
+    secondaryAction: { label: "Documentation", href: "#" },
+    image: modelImage,
     video: {
       src: "/videos/hero-bg.mp4",
       poster: "/videos/hero-bg_poster.webp",
     },
-    previewLabel: "WaveSpeed",
   },
   {
     id: "model",
@@ -44,10 +41,9 @@ const slides: Slide[] = [
     title: "Google Veo 3.1",
     description:
       "Next-generation video synthesis. Cinematic quality output at unprecedented speed, now available on WaveSpeed.",
-    cta: { label: "Try Model", href: "#" },
-    secondaryCta: { label: "Documentation", href: "#" },
-    bg: slideModelBg,
-    previewLabel: "Veo 3.1",
+    action: { label: "Try Model", href: "#" },
+    secondaryAction: { label: "Documentation", href: "#" },
+    image: modelImage,
   },
   {
     id: "runway",
@@ -55,10 +51,9 @@ const slides: Slide[] = [
     title: "Runway Gen4 Turbo",
     description:
       "Cinematic video generation with motion control. Create professional-grade footage from text or image prompts.",
-    cta: { label: "Try Model", href: "#" },
-    secondaryCta: { label: "Documentation", href: "#" },
-    bg: runwayBg,
-    previewLabel: "Gen4 Turbo",
+    action: { label: "Try Model", href: "#" },
+    secondaryAction: { label: "Documentation", href: "#" },
+    image: runwayImage,
   },
   {
     id: "flux",
@@ -66,10 +61,9 @@ const slides: Slide[] = [
     title: "FLUX 2 Pro",
     description:
       "State-of-the-art image generation with unmatched prompt adherence. Sub-2s inference on WaveSpeed infrastructure.",
-    cta: { label: "Try Model", href: "#" },
-    secondaryCta: { label: "Documentation", href: "#" },
-    bg: bflBg,
-    previewLabel: "FLUX 2",
+    action: { label: "Try Model", href: "#" },
+    secondaryAction: { label: "Documentation", href: "#" },
+    image: fluxImage,
   },
   {
     id: "banana",
@@ -77,10 +71,9 @@ const slides: Slide[] = [
     title: "Nano Banana Pro",
     description:
       "Ultra-fast image generation at 0.8s per image. Optimized for real-time applications and high-volume pipelines.",
-    cta: { label: "Try Model", href: "#" },
-    secondaryCta: { label: "Documentation", href: "#" },
-    bg: googleBg,
-    previewLabel: "Nano Banana",
+    action: { label: "Try Model", href: "#" },
+    secondaryAction: { label: "Documentation", href: "#" },
+    image: bananaImage,
   },
 ];
 
@@ -110,7 +103,7 @@ export function HeroSlideshow() {
   };
 
   return (
-    <section className="relative -mt-16 h-[480px] w-full overflow-hidden md:h-[560px]">
+    <section className="relative -mt-16 h-[420px] w-full overflow-hidden sm:h-[480px] md:h-[560px] lg:h-[640px]">
       {/* Slide backgrounds */}
       {slides.map((slide, i) => (
         <div
@@ -131,7 +124,7 @@ export function HeroSlideshow() {
             />
           ) : (
             <Image
-              src={slide.bg}
+              src={slide.image}
               alt=""
               fill
               priority={i === 0}
@@ -143,16 +136,16 @@ export function HeroSlideshow() {
       ))}
 
       {/* Content — shared layout for all slides */}
-      <div className="relative flex h-full flex-col justify-end px-6 pb-8 md:px-20 md:pb-12">
-        <div className="mx-auto flex w-full max-w-7xl flex-col items-start gap-6 md:flex-row md:items-end md:justify-between">
+      <div className="relative flex h-full flex-col justify-end px-6 pb-6 sm:pb-8 md:px-12 md:pb-12 lg:px-20">
+        <div className="mx-auto flex w-full max-w-7xl flex-col items-start gap-4 sm:gap-6 lg:flex-row lg:items-end lg:justify-between">
           {/* Text + CTA */}
-          <div className="flex flex-col items-start gap-3">
+          <div className="flex flex-col items-start gap-2 sm:gap-3">
             {slides[active].badge && (
               <span className="bg-brand rounded-xs px-2 py-0.5 font-mono text-[11px] font-bold text-white uppercase">
                 {slides[active].badge}
               </span>
             )}
-            <h1 className="font-display text-3xl leading-none font-bold tracking-tighter text-balance text-white md:text-6xl">
+            <h1 className="font-display text-3xl leading-none font-bold tracking-tighter text-balance text-white sm:text-4xl md:text-5xl lg:text-6xl">
               {slides[active].title.split("\n").map((line, i) => (
                 <span key={i}>
                   {i > 0 && <br />}
@@ -160,54 +153,65 @@ export function HeroSlideshow() {
                 </span>
               ))}
             </h1>
-            <p className="max-w-lg font-mono text-sm leading-normal text-pretty text-white/60">
+            <p className="max-w-sm font-mono text-sm leading-normal text-pretty text-white/60 md:max-w-lg">
               {slides[active].description}
             </p>
             <div className="mt-1 flex gap-2">
               <a
-                href={slides[active].cta.href}
-                className="flex items-center gap-2.5 rounded-xs border border-transparent bg-white px-6 py-3 text-black transition-colors duration-150 hover:bg-white/90"
+                href={slides[active].action.href}
+                className="flex items-center gap-2.5 rounded-xs border border-transparent bg-white px-5 py-2.5 text-black transition-colors duration-150 hover:bg-white/90 sm:px-6 sm:py-3"
               >
                 <span className="tracking-xl font-mono text-sm leading-4 font-bold uppercase">
-                  {slides[active].cta.label}
+                  {slides[active].action.label}
                 </span>
-                <ArrowRight className="size-3.5" />
+                <ArrowRightIcon className="size-3.5" />
               </a>
-              {slides[active].secondaryCta && (
+              {slides[active].secondaryAction && (
                 <a
-                  href={slides[active].secondaryCta.href}
-                  className="flex items-center rounded-xs border border-white/20 px-6 py-3 text-white transition-colors duration-150 hover:bg-white/10"
+                  href={slides[active].secondaryAction.href}
+                  className="flex items-center rounded-xs border border-white/20 px-5 py-2.5 text-white transition-colors duration-150 hover:bg-white/10 sm:px-6 sm:py-3"
                 >
                   <span className="tracking-xl font-mono text-sm leading-4 font-bold uppercase">
-                    {slides[active].secondaryCta.label}
+                    {slides[active].secondaryAction.label}
                   </span>
                 </a>
               )}
             </div>
           </div>
 
-          {/* Slide previews — inline, compact */}
-          <div className="flex gap-1.5">
+          {/* Slide dots — mobile only */}
+          <div className="flex gap-1.5 sm:hidden">
             {slides.map((slide, i) => (
               <button
                 key={slide.id}
                 onClick={() => goTo(i)}
-                className={`relative flex cursor-pointer overflow-hidden rounded-xs transition-all duration-300 ${
+                className={`size-1.5 cursor-pointer rounded-full transition-all duration-300 ${active === i ? "scale-125 bg-white" : "bg-white/30"}`}
+              />
+            ))}
+          </div>
+
+          {/* Slide previews — sm and up */}
+          <div className="hidden gap-1.5 sm:flex">
+            {slides.map((slide, i) => (
+              <button
+                key={slide.id}
+                onClick={() => goTo(i)}
+                className={`relative flex cursor-pointer overflow-hidden rounded-xs border border-white/10 transition-all duration-300 ${
                   active === i
                     ? "brightness-110"
                     : "opacity-40 hover:opacity-60"
                 }`}
               >
-                <div className="relative h-9 w-16 md:h-10 md:w-18">
+                <div className="relative h-9 w-14 sm:w-16 md:h-10 md:w-18">
                   <Image
-                    src={slide.bg}
-                    alt={slide.previewLabel}
+                    src={slide.video?.poster ?? slide.image}
+                    alt={slide.title}
                     fill
                     className="object-cover"
                   />
                 </div>
                 {active === i && (
-                  <div className="absolute right-0 bottom-0 left-0 h-0.5 bg-white/10">
+                  <div className="absolute right-0 bottom-0 left-0 h-0.5 bg-black/40">
                     <div
                       key={active}
                       className="h-full animate-[progress-fill_linear] bg-white"
