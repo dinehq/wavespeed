@@ -512,7 +512,34 @@ print(response.json())`;
 
   return (
     <>
-      {isUnauthedEntry ? null : <ProductTopTabs activeTab="Explore" />}
+      {isUnauthedEntry ? (
+        <div className="border-foreground/10 bg-background/95 supports-backdrop-filter:bg-background/80 sticky top-0 z-40 flex justify-center border-b px-6 backdrop-blur md:px-12 lg:px-20">
+          <nav
+            aria-label="Breadcrumb"
+            className="flex h-12 w-full max-w-7xl items-center gap-1.5 text-sm"
+          >
+            <Link
+              href="/explore"
+              className="text-foreground/60 hover:text-foreground transition-colors"
+            >
+              Explore
+            </Link>
+            <span className="text-foreground/25">/</span>
+            <Link
+              href="/collections/google"
+              className="text-foreground/60 hover:text-foreground transition-colors"
+            >
+              Google Models
+            </Link>
+            <span className="text-foreground/25">/</span>
+            <span className="text-foreground/60">
+              google/nano-banana-pro/edit
+            </span>
+          </nav>
+        </div>
+      ) : (
+        <ProductTopTabs activeTab="Explore" />
+      )}
       <section className="px-6 pb-16 md:px-12 lg:px-20">
         <div className="mx-auto flex min-h-[calc(100vh-8rem)] w-full max-w-7xl flex-col gap-8">
           <div className="flex flex-col gap-4 pt-5">
