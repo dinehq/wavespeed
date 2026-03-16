@@ -4,6 +4,7 @@ import { useTheme } from "next-themes";
 import { useSyncExternalStore } from "react";
 import Link from "next/link";
 import Logo from "@/images/logo.svg";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const subscribe = () => () => {};
 const getSnapshot = () => true;
@@ -89,14 +90,16 @@ function FooterColumn({
   title,
   links,
 }: {
-  title: string;
+  title?: string;
   links: { name: string; href: string }[];
 }) {
   return (
-    <div className="flex flex-col gap-3">
-      <h2 className="tracking-xl font-mono text-xs text-white/30 uppercase">
-        {title}
-      </h2>
+    <div className={title ? "flex flex-col gap-3" : "flex flex-col gap-2 pt-6"}>
+      {title && (
+        <h2 className="tracking-xl font-mono text-xs text-white/30 uppercase">
+          {title}
+        </h2>
+      )}
       <div className="flex flex-col gap-2">
         {links.map((link) => (
           <Link
@@ -108,26 +111,6 @@ function FooterColumn({
           </Link>
         ))}
       </div>
-    </div>
-  );
-}
-
-function FooterColumnContinuation({
-  links,
-}: {
-  links: { name: string; href: string }[];
-}) {
-  return (
-    <div className="flex flex-col gap-2 pt-6">
-      {links.map((link) => (
-        <Link
-          key={link.name}
-          href={link.href}
-          className="font-mono text-xs leading-5 text-white/60 transition-colors hover:text-white"
-        >
-          {link.name}
-        </Link>
-      ))}
     </div>
   );
 }
@@ -169,9 +152,9 @@ export function Footer() {
             </div>
             <FooterColumn title="Resources" links={resourceLinks} />
             <FooterColumn title="Models" links={modelLinksA} />
-            <FooterColumnContinuation links={modelLinksB} />
+            <FooterColumn links={modelLinksB} />
             <FooterColumn title="Tools" links={toolLinksA} />
-            <FooterColumnContinuation links={toolLinksB} />
+            <FooterColumn links={toolLinksB} />
           </div>
         </div>
 
@@ -180,9 +163,9 @@ export function Footer() {
             &copy; 2026 WAVESPEED
           </p>
           <div className="flex items-center gap-6">
-            <button
-              aria-label="Toggle theme"
-              onClick={() =>
+            <ThemeToggle
+              theme={mounted ? theme : undefined}
+              onToggle={() =>
                 setTheme(
                   theme === "light"
                     ? "dark"
@@ -191,75 +174,7 @@ export function Footer() {
                       : "light",
                 )
               }
-              className="tracking-lg flex cursor-pointer items-center gap-1.5 font-mono text-xs text-white/40 uppercase transition-colors hover:text-white"
-            >
-              {mounted && theme === "dark" ? (
-                <>
-                  <svg
-                    className="size-4"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  >
-                    <path
-                      d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
-                      fill="currentColor"
-                      stroke="none"
-                    />
-                    <line x1="19" y1="2" x2="19" y2="5" />
-                    <line x1="17.5" y1="3.5" x2="20.5" y2="3.5" />
-                  </svg>
-                  Dark
-                </>
-              ) : mounted && theme === "light" ? (
-                <>
-                  <svg
-                    className="size-4"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  >
-                    <circle cx="12" cy="12" r="5" stroke="none" />
-                    <line x1="12" y1="1" x2="12" y2="4" />
-                    <line x1="12" y1="20" x2="12" y2="23" />
-                    <line x1="1" y1="12" x2="4" y2="12" />
-                    <line x1="20" y1="12" x2="23" y2="12" />
-                    <line x1="4.22" y1="4.22" x2="6.34" y2="6.34" />
-                    <line x1="17.66" y1="17.66" x2="19.78" y2="19.78" />
-                    <line x1="4.22" y1="19.78" x2="6.34" y2="17.66" />
-                    <line x1="17.66" y1="6.34" x2="19.78" y2="4.22" />
-                  </svg>
-                  Light
-                </>
-              ) : (
-                <>
-                  <svg
-                    className="size-4"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <rect
-                      x="2"
-                      y="3"
-                      width="20"
-                      height="14"
-                      rx="2"
-                      fill="currentColor"
-                      stroke="none"
-                    />
-                    <line x1="8" y1="21" x2="16" y2="21" />
-                    <line x1="12" y1="17" x2="12" y2="21" />
-                  </svg>
-                  System
-                </>
-              )}
-            </button>
+            />
             <a
               href="#"
               aria-label="GitHub"
