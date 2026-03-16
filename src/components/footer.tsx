@@ -1,16 +1,10 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { useSyncExternalStore } from "react";
 import Link from "next/link";
 import Logo from "@/images/logo.svg";
 import { ThemeToggle } from "@/components/theme-toggle";
-
-const subscribe = () => () => {};
-const getSnapshot = () => true;
-const getServerSnapshot = () => false;
-const useMounted = () =>
-  useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+import { useMounted } from "@/hooks/use-mounted";
 
 const navLinks = [
   { name: "Home", href: "/" },

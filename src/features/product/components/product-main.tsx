@@ -2,7 +2,7 @@
 
 import { format, subDays } from "date-fns";
 import Image from "next/image";
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { DateRange } from "react-day-picker";
 import {
@@ -53,6 +53,7 @@ import {
   resolveProductMainTabFromPathname,
   type ProductMainTab,
 } from "@/features/product/main-tabs";
+import { useMounted } from "@/hooks/use-mounted";
 import { ProductFallbackTab } from "@/features/product/tabs/fallback-tab";
 import { ProductHistoryTab } from "@/features/product/tabs/history-tab";
 import { ProductApiKeysTab } from "@/features/product/tabs/api-keys-tab";
@@ -86,12 +87,6 @@ const requestFilterTriggerIconClass =
 const controlSelectTriggerFilterClass = `${controlSelectTriggerClass} ${requestFilterTriggerClass} data-[placeholder]:text-foreground/80 ${requestFilterTriggerIconClass}`;
 const controlIconButtonClass =
   "border-foreground/10 text-foreground/70 bg-background hover:bg-foreground/5 rounded-xs shadow-xs";
-
-const subscribe = () => () => {};
-const getSnapshot = () => true;
-const getServerSnapshot = () => false;
-const useMounted = () =>
-  useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
 export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
   const mounted = useMounted();

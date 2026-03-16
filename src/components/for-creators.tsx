@@ -4,13 +4,6 @@ import Image from "next/image";
 import desktopBg from "@/images/desktop.webp";
 import { CodeEditorCard } from "@/components/hero-demo";
 
-// const features = [
-//   { label: "1M+", detail: "Desktop installs" },
-//   { label: "50M+", detail: "On-device generations" },
-//   { label: "4.9/5", detail: "Privacy-first rating" },
-//   { label: "2s", detail: "Median local render time" },
-// ];
-
 export function ForCreators() {
   return (
     <section className="bg-dark dark:bg-dark relative overflow-hidden">
@@ -85,18 +78,6 @@ export function ForCreators() {
                 </a>
               </div>
 
-              {/* <div className="grid grid-cols-2 gap-y-4 border-t border-white/10 pt-6">
-                {features.map((f) => (
-                  <div key={f.label}>
-                    <p className="font-display text-2xl font-medium text-white">
-                      {f.label}
-                    </p>
-                    <p className="tracking-lg font-mono text-xs text-white/40 uppercase">
-                      {f.detail}
-                    </p>
-                  </div>
-                ))}
-              </div> */}
             </div>
             <div className="min-w-0 overflow-hidden rounded-md shadow-[0_0_60px_-12px_rgba(255,255,255,0.1)] lg:order-first lg:flex-1">
               <Image
