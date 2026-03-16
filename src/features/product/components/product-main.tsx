@@ -1,8 +1,9 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { format, subDays } from "date-fns";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { DateRange } from "react-day-picker";
 import {
@@ -57,11 +58,23 @@ import { useMounted } from "@/hooks/use-mounted";
 import { ProductFallbackTab } from "@/features/product/tabs/fallback-tab";
 import { ProductHistoryTab } from "@/features/product/tabs/history-tab";
 import { ProductApiKeysTab } from "@/features/product/tabs/api-keys-tab";
-import { ProductBillingTab } from "@/features/product/tabs/billing-tab";
 import { ProductDashboardTab } from "@/features/product/tabs/dashboard-tab";
 import { ProductSettingsTab } from "@/features/product/tabs/settings-tab";
-import { ProductUsageTab } from "@/features/product/tabs/usage-tab";
 import { ProductModelsTab } from "@/features/product/tabs/models-tab";
+
+const ProductUsageTab = dynamic(
+  () =>
+    import("@/features/product/tabs/usage-tab").then((m) => m.ProductUsageTab),
+  { ssr: false, loading: () => <TabSkeleton /> },
+);
+
+const ProductBillingTab = dynamic(
+  () =>
+    import("@/features/product/tabs/billing-tab").then(
+      (m) => m.ProductBillingTab,
+    ),
+  { ssr: false, loading: () => <TabSkeleton /> },
+);
 import type { DashboardIntent } from "@/features/product/types/product-main";
 import { toast } from "@/hooks/use-toast";
 
@@ -72,6 +85,19 @@ type ProductMainProps = {
 type ProductRouter = {
   push: (href: string) => void;
 };
+
+function TabSkeleton() {
+  return (
+    <div className="px-6 pt-6 md:px-12 md:pt-8 lg:px-20">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-4">
+        <div className="pb-3">
+          <div className="bg-foreground/5 h-[30px] w-40 animate-pulse rounded-xs" />
+        </div>
+        <div className="bg-foreground/5 h-120 animate-pulse rounded-xs" />
+      </div>
+    </div>
+  );
+}
 
 const controlButtonClass =
   "border-foreground/10 text-foreground/80 hover:bg-foreground/5 text-xs shadow-xs";
@@ -102,6 +128,10 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
     to: new Date(2026, 2, 3),
   });
   const [selectedRequestIds, setSelectedRequestIds] = useState<string[]>([]);
+  const selectedRequestIdSet = useMemo(
+    () => new Set(selectedRequestIds),
+    [selectedRequestIds],
+  );
   const selectedRequestCount = selectedRequestIds.length;
   const areAllRequestsSelected =
     requests.length > 0 && selectedRequestCount === requests.length;
@@ -221,11 +251,15 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
     setUsageQuickRange(range);
   };
   const toggleRequestSelection = (requestId: string) => {
-    setSelectedRequestIds((prev) =>
-      prev.includes(requestId)
-        ? prev.filter((id) => id !== requestId)
-        : [...prev, requestId],
-    );
+    setSelectedRequestIds((prev) => {
+      const set = new Set(prev);
+      if (set.has(requestId)) {
+        set.delete(requestId);
+      } else {
+        set.add(requestId);
+      }
+      return Array.from(set);
+    });
   };
   const toggleSelectAllRequests = () => {
     setSelectedRequestIds((prev) =>
@@ -262,11 +296,14 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
   const openRequestDetail = (requestId: string) => {
     router.push(`/requests/${requestId}`);
   };
-  const productRouter: ProductRouter = {
-    push: (href) => {
-      router.push(href);
-    },
-  };
+  const productRouter: ProductRouter = useMemo(
+    () => ({
+      push: (href) => {
+        router.push(href);
+      },
+    }),
+    [router],
+  );
   const renderRequestsSection = (
     headerLevel: "primary" | "secondary" = "secondary",
   ) => (
@@ -610,13 +647,13 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                           type="button"
                           role="checkbox"
                           aria-label={`Select request ${request.id}`}
-                          aria-checked={selectedRequestIds.includes(request.id)}
+                          aria-checked={selectedRequestIdSet.has(request.id)}
                           onClick={() => toggleRequestSelection(request.id)}
                           className={getRequestCheckboxClassName(
-                            selectedRequestIds.includes(request.id),
+                            selectedRequestIdSet.has(request.id),
                           )}
                         >
-                          {selectedRequestIds.includes(request.id) ? (
+                          {selectedRequestIdSet.has(request.id) ? (
                             <svg
                               viewBox="0 0 16 16"
                               fill="none"
@@ -813,7 +850,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
     return (
       <section className="bg-background pb-6 md:pb-8">
         {renderTopTabsSkeleton()}
-        <div className="min-h-50" />
+        <TabSkeleton />
       </section>
     );
   }
