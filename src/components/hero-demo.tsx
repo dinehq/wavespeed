@@ -1024,7 +1024,7 @@ audio = wavespeed.run(
   },
 };
 
-const AUTO_ADVANCE_MS = 5000;
+const AUTO_ADVANCE_MS = 500000;
 
 export function CodeEditorCard() {
   const [activeTab, setActiveTab] = useState<TabKey>("video");
@@ -1116,7 +1116,7 @@ export function CodeEditorCard() {
       </div>
 
       <div className="bg-background flex flex-col gap-2 overflow-hidden rounded-[3px] md:flex-row">
-        <div className="bg-panel relative h-65 md:h-87 md:flex-1">
+        <div className="bg-panel relative h-72 md:h-88 md:flex-1">
           <div className="absolute top-10 left-6 flex">
             <div className="text-subtle flex w-6 flex-col gap-1 font-mono text-xs leading-tight">
               {current.lines.map((_, i) => (
@@ -1178,7 +1178,7 @@ export function CodeEditorCard() {
           </button>
         </div>
 
-        <div className="relative flex h-65 flex-col items-center justify-end overflow-hidden p-2 md:h-87 md:flex-1">
+        <div className="relative flex h-72 flex-col items-center justify-end overflow-hidden p-2 md:h-88 md:flex-1">
           {activeTab === "image" && (
             <Image
               src={editorPreview}
@@ -1260,7 +1260,7 @@ function SpeechOutput() {
   const timeStr = `${mins}:${secs.toString().padStart(2, "0")}`;
 
   return (
-    <div className="bg-panel absolute inset-0 flex flex-col justify-center gap-4 px-6 py-5 md:px-8">
+    <div className="bg-panel absolute inset-0 flex flex-col justify-end gap-4 p-4 px-6 pb-20 md:px-8">
       {/* Speaker identity */}
       <div className="flex items-center gap-2.5">
         <div className="bg-brand/15 text-brand flex size-7 items-center justify-center rounded-full font-mono text-xs font-bold">
@@ -1322,7 +1322,7 @@ const CHAT_MESSAGES: { role: "user" | "assistant"; text: string }[] = [
 
 function ChatOutput() {
   return (
-    <div className="bg-panel absolute inset-0 flex flex-col overflow-y-auto p-4 pb-15 md:p-5 md:pb-20">
+    <div className="bg-panel absolute inset-0 flex flex-col overflow-y-auto p-4 pb-20 md:p-5 md:pb-20">
       <div className="flex flex-1 flex-col justify-end gap-3">
         {CHAT_MESSAGES.map((msg, i) => (
           <div

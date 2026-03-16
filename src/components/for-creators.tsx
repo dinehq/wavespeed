@@ -8,7 +8,7 @@ export function ForCreators() {
       <div className="px-6 pt-16 pb-16 md:px-12 md:pt-24 md:pb-24 lg:px-20">
         <div className="mx-auto flex max-w-7xl flex-col gap-16 md:gap-24">
           {/* Row 1: For Developers — text left, code right */}
-          <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-12">
+          <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:gap-12">
             <div className="flex flex-col gap-4 lg:w-80 lg:shrink-0 lg:pt-6">
               <h2 className="font-display text-2xl leading-none font-medium tracking-tight text-balance text-white md:text-5xl">
                 Built For Developers
@@ -38,7 +38,7 @@ export function ForCreators() {
           </div>
 
           {/* Row 2: For Creators — preview left, text right */}
-          <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-12">
+          <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:gap-12">
             <div className="flex flex-col gap-8 lg:w-80 lg:shrink-0 lg:pt-6">
               <div className="flex flex-col gap-4">
                 <h2 className="font-display text-2xl leading-none font-medium tracking-tight text-balance text-white md:text-5xl">
