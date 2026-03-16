@@ -127,6 +127,7 @@ export function HeroSlideshow() {
               src={slide.image}
               alt=""
               fill
+              sizes="100vw"
               priority={i === 0}
               className="object-cover"
             />
@@ -207,6 +208,7 @@ export function HeroSlideshow() {
                     src={slide.video?.poster ?? slide.image}
                     alt={slide.title}
                     fill
+                    sizes="72px"
                     className="object-cover"
                   />
                 </div>

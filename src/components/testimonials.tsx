@@ -127,6 +127,7 @@ export function Testimonials() {
               src={quoteBg}
               alt=""
               fill
+              sizes="(min-width: 768px) 480px, 300px"
               className="pointer-events-none object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100 dark:hidden"
             />
             <div className="relative flex flex-col gap-4">
@@ -140,6 +141,7 @@ export function Testimonials() {
                       src={t.logo}
                       alt=""
                       fill
+                      sizes="150px"
                       className="object-contain object-left dark:grayscale dark:invert"
                     />
                   </div>

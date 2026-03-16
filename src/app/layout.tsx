@@ -28,6 +28,9 @@ export const metadata: Metadata = {
   title: "WaveSpeed - Ultimate AI Media Generation Platform",
   description:
     "Build multimodal applications with a single high-speed interface.",
+  appleWebApp: {
+    title: "WaveSpeed",
+  },
 };
 
 export default function RootLayout({
@@ -37,7 +40,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <meta name="apple-mobile-web-app-title" content="WaveSpeed" />
       <body
         className={`${GeistSans.variable} ${azeret.variable} ${GeistMono.variable} antialiased`}
       >
@@ -48,9 +50,9 @@ export default function RootLayout({
         </ThemeProvider>
         {process.env.NODE_ENV === "development" && (
           <Script
-            src="//unpkg.com/react-grab/dist/index.global.js"
+            src="https://unpkg.com/react-grab/dist/index.global.js"
             crossOrigin="anonymous"
-            strategy="beforeInteractive"
+            strategy="afterInteractive"
           />
         )}
       </body>

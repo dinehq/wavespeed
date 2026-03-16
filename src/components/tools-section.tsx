@@ -385,6 +385,7 @@ function ProviderCard({ card }: { card: ProviderCard }) {
             src={bg}
             alt=""
             fill
+            sizes="(min-width: 768px) 540px, 320px"
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ))}
@@ -438,6 +439,7 @@ function CategoryCard({
           src={category.bg}
           alt=""
           fill
+          sizes="(min-width: 768px) 400px, 260px"
           className="object-cover object-top"
         />
       </div>

@@ -54,6 +54,7 @@ export function FeaturesSection() {
                   src={logosImg}
                   alt=""
                   fill
+                  sizes="600px"
                   className="object-contain object-top-right"
                 />
               </div>
@@ -139,6 +140,7 @@ export function FeaturesSection() {
                     src={securityImg}
                     alt=""
                     fill
+                    sizes="(min-width: 1024px) 392px, 250px"
                     className="object-contain dark:mix-blend-screen dark:filter-[invert(1)_contrast(1.2)_hue-rotate(180deg)]"
                   />
                 </div>

@@ -529,6 +529,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                           src={request.outputPreview}
                           alt={`${request.model} output`}
                           fill
+                          sizes="48px"
                           className="object-cover"
                         />
                       </div>
@@ -640,6 +641,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                           src={request.outputPreview}
                           alt={`${request.model} output preview`}
                           fill
+                          sizes="48px"
                           className="object-cover"
                         />
                       </div>

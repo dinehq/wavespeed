@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import desktopBg from "@/images/desktop.webp";
 import { CodeEditorCard } from "@/components/hero-demo";

@@ -266,7 +266,7 @@ export function FeaturedModels() {
                   opacity: isActive ? 1 : 0.6,
                 }}
               >
-                <Image src={src} alt="" fill className="object-cover" />
+                <Image src={src} alt="" fill sizes="120px" className="object-cover" />
               </div>
             );
           })}
@@ -287,7 +287,7 @@ export function FeaturedModels() {
                   opacity: isActive ? 1 : 0.6,
                 }}
               >
-                <Image src={src} alt="" fill className="object-cover" />
+                <Image src={src} alt="" fill sizes="120px" className="object-cover" />
               </div>
             );
           })}
@@ -311,6 +311,7 @@ export function FeaturedModels() {
                     src={leftThumbs[i]}
                     alt=""
                     fill
+                    sizes="40px"
                     className="object-cover"
                   />
                 </div>
