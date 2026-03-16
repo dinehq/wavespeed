@@ -1024,7 +1024,7 @@ audio = wavespeed.run(
   },
 };
 
-const AUTO_ADVANCE_MS = 500000;
+const AUTO_ADVANCE_MS = 5000;
 
 export function CodeEditorCard() {
   const [activeTab, setActiveTab] = useState<TabKey>("video");
