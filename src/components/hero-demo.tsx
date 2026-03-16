@@ -1075,7 +1075,7 @@ export function CodeEditorCard() {
             <button
               key={tab.key}
               onClick={() => handleTabClick(tab.key)}
-              className={`relative flex cursor-pointer items-center gap-1 rounded-[3px] px-4 py-2 font-mono text-xs transition-colors ${
+              className={`relative flex cursor-pointer items-center gap-1 rounded-[3px] px-4 py-2 font-mono text-xs transition-colors focus-visible:outline-none ${
                 activeTab === tab.key
                   ? "bg-panel text-ink"
                   : "text-ink/60 hover:bg-panel hover:text-ink"
@@ -1103,7 +1103,7 @@ export function CodeEditorCard() {
             <button
               key={lang}
               onClick={() => setActiveLang(lang)}
-              className={`cursor-pointer rounded-[2px] px-2 py-1 font-mono text-xs transition-colors ${
+              className={`cursor-pointer rounded-[2px] px-2 py-1 font-mono text-xs transition-colors focus-visible:outline-none ${
                 activeLang === lang
                   ? "bg-ink/15 text-ink"
                   : "text-ink/50 hover:text-ink"
@@ -1133,7 +1133,7 @@ export function CodeEditorCard() {
           </div>
           <button
             onClick={handleCopy}
-            className="bg-background hover:bg-panel-alt absolute bottom-3 left-6 flex cursor-pointer items-center gap-1.5 rounded px-2 py-1 transition-colors md:top-77 md:bottom-auto"
+            className="bg-background hover:bg-panel-alt absolute bottom-3 left-6 flex cursor-pointer items-center gap-1.5 rounded px-2 py-1 transition-colors focus-visible:outline-none md:top-77 md:bottom-auto"
           >
             {copied ? (
               <svg
