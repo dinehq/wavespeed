@@ -6,7 +6,6 @@ import SearchIcon from "@/images/search-icon.svg";
 import ChevronDown from "@/images/chevron-down.svg";
 import Link from "next/link";
 
-
 const resourceGroups = [
   {
     label: "Products",

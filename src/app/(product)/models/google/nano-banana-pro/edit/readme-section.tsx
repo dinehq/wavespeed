@@ -89,9 +89,7 @@ export function ReadmeSection() {
 
   return (
     <section className="flex flex-col gap-4">
-      <h2 className="text-foreground text-xl font-semibold">
-        README
-      </h2>
+      <h2 className="text-foreground text-xl font-semibold">README</h2>
 
       <div className="grid items-start gap-4 md:grid-cols-4">
         <aside className="border-foreground/10 sticky top-14 hidden rounded-xs border p-3 md:col-span-1 md:block">

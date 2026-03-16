@@ -180,7 +180,7 @@ function SlideEditor({
 
         <div className="relative size-10 shrink-0 overflow-hidden rounded-xs">
           <Image
-            src={imageMap[slide.imageKey] ?? imageMap["tool-01"]}
+            src={imageMap[slide.imageKey] ?? imageMap["slide-1"]}
             alt=""
             fill
             sizes="40px"
@@ -386,7 +386,7 @@ function newSlide(): SlideConfig {
     title: "New Slide",
     description: "Slide description goes here.",
     action: { label: "Learn More", href: "#" },
-    imageKey: "tool-01",
+    imageKey: "slide-1",
   };
 }
 
