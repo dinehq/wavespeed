@@ -10,7 +10,7 @@ export function ForCreators() {
           {/* Row 1: For Developers — text left, code right */}
           <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:gap-12">
             <div className="flex flex-col gap-4 lg:w-80 lg:shrink-0 lg:pt-6">
-              <h2 className="font-display text-2xl leading-none font-medium tracking-tight text-balance text-white md:text-5xl">
+              <h2 className="font-display text-2xl leading-none font-bold tracking-tight text-balance text-white md:text-5xl">
                 Built For Developers
               </h2>
               <p className="font-mono text-sm text-pretty text-white/50">
@@ -41,7 +41,7 @@ export function ForCreators() {
           <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:gap-12">
             <div className="flex flex-col gap-8 lg:w-80 lg:shrink-0 lg:pt-6">
               <div className="flex flex-col gap-4">
-                <h2 className="font-display text-2xl leading-none font-medium tracking-tight text-balance text-white md:text-5xl">
+                <h2 className="font-display text-2xl leading-none font-bold tracking-tight text-balance text-white md:text-5xl">
                   And For Creators
                 </h2>
                 <p className="font-mono text-sm text-pretty text-white/50">

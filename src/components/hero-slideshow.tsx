@@ -13,7 +13,6 @@ import slide2 from "@/images/slide-2.webp";
 import slide3 from "@/images/slide-3.webp";
 import slide4 from "@/images/slide-4.webp";
 import slide5 from "@/images/slide-5.webp";
-import ArrowRightIcon from "@/images/arrow-right.svg";
 
 const SLIDE_DURATION = 5000;
 
@@ -246,12 +245,11 @@ export function HeroSlideshow() {
             <div className="mt-1 flex gap-2">
               <a
                 href={current.action.href}
-                className="flex items-center gap-2.5 rounded-xs border border-transparent bg-white px-5 py-2.5 text-black transition-colors duration-150 hover:bg-white/90 sm:px-6 sm:py-3"
+                className="flex items-center gap-2.5 rounded-xs border border-transparent bg-white px-5 py-2.5 text-black transition-colors duration-150 hover:bg-white/90"
               >
                 <span className="tracking-xl font-mono text-sm leading-4 font-bold uppercase">
                   {current.action.label}
                 </span>
-                <ArrowRightIcon className="size-3.5" />
               </a>
               {current.secondaryAction && (
                 <a

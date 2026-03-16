@@ -36,7 +36,7 @@ export function ExamplesSection() {
     <>
       <section className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-foreground font-display text-xl font-bold">
+          <h2 className="text-foreground text-xl font-bold">
             Examples
           </h2>
           <Button

@@ -172,6 +172,10 @@ body {
   font-family: var(--font-geist-sans), sans-serif;
 }
 
+.font-display {
+  font-feature-settings: "ss01";
+}
+
 @keyframes breathe {
   0%,
   100% {

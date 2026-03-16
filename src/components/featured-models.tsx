@@ -238,7 +238,7 @@ export function FeaturedModels() {
       {/* Header */}
       <div className="mx-auto flex max-w-290 flex-col items-center gap-10">
         <div className="flex max-w-[876px] flex-col items-center gap-4 text-center">
-          <h2 className="text-heading font-display text-2xl leading-none font-medium tracking-tight text-balance md:text-5xl">
+          <h2 className="text-heading font-display text-2xl leading-none font-bold tracking-tight text-balance md:text-5xl">
             Featured Models
           </h2>
           <p className="text-subtle font-mono text-base text-pretty">
@@ -266,7 +266,13 @@ export function FeaturedModels() {
                   opacity: isActive ? 1 : 0.6,
                 }}
               >
-                <Image src={src} alt="" fill sizes="120px" className="object-cover" />
+                <Image
+                  src={src}
+                  alt=""
+                  fill
+                  sizes="120px"
+                  className="object-cover"
+                />
               </div>
             );
           })}
@@ -287,7 +293,13 @@ export function FeaturedModels() {
                   opacity: isActive ? 1 : 0.6,
                 }}
               >
-                <Image src={src} alt="" fill sizes="120px" className="object-cover" />
+                <Image
+                  src={src}
+                  alt=""
+                  fill
+                  sizes="120px"
+                  className="object-cover"
+                />
               </div>
             );
           })}
@@ -354,7 +366,7 @@ export function FeaturedModels() {
       <div className="mx-auto mt-10 flex max-w-290 justify-center">
         <a
           href="#"
-          className="bg-foreground text-background hover:bg-foreground/80 tracking-xl rounded-xs px-6 py-3 font-mono text-sm transition-colors duration-150"
+          className="bg-foreground text-background hover:bg-foreground/80 tracking-xl rounded-xs px-6 py-3 font-mono text-sm font-medium transition-colors duration-150"
         >
           Explore all models
         </a>

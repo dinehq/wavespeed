@@ -89,7 +89,7 @@ export function ReadmeSection() {
 
   return (
     <section className="flex flex-col gap-4">
-      <h2 className="text-foreground font-display text-xl font-semibold">
+      <h2 className="text-foreground text-xl font-semibold">
         README
       </h2>
 

@@ -16,8 +16,8 @@ const azeret = localFont({
       style: "normal",
     },
     {
-      path: "../fonts/Azeret-TRIAL-SemiBold.woff2",
-      weight: "600",
+      path: "../fonts/Azeret-TRIAL-Bold.woff2",
+      weight: "700",
       style: "normal",
     },
   ],
