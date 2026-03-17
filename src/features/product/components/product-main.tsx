@@ -870,7 +870,10 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
     <section className="bg-background pb-6 md:pb-8">
       {renderTopTabs()}
       {renderResolvedTabContent()}
-      <Dialog open={openedRequestId !== null} onOpenChange={() => setOpenedRequestId(null)}>
+      <Dialog
+        open={openedRequestId !== null}
+        onOpenChange={() => setOpenedRequestId(null)}
+      >
         <DialogContent className="border-foreground/10 bg-background max-w-xl rounded-xs border p-0 shadow-none">
           <DialogTitle className="sr-only">Request detail</DialogTitle>
           <DialogDescription className="sr-only">
@@ -891,25 +894,33 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                   <p className="text-foreground/60 tracking-lg text-xs uppercase">
                     Model
                   </p>
-                  <p className="text-foreground mt-1 text-sm">{openedRequest.model}</p>
+                  <p className="text-foreground mt-1 text-sm">
+                    {openedRequest.model}
+                  </p>
                 </div>
                 <div>
                   <p className="text-foreground/60 tracking-lg text-xs uppercase">
                     Status
                   </p>
-                  <p className="text-foreground mt-1 text-sm">{openedRequest.status}</p>
+                  <p className="text-foreground mt-1 text-sm">
+                    {openedRequest.status}
+                  </p>
                 </div>
                 <div>
                   <p className="text-foreground/60 tracking-lg text-xs uppercase">
                     Output
                   </p>
-                  <p className="text-foreground mt-1 text-sm">{openedRequest.output}</p>
+                  <p className="text-foreground mt-1 text-sm">
+                    {openedRequest.output}
+                  </p>
                 </div>
                 <div>
                   <p className="text-foreground/60 tracking-lg text-xs uppercase">
                     Created
                   </p>
-                  <p className="text-foreground mt-1 text-sm">{openedRequest.createdAt}</p>
+                  <p className="text-foreground mt-1 text-sm">
+                    {openedRequest.createdAt}
+                  </p>
                 </div>
               </div>
             </div>

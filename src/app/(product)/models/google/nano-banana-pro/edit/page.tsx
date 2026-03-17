@@ -927,7 +927,7 @@ print(response.json())`;
                   </div>
                 </aside>
 
-                <div className="lg:col-span-6 lg:sticky lg:top-24 lg:self-start">
+                <div className="lg:sticky lg:top-24 lg:col-span-6 lg:self-start">
                   <div className="bg-surface rounded-xs p-4">
                     <div className="mb-4 flex items-center justify-between">
                       <div className="flex items-center gap-2">
@@ -1919,7 +1919,9 @@ print(response.json())`;
                       <button
                         type="button"
                         className="flex w-full items-center justify-between px-4 py-2.5 text-left"
-                        onClick={() => setIsDetailSectionExpanded((prev) => !prev)}
+                        onClick={() =>
+                          setIsDetailSectionExpanded((prev) => !prev)
+                        }
                         aria-expanded={isDetailSectionExpanded}
                       >
                         <p className="text-sm font-bold">Detail</p>
@@ -2031,7 +2033,9 @@ print(response.json())`;
                       <button
                         type="button"
                         className="flex w-full items-center justify-between px-4 py-2.5 text-left"
-                        onClick={() => setIsInputSectionExpanded((prev) => !prev)}
+                        onClick={() =>
+                          setIsInputSectionExpanded((prev) => !prev)
+                        }
                         aria-expanded={isInputSectionExpanded}
                       >
                         <p className="text-sm font-bold">Input</p>
@@ -2050,7 +2054,10 @@ print(response.json())`;
                               size="icon-sm"
                               aria-label="Copy input"
                               onClick={() =>
-                                handleCopyText(requestDetailInputCode, "Input JSON")
+                                handleCopyText(
+                                  requestDetailInputCode,
+                                  "Input JSON",
+                                )
                               }
                               className="text-foreground/60 hover:text-foreground absolute top-1.5 right-1.5 h-7 w-7 rounded-xs"
                             >
@@ -2070,7 +2077,9 @@ print(response.json())`;
                       <button
                         type="button"
                         className="flex w-full items-center justify-between px-4 py-2.5 text-left"
-                        onClick={() => setIsOutputSectionExpanded((prev) => !prev)}
+                        onClick={() =>
+                          setIsOutputSectionExpanded((prev) => !prev)
+                        }
                         aria-expanded={isOutputSectionExpanded}
                       >
                         <p className="text-sm font-bold">Output</p>
@@ -2112,7 +2121,9 @@ print(response.json())`;
                       <button
                         type="button"
                         className="flex w-full items-center justify-between px-4 py-2.5 text-left"
-                        onClick={() => setIsResultSectionExpanded((prev) => !prev)}
+                        onClick={() =>
+                          setIsResultSectionExpanded((prev) => !prev)
+                        }
                         aria-expanded={isResultSectionExpanded}
                       >
                         <p className="text-sm font-bold">Result</p>
