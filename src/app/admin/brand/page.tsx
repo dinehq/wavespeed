@@ -173,12 +173,50 @@ const GRADIENT_PRESETS: GradientTheme[] = [
 ];
 
 const DEFAULT_CODE_OVERLAY = `import wavespeed from 'wavespeed';
+import { Client } from 'wavespeed';
 
+// Quick start — run a model
 wavespeed.run("wavespeed-ai/flux-dev", {
   prompt: "A cat wearing a space suit"
 })
 .then(output => {
-  console.log(output["outputs"][0]); // Output URL
+  console.log(output["outputs"][0]);
+});
+
+// Authentication
+const client = new Client("your-api-key", {
+  maxRetries: 3,
+  maxConnectionRetries: 5,
+  retryInterval: 1.0
+});
+
+// Sync mode — no polling, faster
+wavespeed.run("wavespeed-ai/flux-dev", {
+  prompt: "Ocean waves at sunset"
+}, {
+  enableSyncMode: true,
+  timeout: 36000,
+  pollInterval: 1.0
+})
+.then(output => console.log(output));
+
+// File upload
+wavespeed.upload("/path/to/image.png")
+.then(url => {
+  console.log(url);
+});
+
+// Run with uploaded file
+client.run("wavespeed-ai/wan", {
+  prompt: "A cinematic portrait",
+  image: url,
+  width: 1024,
+  height: 1024,
+  steps: 28,
+  guidance: 3.5
+})
+.then(result => {
+  console.log(result["outputs"][0]);
 });`;
 
 const LOGO_PATHS: Record<LogoVariant, string> = {
@@ -205,77 +243,90 @@ const DEFAULT_CONFIG: BrandConfig = {
 
 // ─── Glitch Utility ──────────────────────────────────────
 
-const GLITCH_BLOCKS = ["\u2591", "\u2592", "\u2593"]; // ░▒▓
-const GLITCH_SYMBOLS = [
-  "\u25C8",
-  "\u29C9",
-  "\u25E4",
-  "\u25E5",
-  "\u25D6",
-  "\u25CF",
-  "\u25D7",
-  "\u2726",
-  "\u2B2C",
-];
-const GLITCH_TAILS = [
-  " \u25C8 //",
-  " \u29C9",
-  " // \u2592\u2592\u2592",
-  " // \u2593\u2593\u2592\u2592\u2591\u2591",
-  " \u25D6 \u25CF \u25D7",
-];
+const G = {
+  blocks: ["\u2591", "\u2592", "\u2593"] as const, // ░▒▓
+  symbols: "\u25C8\u29C9\u25E4\u25E5\u2726\u25CF",
+  bars: "\u2500\u2501\u2502\u2503\u2504",
+};
+
 function randBlock(len: number): string {
   let s = "";
   for (let i = 0; i < len; i++)
-    s += GLITCH_BLOCKS[Math.floor(Math.random() * GLITCH_BLOCKS.length)];
+    s += G.blocks[Math.floor(Math.random() * G.blocks.length)];
   return s;
 }
 
 function glitchCode(text: string): string {
   const lines = text.split("\n");
-  return lines
-    .map((line) => {
-      if (!line.trim()) return line;
+  const result: string[] = [];
 
-      // Glitch identifiers within the line
-      const result = line.replace(/[a-zA-Z_]\w*/g, (match) => {
-        const roll = Math.random();
-        if (roll < 0.25) {
-          // Full block replacement
-          return randBlock(match.length);
+  for (let li = 0; li < lines.length; li++) {
+    const line = lines[li];
+    if (!line.trim()) {
+      result.push(line);
+      continue;
+    }
+
+    // ~8% chance: replace entire line with a decorative bar
+    if (Math.random() < 0.08) {
+      const barChar = G.bars[Math.floor(Math.random() * G.bars.length)];
+      const indent = line.match(/^(\s*)/)?.[1] ?? "";
+      const len = Math.floor(Math.random() * 20) + 10;
+      result.push(indent + "// " + barChar.repeat(len));
+      result.push(line); // keep original below
+      continue;
+    }
+
+    // ~5% chance: redact most of the line
+    if (Math.random() < 0.05) {
+      const indent = line.match(/^(\s*)/)?.[1] ?? "";
+      result.push(indent + randBlock(line.trim().length));
+      continue;
+    }
+
+    // Token-level glitching — lower rate, more variety
+    const glitched = line.replace(
+      /("[^"]*")|('[^']*')|(\d+\.?\d*)|([a-zA-Z_]\w*)/g,
+      (match, str, str2, num, ident) => {
+        if (str || str2) {
+          // Strings: ~10% chance to partially corrupt contents
+          if (Math.random() < 0.1) {
+            const inner = match.slice(1, -1);
+            const q = match[0];
+            const keep = Math.max(1, Math.floor(inner.length * 0.5));
+            return (
+              q + inner.slice(0, keep) + randBlock(inner.length - keep) + q
+            );
+          }
+          return match;
         }
-        if (roll < 0.38) {
-          // Partial: keep prefix, glitch suffix
-          const keep = Math.max(1, Math.floor(match.length * 0.4));
-          return match.slice(0, keep) + randBlock(match.length - keep);
+        if (num) {
+          // Numbers: ~8% chance to replace with blocks
+          return Math.random() < 0.08 ? randBlock(match.length) : match;
         }
-        if (roll < 0.45) {
-          // Partial: glitch prefix, keep suffix
-          const keep = Math.max(1, Math.floor(match.length * 0.4));
-          return (
-            randBlock(match.length - keep) + match.slice(match.length - keep)
-          );
+        if (ident) {
+          const roll = Math.random();
+          if (roll < 0.12) return randBlock(match.length);
+          if (roll < 0.18) {
+            const keep = Math.max(1, Math.floor(match.length * 0.5));
+            return match.slice(0, keep) + randBlock(match.length - keep);
+          }
+          return match;
         }
         return match;
-      });
+      },
+    );
 
-      // ~12% chance to append a glitch tail
-      if (Math.random() < 0.12) {
-        const tail =
-          GLITCH_TAILS[Math.floor(Math.random() * GLITCH_TAILS.length)];
-        return result + tail;
-      }
+    // ~6% chance: append a symbol
+    if (Math.random() < 0.06) {
+      const sym = G.symbols[Math.floor(Math.random() * G.symbols.length)];
+      result.push(glitched + " " + sym);
+    } else {
+      result.push(glitched);
+    }
+  }
 
-      // ~8% chance to append a glitch symbol
-      if (Math.random() < 0.08) {
-        const sym =
-          GLITCH_SYMBOLS[Math.floor(Math.random() * GLITCH_SYMBOLS.length)];
-        return result + " " + sym;
-      }
-
-      return result;
-    })
-    .join("\n");
+  return result.join("\n");
 }
 
 // ─── SVG Utility ─────────────────────────────────────────
@@ -373,13 +424,15 @@ function renderCanvas(
   config: BrandConfig,
   logoImg: HTMLImageElement | null,
   bgImg: HTMLImageElement | null,
+  scale = 1,
 ) {
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
 
   const [w, h] = getSize(config);
-  canvas.width = w;
-  canvas.height = h;
+  canvas.width = w * scale;
+  canvas.height = h * scale;
+  ctx.scale(scale, scale);
 
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = "high";
@@ -514,36 +567,52 @@ function renderCanvas(
       blockY = Math.round(h - pad - totalBlockH - lastFontSize * 0.3);
     }
 
-    // Layer 3: code overlay — clipped to avoid text zone
+    // Layer 3: code overlay — fades on all edges
     if (config.showCodeOverlay && config.codeOverlayText) {
       const codeLines = config.codeOverlayText.split("\n");
       const codeX = isVertical ? g(w * 0.43) : pad;
       const codeY = isVertical ? pad : g(h * 0.33);
-      // Fade out code lines as they approach the text block
-      const codeFadeStart = blockY - pad * 2;
-      const codeFadeEnd = h + codeLineH * 4;
 
-      ctx.save();
-      ctx.fillStyle =
+      // Draw code onto a temp canvas, then apply edge fades
+      const cc = document.createElement("canvas");
+      cc.width = w;
+      cc.height = h;
+      const cx2 = cc.getContext("2d")!;
+
+      cx2.fillStyle =
         config.theme.from === config.theme.to
           ? config.theme.textColor
           : config.theme.to;
-      ctx.font = `${codeSize}px ${fonts.mono}`;
+      cx2.font = `${codeSize}px ${fonts.mono}`;
 
       let y = codeY;
       let lineIdx = 0;
-      while (y < codeFadeEnd) {
-        let alpha = config.codeOverlayOpacity;
-        if (y > codeFadeStart) {
-          // Linearly fade from full opacity to 0 across the fade zone
-          const t = (y - codeFadeStart) / (codeFadeEnd - codeFadeStart);
-          alpha *= 1 - t;
-        }
-        ctx.globalAlpha = alpha;
-        ctx.fillText(codeLines[lineIdx % codeLines.length], codeX, y);
+      while (y < h + codeLineH * 4) {
+        cx2.fillText(codeLines[lineIdx % codeLines.length], codeX, y);
         y += codeLineH;
         lineIdx++;
       }
+
+      // Fade bottom — accelerate near text block
+      cx2.globalCompositeOperation = "destination-in";
+      const fadeBottom = cx2.createLinearGradient(0, blockY - pad * 2, 0, h);
+      fadeBottom.addColorStop(0, "rgba(0,0,0,1)");
+      fadeBottom.addColorStop(0.3, "rgba(0,0,0,0.3)");
+      fadeBottom.addColorStop(1, "rgba(0,0,0,0)");
+      cx2.fillStyle = fadeBottom;
+      cx2.fillRect(0, 0, w, h);
+
+      // Fade right
+      const fadeRight = cx2.createLinearGradient(w * 0.6, 0, w, 0);
+      fadeRight.addColorStop(0, "rgba(0,0,0,1)");
+      fadeRight.addColorStop(1, "rgba(0,0,0,0)");
+      cx2.fillStyle = fadeRight;
+      cx2.fillRect(0, 0, w, h);
+
+      // Composite onto main canvas at configured opacity
+      ctx.save();
+      ctx.globalAlpha = config.codeOverlayOpacity;
+      ctx.drawImage(cc, 0, 0);
       ctx.restore();
     }
 
@@ -558,7 +627,6 @@ function renderCanvas(
 
     // Layer 5 + 6: Subheadline (above) → Headline → Body (below, post only)
     {
-
       let cursorY = blockY;
 
       // Overline / subheadline (above headline, uppercase)
@@ -786,13 +854,16 @@ export default function AdminBrandPage() {
     const variant =
       config.assetType === "avatar" ? config.logoVariant : "lockup";
     const color =
-      config.assetType === "avatar"
-        ? config.logoColor
-        : config.theme.textColor;
+      config.assetType === "avatar" ? config.logoColor : config.theme.textColor;
     loadSvgAsImage(LOGO_PATHS[variant], color)
       .then(setLogoImg)
       .catch(() => setLogoImg(null));
-  }, [config.logoVariant, config.logoColor, config.assetType, config.theme.textColor]);
+  }, [
+    config.logoVariant,
+    config.logoColor,
+    config.assetType,
+    config.theme.textColor,
+  ]);
 
   // Load background image
   useEffect(() => {
@@ -819,23 +890,23 @@ export default function AdminBrandPage() {
     return () => cancelAnimationFrame(rafRef.current);
   }, [config, logoImg, bgImg, fontsReady]);
 
-  // Export single PNG
+  // Export single PNG at 2x
   const handleExport = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    canvas.toBlob((blob) => {
+    const tempCanvas = document.createElement("canvas");
+    renderCanvas(tempCanvas, config, logoImg, bgImg, 2);
+    tempCanvas.toBlob((blob) => {
       if (!blob) return;
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
       a.download =
         config.assetType === "avatar"
-          ? "wavespeed-avatar.png"
-          : `wavespeed-${config.platform}-${config.assetType}.png`;
+          ? "wavespeed-avatar@2x.png"
+          : `wavespeed-${config.platform}-${config.assetType}@2x.png`;
       a.click();
       URL.revokeObjectURL(url);
     }, "image/png");
-  }, [config.platform, config.assetType]);
+  }, [config, logoImg, bgImg]);
 
   // Export all platforms
   const handleExportAll = useCallback(async () => {
@@ -843,14 +914,14 @@ export default function AdminBrandPage() {
     const tempCanvas = document.createElement("canvas");
     for (const platform of PLATFORMS) {
       const tempConfig = { ...config, platform: platform.key };
-      renderCanvas(tempCanvas, tempConfig, logoImg, bgImg);
+      renderCanvas(tempCanvas, tempConfig, logoImg, bgImg, 2);
       await new Promise<void>((resolve) => {
         tempCanvas.toBlob((blob) => {
           if (blob) {
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
             a.href = url;
-            a.download = `wavespeed-${platform.key}-${config.assetType}.png`;
+            a.download = `wavespeed-${platform.key}-${config.assetType}@2x.png`;
             a.click();
             URL.revokeObjectURL(url);
           }
@@ -1321,7 +1392,7 @@ export default function AdminBrandPage() {
                           className="border-foreground/10 bg-surface text-foreground placeholder:text-foreground/30 focus:border-brand resize-y rounded-xs border px-3 py-2 font-mono text-[11px] leading-relaxed transition-colors outline-none"
                           placeholder="Paste code or text here..."
                         />
-                        <div className="flex gap-3">
+                        <div className="flex justify-between gap-3">
                           <button
                             onClick={() =>
                               update({
@@ -1332,7 +1403,7 @@ export default function AdminBrandPage() {
                             }
                             className="text-foreground/40 hover:text-foreground/60 cursor-pointer font-mono text-[10px] transition-colors"
                           >
-                            Glitch
+                            Add Glitch
                           </button>
                           <button
                             onClick={() =>
