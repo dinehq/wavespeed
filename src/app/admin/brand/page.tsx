@@ -101,86 +101,85 @@ const PLATFORMS: {
 
 const GRADIENT_PRESETS: GradientTheme[] = [
   {
-    name: "Frost",
-    from: "#f0f4ff",
-    to: "#1d4ed8",
+    name: "Blue",
+    from: "#f0f7ff",
+    to: "#207fdb",
     textColor: "#0f172a",
-    accent: "#3b82f6",
+    accent: "#207fdb",
   },
   {
-    name: "Sage",
-    from: "#f0fdf4",
-    to: "#047857",
+    name: "Green",
+    from: "#f0fff8",
+    to: "#26f9a8",
     textColor: "#0f172a",
-    accent: "#10b981",
+    accent: "#26f9a8",
   },
   {
-    name: "Amber",
-    from: "#fffbeb",
-    to: "#b45309",
+    name: "Purple",
+    from: "#fdf0ff",
+    to: "#ea5aff",
     textColor: "#0f172a",
-    accent: "#d97706",
+    accent: "#ea5aff",
   },
   {
-    name: "Violet",
-    from: "#f5f3ff",
-    to: "#6d28d9",
+    name: "Orange",
+    from: "#fff7f0",
+    to: "#ffa442",
     textColor: "#0f172a",
-    accent: "#8b5cf6",
+    accent: "#ffa442",
   },
   {
     name: "Rose",
-    from: "#fff1f2",
-    to: "#be123c",
+    from: "#fff0f3",
+    to: "#e11d48",
     textColor: "#0f172a",
-    accent: "#f43f5e",
+    accent: "#e11d48",
   },
   {
-    name: "Slate",
-    from: "#f1f5f9",
-    to: "#0f172a",
+    name: "Teal",
+    from: "#f0fdfa",
+    to: "#0d9488",
     textColor: "#0f172a",
-    accent: "#64748b",
+    accent: "#0d9488",
+  },
+  {
+    name: "Indigo",
+    from: "#eef2ff",
+    to: "#4f46e5",
+    textColor: "#0f172a",
+    accent: "#4f46e5",
+  },
+  {
+    name: "White",
+    from: "#ffffff",
+    to: "#ffffff",
+    textColor: "#0f172a",
+    accent: "#c0c0c0",
+  },
+  {
+    name: "Light",
+    from: "#f5f5f7",
+    to: "#f5f5f7",
+    textColor: "#0f172a",
+    accent: "#a0a0a0",
+  },
+  {
+    name: "Black",
+    from: "#000000",
+    to: "#000000",
+    textColor: "#ffffff",
+    accent: "#333333",
   },
 ];
 
-const DEFAULT_CODE_OVERLAY = `void mainImage(out vec4 fragColor, in vec2 fragCoord){
-   \u2593\u2593\u2593\u2593\u2593\u2593\u2593\u2591\u2591\u2591\u2591\u2591\u2591\u2591ERNEL_SYNC \u2500\u2500\u2510 */
-    vec2 uv = fragCoord.xy / iResolution.xy;
-    \u2591\u2591\u2591\u2591\u2591 p  = uv*\u2593\u2593\u2593\u2593\u2593\u2591\u2591\u2591\u2591\u2591\u2591\u2591
-    p.x \u2593\u2593\u2593\u2591\u2591\u2591\u2591\u2591\u2591\u2591x / iResolution.y;
+const DEFAULT_CODE_OVERLAY = `import wavespeed from 'wavespeed';
 
-    float t = iTime; \u25C8 // \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591
-
-    // \u2591\u2592\u2593 ---- [LAYER_01: BACKGROUND] ---- \u2593\u2592\u2591
-    vec3 col = \u2593\u2593\u2593\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591); \u29C9
-
-    // \u25E4 SILHOUETTE_PROCESSOR \u25E5
-    float m = \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591(p); \u25D6 \u25CF \u25D7 // \u2592\u2592\u2592 mask_init \u2592\u2592\u2592
-
-    /* --- \u2726 RIBBON_DYNAMICS \u2726 --- */
-    float r1 = ribbon(p*\u2591.\u2591\u2591, 0.11, t);
-    float r2 = \u2591\u2591\u2591\u2591\u2591\u2591(p*1.10, 0.43, t+1.7);
-    float r3 = ribbon(p*1.05, \u2591.\u2591\u2591, t+3.1);
-
-    // \u2501\u2501\u2501\u2501\u2501 [WEIGHT_CALC: \u2593\u2593\u2593\u2592\u2592\u2591\u2591] \u2501\u2501\u2501\u2501\u2501
-    float rb = clamp(r1*\u2591.\u2591 + r2*\u2591.\u2591 + r3*\u2591.\u2591, 0.0, 1.0);
-
-    // \u2B2C [SPECTRUM_SHIFT] \u2B2C
-    float hue = fract(uv.y*0.9 + \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591 + 0.12*sin(t*0.2));
-    vec3  spc = \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591(hue);
-
-    // ---- [EDGE_= \u2593\u2593\u2593\u2593\u2593\u2593\u2593
-    vec2 px = 1.0 / iResolution.xy;
-    float mx = headMask(p + vec2(= \u2593\u2593\u2593\u2593\u2593\u2593\u2593
-    float my = \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591(p + vec2(0.0, px.y*2.0))
-
-    /* \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 [SIGNAL_LOCKED] \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518 */
-    \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591
-
-// \u2591\u2591 [FATAL] BUFFER_OVERFLOW_DETECTED \u2591\u2591
-// source_node: [99-XLR-8] // \u2593\u2593\u2592\u2592\u2591\u2591
-// EOF //`;
+wavespeed.run("wavespeed-ai/flux-dev", {
+  prompt: "A cat wearing a space suit"
+})
+.then(output => {
+  console.log(output["outputs"][0]); // Output URL
+});`;
 
 const LOGO_PATHS: Record<LogoVariant, string> = {
   logo: "/logo/icon.svg",
@@ -416,33 +415,24 @@ function renderCanvas(
       ctx.fillRect(0, 0, w, h);
     }
 
-    // Layer 2: code overlay
-    if (config.showCodeOverlay && config.codeOverlayText) {
-      const codeLines = config.codeOverlayText.split("\n");
-      const codeX = isVertical ? g(w * 0.43) : pad;
-      const codeY = isVertical ? pad : g(h * 0.33);
-
-      ctx.save();
-      ctx.globalAlpha = config.codeOverlayOpacity;
-      ctx.fillStyle = config.theme.accent;
-      ctx.font = `${codeSize}px ${fonts.mono}`;
-
-      let y = codeY;
-      let lineIdx = 0;
-      while (y < h + codeLineH * 4) {
-        ctx.fillText(codeLines[lineIdx % codeLines.length], codeX, y);
-        y += codeLineH;
-        lineIdx++;
-      }
-      ctx.restore();
-    }
-
-    // Layer 3: image with alpha mask — feather on left edge always
+    // Layer 2: image with alpha mask — feather on left edge always
     if (bgImg) {
-      const targetX = isVertical ? pad : g(w - g(w * 0.5) - pad);
-      const targetY = isVertical ? g(h - g(h * 0.5) - pad) : pad;
-      const targetW = isVertical ? g(w - pad * 2) : g(w * 0.5);
-      const targetH = isVertical ? g(h * 0.5) : g(h - pad * 2);
+      // Image area: 3:2 for landscape, 16:9 for vertical
+      let targetW: number, targetH: number;
+      if (isVertical) {
+        targetW = g(w - pad * 2);
+        targetH = g(targetW * (9 / 16));
+      } else {
+        targetW = g(w * 0.5);
+        targetH = g(targetW * (2 / 3));
+        // Clamp to canvas height minus padding
+        if (targetH > h - pad * 2) {
+          targetH = g(h - pad * 2);
+          targetW = g(targetH * (3 / 2));
+        }
+      }
+      const targetX = isVertical ? pad : g(w - targetW - pad);
+      const targetY = isVertical ? g(h - targetH - pad) : pad;
       const imgRatio = bgImg.naturalWidth / bgImg.naturalHeight;
       const areaRatio = targetW / targetH;
 
@@ -481,6 +471,82 @@ function renderCanvas(
       ctx.drawImage(oc, 0, 0);
     }
 
+    // ── Compute text block metrics (needed for code overlay clipping) ──
+    const maxTextW = w - pad * 2;
+
+    const subLines = config.subheadline
+      ? config.subheadline.split("\n").map((l) => l.toUpperCase())
+      : [];
+    const subLineH = Math.round(subSize * 1.4);
+    const subBlockH = subLines.length * subLineH;
+    const subGap = subLines.length > 0 ? 4 : 0;
+
+    ctx.font = `700 ${headlineSize}px ${fonts.azeret}`;
+    if ("letterSpacing" in ctx) {
+      (ctx as unknown as Record<string, string>).letterSpacing = "-0.6px";
+    }
+    const headlineLines = config.headline
+      ? wrapLines(ctx, config.headline, maxTextW)
+      : [];
+    if ("letterSpacing" in ctx) {
+      (ctx as unknown as Record<string, string>).letterSpacing = "0px";
+    }
+    const headlineBlockH = headlineLines.length * headlineLineH;
+
+    const bodySize = Math.round(Math.max(16, subSize * 1.3));
+    const bodyLineH = Math.round(bodySize * 1.5);
+    ctx.font = `400 ${bodySize}px ${fonts.sans}`;
+    const bodyLines =
+      config.assetType === "post" && config.body
+        ? wrapLines(ctx, config.body, maxTextW)
+        : [];
+    const bodyBlockH = bodyLines.length * bodyLineH;
+    const bodyGap = bodyLines.length > 0 ? 16 : 0;
+
+    const totalBlockH =
+      subBlockH + subGap + headlineBlockH + bodyGap + bodyBlockH;
+
+    let blockY: number;
+    if (isVertical) {
+      blockY = pad * 2 + logoH;
+    } else {
+      const lastFontSize = bodyLines.length > 0 ? bodySize : headlineSize;
+      blockY = Math.round(h - pad - totalBlockH - lastFontSize * 0.3);
+    }
+
+    // Layer 3: code overlay — clipped to avoid text zone
+    if (config.showCodeOverlay && config.codeOverlayText) {
+      const codeLines = config.codeOverlayText.split("\n");
+      const codeX = isVertical ? g(w * 0.43) : pad;
+      const codeY = isVertical ? pad : g(h * 0.33);
+      // Fade out code lines as they approach the text block
+      const codeFadeStart = blockY - pad * 2;
+      const codeFadeEnd = h + codeLineH * 4;
+
+      ctx.save();
+      ctx.fillStyle =
+        config.theme.from === config.theme.to
+          ? config.theme.textColor
+          : config.theme.to;
+      ctx.font = `${codeSize}px ${fonts.mono}`;
+
+      let y = codeY;
+      let lineIdx = 0;
+      while (y < codeFadeEnd) {
+        let alpha = config.codeOverlayOpacity;
+        if (y > codeFadeStart) {
+          // Linearly fade from full opacity to 0 across the fade zone
+          const t = (y - codeFadeStart) / (codeFadeEnd - codeFadeStart);
+          alpha *= 1 - t;
+        }
+        ctx.globalAlpha = alpha;
+        ctx.fillText(codeLines[lineIdx % codeLines.length], codeX, y);
+        y += codeLineH;
+        lineIdx++;
+      }
+      ctx.restore();
+    }
+
     // Layer 4: Logo (top-left) — rasterized at exact target size
     if (logoImg) {
       const logoW = Math.round(
@@ -490,51 +556,8 @@ function renderCanvas(
       ctx.drawImage(rLogo, pad, pad, logoW, logoH);
     }
 
-    // Layer 6 + 7: Subheadline (above) → Headline → Body (below, post only)
+    // Layer 5 + 6: Subheadline (above) → Headline → Body (below, post only)
     {
-      const maxTextW = isVertical ? w - pad * 2 : w - pad * 2;
-
-      // Measure wrapped lines for each text block
-      const subLines = config.subheadline
-        ? config.subheadline.split("\n").map((l) => l.toUpperCase())
-        : [];
-      const subLineH = Math.round(subSize * 1.4);
-      const subBlockH = subLines.length * subLineH;
-      const subGap = subLines.length > 0 ? 4 : 0;
-
-      ctx.font = `700 ${headlineSize}px ${fonts.azeret}`;
-      if ("letterSpacing" in ctx) {
-        (ctx as unknown as Record<string, string>).letterSpacing = "-0.6px";
-      }
-      const headlineLines = config.headline
-        ? wrapLines(ctx, config.headline, maxTextW)
-        : [];
-      if ("letterSpacing" in ctx) {
-        (ctx as unknown as Record<string, string>).letterSpacing = "0px";
-      }
-      const headlineBlockH = headlineLines.length * headlineLineH;
-
-      const bodySize = Math.round(Math.max(16, subSize * 1.3));
-      const bodyLineH = Math.round(bodySize * 1.5);
-      ctx.font = `400 ${bodySize}px ${fonts.sans}`;
-      const bodyLines =
-        config.assetType === "post" && config.body
-          ? wrapLines(ctx, config.body, maxTextW)
-          : [];
-      const bodyBlockH = bodyLines.length * bodyLineH;
-      const bodyGap = bodyLines.length > 0 ? 16 : 0;
-
-      const totalBlockH =
-        subBlockH + subGap + headlineBlockH + bodyGap + bodyBlockH;
-
-      // Anchor: vertical = upper area below logo, landscape = bottom-aligned
-      let blockY: number;
-      if (isVertical) {
-        blockY = pad * 2 + logoH;
-      } else {
-        const lastFontSize = bodyLines.length > 0 ? bodySize : headlineSize;
-        blockY = Math.round(h - pad - totalBlockH - lastFontSize * 0.3);
-      }
 
       let cursorY = blockY;
 
@@ -762,11 +785,14 @@ export default function AdminBrandPage() {
   useEffect(() => {
     const variant =
       config.assetType === "avatar" ? config.logoVariant : "lockup";
-    const color = config.assetType === "avatar" ? config.logoColor : "#000000";
+    const color =
+      config.assetType === "avatar"
+        ? config.logoColor
+        : config.theme.textColor;
     loadSvgAsImage(LOGO_PATHS[variant], color)
       .then(setLogoImg)
       .catch(() => setLogoImg(null));
-  }, [config.logoVariant, config.logoColor, config.assetType]);
+  }, [config.logoVariant, config.logoColor, config.assetType, config.theme.textColor]);
 
   // Load background image
   useEffect(() => {
@@ -1109,48 +1135,58 @@ export default function AdminBrandPage() {
                     </div>
                   </Field>
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <Field label="Gradient Start">
-                      <ColorInput
-                        value={config.theme.from}
-                        onChange={(from) =>
-                          update({
-                            theme: { ...config.theme, name: "Custom", from },
-                          })
-                        }
-                      />
-                    </Field>
-                    <Field label="Gradient End">
-                      <ColorInput
-                        value={config.theme.to}
-                        onChange={(to) =>
-                          update({
-                            theme: {
-                              ...config.theme,
-                              name: "Custom",
-                              to,
-                              accent: to,
-                            },
-                          })
-                        }
-                      />
-                    </Field>
-                  </div>
-
-                  <Field label="Text Color">
-                    <ColorInput
-                      value={config.theme.textColor}
-                      onChange={(textColor) =>
-                        update({
-                          theme: {
-                            ...config.theme,
-                            name: "Custom",
-                            textColor,
-                          },
-                        })
-                      }
-                    />
-                  </Field>
+                  <details className="group">
+                    <summary className="text-foreground/40 hover:text-foreground/60 cursor-pointer font-mono text-[10px] transition-colors">
+                      Custom colors
+                    </summary>
+                    <div className="mt-3 space-y-3">
+                      <div className="grid grid-cols-2 gap-4">
+                        <Field label="Gradient Start">
+                          <ColorInput
+                            value={config.theme.from}
+                            onChange={(from) =>
+                              update({
+                                theme: {
+                                  ...config.theme,
+                                  name: "Custom",
+                                  from,
+                                },
+                              })
+                            }
+                          />
+                        </Field>
+                        <Field label="Gradient End">
+                          <ColorInput
+                            value={config.theme.to}
+                            onChange={(to) =>
+                              update({
+                                theme: {
+                                  ...config.theme,
+                                  name: "Custom",
+                                  to,
+                                  accent: to,
+                                },
+                              })
+                            }
+                          />
+                        </Field>
+                      </div>
+                      <Field label="Text Color">
+                        <ColorInput
+                          value={config.theme.textColor}
+                          onChange={(textColor) =>
+                            update({
+                              theme: {
+                                ...config.theme,
+                                name: "Custom",
+                                textColor,
+                              },
+                            })
+                          }
+                        />
+                      </Field>
+                    </div>
+                  </details>
                 </div>
               )}
 
