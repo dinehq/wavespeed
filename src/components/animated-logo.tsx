@@ -12,12 +12,16 @@ const SKELETON =
 export function AnimatedLogo({
   className,
   duration = 1.5,
+  loop = false,
 }: {
   className?: string;
   duration?: number;
+  loop?: boolean;
 }) {
   const id = useId().replace(/:/g, "");
   const clipId = `logo-clip-${id}`;
+
+  const totalDur = loop ? `${duration * 1.667}s` : `${duration}s`;
 
   return (
     <svg
@@ -45,28 +49,29 @@ export function AnimatedLogo({
         strokeDasharray={1}
         strokeDashoffset={1}
       >
-        {/* Draw the brush stroke left→right */}
         <animate
           attributeName="stroke-dashoffset"
-          values="1;0"
-          dur={`${duration}s`}
+          values={loop ? "1;0;0" : "1;0"}
+          dur={totalDur}
           fill="freeze"
-          calcMode="spline"
-          keySplines="0.4 0 0.2 1"
-          keyTimes="0;1"
+          calcMode={loop ? "spline" : "spline"}
+          keySplines={loop ? "0.4 0 0.2 1; 0 0 1 1" : "0.4 0 0.2 1"}
+          keyTimes={loop ? "0;0.6;1" : "0;1"}
+          repeatCount={loop ? "indefinite" : undefined}
         />
-        {/* Brush-width ramp: touch down fast (0→40 in first 5%),
-            then gradually pool/spread to fill the shape (40→150).
-            The fast ramp simulates the brush landing on the surface;
-            the slow spread simulates wet paint filling outward. */}
         <animate
           attributeName="stroke-width"
-          values="0;40;150"
-          dur={`${duration}s`}
+          values={loop ? "0;40;150;150" : "0;40;150"}
+          dur={totalDur}
           fill="freeze"
           calcMode="spline"
-          keySplines="0.0 0 1.0 1; 0.0 0 0.15 1"
-          keyTimes="0;0.05;1"
+          keySplines={
+            loop
+              ? "0.0 0 1.0 1; 0.0 0 0.15 1; 0 0 1 1"
+              : "0.0 0 1.0 1; 0.0 0 0.15 1"
+          }
+          keyTimes={loop ? "0;0.03;0.6;1" : "0;0.05;1"}
+          repeatCount={loop ? "indefinite" : undefined}
         />
       </path>
     </svg>

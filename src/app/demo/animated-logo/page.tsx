@@ -4,10 +4,8 @@ import { useState } from "react";
 import Lottie from "lottie-react";
 import { AnimatedLogo } from "@/components/animated-logo";
 
-import spinnerCadence from "../../../../public/spinner_cadence.json";
-import spinnerCadenceLoop from "../../../../public/spinner_cadence_loop.json";
-import spinnerSmooth from "../../../../public/spinner_smooth.json";
-import spinnerSmoothLoop from "../../../../public/spinner_smooth_loop.json";
+import spinner from "../../../../public/spinner.json";
+import spinnerCom from "../../../../public/spinner-com.json";
 
 function DemoCard({
   label,
@@ -43,57 +41,33 @@ function DemoCard({
 export default function AnimatedLogoDemo() {
   return (
     <div className="bg-background flex min-h-svh flex-col items-center justify-center gap-16 p-8">
-      <div className="grid grid-cols-1 gap-16 sm:grid-cols-2 lg:grid-cols-3">
-        <DemoCard label="SVG Animated">
+      <div className="grid grid-cols-3 gap-16">
+        <DemoCard label="SVG Animated" loop>
           {(key) => (
-            <AnimatedLogo key={key} className="text-foreground w-full" />
+            <AnimatedLogo key={key} className="text-foreground w-full" loop />
           )}
         </DemoCard>
 
-        <DemoCard label="Cadence">
+        <DemoCard label="Spinner" loop>
           {(key) => (
             <Lottie
               key={key}
-              animationData={spinnerCadence}
-              loop={false}
+              animationData={spinner}
+              loop
               autoplay
               className="w-full"
             />
           )}
         </DemoCard>
 
-        <DemoCard label="Cadence Loop" loop>
+        <DemoCard label="Spinner Com" loop>
           {(key) => (
             <Lottie
               key={key}
-              animationData={spinnerCadenceLoop}
+              animationData={spinnerCom}
               loop
               autoplay
-              className="h-full w-auto"
-            />
-          )}
-        </DemoCard>
-
-        <DemoCard label="Smooth">
-          {(key) => (
-            <Lottie
-              key={key}
-              animationData={spinnerSmooth}
-              loop={false}
-              autoplay
-              className="h-full w-auto"
-            />
-          )}
-        </DemoCard>
-
-        <DemoCard label="Smooth Loop" loop>
-          {(key) => (
-            <Lottie
-              key={key}
-              animationData={spinnerSmoothLoop}
-              loop
-              autoplay
-              className="h-full w-auto"
+              className="w-full"
             />
           )}
         </DemoCard>
