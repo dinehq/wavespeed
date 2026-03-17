@@ -470,11 +470,16 @@ function renderCanvas(
 
     // Layer 2: image with alpha mask — feather on left edge always
     if (bgImg) {
-      // Image area: 3:2 for landscape, 16:9 for vertical
+      // Image area: 3:2 landscape, capped to 40% height for vertical
       let targetW: number, targetH: number;
       if (isVertical) {
-        targetW = g(w - pad * 2);
-        targetH = g(targetW * (9 / 16));
+        targetH = g(h * 0.4);
+        targetW = g(targetH * (3 / 2));
+        // Clamp to canvas width minus padding
+        if (targetW > w - pad * 2) {
+          targetW = g(w - pad * 2);
+          targetH = g(targetW * (2 / 3));
+        }
       } else {
         targetW = g(w * 0.5);
         targetH = g(targetW * (2 / 3));
