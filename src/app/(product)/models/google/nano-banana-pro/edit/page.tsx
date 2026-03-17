@@ -9,8 +9,6 @@ import {
   AlertCircle,
   Braces,
   BookOpen,
-  ChevronLeft,
-  ChevronRight,
   ChevronDown,
   Copy,
   Download,
@@ -25,7 +23,6 @@ import {
   Star,
   Trash2,
   WandSparkles,
-  X,
 } from "lucide-react";
 import editorPreview from "@/images/editor-image-preview.webp";
 import spinner from "@/images/spinner.json";
@@ -38,6 +35,7 @@ import thumb6 from "@/images/thumb-6.webp";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { ShikiCodeBlock } from "@/components/ui/shiki-code-block";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -45,11 +43,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  RequestDetailDialog,
+} from "@/features/product/components/request-detail-dialog";
 import {
   Table,
   TableBody,
@@ -156,113 +151,6 @@ const resultJsonPreview = `{
     "inference": 10.83
   }
 }`;
-
-function highlightJsonToHtml(source: string) {
-  const escaped = source
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;");
-
-  return escaped
-    .replaceAll(
-      /(&quot;[^"\n]+&quot;)(?=\s*:)/g,
-      '<span class="text-rose-500">$1</span>',
-    )
-    .replaceAll(
-      /:\s*(&quot;[^"\n]*&quot;)/g,
-      ': <span class="text-emerald-500">$1</span>',
-    )
-    .replaceAll(
-      /\b(true|false|null)\b/g,
-      '<span class="text-amber-500">$1</span>',
-    )
-    .replaceAll(
-      /(?<![\w"]) (-?\d+(?:\.\d+)?)(?![\w"])/g,
-      '<span class="text-orange-500">$1</span>',
-    );
-}
-
-function highlightShellToHtml(source: string) {
-  const escaped = source
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;");
-
-  return escaped
-    .replaceAll(
-      /\b(curl|--location|--request|--header|--data-raw)\b/g,
-      '<span class="text-fuchsia-500">$1</span>',
-    )
-    .replaceAll(
-      /'(https?:\/\/[^']+)'/g,
-      "'<span class=\"text-emerald-600\">$1</span>'",
-    )
-    .replaceAll(
-      /'Authorization:\s*Bearer\s*\$\{[^}]+\}'/g,
-      '<span class="text-amber-600">$&</span>',
-    )
-    .replaceAll(
-      /'Content-Type:\s*application\/json'/g,
-      '<span class="text-rose-500">$&</span>',
-    )
-    .replaceAll(/\$\{[^}]+\}/g, '<span class="text-amber-600">$&</span>');
-}
-
-function highlightNodeToHtml(source: string) {
-  const escaped = source
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;");
-
-  return escaped
-    .replaceAll(
-      /\b(const|let|var|async|await|function|return)\b/g,
-      '<span class="text-fuchsia-500">$1</span>',
-    )
-    .replaceAll(
-      /\b(require|console|process)\b/g,
-      '<span class="text-rose-500">$1</span>',
-    )
-    .replaceAll(
-      /(\.create|\.predictions|\.log|\.env)\b/g,
-      '<span class="text-orange-500">$1</span>',
-    )
-    .replaceAll(
-      /(["'][^"'\n]*["'])/g,
-      '<span class="text-emerald-600">$1</span>',
-    )
-    .replaceAll(
-      /\b(\d+(?:\.\d+)?)\b/g,
-      '<span class="text-amber-600">$1</span>',
-    );
-}
-
-function highlightPythonToHtml(source: string) {
-  const escaped = source
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;");
-
-  return escaped
-    .replaceAll(
-      /\b(def|if|else|elif|while|for|in|from|import|as|return|break|continue|True|False|None)\b/g,
-      '<span class="text-fuchsia-500">$1</span>',
-    )
-    .replaceAll(
-      /\b(print|requests|json|time|os|response|status_code)\b/g,
-      '<span class="text-rose-500">$1</span>',
-    )
-    .replaceAll(
-      /(f?"[^"\n]*"|f?'[^'\n]*')/g,
-      '<span class="text-emerald-600">$1</span>',
-    )
-    .replaceAll(
-      /\b(\d+(?:\.\d+)?)\b/g,
-      '<span class="text-amber-600">$1</span>',
-    )
-    .replaceAll(/(\s#.*)$/gm, '<span class="text-zinc-500">$1</span>');
-}
 
 const requestDetailMockById: Record<
   (typeof mockRequestHistory)[number]["id"],
@@ -402,18 +290,6 @@ export default function ModelDetailPage() {
   const [isResultSectionExpanded, setIsResultSectionExpanded] = useState(true);
   const generationTimeoutRef = useRef<number | null>(null);
   const generationProgressTimeoutRef = useRef<number | null>(null);
-  const highlightedResultJson = useMemo(
-    () => highlightJsonToHtml(resultJsonPreview),
-    [],
-  );
-  const highlightedRequestDetailInputCode = useMemo(
-    () => highlightJsonToHtml(requestDetailInputCode),
-    [],
-  );
-  const highlightedRequestDetailOutputCode = useMemo(
-    () => highlightJsonToHtml(requestDetailOutputCode),
-    [],
-  );
   const apiJsonPayload = `{
   "enable_base64_output": false,
   "enable_sync_mode": false,
@@ -509,14 +385,6 @@ run();`;
   --header 'Content-Type: application/json' \\
   --header 'Authorization: Bearer \${WAVESPEED_API_KEY}' \\
   --data-raw '${apiPayload}'`;
-  const apiNodeCodeHighlighted = useMemo(
-    () => highlightNodeToHtml(apiNodeCode),
-    [apiNodeCode],
-  );
-  const apiHttpCodeHighlighted = useMemo(
-    () => highlightShellToHtml(apiHttpCode),
-    [apiHttpCode],
-  );
   const apiPythonCode = `import os
 import json
 import requests
@@ -530,10 +398,6 @@ payload = ${apiPayload}
 
 response = requests.post(url, headers=headers, data=json.dumps(payload))
 print(response.json())`;
-  const apiPythonCodeHighlighted = useMemo(
-    () => highlightPythonToHtml(apiPythonCode),
-    [apiPythonCode],
-  );
   const apiAnchorIds = useMemo(
     () => [
       "api-overview",
@@ -594,10 +458,6 @@ print(response.json())`;
   }
 }`;
   }, [openedRequest, openedRequestDetail]);
-  const highlightedRequestDetailResultCode = useMemo(
-    () => highlightJsonToHtml(requestDetailResultCode),
-    [requestDetailResultCode],
-  );
   const programmaticScrollTargetRef = useRef<string | null>(null);
   const programmaticScrollTimeoutRef = useRef<number | null>(null);
   const toggleRequestSelection = (requestId: string) => {
@@ -927,7 +787,7 @@ print(response.json())`;
                   </div>
                 </aside>
 
-                <div className="lg:sticky lg:top-24 lg:col-span-6 lg:self-start">
+                <div className="lg:col-span-6 lg:sticky lg:top-24 lg:self-start">
                   <div className="bg-surface rounded-xs p-4">
                     <div className="mb-4 flex items-center justify-between">
                       <div className="flex items-center gap-2">
@@ -1037,12 +897,7 @@ print(response.json())`;
                     ) : (
                       <>
                         <div className="border-input bg-muted/40 mt-4 overflow-hidden rounded-xs border p-4">
-                          <pre
-                            className="text-foreground/90 overflow-x-auto font-mono text-sm leading-8 break-all whitespace-pre-wrap"
-                            dangerouslySetInnerHTML={{
-                              __html: highlightedResultJson,
-                            }}
-                          />
+                          <ShikiCodeBlock code={resultJsonPreview} language="json" />
                         </div>
                       </>
                     )}
@@ -1284,9 +1139,10 @@ print(response.json())`;
                       >
                         <Copy className="size-4" />
                       </button>
-                      <pre className="text-foreground font-mono text-sm leading-7">
-                        npm install wavespeed
-                      </pre>
+                      <ShikiCodeBlock
+                        code="npm install wavespeed"
+                        language="bash"
+                      />
                     </div>
                   </div>
                   <div
@@ -1353,16 +1209,22 @@ print(response.json())`;
                       >
                         <Copy className="size-4" />
                       </button>
-                      <pre
-                        className="text-foreground/90 overflow-x-auto pr-8 font-mono text-sm leading-7 whitespace-pre-wrap"
-                        dangerouslySetInnerHTML={{
-                          __html:
-                            apiLanguage === "http"
-                              ? apiHttpCodeHighlighted
-                              : apiLanguage === "python"
-                                ? apiPythonCodeHighlighted
-                                : apiNodeCodeHighlighted,
-                        }}
+                      <ShikiCodeBlock
+                        code={
+                          apiLanguage === "http"
+                            ? apiHttpCode
+                            : apiLanguage === "python"
+                              ? apiPythonCode
+                              : apiNodeCode
+                        }
+                        language={
+                          apiLanguage === "http"
+                            ? "bash"
+                            : apiLanguage === "python"
+                              ? "python"
+                              : "javascript"
+                        }
+                        className="pr-8"
                       />
                     </div>
                   </div>
@@ -1516,12 +1378,7 @@ print(response.json())`;
                     Example request
                   </p>
                   <div className="bg-muted/50 rounded-xs p-4">
-                    <pre
-                      className="text-foreground/90 overflow-x-auto font-mono text-sm leading-7 whitespace-pre-wrap"
-                      dangerouslySetInnerHTML={{
-                        __html: highlightJsonToHtml(apiPayload),
-                      }}
-                    />
+                    <ShikiCodeBlock code={apiPayload} language="json" />
                   </div>
                 </section>
                 <section
@@ -1813,108 +1670,71 @@ print(response.json())`;
           )}
         </div>
       </section>
-      <Dialog
-        open={openedRequestId !== null}
-        onOpenChange={(open) => {
-          if (!open) {
+      {openedRequest && openedRequestDetail ? (
+        <RequestDetailDialog
+          open={openedRequestId !== null}
+          requestId={openedRequest.id}
+          requestIndex={openedRequestIndex}
+          totalRequests={mockRequestHistory.length}
+          hasPrevRequest={hasPrevRequest}
+          hasNextRequest={hasNextRequest}
+          previewSrc={openedRequest.preview}
+          onOpenChange={(open) => {
+            if (!open) {
+              setIsPromptExpanded(false);
+              setOpenedRequestId(null);
+            }
+          }}
+          onClose={() => {
             setIsPromptExpanded(false);
+            setIsDetailSectionExpanded(true);
+            setIsInputSectionExpanded(true);
+            setIsOutputSectionExpanded(true);
+            setIsResultSectionExpanded(true);
             setOpenedRequestId(null);
+          }}
+          onPrevRequest={openPrevRequestDetail}
+          onNextRequest={openNextRequestDetail}
+          warningBanner={
+            <div className="flex items-center gap-1.5 bg-amber-500/6 py-2.5 pr-4 pl-3 dark:bg-amber-400/8">
+              <AlertCircle className="size-3.5 shrink-0 text-amber-600 dark:text-amber-400" />
+              <p className="text-xs leading-[1.35] text-amber-900/70 dark:text-amber-200/80">
+                Your outputs are stored for <strong>7 days only</strong>. Download
+                and save important files before they expire.
+              </p>
+            </div>
           }
-        }}
-      >
-        <DialogContent
-          overlayClassName="bg-black/5 backdrop-blur-[2px] transition-[backdrop-filter] duration-300 data-[state=open]:backdrop-blur-[2px] data-[state=closed]:backdrop-blur-0"
-          className="data-[state=open]:zoom-in-100 data-[state=closed]:zoom-out-100 text-foreground fixed inset-0 z-50 h-screen w-screen max-w-none translate-x-0 translate-y-0 gap-0 rounded-none border-0 bg-transparent p-0 shadow-none"
-        >
-          <DialogTitle className="sr-only">Request detail</DialogTitle>
-          <DialogDescription className="sr-only">
-            Detailed request information panel.
-          </DialogDescription>
-          {openedRequest && openedRequestDetail ? (
-            <div
-              className="flex h-full min-h-0 bg-black/5"
-              onClick={() => {
-                setIsPromptExpanded(false);
-                setOpenedRequestId(null);
-              }}
-            >
-              <div className="hidden min-w-0 flex-1 items-center justify-center p-6 md:flex">
-                <div
-                  className="flex w-full max-w-4xl items-center justify-center overflow-hidden rounded-xs"
-                  onClick={(event) => event.stopPropagation()}
+          footer={
+            <footer className="border-foreground/10 bg-background border-t p-4">
+              <div className="grid grid-cols-3 gap-2">
+                <Button
+                  type="button"
+                  className="bg-foreground text-background hover:bg-foreground/90 h-8 rounded-xs px-3 text-xs font-bold"
                 >
-                  <Image
-                    src={openedRequest.preview}
-                    alt="Request output preview"
-                    className="animate-in zoom-in-95 h-auto max-h-[calc(100vh-3rem)] w-auto max-w-full object-contain duration-300"
-                  />
-                </div>
+                  <Pencil className="size-3.5" />
+                  Customize
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="h-8 rounded-xs px-3 text-xs font-bold"
+                >
+                  <ExternalLink className="size-3.5" />
+                  Share
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="h-8 rounded-xs px-3 text-xs font-bold"
+                >
+                  <Download className="size-3.5" />
+                  Download
+                </Button>
               </div>
-              <div
-                className="bg-background animate-in slide-in-from-right-8 border-foreground/10 flex h-full w-[min(94vw,640px)] min-w-96 flex-col border-l shadow-lg duration-300"
-                onClick={(event) => event.stopPropagation()}
-              >
-                <div className="border-foreground/10 flex items-center justify-between border-b px-4 py-3">
-                  <div className="min-w-0">
-                    <p className="truncate text-sm font-semibold">Request</p>
-                    <p className="text-foreground/65 truncate font-mono text-xs">
-                      {openedRequest.id}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon-sm"
-                      aria-label="Previous request"
-                      onClick={openPrevRequestDetail}
-                      disabled={!hasPrevRequest}
-                      className="text-foreground/70 hover:bg-foreground/5 hover:text-foreground h-7 w-7 rounded-xs"
-                    >
-                      <ChevronLeft className="size-4" />
-                    </Button>
-                    <span className="min-w-12 text-center text-xs leading-none font-normal">
-                      {openedRequestIndex + 1}/{mockRequestHistory.length}
-                    </span>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon-sm"
-                      aria-label="Next request"
-                      onClick={openNextRequestDetail}
-                      disabled={!hasNextRequest}
-                      className="text-foreground/70 hover:bg-foreground/5 hover:text-foreground h-7 w-7 rounded-xs"
-                    >
-                      <ChevronRight className="size-4" />
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon-sm"
-                      aria-label="Close request detail"
-                      onClick={() => {
-                        setIsPromptExpanded(false);
-                        setIsDetailSectionExpanded(true);
-                        setIsInputSectionExpanded(true);
-                        setIsOutputSectionExpanded(true);
-                        setIsResultSectionExpanded(true);
-                        setOpenedRequestId(null);
-                      }}
-                      className="text-foreground/70 hover:bg-foreground/5 hover:text-foreground h-8 w-8 rounded-xs"
-                    >
-                      <X className="size-4" />
-                    </Button>
-                  </div>
-                </div>
-                <div className="flex items-center gap-1.5 bg-amber-500/6 py-2.5 pr-4 pl-3 dark:bg-amber-400/8">
-                  <AlertCircle className="size-3.5 shrink-0 text-amber-600 dark:text-amber-400" />
-                  <p className="text-xs leading-[1.35] text-amber-900/70 dark:text-amber-200/80">
-                    Your outputs are stored for <strong>7 days only</strong>.
-                    Download and save important files before they expire.
-                  </p>
-                </div>
-                <div className="min-h-0 flex-1 overflow-y-auto">
-                  <div className="space-y-0">
+            </footer>
+          }
+        >
+          <div className="space-y-0">
                     <section>
                       <button
                         type="button"
@@ -2063,11 +1883,9 @@ print(response.json())`;
                             >
                               <Copy className="size-3.5" />
                             </Button>
-                            <pre
-                              className="text-foreground/90 overflow-x-auto font-mono text-xs leading-5 whitespace-pre-wrap"
-                              dangerouslySetInnerHTML={{
-                                __html: highlightedRequestDetailInputCode,
-                              }}
+                            <ShikiCodeBlock
+                              code={requestDetailInputCode}
+                              language="json"
                             />
                           </div>
                         </div>
@@ -2107,11 +1925,9 @@ print(response.json())`;
                             >
                               <Copy className="size-3.5" />
                             </Button>
-                            <pre
-                              className="text-foreground/90 overflow-x-auto font-mono text-xs leading-5 whitespace-pre-wrap"
-                              dangerouslySetInnerHTML={{
-                                __html: highlightedRequestDetailOutputCode,
-                              }}
+                            <ShikiCodeBlock
+                              code={requestDetailOutputCode}
+                              language="json"
                             />
                           </div>
                         </div>
@@ -2151,69 +1967,17 @@ print(response.json())`;
                             >
                               <Copy className="size-3.5" />
                             </Button>
-                            <pre
-                              className="text-foreground/90 overflow-x-auto font-mono text-xs leading-5 whitespace-pre-wrap"
-                              dangerouslySetInnerHTML={{
-                                __html: highlightedRequestDetailResultCode,
-                              }}
+                            <ShikiCodeBlock
+                              code={requestDetailResultCode}
+                              language="json"
                             />
                           </div>
                         </div>
                       ) : null}
                     </section>
                   </div>
-                </div>
-                <footer className="border-foreground/10 bg-background border-t p-4">
-                  <div className="grid grid-cols-3 gap-2">
-                    <Button
-                      type="button"
-                      className="bg-foreground text-background hover:bg-foreground/90 h-8 rounded-xs px-3 text-xs font-bold"
-                    >
-                      <Pencil className="size-3.5" />
-                      Customize
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      className="h-8 rounded-xs px-3 text-xs font-bold"
-                    >
-                      <ExternalLink className="size-3.5" />
-                      Share
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      className="h-8 rounded-xs px-3 text-xs font-bold"
-                    >
-                      <Download className="size-3.5" />
-                      Download
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() =>
-                        handleCopyText(openedRequest.id, "Request ID")
-                      }
-                      className="h-8 rounded-xs px-3 text-xs font-bold"
-                    >
-                      <Copy className="size-3.5" />
-                      Copy ID
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="destructive"
-                      className="h-8 rounded-xs px-3 text-xs font-bold"
-                    >
-                      <Trash2 className="size-3.5" />
-                      Delete IO
-                    </Button>
-                  </div>
-                </footer>
-              </div>
-            </div>
-          ) : null}
-        </DialogContent>
-      </Dialog>
+        </RequestDetailDialog>
+      ) : null}
     </>
   );
 }

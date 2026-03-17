@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Clipboard,
   ChevronDown,
@@ -8,7 +8,6 @@ import {
   FolderOpen,
   ImagePlus,
   Info,
-  Link2,
   Mic,
   Plus,
   Sparkles,
@@ -16,6 +15,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { ShikiCodeBlock } from "@/components/ui/shiki-code-block";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   DropdownMenu,
@@ -163,80 +163,6 @@ def main():
 
 if __name__ == "__main__":
     main()`;
-
-function highlightJsonToHtml(source: string) {
-  const escaped = source
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;");
-
-  return escaped
-    .replaceAll(
-      /(&quot;[^"\n]+&quot;)(?=\s*:)/g,
-      '<span class="text-sky-500">$1</span>',
-    )
-    .replaceAll(
-      /:\s*(&quot;[^"\n]*&quot;)/g,
-      ': <span class="text-emerald-500">$1</span>',
-    )
-    .replaceAll(
-      /\b(true|false|null)\b/g,
-      '<span class="text-amber-500">$1</span>',
-    )
-    .replaceAll(
-      /(?<![\w"]) (-?\d+(?:\.\d+)?)(?![\w"])/g,
-      '<span class="text-violet-500">$1</span>',
-    );
-}
-
-function highlightShellToHtml(source: string) {
-  const escaped = source
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;");
-
-  return escaped
-    .replaceAll(
-      /\b(curl|--location|--request|--header|--data-raw)\b/g,
-      '<span class="text-violet-500">$1</span>',
-    )
-    .replaceAll(
-      /'(https?:\/\/[^']+)'/g,
-      "'<span class=\"text-emerald-500\">$1</span>'",
-    )
-    .replaceAll(
-      /'Authorization:\s*Bearer\s*\$\{[^}]+\}'/g,
-      '<span class="text-amber-500">$&</span>',
-    )
-    .replaceAll(
-      /'Content-Type:\s*application\/json'/g,
-      '<span class="text-sky-500">$&</span>',
-    )
-    .replaceAll(/\$\{[^}]+\}/g, '<span class="text-amber-500">$&</span>');
-}
-
-function highlightPythonToHtml(source: string) {
-  const escaped = source
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;");
-
-  return escaped
-    .replaceAll(
-      /\b(def|if|else|elif|while|for|in|from|import|as|return|break|continue|True|False|None)\b/g,
-      '<span class="text-violet-500">$1</span>',
-    )
-    .replaceAll(
-      /\b(print|requests|json|time|os|load_dotenv|response|status_code)\b/g,
-      '<span class="text-sky-500">$1</span>',
-    )
-    .replaceAll(
-      /(f?"[^"\n]*"|f?'[^'\n]*')/g,
-      '<span class="text-emerald-500">$1</span>',
-    )
-    .replaceAll(/(\s#.*)$/gm, '<span class="text-amber-500">$1</span>');
-}
 
 function FieldLabel({
   children,
@@ -684,10 +610,6 @@ export function ModelDetailInputForm({
     handleLoraScaleChange(id, 1);
   };
 
-  const highlightedJsonPreview = useMemo(
-    () => highlightJsonToHtml(jsonPreview),
-    [],
-  );
   const httpSubmitPreview = [
     "curl --location --request POST 'https://api.wavespeed.ai/api/v3/google/nano-banana-2/edit' \\",
     "  --header 'Content-Type: application/json' \\",
@@ -698,18 +620,6 @@ export function ModelDetailInputForm({
     "curl --location --request GET 'https://api.wavespeed.ai/api/v3/predictions/${requestId}/result' \\",
     "  --header 'Authorization: Bearer ${WAVESPEED_API_KEY}'",
   ].join("\n");
-  const highlightedHttpSubmitPreview = useMemo(
-    () => highlightShellToHtml(httpSubmitPreview),
-    [httpSubmitPreview],
-  );
-  const highlightedHttpResultPreview = useMemo(
-    () => highlightShellToHtml(httpResultPreview),
-    [httpResultPreview],
-  );
-  const highlightedPythonPreview = useMemo(
-    () => highlightPythonToHtml(pythonPreview),
-    [],
-  );
   const handleCopyText = async (text: string, label: string) => {
     try {
       await navigator.clipboard.writeText(text);
@@ -901,10 +811,6 @@ export function ModelDetailInputForm({
                     >
                       <Trash2 className="size-3.5" />
                     </button>
-                    <div className="text-foreground/70 absolute right-2 bottom-2 left-2 flex items-center justify-between text-xs">
-                      <span>{item.sizeLabel}</span>
-                      <Link2 className="size-3.5" />
-                    </div>
                   </div>
                 ))}
               </div>
@@ -1360,9 +1266,10 @@ export function ModelDetailInputForm({
                   >
                     <Clipboard className="size-4" />
                   </Button>
-                  <pre
-                    className="text-foreground/90 overflow-x-auto pr-10 font-mono text-sm leading-8 break-all whitespace-pre-wrap"
-                    dangerouslySetInnerHTML={{ __html: highlightedJsonPreview }}
+                  <ShikiCodeBlock
+                    code={jsonPreview}
+                    language="json"
+                    className="pr-10"
                   />
                 </div>
               </>
@@ -1389,11 +1296,10 @@ export function ModelDetailInputForm({
                       >
                         <Clipboard className="size-4" />
                       </Button>
-                      <pre
-                        className="text-foreground/90 overflow-x-auto pr-10 font-mono text-sm leading-8 break-all whitespace-pre-wrap"
-                        dangerouslySetInnerHTML={{
-                          __html: highlightedHttpSubmitPreview,
-                        }}
+                      <ShikiCodeBlock
+                        code={httpSubmitPreview}
+                        language="bash"
+                        className="pr-10"
                       />
                     </CardContent>
                   </Card>
@@ -1419,11 +1325,10 @@ export function ModelDetailInputForm({
                       >
                         <Clipboard className="size-4" />
                       </Button>
-                      <pre
-                        className="text-foreground/90 overflow-x-auto pr-10 font-mono text-sm leading-8 break-all whitespace-pre-wrap"
-                        dangerouslySetInnerHTML={{
-                          __html: highlightedHttpResultPreview,
-                        }}
+                      <ShikiCodeBlock
+                        code={httpResultPreview}
+                        language="bash"
+                        className="pr-10"
                       />
                     </CardContent>
                   </Card>
@@ -1441,9 +1346,10 @@ export function ModelDetailInputForm({
                 >
                   <Clipboard className="size-4" />
                 </Button>
-                <pre
-                  className="text-foreground/90 overflow-x-auto pr-10 font-mono text-sm leading-8 break-all whitespace-pre-wrap"
-                  dangerouslySetInnerHTML={{ __html: highlightedPythonPreview }}
+                <ShikiCodeBlock
+                  code={pythonPreview}
+                  language="python"
+                  className="pr-10"
                 />
               </div>
             ) : (

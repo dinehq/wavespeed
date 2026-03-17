@@ -12,6 +12,7 @@ import {
   Copy,
   Download,
   ExternalLink,
+  Pencil,
   Search,
   Trash2,
   X,
@@ -20,12 +21,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { ShikiCodeBlock } from "@/components/ui/shiki-code-block";
 
 import { Input } from "@/components/ui/input";
 import {
@@ -49,6 +45,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ProductTopTabs } from "@/features/product/components/product-top-tabs";
+import { RequestDetailDialog } from "@/features/product/components/request-detail-dialog";
 
 import {
   gettingStartedContentByIntent,
@@ -135,6 +132,10 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
   });
   const [selectedRequestIds, setSelectedRequestIds] = useState<string[]>([]);
   const [openedRequestId, setOpenedRequestId] = useState<string | null>(null);
+  const [isDetailSectionExpanded, setIsDetailSectionExpanded] = useState(true);
+  const [isInputSectionExpanded, setIsInputSectionExpanded] = useState(true);
+  const [isOutputSectionExpanded, setIsOutputSectionExpanded] = useState(true);
+  const [isResultSectionExpanded, setIsResultSectionExpanded] = useState(true);
   const selectedRequestIdSet = useMemo(
     () => new Set(selectedRequestIds),
     [selectedRequestIds],
@@ -143,6 +144,74 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
     () => requests.find((request) => request.id === openedRequestId) ?? null,
     [openedRequestId],
   );
+  const openedRequestDetail = useMemo(() => {
+    if (!openedRequest) {
+      return null;
+    }
+    return {
+      prompt: `Generate media with model ${openedRequest.model} based on the provided prompt and preset options.`,
+      status: openedRequest.status,
+      duration: openedRequest.status === "Succeeded" ? "1m 12s" : "--",
+      timeTaken: openedRequest.status === "Succeeded" ? "43s" : "--",
+      cost: openedRequest.status === "Succeeded" ? "$0.0520" : "$0.0000",
+    };
+  }, [openedRequest]);
+  const requestDetailInputCode = useMemo(() => {
+    if (!openedRequest) {
+      return "";
+    }
+    return JSON.stringify(
+      {
+        model: openedRequest.model,
+        request_id: openedRequest.id,
+        prompt: `Generate output for request ${openedRequest.id}.`,
+        options: {
+          output: openedRequest.output,
+          quality: "high",
+          aspect_ratio: "1:1",
+        },
+      },
+      null,
+      2,
+    );
+  }, [openedRequest]);
+  const requestDetailOutputCode = useMemo(() => {
+    if (!openedRequest) {
+      return "";
+    }
+    return JSON.stringify(
+      {
+        request_id: openedRequest.id,
+        status: openedRequest.status.toLowerCase(),
+        created_at: openedRequest.createdAt,
+        output_preview: "/assets/output-preview",
+      },
+      null,
+      2,
+    );
+  }, [openedRequest]);
+  const requestDetailResultCode = useMemo(() => {
+    if (!openedRequest) {
+      return "";
+    }
+    return JSON.stringify(
+      {
+        id: openedRequest.id,
+        model: openedRequest.model,
+        output: openedRequest.output,
+        status: openedRequest.status,
+      },
+      null,
+      2,
+    );
+  }, [openedRequest]);
+  const openedRequestIndex =
+    openedRequestId === null
+      ? -1
+      : requests.findIndex((request) => request.id === openedRequestId);
+  const hasPrevRequest = openedRequestIndex > 0;
+  const hasNextRequest =
+    openedRequestIndex >= 0 && openedRequestIndex < requests.length - 1;
   const selectedRequestCount = selectedRequestIds.length;
   const areAllRequestsSelected =
     requests.length > 0 && selectedRequestCount === requests.length;
@@ -305,7 +374,42 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
     }
   };
   const openRequestDetail = (requestId: string) => {
+    setIsDetailSectionExpanded(true);
+    setIsInputSectionExpanded(true);
+    setIsOutputSectionExpanded(true);
+    setIsResultSectionExpanded(true);
     setOpenedRequestId(requestId);
+  };
+  const openPrevRequestDetail = () => {
+    if (!hasPrevRequest || openedRequestIndex <= 0) {
+      return;
+    }
+    setIsDetailSectionExpanded(true);
+    setIsInputSectionExpanded(true);
+    setIsOutputSectionExpanded(true);
+    setIsResultSectionExpanded(true);
+    setOpenedRequestId(requests[openedRequestIndex - 1].id);
+  };
+  const openNextRequestDetail = () => {
+    if (!hasNextRequest || openedRequestIndex < 0) {
+      return;
+    }
+    setIsDetailSectionExpanded(true);
+    setIsInputSectionExpanded(true);
+    setIsOutputSectionExpanded(true);
+    setIsResultSectionExpanded(true);
+    setOpenedRequestId(requests[openedRequestIndex + 1].id);
+  };
+  const copyJsonText = async (text: string, label: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      toast({
+        title: "Copied",
+        description: `${label} copied to clipboard.`,
+      });
+    } catch {
+      // Clipboard may be unavailable in unsupported browsers.
+    }
   };
   const productRouter: ProductRouter = useMemo(
     () => ({
@@ -870,63 +974,223 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
     <section className="bg-background pb-6 md:pb-8">
       {renderTopTabs()}
       {renderResolvedTabContent()}
-      <Dialog
-        open={openedRequestId !== null}
-        onOpenChange={() => setOpenedRequestId(null)}
-      >
-        <DialogContent className="border-foreground/10 bg-background max-w-xl rounded-xs border p-0 shadow-none">
-          <DialogTitle className="sr-only">Request detail</DialogTitle>
-          <DialogDescription className="sr-only">
-            Detailed request information panel.
-          </DialogDescription>
-          {openedRequest ? (
-            <div className="flex flex-col">
-              <div className="border-foreground/10 border-b px-5 py-4">
-                <p className="text-foreground/60 tracking-lg text-xs uppercase">
-                  Request ID
-                </p>
-                <p className="text-foreground mt-1 font-mono text-sm break-all">
-                  {openedRequest.id}
-                </p>
-              </div>
-              <div className="grid grid-cols-2 gap-x-6 gap-y-4 px-5 py-4">
-                <div>
-                  <p className="text-foreground/60 tracking-lg text-xs uppercase">
-                    Model
-                  </p>
-                  <p className="text-foreground mt-1 text-sm">
-                    {openedRequest.model}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-foreground/60 tracking-lg text-xs uppercase">
-                    Status
-                  </p>
-                  <p className="text-foreground mt-1 text-sm">
-                    {openedRequest.status}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-foreground/60 tracking-lg text-xs uppercase">
-                    Output
-                  </p>
-                  <p className="text-foreground mt-1 text-sm">
-                    {openedRequest.output}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-foreground/60 tracking-lg text-xs uppercase">
-                    Created
-                  </p>
-                  <p className="text-foreground mt-1 text-sm">
-                    {openedRequest.createdAt}
-                  </p>
-                </div>
-              </div>
+      {openedRequest ? (
+        <RequestDetailDialog
+          open={openedRequestId !== null}
+          requestId={openedRequest.id}
+          requestIndex={openedRequestIndex}
+          totalRequests={requests.length}
+          hasPrevRequest={hasPrevRequest}
+          hasNextRequest={hasNextRequest}
+          previewSrc={openedRequest.outputPreview}
+          onOpenChange={(open) => {
+            if (!open) {
+              setOpenedRequestId(null);
+            }
+          }}
+          onClose={() => setOpenedRequestId(null)}
+          onPrevRequest={openPrevRequestDetail}
+          onNextRequest={openNextRequestDetail}
+          warningBanner={
+            <div className="flex items-center gap-1.5 bg-amber-500/6 py-2.5 pr-4 pl-3 dark:bg-amber-400/8">
+              <AlertCircle className="size-3.5 shrink-0 text-amber-600 dark:text-amber-400" />
+              <p className="text-xs leading-[1.35] text-amber-900/70 dark:text-amber-200/80">
+                Your outputs are stored for <strong>7 days only</strong>.
+              </p>
             </div>
-          ) : null}
-        </DialogContent>
-      </Dialog>
+          }
+          footer={
+            <footer className="border-foreground/10 bg-background border-t p-4">
+              <div className="grid grid-cols-3 gap-2">
+                <Button
+                  type="button"
+                  className="bg-foreground text-background hover:bg-foreground/90 h-8 rounded-xs px-3 text-xs font-bold"
+                >
+                  <Pencil className="size-3.5" />
+                  Customize
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="h-8 rounded-xs px-3 text-xs font-bold"
+                >
+                  <ExternalLink className="size-3.5" />
+                  Share
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="h-8 rounded-xs px-3 text-xs font-bold"
+                >
+                  <Download className="size-3.5" />
+                  Download
+                </Button>
+              </div>
+            </footer>
+          }
+        >
+          <div className="space-y-0">
+            <section>
+              <button
+                type="button"
+                className="flex w-full items-center justify-between px-4 py-2.5 text-left"
+                onClick={() => setIsDetailSectionExpanded((prev) => !prev)}
+                aria-expanded={isDetailSectionExpanded}
+              >
+                <p className="text-sm font-bold">Detail</p>
+                <ChevronDown
+                  className={`text-foreground/65 size-3.5 transition-transform ${
+                    isDetailSectionExpanded ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+              {isDetailSectionExpanded && openedRequestDetail ? (
+                <div className="space-y-3 px-4 pt-2 pb-4">
+                  <div className="py-2">
+                    <p className="text-foreground/85 text-sm leading-6">
+                      {openedRequestDetail.prompt}
+                    </p>
+                  </div>
+                  <div className="space-y-1">
+                    <div className="flex min-h-8 items-center justify-between gap-3 py-1 text-sm">
+                      <span className="text-foreground/55 text-sm">Model</span>
+                      <span className="text-foreground/85 text-right text-sm font-bold">
+                        {openedRequest.model}
+                      </span>
+                    </div>
+                    <div className="flex min-h-8 items-center justify-between gap-3 py-1 text-sm">
+                      <span className="text-foreground/55 text-sm">Request ID</span>
+                      <span className="text-foreground/85 font-mono text-sm font-bold">
+                        {openedRequest.id}
+                      </span>
+                    </div>
+                    <div className="flex min-h-8 items-center justify-between gap-3 py-1 text-sm">
+                      <span className="text-foreground/55 text-sm">Status</span>
+                      <span className="text-foreground/85 text-sm font-bold">
+                        {openedRequestDetail.status}
+                      </span>
+                    </div>
+                    <div className="flex min-h-8 items-center justify-between gap-3 py-1 text-sm">
+                      <span className="text-foreground/55 text-sm">Duration</span>
+                      <span className="text-foreground/85 text-sm font-bold">
+                        {openedRequestDetail.duration}
+                      </span>
+                    </div>
+                    <div className="flex min-h-8 items-center justify-between gap-3 py-1 text-sm">
+                      <span className="text-foreground/55 text-sm">Time Taken</span>
+                      <span className="text-foreground/85 text-sm font-bold">
+                        {openedRequestDetail.timeTaken}
+                      </span>
+                    </div>
+                    <div className="flex min-h-8 items-center justify-between gap-3 py-1 text-sm">
+                      <span className="text-foreground/55 text-sm">Cost</span>
+                      <span className="text-foreground/85 text-sm font-bold">
+                        {openedRequestDetail.cost}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ) : null}
+            </section>
+            <section className="border-foreground/10 border-t">
+              <button
+                type="button"
+                className="flex w-full items-center justify-between px-4 py-2.5 text-left"
+                onClick={() => setIsInputSectionExpanded((prev) => !prev)}
+                aria-expanded={isInputSectionExpanded}
+              >
+                <p className="text-sm font-bold">Input</p>
+                <ChevronDown
+                  className={`text-foreground/65 size-3.5 transition-transform ${
+                    isInputSectionExpanded ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+              {isInputSectionExpanded ? (
+                <div className="px-4 pt-1 pb-4">
+                  <div className="bg-surface relative max-h-56 overflow-auto rounded-xs p-3 pr-9">
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon-sm"
+                      aria-label="Copy input"
+                      onClick={() => copyJsonText(requestDetailInputCode, "Input JSON")}
+                      className="text-foreground/60 hover:text-foreground absolute top-1.5 right-1.5 h-7 w-7 rounded-xs"
+                    >
+                      <Copy className="size-3.5" />
+                    </Button>
+                    <ShikiCodeBlock code={requestDetailInputCode} language="json" />
+                  </div>
+                </div>
+              ) : null}
+            </section>
+            <section className="border-foreground/10 border-t">
+              <button
+                type="button"
+                className="flex w-full items-center justify-between px-4 py-2.5 text-left"
+                onClick={() => setIsOutputSectionExpanded((prev) => !prev)}
+                aria-expanded={isOutputSectionExpanded}
+              >
+                <p className="text-sm font-bold">Output</p>
+                <ChevronDown
+                  className={`text-foreground/65 size-3.5 transition-transform ${
+                    isOutputSectionExpanded ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+              {isOutputSectionExpanded ? (
+                <div className="px-4 pt-1 pb-4">
+                  <div className="bg-surface relative max-h-48 overflow-auto rounded-xs p-3 pr-9">
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon-sm"
+                      aria-label="Copy output"
+                      onClick={() => copyJsonText(requestDetailOutputCode, "Output JSON")}
+                      className="text-foreground/60 hover:text-foreground absolute top-1.5 right-1.5 h-7 w-7 rounded-xs"
+                    >
+                      <Copy className="size-3.5" />
+                    </Button>
+                    <ShikiCodeBlock code={requestDetailOutputCode} language="json" />
+                  </div>
+                </div>
+              ) : null}
+            </section>
+            <section className="border-foreground/10 border-t">
+              <button
+                type="button"
+                className="flex w-full items-center justify-between px-4 py-2.5 text-left"
+                onClick={() => setIsResultSectionExpanded((prev) => !prev)}
+                aria-expanded={isResultSectionExpanded}
+              >
+                <p className="text-sm font-bold">Result</p>
+                <ChevronDown
+                  className={`text-foreground/65 size-3.5 transition-transform ${
+                    isResultSectionExpanded ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+              {isResultSectionExpanded ? (
+                <div className="px-4 pt-1 pb-4">
+                  <div className="bg-surface relative max-h-56 overflow-auto rounded-xs p-3 pr-9">
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon-sm"
+                      aria-label="Copy result"
+                      onClick={() => copyJsonText(requestDetailResultCode, "Result JSON")}
+                      className="text-foreground/60 hover:text-foreground absolute top-1.5 right-1.5 h-7 w-7 rounded-xs"
+                    >
+                      <Copy className="size-3.5" />
+                    </Button>
+                    <ShikiCodeBlock code={requestDetailResultCode} language="json" />
+                  </div>
+                </div>
+              ) : null}
+            </section>
+          </div>
+        </RequestDetailDialog>
+      ) : null}
     </section>
   );
 }
