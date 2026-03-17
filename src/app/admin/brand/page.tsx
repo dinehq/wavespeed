@@ -44,6 +44,7 @@ type BrandConfig = {
   theme: GradientTheme;
   headline: string;
   subheadline: string;
+  body: string;
   backgroundImage: string | null;
   showCodeOverlay: boolean;
   codeOverlayOpacity: number;
@@ -192,8 +193,9 @@ const DEFAULT_CONFIG: BrandConfig = {
   assetType: "post",
   logoVariant: "logo",
   theme: GRADIENT_PRESETS[0],
-  headline: "Ultimate AI Media\nGeneration Platform.",
-  subheadline: "",
+  headline: "Nano Banana 2",
+  subheadline: "Promotion",
+  body: "25% off during Mar.13 - 26 (UTC+8)",
   backgroundImage: null,
   showCodeOverlay: true,
   codeOverlayOpacity: 0.2,
@@ -332,9 +334,11 @@ function getFonts() {
   // Next.js font variables are set on <body> via className, not on <html>
   const style = getComputedStyle(document.body);
   const azeret = style.getPropertyValue("--font-azeret").trim() || "sans-serif";
+  const sans =
+    style.getPropertyValue("--font-geist-sans").trim() || "sans-serif";
   const mono =
     style.getPropertyValue("--font-geist-mono").trim() || "monospace";
-  return { azeret, mono };
+  return { azeret, sans, mono };
 }
 
 function renderCanvas(
@@ -458,32 +462,59 @@ function renderCanvas(
       ctx.drawImage(rLogo, pad, pad, logoW, logoH);
     }
 
-    // Layer 6 + 7: Headline + Subheadline (sub always below headline)
+    // Layer 6 + 7: Subheadline (above) → Headline → Body (below, post only)
     {
-      const headlineLines = config.headline ? config.headline.split("\n") : [];
-      const headlineBlockH = headlineLines.length * headlineLineH;
       const subLines = config.subheadline ? config.subheadline.split("\n") : [];
       const subLineH = Math.round(subSize * 1.4);
       const subBlockH = subLines.length * subLineH;
-      const gap = subLines.length > 0 ? 8 : 0;
-      const totalBlockH = headlineBlockH + gap + subBlockH;
+      const subGap = subLines.length > 0 ? 4 : 0;
 
-      // Headline Y: vertical = upper area, landscape = anchored to bottom
-      let headlineY: number;
+      const headlineLines = config.headline ? config.headline.split("\n") : [];
+      const headlineBlockH = headlineLines.length * headlineLineH;
+
+      const bodyLines =
+        config.assetType === "post" && config.body
+          ? config.body.split("\n")
+          : [];
+      const bodySize = Math.round(Math.max(16, subSize * 1.3));
+      const bodyLineH = Math.round(bodySize * 1.5);
+      const bodyBlockH = bodyLines.length * bodyLineH;
+      const bodyGap = bodyLines.length > 0 ? 16 : 0;
+
+      const totalBlockH =
+        subBlockH + subGap + headlineBlockH + bodyGap + bodyBlockH;
+
+      // Anchor: vertical = upper area below logo, landscape = bottom-aligned
+      let blockY: number;
       if (isVertical) {
-        headlineY = pad * 2 + logoH + headlineSize;
+        blockY = pad * 2 + logoH;
       } else {
-        // Bottom of last text line should be at h - pad
-        // Last baseline = headlineY + totalBlockH - headlineLineH (if no sub)
-        //               = headlineY + headlineBlockH + gap + subBlockH - subLineH (if sub)
-        // Visual bottom = last baseline + fontSize * 0.3 (descender)
-        const lastFontSize = subLines.length > 0 ? subSize : headlineSize;
-        const lastLineH = subLines.length > 0 ? subLineH : headlineLineH;
-        headlineY = Math.round(
-          h - pad - totalBlockH + lastLineH - lastFontSize * 0.3,
-        );
+        const lastFontSize = bodyLines.length > 0 ? bodySize : headlineSize;
+        blockY = Math.round(h - pad - totalBlockH - lastFontSize * 0.3);
       }
 
+      let cursorY = blockY;
+
+      // Overline / subheadline (above headline, uppercase)
+      if (config.subheadline) {
+        ctx.fillStyle = config.theme.textColor;
+        ctx.font = `500 ${subSize}px ${fonts.azeret}`;
+        ctx.globalAlpha = 0.5;
+        if ("letterSpacing" in ctx) {
+          (ctx as unknown as Record<string, string>).letterSpacing = "1px";
+        }
+        for (let i = 0; i < subLines.length; i++) {
+          ctx.fillText(subLines[i].toUpperCase(), pad, cursorY + subLineH);
+          cursorY += subLineH;
+        }
+        if ("letterSpacing" in ctx) {
+          (ctx as unknown as Record<string, string>).letterSpacing = "0px";
+        }
+        cursorY += subGap;
+        ctx.globalAlpha = 1;
+      }
+
+      // Headline
       if (config.headline) {
         ctx.fillStyle = config.theme.textColor;
         ctx.font = `700 ${headlineSize}px ${fonts.azeret}`;
@@ -491,21 +522,23 @@ function renderCanvas(
           (ctx as unknown as Record<string, string>).letterSpacing = "-0.6px";
         }
         for (let i = 0; i < headlineLines.length; i++) {
-          ctx.fillText(headlineLines[i], pad, headlineY + i * headlineLineH);
+          ctx.fillText(headlineLines[i], pad, cursorY + headlineLineH);
+          cursorY += headlineLineH;
         }
         if ("letterSpacing" in ctx) {
           (ctx as unknown as Record<string, string>).letterSpacing = "0px";
         }
       }
 
-      if (config.subheadline) {
+      // Body text (post only, below headline)
+      if (bodyLines.length > 0) {
+        cursorY += bodyGap;
         ctx.fillStyle = config.theme.textColor;
-        ctx.font = `500 ${subSize}px ${fonts.azeret}`;
-        ctx.globalAlpha = 0.7;
-
-        const subY = headlineY + headlineBlockH + gap;
-        for (let i = 0; i < subLines.length; i++) {
-          ctx.fillText(subLines[i], pad, subY + i * subLineH);
+        ctx.font = `400 ${bodySize}px ${fonts.sans}`;
+        ctx.globalAlpha = 0.6;
+        for (let i = 0; i < bodyLines.length; i++) {
+          ctx.fillText(bodyLines[i], pad, cursorY + bodyLineH);
+          cursorY += bodyLineH;
         }
         ctx.globalAlpha = 1;
       }
@@ -766,7 +799,10 @@ export default function AdminBrandPage() {
       if (format === "svg") {
         const res = await fetch(LOGO_PATHS[variant]);
         let svgText = await res.text();
-        svgText = svgText.replace(/fill="black"/g, `fill="${config.logoColor}"`);
+        svgText = svgText.replace(
+          /fill="black"/g,
+          `fill="${config.logoColor}"`,
+        );
         const blob = new Blob([svgText], { type: "image/svg+xml" });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
@@ -861,7 +897,22 @@ export default function AdminBrandPage() {
                     {(["avatar", "banner", "post"] as const).map((type) => (
                       <button
                         key={type}
-                        onClick={() => update({ assetType: type })}
+                        onClick={() => {
+                          const updates: Partial<BrandConfig> = {
+                            assetType: type,
+                          };
+                          if (type === "post") {
+                            updates.headline = "Nano Banana 2";
+                            updates.subheadline = "Promotion";
+                            updates.body = "25% off during Mar.13 - 26 (UTC+8)";
+                          } else if (type === "banner") {
+                            updates.headline =
+                              "Ultimate AI Media\nGeneration Platform";
+                            updates.subheadline = "";
+                            updates.body = "";
+                          }
+                          update(updates);
+                        }}
                         className={`cursor-pointer rounded-xs border px-3 py-2 font-mono text-xs capitalize transition-colors ${
                           config.assetType === type
                             ? "border-brand bg-brand/10 text-brand"
@@ -1060,25 +1111,35 @@ export default function AdminBrandPage() {
                 </div>
               )}
 
-              {/* Text (banner only) */}
+              {/* Text (banner/post only) */}
               {config.assetType !== "avatar" && (
                 <div className="space-y-4 p-5">
+                  <Field label="Overline" optional>
+                    <TextArea
+                      value={config.subheadline}
+                      onChange={(subheadline) => update({ subheadline })}
+                      placeholder="WAVESPEED"
+                      rows={1}
+                    />
+                  </Field>
                   <Field label="Headline">
                     <TextArea
                       value={config.headline}
                       onChange={(headline) => update({ headline })}
-                      placeholder="Ultimate AI Media&#10;Generation Platform."
+                      placeholder="Ultimate AI Media&#10;Generation Platform"
                       rows={2}
                     />
                   </Field>
-                  <Field label="Subheadline" optional>
-                    <TextArea
-                      value={config.subheadline}
-                      onChange={(subheadline) => update({ subheadline })}
-                      placeholder="wavespeed.com"
-                      rows={2}
-                    />
-                  </Field>
+                  {config.assetType === "post" && (
+                    <Field label="Body" optional>
+                      <TextArea
+                        value={config.body}
+                        onChange={(body) => update({ body })}
+                        placeholder="Additional details for the post..."
+                        rows={2}
+                      />
+                    </Field>
+                  )}
                 </div>
               )}
 
@@ -1214,75 +1275,75 @@ export default function AdminBrandPage() {
 
             {/* Logo Downloads with preview (avatar only) */}
             {config.assetType === "avatar" && (
-            <div className="border-foreground/10 rounded-md border p-5">
-              <p className="text-foreground mb-4 text-sm font-medium">
-                Download Logo
-              </p>
-              <div className="space-y-3">
-                {(["logo", "logotype", "lockup"] as const).map((v) => {
-                  const label =
-                    v === "logo"
-                      ? "Icon"
-                      : v === "logotype"
-                        ? "Wordmark"
-                        : "Lockup";
-                  return (
-                    <div
-                      key={v}
-                      className="border-foreground/10 flex items-center gap-4 rounded-md border p-3"
-                    >
-                      {/* Logo preview with safe boundary visualization */}
+              <div className="border-foreground/10 rounded-md border p-5">
+                <p className="text-foreground mb-4 text-sm font-medium">
+                  Download Logo
+                </p>
+                <div className="space-y-3">
+                  {(["logo", "logotype", "lockup"] as const).map((v) => {
+                    const label =
+                      v === "logo"
+                        ? "Icon"
+                        : v === "logotype"
+                          ? "Wordmark"
+                          : "Lockup";
+                    return (
                       <div
-                        className="relative flex h-16 w-24 shrink-0 items-center justify-center rounded-xs"
-                        style={{
-                          backgroundColor:
-                            config.logoColor === "#ffffff"
-                              ? "#1a1a1a"
-                              : config.logoColor === "#3f74ff"
-                                ? "#eef2ff"
-                                : "#f5f5f5",
-                        }}
+                        key={v}
+                        className="border-foreground/10 flex items-center gap-4 rounded-md border p-3"
                       >
-                        <div className="absolute inset-2 border border-dashed border-black/10" />
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={LOGO_PATHS[v]}
-                          alt={label}
-                          className="relative max-h-8 max-w-16 object-contain"
+                        {/* Logo preview with safe boundary visualization */}
+                        <div
+                          className="relative flex h-16 w-24 shrink-0 items-center justify-center rounded-xs"
                           style={{
-                            filter:
+                            backgroundColor:
                               config.logoColor === "#ffffff"
-                                ? "invert(1)"
+                                ? "#1a1a1a"
                                 : config.logoColor === "#3f74ff"
-                                  ? "invert(48%) sepia(52%) saturate(2878%) hue-rotate(212deg) brightness(100%) contrast(104%)"
-                                  : "none",
+                                  ? "#eef2ff"
+                                  : "#f5f5f5",
                           }}
-                        />
-                      </div>
-                      <div className="flex flex-1 flex-col items-start text-left">
-                        <span className="text-foreground text-sm font-medium">
-                          {label}
-                        </span>
-                        <div className="mt-1.5 flex gap-1.5">
-                          <button
-                            onClick={() => handleLogoDownload(v, "svg")}
-                            className="border-foreground/10 hover:border-foreground/30 hover:text-foreground text-foreground/50 cursor-pointer rounded-xs border px-2 py-0.5 font-mono text-[10px] transition-colors"
-                          >
-                            SVG
-                          </button>
-                          <button
-                            onClick={() => handleLogoDownload(v, "png")}
-                            className="border-foreground/10 hover:border-foreground/30 hover:text-foreground text-foreground/50 cursor-pointer rounded-xs border px-2 py-0.5 font-mono text-[10px] transition-colors"
-                          >
-                            PNG
-                          </button>
+                        >
+                          <div className="absolute inset-2 border border-dashed border-black/10" />
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={LOGO_PATHS[v]}
+                            alt={label}
+                            className="relative max-h-8 max-w-16 object-contain"
+                            style={{
+                              filter:
+                                config.logoColor === "#ffffff"
+                                  ? "invert(1)"
+                                  : config.logoColor === "#3f74ff"
+                                    ? "invert(48%) sepia(52%) saturate(2878%) hue-rotate(212deg) brightness(100%) contrast(104%)"
+                                    : "none",
+                            }}
+                          />
+                        </div>
+                        <div className="flex flex-1 flex-col items-start text-left">
+                          <span className="text-foreground text-sm font-medium">
+                            {label}
+                          </span>
+                          <div className="mt-1.5 flex gap-1.5">
+                            <button
+                              onClick={() => handleLogoDownload(v, "svg")}
+                              className="border-foreground/10 hover:border-foreground/30 hover:text-foreground text-foreground/50 cursor-pointer rounded-xs border px-2 py-0.5 font-mono text-[10px] transition-colors"
+                            >
+                              SVG
+                            </button>
+                            <button
+                              onClick={() => handleLogoDownload(v, "png")}
+                              className="border-foreground/10 hover:border-foreground/30 hover:text-foreground text-foreground/50 cursor-pointer rounded-xs border px-2 py-0.5 font-mono text-[10px] transition-colors"
+                            >
+                              PNG
+                            </button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
-            </div>
             )}
           </div>
 
