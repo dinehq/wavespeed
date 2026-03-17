@@ -24,7 +24,7 @@ import {
   WandSparkles,
 } from "lucide-react";
 import editorPreview from "@/images/editor-image-preview.webp";
-import spinnerCom from "../../../../../../../public/spinner-com.json";
+import spinner from "@/images/spinner.json";
 import thumb1 from "@/images/thumb-1.webp";
 import thumb2 from "@/images/thumb-2.webp";
 import thumb3 from "@/images/thumb-3.webp";
@@ -806,7 +806,7 @@ print(response.json())`;
                             <div className="bg-background/95 absolute inset-0 flex items-center justify-center">
                               <Lottie
                                 key={spinnerReplayKey}
-                                animationData={spinnerCom}
+                                animationData={spinner}
                                 loop
                                 autoplay
                                 className="h-24 w-24"

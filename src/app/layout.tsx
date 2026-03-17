@@ -11,12 +11,12 @@ import "./globals.css";
 const azeret = localFont({
   src: [
     {
-      path: "../fonts/Azeret-TRIAL-Medium.woff2",
+      path: "../fonts/Azeret-Medium.woff2",
       weight: "500",
       style: "normal",
     },
     {
-      path: "../fonts/Azeret-TRIAL-Bold.woff2",
+      path: "../fonts/Azeret-Bold.woff2",
       weight: "700",
       style: "normal",
     },
