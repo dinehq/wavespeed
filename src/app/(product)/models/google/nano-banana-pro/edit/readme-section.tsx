@@ -114,7 +114,7 @@ export function ReadmeSection() {
           </nav>
         </aside>
 
-        <article className="border-foreground/10 space-y-8 rounded-xs border p-6 md:col-span-3">
+        <article className="border-foreground/10 space-y-8 rounded-xs border p-4 md:col-span-3 md:p-6">
           <section id="intro" className="scroll-mt-28 space-y-3">
             <h3 className="text-foreground text-2xl font-semibold">
               Google Nano Banana 2 Edit
@@ -169,7 +169,8 @@ export function ReadmeSection() {
               Parameters
             </h4>
             <div className="border-foreground/10 overflow-hidden rounded-xs border">
-              <table className="w-full border-collapse text-sm">
+              <div className="overflow-x-auto">
+                <table className="min-w-max w-full border-collapse text-sm">
                 <thead className="bg-foreground/5 text-foreground">
                   <tr>
                     <th className="border-foreground/10 border-b px-3 py-2 text-left font-semibold">
@@ -198,7 +199,8 @@ export function ReadmeSection() {
                     </tr>
                   ))}
                 </tbody>
-              </table>
+                </table>
+              </div>
             </div>
           </section>
 

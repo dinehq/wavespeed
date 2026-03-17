@@ -42,9 +42,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  RequestDetailDialog,
-} from "@/features/product/components/request-detail-dialog";
+import { RequestDetailDialog } from "@/features/product/components/request-detail-dialog";
 import {
   Table,
   TableBody,
@@ -624,10 +622,10 @@ print(response.json())`;
   return (
     <>
       {isUnauthedEntry ? (
-        <div className="border-foreground/10 bg-background/95 supports-backdrop-filter:bg-background/80 sticky top-0 z-40 flex justify-center border-b px-6 backdrop-blur md:px-12 lg:px-20">
+        <div className="border-foreground/10 bg-background/95 supports-backdrop-filter:bg-background/80 sticky top-0 z-40 flex justify-center border-b px-4 backdrop-blur md:px-12 lg:px-20">
           <nav
             aria-label="Breadcrumb"
-            className="flex h-12 w-full max-w-7xl items-center gap-1.5 text-sm"
+            className="flex h-12 w-full max-w-7xl items-center gap-1.5 overflow-x-auto text-sm whitespace-nowrap [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
             <Link
               href="/explore"
@@ -651,7 +649,7 @@ print(response.json())`;
       ) : (
         <ProductTopTabs activeTab="Explore" />
       )}
-      <section className="px-6 pb-16 md:px-12 lg:px-20">
+      <section className="px-4 pb-16 md:px-12 lg:px-20">
         <div className="mx-auto flex min-h-[calc(100vh-8rem)] w-full max-w-7xl flex-col gap-8">
           <div className="flex flex-col gap-4 pt-5">
             <div className="flex flex-col gap-3 md:flex-row md:items-baseline md:justify-between md:gap-4">
@@ -737,11 +735,11 @@ print(response.json())`;
             </div>
 
             {isUnauthedEntry ? null : (
-              <div className="border-foreground/10 flex items-center gap-2 border-b pt-1">
+              <div className="border-foreground/10 flex items-center gap-1.5 overflow-x-auto border-b pt-1 whitespace-nowrap [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 <button
                   type="button"
                   onClick={() => setActiveTopTab("playground")}
-                  className={`h-10 border-b-2 px-3 text-sm font-semibold transition-colors ${
+                  className={`h-10 shrink-0 border-b-2 px-3 text-sm font-semibold transition-colors ${
                     activeTopTab === "playground"
                       ? "text-foreground border-foreground"
                       : "text-foreground/60 hover:text-foreground border-transparent"
@@ -752,7 +750,7 @@ print(response.json())`;
                 <button
                   type="button"
                   onClick={() => setActiveTopTab("api")}
-                  className={`h-10 border-b-2 px-3 text-sm font-semibold transition-colors ${
+                  className={`h-10 shrink-0 border-b-2 px-3 text-sm font-semibold transition-colors ${
                     activeTopTab === "api"
                       ? "text-foreground border-foreground"
                       : "text-foreground/60 hover:text-foreground border-transparent"
@@ -763,7 +761,7 @@ print(response.json())`;
                 <button
                   type="button"
                   onClick={() => setActiveTopTab("history")}
-                  className={`h-10 border-b-2 px-3 text-sm font-semibold transition-colors ${
+                  className={`h-10 shrink-0 border-b-2 px-3 text-sm font-semibold transition-colors ${
                     activeTopTab === "history"
                       ? "text-foreground border-foreground"
                       : "text-foreground/60 hover:text-foreground border-transparent"
@@ -777,9 +775,9 @@ print(response.json())`;
 
           {currentTopTab === "playground" ? (
             <>
-              <div className="grid min-h-0 flex-1 gap-6 lg:grid-cols-12">
+              <div className="grid min-h-0 flex-1 gap-4 md:gap-6 lg:grid-cols-12">
                 <aside className="flex min-h-0 lg:col-span-6">
-                  <div className="bg-surface flex h-full min-h-0 flex-col rounded-xs px-4 pt-4 pb-0">
+                  <div className="bg-surface flex h-full min-h-0 flex-col rounded-xs px-3 pt-3 pb-0 sm:px-4 sm:pt-4">
                     <ModelDetailInputForm
                       onRun={handleRunPrediction}
                       isRunning={isGenerating}
@@ -787,9 +785,9 @@ print(response.json())`;
                   </div>
                 </aside>
 
-                <div className="lg:col-span-6 lg:sticky lg:top-24 lg:self-start">
-                  <div className="bg-surface rounded-xs p-4">
-                    <div className="mb-4 flex items-center justify-between">
+                <div className="lg:sticky lg:top-16 lg:col-span-6 lg:self-start">
+                  <div className="bg-surface rounded-xs p-3 sm:p-4">
+                    <div className="mb-4 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
                       <div className="flex items-center gap-2">
                         <span className="text-foreground text-sm font-semibold">
                           Result
@@ -811,7 +809,7 @@ print(response.json())`;
                           {resultStatus}
                         </Badge>
                       </div>
-                      <div className="text-foreground/70 flex items-center gap-2">
+                      <div className="text-foreground/70 flex w-full flex-wrap items-center gap-2 sm:w-auto sm:justify-end">
                         <Button
                           variant="ghost"
                           size="icon-sm"
@@ -872,7 +870,7 @@ print(response.json())`;
 
                     {resultView === "preview" ? (
                       <>
-                        <div className="border-input relative mt-4 h-80 overflow-hidden rounded-xs border">
+                        <div className="border-input relative mt-4 h-72 overflow-hidden rounded-xs border sm:h-80">
                           {isGenerating ? (
                             <div className="bg-background/95 absolute inset-0 flex items-center justify-center">
                               <Lottie
@@ -897,7 +895,10 @@ print(response.json())`;
                     ) : (
                       <>
                         <div className="border-input bg-muted/40 mt-4 overflow-hidden rounded-xs border p-4">
-                          <ShikiCodeBlock code={resultJsonPreview} language="json" />
+                          <ShikiCodeBlock
+                            code={resultJsonPreview}
+                            language="json"
+                          />
                         </div>
                       </>
                     )}
@@ -1011,7 +1012,7 @@ print(response.json())`;
               <ReadmeSection />
             </>
           ) : currentTopTab === "api" ? (
-            <section className="grid items-start gap-6 md:grid-cols-12 md:gap-8">
+            <section className="grid items-start gap-4 md:grid-cols-12 md:gap-8">
               <aside className="border-foreground/10 sticky top-14 hidden rounded-xs border p-3 md:col-span-3 md:block md:min-w-60">
                 <nav className="-mx-3 space-y-1" aria-label="API docs toc">
                   <button
@@ -1064,7 +1065,7 @@ print(response.json())`;
                   ))}
                 </nav>
               </aside>
-              <article className="border-foreground/10 space-y-6 rounded-xs border p-6 md:col-span-9">
+              <article className="border-foreground/10 space-y-6 rounded-xs border p-4 md:col-span-9 md:p-6">
                 <p className="text-foreground/70 text-sm">
                   Use one of our client libraries to get started quickly.
                 </p>
@@ -1104,7 +1105,7 @@ print(response.json())`;
                   </button>
                 </div>
                 <section id="api-overview" className="scroll-mt-28 space-y-3">
-                  <h3 className="text-foreground text-4xl font-semibold tracking-tight">
+                  <h3 className="text-foreground text-3xl font-semibold tracking-tight sm:text-4xl">
                     Google Nano-banana-2 Edit
                   </h3>
                   <p className="text-foreground/80 text-sm leading-7">
@@ -1120,7 +1121,7 @@ print(response.json())`;
                 <section className="space-y-3">
                   <h4
                     id="api-calling-the-api"
-                    className="text-foreground border-border scroll-mt-28 border-b pb-2 text-3xl font-semibold tracking-tight"
+                    className="text-foreground border-border scroll-mt-28 border-b pb-2 text-2xl font-semibold tracking-tight sm:text-3xl"
                   >
                     1. Calling the API
                   </h4>
@@ -1454,15 +1455,15 @@ print(response.json())`;
                         : "max-h-0 -translate-y-1 opacity-0"
                     }`}
                   >
-                    <div className="flex items-center justify-between px-2 py-2">
+                    <div className="flex flex-col items-start gap-2 px-2 py-2 sm:flex-row sm:items-center sm:justify-between">
                       <span className="text-foreground/60 ml-2 text-xs">
                         {selectedItemsLabel}
                       </span>
-                      <div className="flex items-center gap-2">
+                      <div className="flex w-full items-center gap-2 sm:w-auto">
                         <Button
                           size="sm"
                           variant="outline"
-                          className="border-foreground/10 h-8 rounded-xs px-3 text-xs"
+                          className="border-foreground/10 h-8 flex-1 rounded-xs px-3 text-xs sm:flex-none"
                         >
                           <Download className="size-3.5" />
                           Download
@@ -1470,7 +1471,7 @@ print(response.json())`;
                         <Button
                           size="sm"
                           variant="destructive"
-                          className="h-8 rounded-xs px-3 text-xs"
+                          className="h-8 flex-1 rounded-xs px-3 text-xs sm:flex-none"
                         >
                           <Trash2 className="size-3.5" />
                           Delete
@@ -1699,14 +1700,14 @@ print(response.json())`;
             <div className="flex items-center gap-1.5 bg-amber-500/6 py-2.5 pr-4 pl-3 dark:bg-amber-400/8">
               <AlertCircle className="size-3.5 shrink-0 text-amber-600 dark:text-amber-400" />
               <p className="text-xs leading-[1.35] text-amber-900/70 dark:text-amber-200/80">
-                Your outputs are stored for <strong>7 days only</strong>. Download
-                and save important files before they expire.
+                Your outputs are stored for <strong>7 days only</strong>.
+                Download and save important files before they expire.
               </p>
             </div>
           }
           footer={
             <footer className="border-foreground/10 bg-background border-t p-4">
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
                 <Button
                   type="button"
                   className="bg-foreground text-background hover:bg-foreground/90 h-8 rounded-xs px-3 text-xs font-bold"
@@ -1735,247 +1736,224 @@ print(response.json())`;
           }
         >
           <div className="space-y-0">
-                    <section>
-                      <button
-                        type="button"
-                        className="flex w-full items-center justify-between px-4 py-2.5 text-left"
-                        onClick={() =>
-                          setIsDetailSectionExpanded((prev) => !prev)
-                        }
-                        aria-expanded={isDetailSectionExpanded}
-                      >
-                        <p className="text-sm font-bold">Detail</p>
-                        <ChevronDown
-                          className={`text-foreground/65 size-3.5 transition-transform ${
-                            isDetailSectionExpanded ? "rotate-180" : ""
-                          }`}
-                        />
-                      </button>
-                      {isDetailSectionExpanded ? (
-                        <div className="space-y-3 px-4 pt-2 pb-4">
-                          <div className="py-2">
-                            {isPromptExpanded ? (
-                              <p className="text-foreground/85 text-sm leading-6">
-                                {openedRequestDetail.prompt}
-                                {openedRequestDetail.prompt.length > 120 ? (
-                                  <>
-                                    {" "}
-                                    <button
-                                      type="button"
-                                      onClick={() =>
-                                        setIsPromptExpanded((prev) => !prev)
-                                      }
-                                      className="text-foreground/80 hover:text-foreground inline text-sm font-bold underline underline-offset-2"
-                                    >
-                                      Collapse
-                                    </button>
-                                  </>
-                                ) : null}
-                              </p>
-                            ) : (
-                              <p className="text-foreground/85 text-sm leading-6">
-                                {openedRequestDetail.prompt.length > 180
-                                  ? `${openedRequestDetail.prompt
-                                      .slice(0, 180)
-                                      .trimEnd()}...`
-                                  : openedRequestDetail.prompt}
-                                {openedRequestDetail.prompt.length > 120 ? (
-                                  <>
-                                    {" "}
-                                    <button
-                                      type="button"
-                                      onClick={() =>
-                                        setIsPromptExpanded((prev) => !prev)
-                                      }
-                                      className="text-foreground/80 hover:text-foreground inline text-sm font-bold underline underline-offset-2"
-                                    >
-                                      See all
-                                    </button>
-                                  </>
-                                ) : null}
-                              </p>
-                            )}
-                          </div>
-                          <div className="space-y-1">
-                            <div className="flex min-h-8 items-center justify-between gap-3 py-1 text-sm">
-                              <span className="text-foreground/55 text-sm">
-                                Model
-                              </span>
-                              <span className="text-foreground/85 text-right text-sm font-bold">
-                                {openedRequest.model}
-                              </span>
-                            </div>
-                            <div className="flex min-h-8 items-center justify-between gap-3 py-1 text-sm">
-                              <span className="text-foreground/55 text-sm">
-                                Request ID
-                              </span>
-                              <span className="text-foreground/85 font-mono text-sm font-bold">
-                                {openedRequest.id}
-                              </span>
-                            </div>
-                            <div className="flex min-h-8 items-center justify-between gap-3 py-1 text-sm">
-                              <span className="text-foreground/55 text-sm">
-                                Status
-                              </span>
-                              <span className="text-foreground/85 text-sm font-bold">
-                                {openedRequestDetail.status}
-                              </span>
-                            </div>
-                            <div className="flex min-h-8 items-center justify-between gap-3 py-1 text-sm">
-                              <span className="text-foreground/55 text-sm">
-                                Duration
-                              </span>
-                              <span className="text-foreground/85 text-sm font-bold">
-                                {openedRequestDetail.duration}
-                              </span>
-                            </div>
-                            <div className="flex min-h-8 items-center justify-between gap-3 py-1 text-sm">
-                              <span className="text-foreground/55 text-sm">
-                                Time Taken
-                              </span>
-                              <span className="text-foreground/85 text-sm font-bold">
-                                {openedRequestDetail.timeTaken}
-                              </span>
-                            </div>
-                            <div className="flex min-h-8 items-center justify-between gap-3 py-1 text-sm">
-                              <span className="text-foreground/55 text-sm">
-                                Cost
-                              </span>
-                              <span className="text-foreground/85 text-sm font-bold">
-                                {openedRequestDetail.cost}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      ) : null}
-                    </section>
-                    <section className="border-foreground/10 border-t">
-                      <button
-                        type="button"
-                        className="flex w-full items-center justify-between px-4 py-2.5 text-left"
-                        onClick={() =>
-                          setIsInputSectionExpanded((prev) => !prev)
-                        }
-                        aria-expanded={isInputSectionExpanded}
-                      >
-                        <p className="text-sm font-bold">Input</p>
-                        <ChevronDown
-                          className={`text-foreground/65 size-3.5 transition-transform ${
-                            isInputSectionExpanded ? "rotate-180" : ""
-                          }`}
-                        />
-                      </button>
-                      {isInputSectionExpanded ? (
-                        <div className="px-4 pt-1 pb-4">
-                          <div className="bg-surface relative max-h-56 overflow-auto rounded-xs p-3 pr-9">
-                            <Button
+            <section>
+              <button
+                type="button"
+                className="flex w-full items-center justify-between px-4 py-2.5 text-left"
+                onClick={() => setIsDetailSectionExpanded((prev) => !prev)}
+                aria-expanded={isDetailSectionExpanded}
+              >
+                <p className="text-sm font-bold">Detail</p>
+                <ChevronDown
+                  className={`text-foreground/65 size-3.5 transition-transform ${
+                    isDetailSectionExpanded ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+              {isDetailSectionExpanded ? (
+                <div className="space-y-3 px-4 pt-2 pb-4">
+                  <div className="py-2">
+                    {isPromptExpanded ? (
+                      <p className="text-foreground/85 text-sm leading-6">
+                        {openedRequestDetail.prompt}
+                        {openedRequestDetail.prompt.length > 120 ? (
+                          <>
+                            {" "}
+                            <button
                               type="button"
-                              variant="ghost"
-                              size="icon-sm"
-                              aria-label="Copy input"
                               onClick={() =>
-                                handleCopyText(
-                                  requestDetailInputCode,
-                                  "Input JSON",
-                                )
+                                setIsPromptExpanded((prev) => !prev)
                               }
-                              className="text-foreground/60 hover:text-foreground absolute top-1.5 right-1.5 h-7 w-7 rounded-xs"
+                              className="text-foreground/80 hover:text-foreground inline text-sm font-bold underline underline-offset-2"
                             >
-                              <Copy className="size-3.5" />
-                            </Button>
-                            <ShikiCodeBlock
-                              code={requestDetailInputCode}
-                              language="json"
-                            />
-                          </div>
-                        </div>
-                      ) : null}
-                    </section>
-                    <section className="border-foreground/10 border-t">
-                      <button
-                        type="button"
-                        className="flex w-full items-center justify-between px-4 py-2.5 text-left"
-                        onClick={() =>
-                          setIsOutputSectionExpanded((prev) => !prev)
-                        }
-                        aria-expanded={isOutputSectionExpanded}
-                      >
-                        <p className="text-sm font-bold">Output</p>
-                        <ChevronDown
-                          className={`text-foreground/65 size-3.5 transition-transform ${
-                            isOutputSectionExpanded ? "rotate-180" : ""
-                          }`}
-                        />
-                      </button>
-                      {isOutputSectionExpanded ? (
-                        <div className="px-4 pt-1 pb-4">
-                          <div className="bg-surface relative max-h-48 overflow-auto rounded-xs p-3 pr-9">
-                            <Button
+                              Collapse
+                            </button>
+                          </>
+                        ) : null}
+                      </p>
+                    ) : (
+                      <p className="text-foreground/85 text-sm leading-6">
+                        {openedRequestDetail.prompt.length > 180
+                          ? `${openedRequestDetail.prompt
+                              .slice(0, 180)
+                              .trimEnd()}...`
+                          : openedRequestDetail.prompt}
+                        {openedRequestDetail.prompt.length > 120 ? (
+                          <>
+                            {" "}
+                            <button
                               type="button"
-                              variant="ghost"
-                              size="icon-sm"
-                              aria-label="Copy output"
                               onClick={() =>
-                                handleCopyText(
-                                  requestDetailOutputCode,
-                                  "Output JSON",
-                                )
+                                setIsPromptExpanded((prev) => !prev)
                               }
-                              className="text-foreground/60 hover:text-foreground absolute top-1.5 right-1.5 h-7 w-7 rounded-xs"
+                              className="text-foreground/80 hover:text-foreground inline text-sm font-bold underline underline-offset-2"
                             >
-                              <Copy className="size-3.5" />
-                            </Button>
-                            <ShikiCodeBlock
-                              code={requestDetailOutputCode}
-                              language="json"
-                            />
-                          </div>
-                        </div>
-                      ) : null}
-                    </section>
-                    <section className="border-foreground/10 border-t">
-                      <button
-                        type="button"
-                        className="flex w-full items-center justify-between px-4 py-2.5 text-left"
-                        onClick={() =>
-                          setIsResultSectionExpanded((prev) => !prev)
-                        }
-                        aria-expanded={isResultSectionExpanded}
-                      >
-                        <p className="text-sm font-bold">Result</p>
-                        <ChevronDown
-                          className={`text-foreground/65 size-3.5 transition-transform ${
-                            isResultSectionExpanded ? "rotate-180" : ""
-                          }`}
-                        />
-                      </button>
-                      {isResultSectionExpanded ? (
-                        <div className="px-4 pt-1 pb-4">
-                          <div className="bg-surface relative max-h-56 overflow-auto rounded-xs p-3 pr-9">
-                            <Button
-                              type="button"
-                              variant="ghost"
-                              size="icon-sm"
-                              aria-label="Copy result"
-                              onClick={() =>
-                                handleCopyText(
-                                  requestDetailResultCode,
-                                  "Result JSON",
-                                )
-                              }
-                              className="text-foreground/60 hover:text-foreground absolute top-1.5 right-1.5 h-7 w-7 rounded-xs"
-                            >
-                              <Copy className="size-3.5" />
-                            </Button>
-                            <ShikiCodeBlock
-                              code={requestDetailResultCode}
-                              language="json"
-                            />
-                          </div>
-                        </div>
-                      ) : null}
-                    </section>
+                              See all
+                            </button>
+                          </>
+                        ) : null}
+                      </p>
+                    )}
                   </div>
+                  <div className="space-y-1">
+                    <div className="flex min-h-8 items-center justify-between gap-3 py-1 text-sm">
+                      <span className="text-foreground/55 text-sm">Model</span>
+                      <span className="text-foreground/85 text-right text-sm font-bold">
+                        {openedRequest.model}
+                      </span>
+                    </div>
+                    <div className="flex min-h-8 items-center justify-between gap-3 py-1 text-sm">
+                      <span className="text-foreground/55 text-sm">
+                        Request ID
+                      </span>
+                      <span className="text-foreground/85 text-right font-mono text-sm font-bold break-all">
+                        {openedRequest.id}
+                      </span>
+                    </div>
+                    <div className="flex min-h-8 items-center justify-between gap-3 py-1 text-sm">
+                      <span className="text-foreground/55 text-sm">Status</span>
+                      <span className="text-foreground/85 text-sm font-bold">
+                        {openedRequestDetail.status}
+                      </span>
+                    </div>
+                    <div className="flex min-h-8 items-center justify-between gap-3 py-1 text-sm">
+                      <span className="text-foreground/55 text-sm">
+                        Duration
+                      </span>
+                      <span className="text-foreground/85 text-sm font-bold">
+                        {openedRequestDetail.duration}
+                      </span>
+                    </div>
+                    <div className="flex min-h-8 items-center justify-between gap-3 py-1 text-sm">
+                      <span className="text-foreground/55 text-sm">
+                        Time Taken
+                      </span>
+                      <span className="text-foreground/85 text-sm font-bold">
+                        {openedRequestDetail.timeTaken}
+                      </span>
+                    </div>
+                    <div className="flex min-h-8 items-center justify-between gap-3 py-1 text-sm">
+                      <span className="text-foreground/55 text-sm">Cost</span>
+                      <span className="text-foreground/85 text-sm font-bold">
+                        {openedRequestDetail.cost}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ) : null}
+            </section>
+            <section className="border-foreground/10 border-t">
+              <button
+                type="button"
+                className="flex w-full items-center justify-between px-4 py-2.5 text-left"
+                onClick={() => setIsInputSectionExpanded((prev) => !prev)}
+                aria-expanded={isInputSectionExpanded}
+              >
+                <p className="text-sm font-bold">Input</p>
+                <ChevronDown
+                  className={`text-foreground/65 size-3.5 transition-transform ${
+                    isInputSectionExpanded ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+              {isInputSectionExpanded ? (
+                <div className="px-4 pt-1 pb-4">
+                  <div className="bg-surface relative max-h-56 overflow-auto rounded-xs p-3 pr-9">
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon-sm"
+                      aria-label="Copy input"
+                      onClick={() =>
+                        handleCopyText(requestDetailInputCode, "Input JSON")
+                      }
+                      className="text-foreground/60 hover:text-foreground absolute top-1.5 right-1.5 h-7 w-7 rounded-xs"
+                    >
+                      <Copy className="size-3.5" />
+                    </Button>
+                    <ShikiCodeBlock
+                      code={requestDetailInputCode}
+                      language="json"
+                    />
+                  </div>
+                </div>
+              ) : null}
+            </section>
+            <section className="border-foreground/10 border-t">
+              <button
+                type="button"
+                className="flex w-full items-center justify-between px-4 py-2.5 text-left"
+                onClick={() => setIsOutputSectionExpanded((prev) => !prev)}
+                aria-expanded={isOutputSectionExpanded}
+              >
+                <p className="text-sm font-bold">Output</p>
+                <ChevronDown
+                  className={`text-foreground/65 size-3.5 transition-transform ${
+                    isOutputSectionExpanded ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+              {isOutputSectionExpanded ? (
+                <div className="px-4 pt-1 pb-4">
+                  <div className="bg-surface relative max-h-48 overflow-auto rounded-xs p-3 pr-9">
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon-sm"
+                      aria-label="Copy output"
+                      onClick={() =>
+                        handleCopyText(requestDetailOutputCode, "Output JSON")
+                      }
+                      className="text-foreground/60 hover:text-foreground absolute top-1.5 right-1.5 h-7 w-7 rounded-xs"
+                    >
+                      <Copy className="size-3.5" />
+                    </Button>
+                    <ShikiCodeBlock
+                      code={requestDetailOutputCode}
+                      language="json"
+                    />
+                  </div>
+                </div>
+              ) : null}
+            </section>
+            <section className="border-foreground/10 border-t">
+              <button
+                type="button"
+                className="flex w-full items-center justify-between px-4 py-2.5 text-left"
+                onClick={() => setIsResultSectionExpanded((prev) => !prev)}
+                aria-expanded={isResultSectionExpanded}
+              >
+                <p className="text-sm font-bold">Result</p>
+                <ChevronDown
+                  className={`text-foreground/65 size-3.5 transition-transform ${
+                    isResultSectionExpanded ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+              {isResultSectionExpanded ? (
+                <div className="px-4 pt-1 pb-4">
+                  <div className="bg-surface relative max-h-56 overflow-auto rounded-xs p-3 pr-9">
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon-sm"
+                      aria-label="Copy result"
+                      onClick={() =>
+                        handleCopyText(requestDetailResultCode, "Result JSON")
+                      }
+                      className="text-foreground/60 hover:text-foreground absolute top-1.5 right-1.5 h-7 w-7 rounded-xs"
+                    >
+                      <Copy className="size-3.5" />
+                    </Button>
+                    <ShikiCodeBlock
+                      code={requestDetailResultCode}
+                      language="json"
+                    />
+                  </div>
+                </div>
+              ) : null}
+            </section>
+          </div>
         </RequestDetailDialog>
       ) : null}
     </>
