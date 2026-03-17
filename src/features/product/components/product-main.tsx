@@ -116,6 +116,7 @@ const requestFilterTriggerIconClass =
 const controlSelectTriggerFilterClass = `${controlSelectTriggerClass} ${requestFilterTriggerClass} data-[placeholder]:text-foreground/80 ${requestFilterTriggerIconClass}`;
 const controlIconButtonClass =
   "border-foreground/10 text-foreground/70 bg-background hover:bg-foreground/5 rounded-xs shadow-xs";
+const modelDetailHref = "/models/google/nano-banana-pro/edit";
 
 export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
   const mounted = useMounted();
@@ -410,6 +411,9 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
     } catch {
       // Clipboard may be unavailable in unsupported browsers.
     }
+  };
+  const navigateToModelDetail = () => {
+    router.push(modelDetailHref);
   };
   const productRouter: ProductRouter = useMemo(
     () => ({
@@ -1005,6 +1009,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                 <Button
                   type="button"
                   className="bg-foreground text-background hover:bg-foreground/90 h-8 rounded-xs px-3 text-xs font-bold"
+                  onClick={navigateToModelDetail}
                 >
                   <Pencil className="size-3.5" />
                   Customize
