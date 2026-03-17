@@ -183,8 +183,8 @@ const DEFAULT_CODE_OVERLAY = `void mainImage(out vec4 fragColor, in vec2 fragCoo
 // EOF //`;
 
 const LOGO_PATHS: Record<LogoVariant, string> = {
-  logo: "/logo/logo.svg",
-  logotype: "/logo/logotype.svg",
+  logo: "/logo/icon.svg",
+  logotype: "/logo/wordmark.svg",
   lockup: "/logo/lockup.svg",
 };
 
@@ -341,6 +341,34 @@ function getFonts() {
   return { azeret, sans, mono };
 }
 
+/** Word-wrap text to fit within maxWidth, respecting explicit \n line breaks */
+function wrapLines(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  maxWidth: number,
+): string[] {
+  const result: string[] = [];
+  for (const paragraph of text.split("\n")) {
+    if (!paragraph) {
+      result.push("");
+      continue;
+    }
+    const words = paragraph.split(/\s+/);
+    let line = "";
+    for (const word of words) {
+      const test = line ? `${line} ${word}` : word;
+      if (ctx.measureText(test).width > maxWidth && line) {
+        result.push(line);
+        line = word;
+      } else {
+        line = test;
+      }
+    }
+    if (line) result.push(line);
+  }
+  return result;
+}
+
 function renderCanvas(
   canvas: HTMLCanvasElement,
   config: BrandConfig,
@@ -464,20 +492,35 @@ function renderCanvas(
 
     // Layer 6 + 7: Subheadline (above) → Headline → Body (below, post only)
     {
-      const subLines = config.subheadline ? config.subheadline.split("\n") : [];
+      const maxTextW = isVertical ? w - pad * 2 : w - pad * 2;
+
+      // Measure wrapped lines for each text block
+      const subLines = config.subheadline
+        ? config.subheadline.split("\n").map((l) => l.toUpperCase())
+        : [];
       const subLineH = Math.round(subSize * 1.4);
       const subBlockH = subLines.length * subLineH;
       const subGap = subLines.length > 0 ? 4 : 0;
 
-      const headlineLines = config.headline ? config.headline.split("\n") : [];
+      ctx.font = `700 ${headlineSize}px ${fonts.azeret}`;
+      if ("letterSpacing" in ctx) {
+        (ctx as unknown as Record<string, string>).letterSpacing = "-0.6px";
+      }
+      const headlineLines = config.headline
+        ? wrapLines(ctx, config.headline, maxTextW)
+        : [];
+      if ("letterSpacing" in ctx) {
+        (ctx as unknown as Record<string, string>).letterSpacing = "0px";
+      }
       const headlineBlockH = headlineLines.length * headlineLineH;
 
-      const bodyLines =
-        config.assetType === "post" && config.body
-          ? config.body.split("\n")
-          : [];
       const bodySize = Math.round(Math.max(16, subSize * 1.3));
       const bodyLineH = Math.round(bodySize * 1.5);
+      ctx.font = `400 ${bodySize}px ${fonts.sans}`;
+      const bodyLines =
+        config.assetType === "post" && config.body
+          ? wrapLines(ctx, config.body, maxTextW)
+          : [];
       const bodyBlockH = bodyLines.length * bodyLineH;
       const bodyGap = bodyLines.length > 0 ? 16 : 0;
 
@@ -504,7 +547,7 @@ function renderCanvas(
           (ctx as unknown as Record<string, string>).letterSpacing = "1px";
         }
         for (let i = 0; i < subLines.length; i++) {
-          ctx.fillText(subLines[i].toUpperCase(), pad, cursorY + subLineH);
+          ctx.fillText(subLines[i], pad, cursorY + subLineH);
           cursorY += subLineH;
         }
         if ("letterSpacing" in ctx) {
@@ -554,8 +597,8 @@ function renderCanvas(
       const ratio = logoImg.naturalWidth / logoImg.naturalHeight;
       const isIcon = config.logoVariant === "logo";
       // Icon: 60% of canvas. Wide logos (lockup/wordmark): 80% width
-      const maxW = g(w * (isIcon ? 0.6 : 0.8));
-      const maxH = g(h * 0.6);
+      const maxW = g(w * (isIcon ? 0.75 : 0.8));
+      const maxH = g(h * (isIcon ? 0.75 : 0.6));
       let logoW: number, logoH: number;
       if (ratio > 1) {
         logoW = maxW;
