@@ -9,6 +9,8 @@ import {
   AlertCircle,
   Braces,
   BookOpen,
+  ChevronLeft,
+  ChevronRight,
   ChevronDown,
   Copy,
   Download,
@@ -18,10 +20,12 @@ import {
   ImageIcon,
   Info,
   Images,
+  Pencil,
   RefreshCw,
   Star,
   Trash2,
   WandSparkles,
+  X,
 } from "lucide-react";
 import editorPreview from "@/images/editor-image-preview.webp";
 import spinner from "@/images/spinner.json";
@@ -40,6 +44,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   Table,
   TableBody,
@@ -89,7 +99,7 @@ const relatedModels = [
 
 const mockRequestHistory = [
   {
-    id: "a1f3c9d2e4b6",
+    id: "1d3636433f4c40d1865659ebad739a53",
     model: "google/nano-banana-pro/edit",
     status: "Succeeded",
     createdAt: "2 min ago",
@@ -97,7 +107,7 @@ const mockRequestHistory = [
     preview: thumb1,
   },
   {
-    id: "bc77d4a1920f",
+    id: "bc77d4a1920f4f2ab3c81d7e9054a6f1",
     model: "google/nano-banana-2/edit",
     status: "Running",
     createdAt: "8 min ago",
@@ -105,7 +115,7 @@ const mockRequestHistory = [
     preview: editorPreview,
   },
   {
-    id: "d91e02b5c3a8",
+    id: "d91e02b5c3a84d1f95b2a63c7e4f8a10",
     model: "google/nano-banana-pro/retouch",
     status: "Running",
     createdAt: "14 min ago",
@@ -113,7 +123,7 @@ const mockRequestHistory = [
     preview: thumb5,
   },
   {
-    id: "f0a42be6c7d1",
+    id: "f0a42be6c7d14a6eb94f2c8d1e730b55",
     model: "google/nano-banana-pro/restore",
     status: "Failed",
     createdAt: "35 min ago",
@@ -121,7 +131,7 @@ const mockRequestHistory = [
     preview: thumb6,
   },
   {
-    id: "9c31aa4e7fb2",
+    id: "9c31aa4e7fb24d7fa81c2b5e6d9034aa",
     model: "google/nano-banana-2/text-to-image",
     status: "Succeeded",
     createdAt: "1 hour ago",
@@ -254,6 +264,112 @@ function highlightPythonToHtml(source: string) {
     .replaceAll(/(\s#.*)$/gm, '<span class="text-zinc-500">$1</span>');
 }
 
+const requestDetailMockById: Record<
+  (typeof mockRequestHistory)[number]["id"],
+  {
+    prompt: string;
+    requestId: string;
+    status: "Succeeded" | "Running" | "Failed";
+    duration: string;
+    timeTaken: string;
+    cost: string;
+    input: string;
+    output: string;
+  }
+> = {
+  "1d3636433f4c40d1865659ebad739a53": {
+    prompt:
+      "A hyper-realistic 4k texture of an ancient weathered brick wall with lush green moss and soft lichens.",
+    requestId: "1d3636433f4c40d1865659ebad739a53",
+    status: "Succeeded",
+    duration: "20.52s",
+    timeTaken: "2026-03-03 19:30",
+    cost: "$0.03",
+    input: `{
+  "prompt": "A hyper-realistic 4k texture of an ancient weathered brick wall with lush green moss and soft lichens.",
+  "output_format": "png",
+  "num_images": 1
+}`,
+    output: `{
+  "result": [
+    "https://cdn.wavespeed.ai/outputs/1d3636433f4c40d1865659ebad739a53.png"
+  ]
+}`,
+  },
+  bc77d4a1920f4f2ab3c81d7e9054a6f1: {
+    prompt: "Turn this product photo into studio-style ad creative.",
+    requestId: "bc77d4a1920f4f2ab3c81d7e9054a6f1",
+    status: "Running",
+    duration: "--",
+    timeTaken: "2026-03-03 19:22",
+    cost: "--",
+    input: `{
+  "prompt": "Turn this product photo into studio-style ad creative.",
+  "output_format": "png"
+}`,
+    output: `{
+  "result": "Processing..."
+}`,
+  },
+  d91e02b5c3a84d1f95b2a63c7e4f8a10: {
+    prompt:
+      "A hyper-realistic, high-resolution 4k texture of an ancient weathered brick wall heavily overgrown with lush green moss and soft lichens. The bricks are aged, featuring deep earthy tones, natural cracks, and gritty textures. Vibrant emerald moss fills the mortar lines and spills over the rough surfaces of the stones. Uniform, flat cinematic lighting ensures no harsh shadows, highlighting the intricate organic details and damp stone surfaces. The composition is a perfectly balanced overhead view, showcasing a rich tapestry of botanical growth and masonry craftsmanship with professional clarity and hyper-detailed grit.",
+    requestId: "d91e02b5c3a84d1f95b2a63c7e4f8a10",
+    status: "Running",
+    duration: "--",
+    timeTaken: "2026-03-03 19:16",
+    cost: "--",
+    input: `{
+  "prompt": "Retouch and sharpen while preserving skin details.",
+  "resolution": "2k"
+}`,
+    output: `{
+  "result": "Processing..."
+}`,
+  },
+  f0a42be6c7d14a6eb94f2c8d1e730b55: {
+    prompt: "Restore old damaged image and remove scratches.",
+    requestId: "f0a42be6c7d14a6eb94f2c8d1e730b55",
+    status: "Failed",
+    duration: "11.30s",
+    timeTaken: "2026-03-03 18:55",
+    cost: "$0.02",
+    input: `{
+  "prompt": "Restore old damaged image and remove scratches."
+}`,
+    output: `{
+  "error": "Source image quality too low"
+}`,
+  },
+  "9c31aa4e7fb24d7fa81c2b5e6d9034aa": {
+    prompt: "Generate a clean ecommerce-style hero shot.",
+    requestId: "9c31aa4e7fb24d7fa81c2b5e6d9034aa",
+    status: "Succeeded",
+    duration: "18.02s",
+    timeTaken: "2026-03-03 18:20",
+    cost: "$0.03",
+    input: `{
+  "prompt": "Generate a clean ecommerce-style hero shot.",
+  "output_format": "png"
+}`,
+    output: `{
+  "result": [
+    "https://cdn.wavespeed.ai/outputs/9c31aa4e7fb24d7fa81c2b5e6d9034aa.png"
+  ]
+}`,
+  },
+};
+
+const requestDetailInputCode = `{"prompt":"A hyper-realistic, high-resolution 4k texture of an ancient weathered brick wall heavily overgrown with lush green moss and soft lichens. The bricks are aged, featuring deep earthy tones, natural cracks, and gritty textures. Vibrant emerald moss fills the mortar lines and spills over the rough surfaces of the stones. Uniform, flat cinematic lighting ensures no harsh shadows, highlighting the intricate organic details and damp stone surfaces. The composition is a perfectly balanced overhead view, showcasing a rich tapestry of botanical growth and masonry craftsmanship with professional clarity and hyper-detailed grit.","image_size":"square_hd","num_inference_steps":8,"num_images":1,"enable_safety_checker":true,"output_format":"png","acceleration":"regular","tile_size":128,"tile_stride":64,"tiling_mode":"both","loras":[]}`;
+
+const requestDetailOutputCode = `{
+  "seed": 1542419079,
+  "images": [
+    "https://d1q70pf5vjeyhc.cloudfront.net/media/92ecf66930134a49a5a425b9def0c266/images/1772600388421313254_oSpzIR09.jpeg"
+  ],
+  "prompt": "STYLE: Emphasize photographic qualities like camera settings, depth of field, and lighting.\\nA vibrant, sunlit beach scene captured with a wide-angle lens, shallow depth of field, and natural golden-hour lighting. A young man in casual beachwear—linen short-sleeve shirt left slightly unbuttoned, rolled-up chino shorts, and leather flip-flops—stands barefoot on soft sand, smiling confidently at the camera. His hair is lightly tousled by the sea breeze, with a pair of aviator sunglasses resting on his head, and his expression radiates ease and carefree energy. The background features blurred turquoise waves and distant palm trees, creating a dreamy bokeh effect. Shot in candid-style beach photography with warm tones, high dynamic range, and realistic textures. Medium shot, eye-level, capturing his full upper body and surroundings with a natural, inviting atmosphere."
+}`;
+
 export default function ModelDetailPage() {
   const searchParams = useSearchParams();
   const isUnauthedEntry = searchParams.get("entry") === "explore";
@@ -274,12 +390,28 @@ export default function ModelDetailPage() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [spinnerReplayKey, setSpinnerReplayKey] = useState(0);
   const [resultStatus, setResultStatus] = useState<
-    "Idle" | "Starting" | "In processing" | "Completed" | "Failed"
+    "Idle" | "Starting" | "In process" | "Completed" | "Failed"
   >("Idle");
+  const [openedRequestId, setOpenedRequestId] = useState<
+    (typeof mockRequestHistory)[number]["id"] | null
+  >(null);
+  const [isPromptExpanded, setIsPromptExpanded] = useState(false);
+  const [isDetailSectionExpanded, setIsDetailSectionExpanded] = useState(true);
+  const [isInputSectionExpanded, setIsInputSectionExpanded] = useState(true);
+  const [isOutputSectionExpanded, setIsOutputSectionExpanded] = useState(true);
+  const [isResultSectionExpanded, setIsResultSectionExpanded] = useState(true);
   const generationTimeoutRef = useRef<number | null>(null);
   const generationProgressTimeoutRef = useRef<number | null>(null);
   const highlightedResultJson = useMemo(
     () => highlightJsonToHtml(resultJsonPreview),
+    [],
+  );
+  const highlightedRequestDetailInputCode = useMemo(
+    () => highlightJsonToHtml(requestDetailInputCode),
+    [],
+  );
+  const highlightedRequestDetailOutputCode = useMemo(
+    () => highlightJsonToHtml(requestDetailOutputCode),
     [],
   );
   const apiJsonPayload = `{
@@ -419,6 +551,53 @@ print(response.json())`;
   const selectedItemsLabel = `${selectedRequestCount} ${
     selectedRequestCount === 1 ? "item" : "items"
   } selected`;
+  const openedRequestIndex =
+    openedRequestId === null
+      ? -1
+      : mockRequestHistory.findIndex((item) => item.id === openedRequestId);
+  const hasPrevRequest = openedRequestIndex > 0;
+  const hasNextRequest =
+    openedRequestIndex >= 0 &&
+    openedRequestIndex < mockRequestHistory.length - 1;
+  const openedRequest =
+    mockRequestHistory.find((item) => item.id === openedRequestId) ?? null;
+  const openedRequestDetail =
+    openedRequestId !== null ? requestDetailMockById[openedRequestId] : null;
+  const requestDetailResultCode = useMemo(() => {
+    if (!openedRequest || !openedRequestDetail) {
+      return "";
+    }
+
+    const parsedDuration = Number.parseFloat(
+      openedRequestDetail.duration.replace("s", ""),
+    );
+    const inference =
+      Number.isFinite(parsedDuration) && parsedDuration > 0
+        ? Math.round(parsedDuration * 1000)
+        : 20524;
+
+    return `{
+  "code": 0,
+  "created_at": "2026-03-04T06:48:16.887224307Z",
+  "error": "",
+  "id": "${openedRequest.id}",
+  "model": "${openedRequest.model}",
+  "outputs": [
+    "https://d1q70pf5vjeyhc.cloudfront.net/predictions/${openedRequest.id}/1.png"
+  ],
+  "status": "${openedRequestDetail.status.toLowerCase()}",
+  "timings": {
+    "inference": ${inference}
+  },
+  "urls": {
+    "get": "https://api.wavespeed.ai/api/v3/predictions/${openedRequest.id}/result"
+  }
+}`;
+  }, [openedRequest, openedRequestDetail]);
+  const highlightedRequestDetailResultCode = useMemo(
+    () => highlightJsonToHtml(requestDetailResultCode),
+    [requestDetailResultCode],
+  );
   const programmaticScrollTargetRef = useRef<string | null>(null);
   const programmaticScrollTimeoutRef = useRef<number | null>(null);
   const toggleRequestSelection = (requestId: string) => {
@@ -468,14 +647,46 @@ print(response.json())`;
     setResultStatus("Starting");
     setSpinnerReplayKey((prev) => prev + 1);
     generationProgressTimeoutRef.current = window.setTimeout(() => {
-      setResultStatus("In processing");
+      setResultStatus("In process");
       generationProgressTimeoutRef.current = null;
     }, 550);
     generationTimeoutRef.current = window.setTimeout(() => {
       setIsGenerating(false);
       setResultStatus("Completed");
       generationTimeoutRef.current = null;
-    }, 2800);
+    }, 5000);
+  };
+  const openRequestDetail = (
+    requestId: (typeof mockRequestHistory)[number]["id"],
+  ) => {
+    setIsPromptExpanded(false);
+    setIsDetailSectionExpanded(true);
+    setIsInputSectionExpanded(true);
+    setIsOutputSectionExpanded(true);
+    setIsResultSectionExpanded(true);
+    setOpenedRequestId(requestId);
+  };
+  const openPrevRequestDetail = () => {
+    if (!hasPrevRequest || openedRequestIndex <= 0) {
+      return;
+    }
+    setIsPromptExpanded(false);
+    setIsDetailSectionExpanded(true);
+    setIsInputSectionExpanded(true);
+    setIsOutputSectionExpanded(true);
+    setIsResultSectionExpanded(true);
+    setOpenedRequestId(mockRequestHistory[openedRequestIndex - 1].id);
+  };
+  const openNextRequestDetail = () => {
+    if (!hasNextRequest || openedRequestIndex < 0) {
+      return;
+    }
+    setIsPromptExpanded(false);
+    setIsDetailSectionExpanded(true);
+    setIsInputSectionExpanded(true);
+    setIsOutputSectionExpanded(true);
+    setIsResultSectionExpanded(true);
+    setOpenedRequestId(mockRequestHistory[openedRequestIndex + 1].id);
   };
   const scrollToApiSection = (id: string) => {
     const el = document.getElementById(id);
@@ -716,7 +927,7 @@ print(response.json())`;
                   </div>
                 </aside>
 
-                <div className="lg:col-span-6">
+                <div className="lg:col-span-6 lg:sticky lg:top-24 lg:self-start">
                   <div className="bg-surface rounded-xs p-4">
                     <div className="mb-4 flex items-center justify-between">
                       <div className="flex items-center gap-2">
@@ -730,11 +941,11 @@ print(response.json())`;
                               ? "bg-emerald-500/15 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-300"
                               : resultStatus === "Failed"
                                 ? "bg-rose-500/15 text-rose-700 dark:bg-rose-400/15 dark:text-rose-300"
-                              : resultStatus === "In processing"
-                                ? "bg-sky-500/15 text-sky-700 dark:bg-sky-400/15 dark:text-sky-300"
-                                : resultStatus === "Starting"
-                                  ? "bg-foreground/8 text-foreground/65"
-                                : "bg-foreground/8 text-foreground/65"
+                                : resultStatus === "In process"
+                                  ? "bg-sky-500/15 text-sky-700 dark:bg-sky-400/15 dark:text-sky-300"
+                                  : resultStatus === "Starting"
+                                    ? "bg-foreground/8 text-foreground/65"
+                                    : "bg-foreground/8 text-foreground/65"
                           }`}
                         >
                           {resultStatus}
@@ -1519,9 +1730,13 @@ print(response.json())`;
                             </TableCell>
                             <TableCell className="px-3 lg:px-4">
                               <div className="flex items-center gap-1">
-                                <span className="text-foreground/70 font-mono text-sm">
+                                <button
+                                  type="button"
+                                  onClick={() => openRequestDetail(item.id)}
+                                  className="text-foreground/70 hover:text-foreground cursor-pointer font-mono text-sm underline-offset-2 hover:underline"
+                                >
                                   {item.id}
-                                </span>
+                                </button>
                                 <Button
                                   variant="ghost"
                                   size="icon-xs"
@@ -1564,6 +1779,7 @@ print(response.json())`;
                                   variant="ghost"
                                   size="icon-xs"
                                   aria-label="Open request detail"
+                                  onClick={() => openRequestDetail(item.id)}
                                   className="text-foreground/60 hover:text-foreground"
                                 >
                                   <ExternalLink className="size-3.5" />
@@ -1597,6 +1813,396 @@ print(response.json())`;
           )}
         </div>
       </section>
+      <Dialog
+        open={openedRequestId !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setIsPromptExpanded(false);
+            setOpenedRequestId(null);
+          }
+        }}
+      >
+        <DialogContent
+          overlayClassName="bg-black/5 backdrop-blur-[2px] transition-[backdrop-filter] duration-300 data-[state=open]:backdrop-blur-[2px] data-[state=closed]:backdrop-blur-0"
+          className="data-[state=open]:zoom-in-100 data-[state=closed]:zoom-out-100 text-foreground fixed inset-0 z-50 h-screen w-screen max-w-none translate-x-0 translate-y-0 gap-0 rounded-none border-0 bg-transparent p-0 shadow-none"
+        >
+          <DialogTitle className="sr-only">Request detail</DialogTitle>
+          <DialogDescription className="sr-only">
+            Detailed request information panel.
+          </DialogDescription>
+          {openedRequest && openedRequestDetail ? (
+            <div
+              className="flex h-full min-h-0 bg-black/5"
+              onClick={() => {
+                setIsPromptExpanded(false);
+                setOpenedRequestId(null);
+              }}
+            >
+              <div className="hidden min-w-0 flex-1 items-center justify-center p-6 md:flex">
+                <div
+                  className="flex w-full max-w-4xl items-center justify-center overflow-hidden rounded-xs"
+                  onClick={(event) => event.stopPropagation()}
+                >
+                  <Image
+                    src={openedRequest.preview}
+                    alt="Request output preview"
+                    className="animate-in zoom-in-95 h-auto max-h-[calc(100vh-3rem)] w-auto max-w-full object-contain duration-300"
+                  />
+                </div>
+              </div>
+              <div
+                className="bg-background animate-in slide-in-from-right-8 border-foreground/10 flex h-full w-[min(94vw,640px)] min-w-96 flex-col border-l shadow-lg duration-300"
+                onClick={(event) => event.stopPropagation()}
+              >
+                <div className="border-foreground/10 flex items-center justify-between border-b px-4 py-3">
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-semibold">Request</p>
+                    <p className="text-foreground/65 truncate font-mono text-xs">
+                      {openedRequest.id}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon-sm"
+                      aria-label="Previous request"
+                      onClick={openPrevRequestDetail}
+                      disabled={!hasPrevRequest}
+                      className="text-foreground/70 hover:bg-foreground/5 hover:text-foreground h-7 w-7 rounded-xs"
+                    >
+                      <ChevronLeft className="size-4" />
+                    </Button>
+                    <span className="min-w-12 text-center text-xs leading-none font-normal">
+                      {openedRequestIndex + 1}/{mockRequestHistory.length}
+                    </span>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon-sm"
+                      aria-label="Next request"
+                      onClick={openNextRequestDetail}
+                      disabled={!hasNextRequest}
+                      className="text-foreground/70 hover:bg-foreground/5 hover:text-foreground h-7 w-7 rounded-xs"
+                    >
+                      <ChevronRight className="size-4" />
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon-sm"
+                      aria-label="Close request detail"
+                      onClick={() => {
+                        setIsPromptExpanded(false);
+                        setIsDetailSectionExpanded(true);
+                        setIsInputSectionExpanded(true);
+                        setIsOutputSectionExpanded(true);
+                        setIsResultSectionExpanded(true);
+                        setOpenedRequestId(null);
+                      }}
+                      className="text-foreground/70 hover:bg-foreground/5 hover:text-foreground h-8 w-8 rounded-xs"
+                    >
+                      <X className="size-4" />
+                    </Button>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1.5 bg-amber-500/6 py-2.5 pr-4 pl-3 dark:bg-amber-400/8">
+                  <AlertCircle className="size-3.5 shrink-0 text-amber-600 dark:text-amber-400" />
+                  <p className="text-xs leading-[1.35] text-amber-900/70 dark:text-amber-200/80">
+                    Your outputs are stored for <strong>7 days only</strong>.
+                    Download and save important files before they expire.
+                  </p>
+                </div>
+                <div className="min-h-0 flex-1 overflow-y-auto">
+                  <div className="space-y-0">
+                    <section>
+                      <button
+                        type="button"
+                        className="flex w-full items-center justify-between px-4 py-2.5 text-left"
+                        onClick={() => setIsDetailSectionExpanded((prev) => !prev)}
+                        aria-expanded={isDetailSectionExpanded}
+                      >
+                        <p className="text-sm font-bold">Detail</p>
+                        <ChevronDown
+                          className={`text-foreground/65 size-3.5 transition-transform ${
+                            isDetailSectionExpanded ? "rotate-180" : ""
+                          }`}
+                        />
+                      </button>
+                      {isDetailSectionExpanded ? (
+                        <div className="space-y-3 px-4 pt-2 pb-4">
+                          <div className="py-2">
+                            {isPromptExpanded ? (
+                              <p className="text-foreground/85 text-sm leading-6">
+                                {openedRequestDetail.prompt}
+                                {openedRequestDetail.prompt.length > 120 ? (
+                                  <>
+                                    {" "}
+                                    <button
+                                      type="button"
+                                      onClick={() =>
+                                        setIsPromptExpanded((prev) => !prev)
+                                      }
+                                      className="text-foreground/80 hover:text-foreground inline text-sm font-bold underline underline-offset-2"
+                                    >
+                                      Collapse
+                                    </button>
+                                  </>
+                                ) : null}
+                              </p>
+                            ) : (
+                              <p className="text-foreground/85 text-sm leading-6">
+                                {openedRequestDetail.prompt.length > 180
+                                  ? `${openedRequestDetail.prompt
+                                      .slice(0, 180)
+                                      .trimEnd()}...`
+                                  : openedRequestDetail.prompt}
+                                {openedRequestDetail.prompt.length > 120 ? (
+                                  <>
+                                    {" "}
+                                    <button
+                                      type="button"
+                                      onClick={() =>
+                                        setIsPromptExpanded((prev) => !prev)
+                                      }
+                                      className="text-foreground/80 hover:text-foreground inline text-sm font-bold underline underline-offset-2"
+                                    >
+                                      See all
+                                    </button>
+                                  </>
+                                ) : null}
+                              </p>
+                            )}
+                          </div>
+                          <div className="space-y-1">
+                            <div className="flex min-h-8 items-center justify-between gap-3 py-1 text-sm">
+                              <span className="text-foreground/55 text-sm">
+                                Model
+                              </span>
+                              <span className="text-foreground/85 text-right text-sm font-bold">
+                                {openedRequest.model}
+                              </span>
+                            </div>
+                            <div className="flex min-h-8 items-center justify-between gap-3 py-1 text-sm">
+                              <span className="text-foreground/55 text-sm">
+                                Request ID
+                              </span>
+                              <span className="text-foreground/85 font-mono text-sm font-bold">
+                                {openedRequest.id}
+                              </span>
+                            </div>
+                            <div className="flex min-h-8 items-center justify-between gap-3 py-1 text-sm">
+                              <span className="text-foreground/55 text-sm">
+                                Status
+                              </span>
+                              <span className="text-foreground/85 text-sm font-bold">
+                                {openedRequestDetail.status}
+                              </span>
+                            </div>
+                            <div className="flex min-h-8 items-center justify-between gap-3 py-1 text-sm">
+                              <span className="text-foreground/55 text-sm">
+                                Duration
+                              </span>
+                              <span className="text-foreground/85 text-sm font-bold">
+                                {openedRequestDetail.duration}
+                              </span>
+                            </div>
+                            <div className="flex min-h-8 items-center justify-between gap-3 py-1 text-sm">
+                              <span className="text-foreground/55 text-sm">
+                                Time Taken
+                              </span>
+                              <span className="text-foreground/85 text-sm font-bold">
+                                {openedRequestDetail.timeTaken}
+                              </span>
+                            </div>
+                            <div className="flex min-h-8 items-center justify-between gap-3 py-1 text-sm">
+                              <span className="text-foreground/55 text-sm">
+                                Cost
+                              </span>
+                              <span className="text-foreground/85 text-sm font-bold">
+                                {openedRequestDetail.cost}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      ) : null}
+                    </section>
+                    <section className="border-foreground/10 border-t">
+                      <button
+                        type="button"
+                        className="flex w-full items-center justify-between px-4 py-2.5 text-left"
+                        onClick={() => setIsInputSectionExpanded((prev) => !prev)}
+                        aria-expanded={isInputSectionExpanded}
+                      >
+                        <p className="text-sm font-bold">Input</p>
+                        <ChevronDown
+                          className={`text-foreground/65 size-3.5 transition-transform ${
+                            isInputSectionExpanded ? "rotate-180" : ""
+                          }`}
+                        />
+                      </button>
+                      {isInputSectionExpanded ? (
+                        <div className="px-4 pt-1 pb-4">
+                          <div className="bg-surface relative max-h-56 overflow-auto rounded-xs p-3 pr-9">
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="icon-sm"
+                              aria-label="Copy input"
+                              onClick={() =>
+                                handleCopyText(requestDetailInputCode, "Input JSON")
+                              }
+                              className="text-foreground/60 hover:text-foreground absolute top-1.5 right-1.5 h-7 w-7 rounded-xs"
+                            >
+                              <Copy className="size-3.5" />
+                            </Button>
+                            <pre
+                              className="text-foreground/90 overflow-x-auto font-mono text-xs leading-5 whitespace-pre-wrap"
+                              dangerouslySetInnerHTML={{
+                                __html: highlightedRequestDetailInputCode,
+                              }}
+                            />
+                          </div>
+                        </div>
+                      ) : null}
+                    </section>
+                    <section className="border-foreground/10 border-t">
+                      <button
+                        type="button"
+                        className="flex w-full items-center justify-between px-4 py-2.5 text-left"
+                        onClick={() => setIsOutputSectionExpanded((prev) => !prev)}
+                        aria-expanded={isOutputSectionExpanded}
+                      >
+                        <p className="text-sm font-bold">Output</p>
+                        <ChevronDown
+                          className={`text-foreground/65 size-3.5 transition-transform ${
+                            isOutputSectionExpanded ? "rotate-180" : ""
+                          }`}
+                        />
+                      </button>
+                      {isOutputSectionExpanded ? (
+                        <div className="px-4 pt-1 pb-4">
+                          <div className="bg-surface relative max-h-48 overflow-auto rounded-xs p-3 pr-9">
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="icon-sm"
+                              aria-label="Copy output"
+                              onClick={() =>
+                                handleCopyText(
+                                  requestDetailOutputCode,
+                                  "Output JSON",
+                                )
+                              }
+                              className="text-foreground/60 hover:text-foreground absolute top-1.5 right-1.5 h-7 w-7 rounded-xs"
+                            >
+                              <Copy className="size-3.5" />
+                            </Button>
+                            <pre
+                              className="text-foreground/90 overflow-x-auto font-mono text-xs leading-5 whitespace-pre-wrap"
+                              dangerouslySetInnerHTML={{
+                                __html: highlightedRequestDetailOutputCode,
+                              }}
+                            />
+                          </div>
+                        </div>
+                      ) : null}
+                    </section>
+                    <section className="border-foreground/10 border-t">
+                      <button
+                        type="button"
+                        className="flex w-full items-center justify-between px-4 py-2.5 text-left"
+                        onClick={() => setIsResultSectionExpanded((prev) => !prev)}
+                        aria-expanded={isResultSectionExpanded}
+                      >
+                        <p className="text-sm font-bold">Result</p>
+                        <ChevronDown
+                          className={`text-foreground/65 size-3.5 transition-transform ${
+                            isResultSectionExpanded ? "rotate-180" : ""
+                          }`}
+                        />
+                      </button>
+                      {isResultSectionExpanded ? (
+                        <div className="px-4 pt-1 pb-4">
+                          <div className="bg-surface relative max-h-56 overflow-auto rounded-xs p-3 pr-9">
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="icon-sm"
+                              aria-label="Copy result"
+                              onClick={() =>
+                                handleCopyText(
+                                  requestDetailResultCode,
+                                  "Result JSON",
+                                )
+                              }
+                              className="text-foreground/60 hover:text-foreground absolute top-1.5 right-1.5 h-7 w-7 rounded-xs"
+                            >
+                              <Copy className="size-3.5" />
+                            </Button>
+                            <pre
+                              className="text-foreground/90 overflow-x-auto font-mono text-xs leading-5 whitespace-pre-wrap"
+                              dangerouslySetInnerHTML={{
+                                __html: highlightedRequestDetailResultCode,
+                              }}
+                            />
+                          </div>
+                        </div>
+                      ) : null}
+                    </section>
+                  </div>
+                </div>
+                <footer className="border-foreground/10 bg-background border-t p-4">
+                  <div className="grid grid-cols-3 gap-2">
+                    <Button
+                      type="button"
+                      className="bg-foreground text-background hover:bg-foreground/90 h-8 rounded-xs px-3 text-xs font-bold"
+                    >
+                      <Pencil className="size-3.5" />
+                      Customize
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="h-8 rounded-xs px-3 text-xs font-bold"
+                    >
+                      <ExternalLink className="size-3.5" />
+                      Share
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="h-8 rounded-xs px-3 text-xs font-bold"
+                    >
+                      <Download className="size-3.5" />
+                      Download
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() =>
+                        handleCopyText(openedRequest.id, "Request ID")
+                      }
+                      className="h-8 rounded-xs px-3 text-xs font-bold"
+                    >
+                      <Copy className="size-3.5" />
+                      Copy ID
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      className="h-8 rounded-xs px-3 text-xs font-bold"
+                    >
+                      <Trash2 className="size-3.5" />
+                      Delete IO
+                    </Button>
+                  </div>
+                </footer>
+              </div>
+            </div>
+          ) : null}
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

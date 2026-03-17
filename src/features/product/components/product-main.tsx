@@ -20,6 +20,12 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 import { Input } from "@/components/ui/input";
 import {
@@ -128,9 +134,14 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
     to: new Date(2026, 2, 3),
   });
   const [selectedRequestIds, setSelectedRequestIds] = useState<string[]>([]);
+  const [openedRequestId, setOpenedRequestId] = useState<string | null>(null);
   const selectedRequestIdSet = useMemo(
     () => new Set(selectedRequestIds),
     [selectedRequestIds],
+  );
+  const openedRequest = useMemo(
+    () => requests.find((request) => request.id === openedRequestId) ?? null,
+    [openedRequestId],
   );
   const selectedRequestCount = selectedRequestIds.length;
   const areAllRequestsSelected =
@@ -294,7 +305,7 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
     }
   };
   const openRequestDetail = (requestId: string) => {
-    router.push(`/requests/${requestId}`);
+    setOpenedRequestId(requestId);
   };
   const productRouter: ProductRouter = useMemo(
     () => ({
@@ -859,6 +870,52 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
     <section className="bg-background pb-6 md:pb-8">
       {renderTopTabs()}
       {renderResolvedTabContent()}
+      <Dialog open={openedRequestId !== null} onOpenChange={() => setOpenedRequestId(null)}>
+        <DialogContent className="border-foreground/10 bg-background max-w-xl rounded-xs border p-0 shadow-none">
+          <DialogTitle className="sr-only">Request detail</DialogTitle>
+          <DialogDescription className="sr-only">
+            Detailed request information panel.
+          </DialogDescription>
+          {openedRequest ? (
+            <div className="flex flex-col">
+              <div className="border-foreground/10 border-b px-5 py-4">
+                <p className="text-foreground/60 tracking-lg text-xs uppercase">
+                  Request ID
+                </p>
+                <p className="text-foreground mt-1 font-mono text-sm break-all">
+                  {openedRequest.id}
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-x-6 gap-y-4 px-5 py-4">
+                <div>
+                  <p className="text-foreground/60 tracking-lg text-xs uppercase">
+                    Model
+                  </p>
+                  <p className="text-foreground mt-1 text-sm">{openedRequest.model}</p>
+                </div>
+                <div>
+                  <p className="text-foreground/60 tracking-lg text-xs uppercase">
+                    Status
+                  </p>
+                  <p className="text-foreground mt-1 text-sm">{openedRequest.status}</p>
+                </div>
+                <div>
+                  <p className="text-foreground/60 tracking-lg text-xs uppercase">
+                    Output
+                  </p>
+                  <p className="text-foreground mt-1 text-sm">{openedRequest.output}</p>
+                </div>
+                <div>
+                  <p className="text-foreground/60 tracking-lg text-xs uppercase">
+                    Created
+                  </p>
+                  <p className="text-foreground mt-1 text-sm">{openedRequest.createdAt}</p>
+                </div>
+              </div>
+            </div>
+          ) : null}
+        </DialogContent>
+      </Dialog>
     </section>
   );
 }
