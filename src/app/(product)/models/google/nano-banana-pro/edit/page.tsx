@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import Lottie from "lottie-react";
 import { useSearchParams } from "next/navigation";
 import {
   AlertCircle,
@@ -18,12 +19,12 @@ import {
   Info,
   Images,
   RefreshCw,
-  Sparkles,
   Star,
   Trash2,
   WandSparkles,
 } from "lucide-react";
 import editorPreview from "@/images/editor-image-preview.webp";
+import spinnerSmoothLoop from "../../../../../../../public/spinner_smooth_loop.json";
 import thumb1 from "@/images/thumb-1.webp";
 import thumb2 from "@/images/thumb-2.webp";
 import thumb3 from "@/images/thumb-3.webp";
@@ -270,6 +271,13 @@ export default function ModelDetailPage() {
     mockRequestHistory.filter((item) => item.selected).map((item) => item.id),
   );
   const [activeApiAnchor, setActiveApiAnchor] = useState("api-install-client");
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [spinnerReplayKey, setSpinnerReplayKey] = useState(0);
+  const [resultStatus, setResultStatus] = useState<
+    "Idle" | "Starting" | "In processing" | "Completed" | "Failed"
+  >("Idle");
+  const generationTimeoutRef = useRef<number | null>(null);
+  const generationProgressTimeoutRef = useRef<number | null>(null);
   const highlightedResultJson = useMemo(
     () => highlightJsonToHtml(resultJsonPreview),
     [],
@@ -448,6 +456,27 @@ print(response.json())`;
       });
     }
   };
+  const handleRunPrediction = () => {
+    if (generationTimeoutRef.current !== null) {
+      window.clearTimeout(generationTimeoutRef.current);
+    }
+    if (generationProgressTimeoutRef.current !== null) {
+      window.clearTimeout(generationProgressTimeoutRef.current);
+    }
+    setResultView("preview");
+    setIsGenerating(true);
+    setResultStatus("Starting");
+    setSpinnerReplayKey((prev) => prev + 1);
+    generationProgressTimeoutRef.current = window.setTimeout(() => {
+      setResultStatus("In processing");
+      generationProgressTimeoutRef.current = null;
+    }, 550);
+    generationTimeoutRef.current = window.setTimeout(() => {
+      setIsGenerating(false);
+      setResultStatus("Completed");
+      generationTimeoutRef.current = null;
+    }, 2800);
+  };
   const scrollToApiSection = (id: string) => {
     const el = document.getElementById(id);
     if (!el) {
@@ -509,6 +538,17 @@ print(response.json())`;
       programmaticScrollTargetRef.current = null;
     };
   }, [currentTopTab, apiAnchorIds]);
+
+  useEffect(() => {
+    return () => {
+      if (generationTimeoutRef.current !== null) {
+        window.clearTimeout(generationTimeoutRef.current);
+      }
+      if (generationProgressTimeoutRef.current !== null) {
+        window.clearTimeout(generationProgressTimeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
     <>
@@ -669,7 +709,10 @@ print(response.json())`;
               <div className="grid min-h-0 flex-1 gap-6 lg:grid-cols-12">
                 <aside className="flex min-h-0 lg:col-span-6">
                   <div className="bg-surface flex h-full min-h-0 flex-col rounded-xs px-4 pt-4 pb-0">
-                    <ModelDetailInputForm />
+                    <ModelDetailInputForm
+                      onRun={handleRunPrediction}
+                      isRunning={isGenerating}
+                    />
                   </div>
                 </aside>
 
@@ -682,9 +725,19 @@ print(response.json())`;
                         </span>
                         <Badge
                           variant="outline"
-                          className="text-foreground/70 border-foreground/10 h-5 rounded-xs px-1.5 text-xs font-medium"
+                          className={`tracking-lg rounded-xs border-0 px-2 py-1 text-xs ${
+                            resultStatus === "Completed"
+                              ? "bg-emerald-500/15 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-300"
+                              : resultStatus === "Failed"
+                                ? "bg-rose-500/15 text-rose-700 dark:bg-rose-400/15 dark:text-rose-300"
+                              : resultStatus === "In processing"
+                                ? "bg-sky-500/15 text-sky-700 dark:bg-sky-400/15 dark:text-sky-300"
+                                : resultStatus === "Starting"
+                                  ? "bg-foreground/8 text-foreground/65"
+                                : "bg-foreground/8 text-foreground/65"
+                          }`}
                         >
-                          Idle
+                          {resultStatus}
                         </Badge>
                       </div>
                       <div className="text-foreground/70 flex items-center gap-2">
@@ -698,6 +751,9 @@ print(response.json())`;
                         <Button
                           variant="ghost"
                           size="icon-sm"
+                          onClick={handleRunPrediction}
+                          disabled={isGenerating}
+                          aria-label="Rerun"
                           className="text-foreground/70 hover:bg-background rounded-xs"
                         >
                           <RefreshCw className="size-4" />
@@ -746,17 +802,25 @@ print(response.json())`;
                     {resultView === "preview" ? (
                       <>
                         <div className="border-input relative mt-4 h-80 overflow-hidden rounded-xs border">
-                          <Image
-                            src={editorPreview}
-                            alt="Generated preview placeholder"
-                            fill
-                            className="object-cover"
-                          />
+                          {isGenerating ? (
+                            <div className="bg-background/95 absolute inset-0 flex items-center justify-center">
+                              <Lottie
+                                key={spinnerReplayKey}
+                                animationData={spinnerSmoothLoop}
+                                loop
+                                autoplay
+                                className="h-24 w-24"
+                              />
+                            </div>
+                          ) : (
+                            <Image
+                              src={editorPreview}
+                              alt="Generated preview placeholder"
+                              fill
+                              className="object-cover"
+                            />
+                          )}
                           <div className="from-background/0 to-background/40 absolute inset-0 bg-linear-to-t" />
-                          <div className="absolute right-3 bottom-3 inline-flex items-center gap-1 rounded-xs bg-black/50 px-2 py-1 text-xs text-white">
-                            <Sparkles className="size-3" />
-                            Preview
-                          </div>
                         </div>
                       </>
                     ) : (

@@ -386,7 +386,13 @@ export function ModelSwitcher() {
   );
 }
 
-export function ModelDetailInputForm() {
+export function ModelDetailInputForm({
+  onRun,
+  isRunning = false,
+}: {
+  onRun?: () => void;
+  isRunning?: boolean;
+}) {
   const singleImageFileInputRef = useRef<HTMLInputElement>(null);
   const imagesFileInputRef = useRef<HTMLInputElement>(null);
   const audioFileInputRef = useRef<HTMLInputElement>(null);
@@ -1292,9 +1298,11 @@ export function ModelDetailInputForm() {
               <div className="flex items-center">
                 <Button
                   type="button"
+                  onClick={onRun}
+                  disabled={isRunning}
                   className="bg-foreground text-background hover:bg-foreground/90 h-8 min-w-28 rounded-l-xs rounded-r-none px-3 text-xs shadow-xs"
                 >
-                  Run $0.025
+                  {isRunning ? "Running..." : "Run $0.025"}
                 </Button>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -1450,9 +1458,11 @@ export function ModelDetailInputForm() {
                 <Button
                   type="button"
                   size="sm"
+                  onClick={onRun}
+                  disabled={isRunning}
                   className="h-8 w-full max-w-40 rounded-xs text-xs shadow-xs"
                 >
-                  Run $0.07
+                  {isRunning ? "Running..." : "Run $0.07"}
                 </Button>
               </div>
             </footer>
