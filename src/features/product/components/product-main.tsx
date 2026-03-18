@@ -1064,7 +1064,9 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                       </span>
                     </div>
                     <div className="flex min-h-8 items-center justify-between gap-3 py-1 text-sm">
-                      <span className="text-foreground/55 text-sm">Request ID</span>
+                      <span className="text-foreground/55 text-sm">
+                        Request ID
+                      </span>
                       <span className="text-foreground/85 font-mono text-sm font-bold">
                         {openedRequest.id}
                       </span>
@@ -1076,13 +1078,17 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                       </span>
                     </div>
                     <div className="flex min-h-8 items-center justify-between gap-3 py-1 text-sm">
-                      <span className="text-foreground/55 text-sm">Duration</span>
+                      <span className="text-foreground/55 text-sm">
+                        Duration
+                      </span>
                       <span className="text-foreground/85 text-sm font-bold">
                         {openedRequestDetail.duration}
                       </span>
                     </div>
                     <div className="flex min-h-8 items-center justify-between gap-3 py-1 text-sm">
-                      <span className="text-foreground/55 text-sm">Time Taken</span>
+                      <span className="text-foreground/55 text-sm">
+                        Time Taken
+                      </span>
                       <span className="text-foreground/85 text-sm font-bold">
                         {openedRequestDetail.timeTaken}
                       </span>
@@ -1119,12 +1125,17 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                       variant="ghost"
                       size="icon-sm"
                       aria-label="Copy input"
-                      onClick={() => copyJsonText(requestDetailInputCode, "Input JSON")}
+                      onClick={() =>
+                        copyJsonText(requestDetailInputCode, "Input JSON")
+                      }
                       className="text-foreground/60 hover:text-foreground absolute top-1.5 right-1.5 h-7 w-7 rounded-xs"
                     >
                       <Copy className="size-3.5" />
                     </Button>
-                    <ShikiCodeBlock code={requestDetailInputCode} language="json" />
+                    <ShikiCodeBlock
+                      code={requestDetailInputCode}
+                      language="json"
+                    />
                   </div>
                 </div>
               ) : null}
@@ -1151,12 +1162,17 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                       variant="ghost"
                       size="icon-sm"
                       aria-label="Copy output"
-                      onClick={() => copyJsonText(requestDetailOutputCode, "Output JSON")}
+                      onClick={() =>
+                        copyJsonText(requestDetailOutputCode, "Output JSON")
+                      }
                       className="text-foreground/60 hover:text-foreground absolute top-1.5 right-1.5 h-7 w-7 rounded-xs"
                     >
                       <Copy className="size-3.5" />
                     </Button>
-                    <ShikiCodeBlock code={requestDetailOutputCode} language="json" />
+                    <ShikiCodeBlock
+                      code={requestDetailOutputCode}
+                      language="json"
+                    />
                   </div>
                 </div>
               ) : null}
@@ -1183,12 +1199,17 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                       variant="ghost"
                       size="icon-sm"
                       aria-label="Copy result"
-                      onClick={() => copyJsonText(requestDetailResultCode, "Result JSON")}
+                      onClick={() =>
+                        copyJsonText(requestDetailResultCode, "Result JSON")
+                      }
                       className="text-foreground/60 hover:text-foreground absolute top-1.5 right-1.5 h-7 w-7 rounded-xs"
                     >
                       <Copy className="size-3.5" />
                     </Button>
-                    <ShikiCodeBlock code={requestDetailResultCode} language="json" />
+                    <ShikiCodeBlock
+                      code={requestDetailResultCode}
+                      language="json"
+                    />
                   </div>
                 </div>
               ) : null}

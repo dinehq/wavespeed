@@ -170,35 +170,35 @@ export function ReadmeSection() {
             </h4>
             <div className="border-foreground/10 overflow-hidden rounded-xs border">
               <div className="overflow-x-auto">
-                <table className="min-w-max w-full border-collapse text-sm">
-                <thead className="bg-foreground/5 text-foreground">
-                  <tr>
-                    <th className="border-foreground/10 border-b px-3 py-2 text-left font-semibold">
-                      Parameter
-                    </th>
-                    <th className="border-foreground/10 border-b px-3 py-2 text-left font-semibold">
-                      Required
-                    </th>
-                    <th className="border-foreground/10 border-b px-3 py-2 text-left font-semibold">
-                      Description
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {parameterRows.map((row) => (
-                    <tr key={row.parameter}>
-                      <td className="border-foreground/10 border-b px-3 py-2 align-top font-mono text-xs">
-                        {row.parameter}
-                      </td>
-                      <td className="border-foreground/10 border-b px-3 py-2 align-top">
-                        {row.required}
-                      </td>
-                      <td className="border-foreground/10 border-b px-3 py-2 align-top">
-                        {row.description}
-                      </td>
+                <table className="w-full min-w-max border-collapse text-sm">
+                  <thead className="bg-foreground/5 text-foreground">
+                    <tr>
+                      <th className="border-foreground/10 border-b px-3 py-2 text-left font-semibold">
+                        Parameter
+                      </th>
+                      <th className="border-foreground/10 border-b px-3 py-2 text-left font-semibold">
+                        Required
+                      </th>
+                      <th className="border-foreground/10 border-b px-3 py-2 text-left font-semibold">
+                        Description
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
+                  </thead>
+                  <tbody>
+                    {parameterRows.map((row) => (
+                      <tr key={row.parameter}>
+                        <td className="border-foreground/10 border-b px-3 py-2 align-top font-mono text-xs">
+                          {row.parameter}
+                        </td>
+                        <td className="border-foreground/10 border-b px-3 py-2 align-top">
+                          {row.required}
+                        </td>
+                        <td className="border-foreground/10 border-b px-3 py-2 align-top">
+                          {row.description}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
                 </table>
               </div>
             </div>

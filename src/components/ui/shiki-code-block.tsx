@@ -13,7 +13,6 @@ type ShikiCodeBlockProps = {
 };
 
 const supportedLanguages: BundledLanguage[] = [
-  "plaintext",
   "json",
   "bash",
   "http",
@@ -21,7 +20,7 @@ const supportedLanguages: BundledLanguage[] = [
   "python",
 ];
 
-const languageAliasMap: Record<string, BundledLanguage> = {
+const languageAliasMap: Record<string, BundledLanguage | "plaintext"> = {
   js: "javascript",
   node: "javascript",
   shell: "bash",
@@ -31,8 +30,9 @@ const languageAliasMap: Record<string, BundledLanguage> = {
 
 let highlighterPromise: ReturnType<typeof createHighlighter> | null = null;
 
-function getLanguage(language: string): BundledLanguage {
+function getLanguage(language: string): BundledLanguage | "plaintext" {
   const normalized = language.toLowerCase();
+  if (normalized === "plaintext") return "plaintext";
   if (normalized in languageAliasMap) {
     return languageAliasMap[normalized];
   }
@@ -106,5 +106,10 @@ export function ShikiCodeBlock({
     );
   }
 
-  return <div className={blockClassName} dangerouslySetInnerHTML={{ __html: html }} />;
+  return (
+    <div
+      className={blockClassName}
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  );
 }
