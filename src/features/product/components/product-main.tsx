@@ -36,6 +36,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import {
   Table,
   TableBody,
@@ -444,23 +445,11 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
                 <span className="text-foreground/80 text-xs">
                   Show API requests
                 </span>
-                <button
-                  type="button"
-                  role="switch"
-                  aria-checked={showApiRequests}
-                  onClick={() => setShowApiRequests((prev) => !prev)}
-                  className={`relative inline-flex h-4.5 w-8 cursor-pointer items-center rounded-full p-0.5 transition-colors ${
-                    showApiRequests ? "bg-foreground/25" : "bg-foreground/15"
-                  }`}
-                >
-                  <span
-                    className={`block size-3.5 rounded-full transition-all ${
-                      showApiRequests
-                        ? "bg-foreground ml-auto"
-                        : "bg-foreground/55 ml-0"
-                    }`}
-                  />
-                </button>
+                <Switch
+                  checked={showApiRequests}
+                  onCheckedChange={setShowApiRequests}
+                  aria-label="Show API requests"
+                />
               </div>
               <Popover
                 open={isModelFilterOpen}

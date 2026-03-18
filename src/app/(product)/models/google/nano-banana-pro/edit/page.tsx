@@ -36,6 +36,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ShikiCodeBlock } from "@/components/ui/shiki-code-block";
+import { Switch } from "@/components/ui/switch";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -1409,14 +1410,7 @@ print(response.json())`;
                       <span className="text-foreground/80 text-xs">
                         Show API requests
                       </span>
-                      <button
-                        type="button"
-                        role="switch"
-                        aria-checked="true"
-                        className="bg-foreground/25 relative inline-flex h-4.5 w-8 items-center rounded-full p-0.5"
-                      >
-                        <span className="bg-foreground ml-auto block size-3.5 rounded-full" />
-                      </button>
+                      <Switch checked disabled aria-label="Show API requests" />
                     </div>
                     <Button
                       variant="outline"
