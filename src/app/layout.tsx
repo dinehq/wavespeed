@@ -5,6 +5,7 @@ import localFont from "next/font/local";
 import Script from "next/script";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/toaster";
+import { CookieConsent } from "@/components/cookie-consent";
 import { PromoBar } from "@/components/promo-bar";
 import "./globals.css";
 
@@ -46,6 +47,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <PromoBar />
           {children}
+          <CookieConsent />
           <Toaster />
         </ThemeProvider>
         {process.env.NODE_ENV === "development" && (
