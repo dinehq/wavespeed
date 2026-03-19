@@ -1,14 +1,14 @@
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import Link from "next/link";
-import LoginGithubIcon from "@/images/login-github.svg";
-import LoginGoogleIcon from "@/images/login-google.svg";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { FakeAuthRedirect } from "@/components/auth/fake-auth-redirect";
+import { SignInActions } from "@/components/auth/sign-in-actions";
 
 export default function SignInPage() {
   return (
     <main className="bg-background flex min-h-screen flex-col">
+      <FakeAuthRedirect when="signed-in" to="/dashboard" />
       <Navbar />
       <section className="flex flex-1 items-center px-6 py-16 md:px-12 md:py-24 lg:px-20">
         <div className="mx-auto w-full max-w-7xl">
@@ -24,35 +24,7 @@ export default function SignInPage() {
                   </p>
                 </div>
 
-                <div className="space-y-4">
-                  <Button
-                    asChild
-                    variant="outline"
-                    className="border-foreground/10 bg-background text-foreground/80 hover:bg-foreground/5 hover:text-foreground h-11 w-full rounded-xs font-mono text-sm font-medium shadow-xs [&_svg]:size-5"
-                  >
-                    <Link
-                      href="/sign-in?provider=google"
-                      aria-label="Sign in with Google"
-                    >
-                      <LoginGoogleIcon className="size-5 shrink-0" />
-                      Continue with Google
-                    </Link>
-                  </Button>
-
-                  <Button
-                    asChild
-                    variant="outline"
-                    className="border-foreground/10 bg-background text-foreground/80 hover:bg-foreground/5 hover:text-foreground h-11 w-full rounded-xs font-mono text-sm font-medium shadow-xs [&_svg]:size-5"
-                  >
-                    <Link
-                      href="/sign-in?provider=github"
-                      aria-label="Sign in with GitHub"
-                    >
-                      <LoginGithubIcon className="size-5 shrink-0" />
-                      Continue with GitHub
-                    </Link>
-                  </Button>
-                </div>
+                <SignInActions />
 
                 <p className="text-foreground/50 mt-8 text-center text-xs leading-5">
                   By continuing, you agree to our{" "}

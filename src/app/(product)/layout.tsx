@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
+import { FakeAuthGuard } from "@/components/auth/fake-auth-guard";
 
 export default function ProductLayout({
   children,
@@ -10,7 +11,9 @@ export default function ProductLayout({
   return (
     <main>
       <Navbar mode="dashboard" />
-      <Suspense>{children}</Suspense>
+      <FakeAuthGuard>
+        <Suspense>{children}</Suspense>
+      </FakeAuthGuard>
       <Footer />
     </main>
   );

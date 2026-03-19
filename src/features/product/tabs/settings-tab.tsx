@@ -21,6 +21,22 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+type AccountLevelTier = "Bronze" | "Silver" | "Gold" | "Ultra";
+
+const accountLevelBadgeClass: Record<AccountLevelTier, string> = {
+  Bronze: "border-amber-300/60 bg-amber-100 text-amber-800",
+  Silver: "border-slate-300/70 bg-slate-200 text-slate-700",
+  Gold: "border-yellow-300/70 bg-yellow-100 text-yellow-800",
+  Ultra: "border-violet-300/70 bg-violet-100 text-violet-800",
+};
+
+const getAccountLevelBadgeClass = (level: string) => {
+  if (level in accountLevelBadgeClass) {
+    return accountLevelBadgeClass[level as AccountLevelTier];
+  }
+  return "border-foreground/10 bg-surface text-foreground/70";
+};
+
 export function ProductSettingsTab() {
   const loginMethodIconMap: Record<
     string,
@@ -111,7 +127,7 @@ export function ProductSettingsTab() {
             </h2>
             <Badge
               variant="outline"
-              className="rounded-xs border-[#3f74ff]/30 bg-[#3f74ff]/8 px-2 py-0.5 text-xs text-[#3f74ff] uppercase"
+              className={`rounded-xs px-2 py-0.5 text-xs ${getAccountLevelBadgeClass(currentAccountLevel)}`}
             >
               {currentAccountLevel}
             </Badge>

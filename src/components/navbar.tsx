@@ -1,10 +1,34 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { type FormEvent, useEffect, useState } from "react";
 import Logo from "@/images/logo.svg";
 import SearchIcon from "@/images/search-icon.svg";
 import ChevronDown from "@/images/chevron-down.svg";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { clearFakeSignedIn } from "@/lib/fake-auth";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import {
+  Coins,
+  CreditCard,
+  Globe,
+  KeyRound,
+  LogOut,
+  type LucideIcon,
+  Plus,
+  Settings,
+  User,
+  X,
+} from "lucide-react";
 
 const resourceGroups = [
   {
@@ -41,7 +65,7 @@ const resourceGroups = [
   },
 ];
 
-const teams = [
+const initialTeams = [
   { name: "Dine Team", role: "Owner" },
   { name: "Personal", role: "Member" },
 ];
@@ -59,20 +83,82 @@ const languages = [
   "繁體中文",
 ];
 
+type MembershipTier = "Bronze" | "Silver" | "Gold" | "Ultra";
+
+const userProfile = {
+  name: "Youcai Zhang",
+  email: "youcai@wavespeed.ai",
+  credits: "-$0.08",
+  tier: "Gold" as MembershipTier,
+};
+
+const membershipTierBadgeClass: Record<MembershipTier, string> = {
+  Bronze: "bg-amber-100 text-amber-800",
+  Silver: "bg-slate-200 text-slate-700",
+  Gold: "bg-yellow-100 text-yellow-800",
+  Ultra: "bg-violet-100 text-violet-800",
+};
+
+type NavIconProps = {
+  icon: LucideIcon;
+  className?: string;
+};
+
+function NavIcon({ icon: Icon, className = "size-4 shrink-0" }: NavIconProps) {
+  return (
+    <Icon
+      className={className}
+      strokeWidth={1.75}
+      absoluteStrokeWidth
+      aria-hidden="true"
+    />
+  );
+}
+
 type NavbarProps = {
   mode?: "default" | "dashboard";
   overlay?: boolean;
 };
 
 export function Navbar({ mode = "default", overlay }: NavbarProps) {
+  const router = useRouter();
   const isDashboardMode = mode === "dashboard";
   const [menuOpen, setMenuOpen] = useState(false);
   const [resourcesOpen, setResourcesOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const [activeLang, setActiveLang] = useState("English");
+  const [teams, setTeams] = useState(initialTeams);
   const [activeTeam, setActiveTeam] = useState("Dine Team");
   const [userOpen, setUserOpen] = useState(false);
+  const [createTeamOpen, setCreateTeamOpen] = useState(false);
+  const [newTeamName, setNewTeamName] = useState("");
   const [scrolled, setScrolled] = useState(false);
+  const trimmedTeamName = newTeamName.trim();
+
+  const handleCreateTeam = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!trimmedTeamName) {
+      return;
+    }
+
+    const existingTeam = teams.find(
+      (team) => team.name.toLowerCase() === trimmedTeamName.toLowerCase(),
+    );
+
+    if (existingTeam) {
+      setActiveTeam(existingTeam.name);
+      setCreateTeamOpen(false);
+      setNewTeamName("");
+      setUserOpen(false);
+      return;
+    }
+
+    setTeams((prev) => [{ name: trimmedTeamName, role: "Owner" }, ...prev]);
+    setActiveTeam(trimmedTeamName);
+    setCreateTeamOpen(false);
+    setNewTeamName("");
+    setUserOpen(false);
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 500);
@@ -85,7 +171,7 @@ export function Navbar({ mode = "default", overlay }: NavbarProps) {
 
   return (
     <nav
-      className={`z-40 flex h-16 w-full items-center justify-center px-6 transition-all duration-300 md:px-12 lg:px-20 ${
+      className={`z-50 flex h-16 w-full items-center justify-center px-6 transition-all duration-300 md:px-12 lg:px-20 ${
         overlay ? "sticky top-0" : "relative"
       } ${isOverlay ? "text-white" : "bg-background"}`}
     >
@@ -184,26 +270,7 @@ export function Navbar({ mode = "default", overlay }: NavbarProps) {
               aria-label="Language"
               className={`flex size-8 cursor-pointer items-center justify-center rounded-xs transition-colors duration-150 ${isOverlay ? "bg-white/25 text-white hover:bg-white/35" : "bg-surface hover:bg-foreground/10"}`}
             >
-              <svg
-                className="size-3"
-                viewBox="0 0 16 16"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <circle
-                  cx="8"
-                  cy="8"
-                  r="6.5"
-                  stroke="currentColor"
-                  strokeWidth="1.2"
-                />
-                <path
-                  d="M1.5 8h13M8 1.5c-2 2-3 4.2-3 6.5s1 4.5 3 6.5M8 1.5c2 2 3 4.2 3 6.5s-1 4.5-3 6.5"
-                  stroke="currentColor"
-                  strokeWidth="1.2"
-                  strokeLinecap="round"
-                />
-              </svg>
+              <NavIcon icon={Globe} className="size-4" />
             </button>
             {langOpen && (
               <div className="absolute top-full right-0 z-50 pt-4">
@@ -248,19 +315,7 @@ export function Navbar({ mode = "default", overlay }: NavbarProps) {
                   $6.186
                 </span>
                 <span className="bg-surface group-hover:bg-foreground/10 text-foreground/70 inline-flex size-8 items-center justify-center rounded-xs transition-colors duration-150">
-                  <svg
-                    className="size-3"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M8 3.5v9M3.5 8h9"
-                      stroke="currentColor"
-                      strokeWidth="1.2"
-                      strokeLinecap="round"
-                    />
-                  </svg>
+                  <NavIcon icon={Plus} className="size-4" />
                 </span>
               </Link>
               <div
@@ -272,83 +327,95 @@ export function Navbar({ mode = "default", overlay }: NavbarProps) {
                   aria-label="User profile"
                   className="bg-surface hover:bg-foreground/10 flex size-8 cursor-pointer items-center justify-center rounded-xs transition-colors duration-150"
                 >
-                  <svg
-                    className="text-foreground size-4"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <circle
-                      cx="8"
-                      cy="5.2"
-                      r="2.2"
-                      stroke="currentColor"
-                      strokeWidth="1.2"
-                    />
-                    <path
-                      d="M3.5 12.8c0-2.1 2-3.4 4.5-3.4s4.5 1.3 4.5 3.4"
-                      stroke="currentColor"
-                      strokeWidth="1.2"
-                      strokeLinecap="round"
-                    />
-                  </svg>
+                  <NavIcon icon={User} className="text-foreground size-4" />
                 </button>
                 {userOpen && (
-                  <div className="absolute top-full right-0 z-50 pt-4">
-                    <div className="border-foreground/5 bg-background flex w-56 flex-col rounded-xs border shadow-lg">
-                      <div className="border-foreground/5 border-b px-4 py-3">
-                        <p className="text-foreground text-sm font-medium">
-                          user@wavespeed.ai
-                        </p>
-                      </div>
-                      <div className="border-foreground/5 border-b py-2">
-                        <p className="text-foreground/50 px-4 py-1 text-xs">
-                          Teams
-                        </p>
-                        {teams.map((team) => (
-                          <button
-                            key={team.name}
-                            onClick={() => {
-                              setActiveTeam(team.name);
-                              setUserOpen(false);
-                            }}
-                            className="text-foreground/80 hover:bg-foreground/5 flex w-full cursor-pointer items-center justify-between px-4 py-2 text-left text-sm transition-colors duration-150"
-                          >
-                            <span className="flex items-center gap-2">
-                              <span className="bg-foreground/10 inline-block size-5 rounded-full" />
-                              <span className="text-foreground text-sm font-medium">
-                                {team.name}
-                              </span>
+                  <div className="absolute top-full right-0 z-50 pt-2">
+                    <div className="border-foreground/5 bg-background flex w-72 flex-col rounded-xs border shadow-lg">
+                      <div className="border-foreground/5 flex items-center gap-3 border-b px-4 py-4">
+                        <div className="text-background flex size-11 shrink-0 items-center justify-center rounded-xs bg-blue-600 text-xl font-semibold">
+                          Y
+                        </div>
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-1">
+                            <p className="text-foreground truncate text-sm font-semibold">
+                              {userProfile.name}
+                            </p>
+                            <span
+                              className={`shrink-0 rounded-xs px-1.5 py-0.5 text-xs leading-none font-medium ${membershipTierBadgeClass[userProfile.tier]}`}
+                            >
+                              {userProfile.tier}
                             </span>
-                            {activeTeam === team.name && (
-                              <svg
-                                className="text-foreground size-4 shrink-0"
-                                viewBox="0 0 16 16"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              >
-                                <path d="M3 8.5L6.5 12L13 4" />
-                              </svg>
-                            )}
-                          </button>
-                        ))}
+                          </div>
+                          <p className="text-foreground/50 truncate text-xs">
+                            {userProfile.email}
+                          </p>
+                        </div>
                       </div>
-                      <div className="py-2">
+
+                      <div className="border-foreground/5 border-b py-1.5">
                         <Link
                           href="/settings"
-                          className="text-foreground/80 hover:bg-foreground/5 block cursor-pointer px-4 py-2 text-sm transition-colors duration-150"
+                          onClick={() => setUserOpen(false)}
+                          className="text-foreground/80 hover:bg-foreground/5 flex items-center gap-3 px-4 py-2 text-sm transition-colors duration-150"
                         >
-                          Settings
+                          <NavIcon icon={Settings} />
+                          <span>Settings</span>
                         </Link>
                         <Link
-                          href="/sign-in"
-                          className="text-foreground/80 hover:bg-foreground/5 block cursor-pointer px-4 py-2 text-sm transition-colors duration-150"
+                          href="/api-keys"
+                          onClick={() => setUserOpen(false)}
+                          className="text-foreground/80 hover:bg-foreground/5 flex items-center gap-3 px-4 py-2 text-sm transition-colors duration-150"
                         >
-                          Sign Out
+                          <NavIcon icon={KeyRound} />
+                          <span>API Keys</span>
                         </Link>
+                        <Link
+                          href="/billing"
+                          onClick={() => setUserOpen(false)}
+                          className="text-foreground/80 hover:bg-foreground/5 flex items-center gap-3 px-4 py-2 text-sm transition-colors duration-150"
+                        >
+                          <NavIcon icon={CreditCard} />
+                          <span>Billing</span>
+                        </Link>
+                        <Link
+                          href="/billing"
+                          onClick={() => setUserOpen(false)}
+                          className="text-foreground/80 hover:bg-foreground/5 flex items-center justify-between gap-3 px-4 py-2 text-sm transition-colors duration-150"
+                        >
+                          <span className="flex items-center gap-3">
+                            <NavIcon icon={Coins} />
+                            <span>Credits</span>
+                          </span>
+                          <span className="text-foreground/60 bg-foreground/5 rounded-xs px-1.5 py-0.5 text-xs">
+                            {userProfile.credits}
+                          </span>
+                        </Link>
+                      </div>
+
+                      <div className="border-foreground/5 border-b py-1.5">
+                        <button
+                          type="button"
+                          onClick={() => setCreateTeamOpen(true)}
+                          className="text-foreground/80 hover:bg-foreground/5 flex w-full cursor-pointer items-center gap-3 px-4 py-2 text-left text-sm transition-colors duration-150"
+                        >
+                          <NavIcon icon={Plus} />
+                          <span>Create Team</span>
+                        </button>
+                      </div>
+
+                      <div className="py-1.5">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            clearFakeSignedIn();
+                            router.push("/sign-in");
+                          }}
+                          className="text-foreground/80 hover:bg-foreground/5 flex w-full cursor-pointer items-center gap-3 px-4 py-2 text-left text-sm transition-colors duration-150"
+                        >
+                          <NavIcon icon={LogOut} />
+                          <span>Sign Out</span>
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -481,15 +548,78 @@ export function Navbar({ mode = "default", overlay }: NavbarProps) {
             </div>
           )}
           {isDashboardMode && (
-            <Link
-              href="/billing"
-              className="text-foreground hover:text-foreground/50 tracking-xl flex items-center gap-2 py-2 font-mono text-sm leading-4 transition-colors duration-150"
-            >
-              <span>Balance</span>
-              <span className="text-foreground/60 font-sans text-sm font-medium">
-                $6.186
-              </span>
-            </Link>
+            <>
+              <Link
+                href="/settings"
+                onClick={() => setMenuOpen(false)}
+                className="text-foreground/80 hover:text-foreground flex items-center gap-3 py-2 text-sm transition-colors duration-150"
+              >
+                <NavIcon icon={Settings} />
+                <span>Settings</span>
+              </Link>
+              <Link
+                href="/api-keys"
+                onClick={() => setMenuOpen(false)}
+                className="text-foreground/80 hover:text-foreground flex items-center gap-3 py-2 text-sm transition-colors duration-150"
+              >
+                <NavIcon icon={KeyRound} />
+                <span>API Keys</span>
+              </Link>
+              <Link
+                href="/billing"
+                onClick={() => setMenuOpen(false)}
+                className="text-foreground/80 hover:text-foreground flex items-center gap-3 py-2 text-sm transition-colors duration-150"
+              >
+                <NavIcon icon={CreditCard} />
+                <span>Billing</span>
+              </Link>
+              <Link
+                href="/billing"
+                onClick={() => setMenuOpen(false)}
+                className="text-foreground/80 hover:text-foreground flex items-center justify-between gap-3 py-2 text-sm transition-colors duration-150"
+              >
+                <span className="flex items-center gap-3">
+                  <NavIcon icon={Coins} />
+                  <span>Credits</span>
+                </span>
+                <span className="text-foreground/60 bg-foreground/5 rounded-xs px-1.5 py-0.5 text-xs">
+                  {userProfile.credits}
+                </span>
+              </Link>
+              <Link
+                href="/billing"
+                onClick={() => setMenuOpen(false)}
+                className="text-foreground hover:text-foreground/50 tracking-xl flex items-center gap-2 py-2 font-mono text-sm leading-4 transition-colors duration-150"
+              >
+                <span>Balance</span>
+                <span className="text-foreground/60 font-sans text-sm font-medium">
+                  $6.186
+                </span>
+              </Link>
+              <button
+                type="button"
+                onClick={() => {
+                  setMenuOpen(false);
+                  setCreateTeamOpen(true);
+                }}
+                className="text-foreground/80 hover:text-foreground flex w-full cursor-pointer items-center gap-3 py-2 text-left text-sm transition-colors duration-150"
+              >
+                <NavIcon icon={Plus} />
+                <span>Create Team</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setMenuOpen(false);
+                  clearFakeSignedIn();
+                  router.push("/sign-in");
+                }}
+                className="text-foreground/80 hover:text-foreground flex w-full cursor-pointer items-center gap-3 py-2 text-left text-sm transition-colors duration-150"
+              >
+                <NavIcon icon={LogOut} />
+                <span>Sign Out</span>
+              </button>
+            </>
           )}
           <div className="flex flex-col gap-1">
             <button
@@ -546,6 +676,73 @@ export function Navbar({ mode = "default", overlay }: NavbarProps) {
           </div>
         </div>
       )}
+
+      <Dialog
+        open={createTeamOpen}
+        onOpenChange={(open) => {
+          setCreateTeamOpen(open);
+          if (!open) {
+            setNewTeamName("");
+          }
+        }}
+      >
+        <DialogContent className="border-foreground/5 bg-background w-[min(92vw,28rem)] rounded-xs border p-0 shadow-lg">
+          <form onSubmit={handleCreateTeam}>
+            <DialogHeader className="px-4 pt-3">
+              <div className="flex items-center justify-between">
+                <DialogTitle className="text-sm font-semibold">
+                  Create Team
+                </DialogTitle>
+                <DialogClose asChild>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon-sm"
+                    aria-label="Close"
+                    className="text-foreground/70 hover:bg-foreground/5 h-8 w-8 rounded-xs"
+                  >
+                    <X className="size-4" />
+                  </Button>
+                </DialogClose>
+              </div>
+            </DialogHeader>
+            <div className="px-4 py-4">
+              <label
+                htmlFor="team-name"
+                className="text-foreground/70 mb-2 block text-xs font-medium"
+              >
+                Team name
+              </label>
+              <Input
+                id="team-name"
+                value={newTeamName}
+                onChange={(event) => setNewTeamName(event.target.value)}
+                placeholder="Enter team name"
+                className="h-8 rounded-xs text-xs"
+                autoFocus
+              />
+            </div>
+            <DialogFooter className="px-4 pb-3">
+              <DialogClose asChild>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="border-foreground/10 h-8 rounded-xs px-3 text-xs font-bold"
+                >
+                  Cancel
+                </Button>
+              </DialogClose>
+              <Button
+                type="submit"
+                disabled={!trimmedTeamName}
+                className="bg-foreground text-background hover:bg-foreground/80 h-8 rounded-xs px-3 text-xs font-bold"
+              >
+                Create
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </nav>
   );
 }
