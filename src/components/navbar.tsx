@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import {
+  ChevronRight,
   Coins,
   CreditCard,
   Globe,
@@ -27,6 +28,7 @@ import {
   Plus,
   Settings,
   User,
+  Users,
   X,
 } from "lucide-react";
 
@@ -99,6 +101,84 @@ const membershipTierBadgeClass: Record<MembershipTier, string> = {
   Ultra: "bg-violet-100 text-violet-800",
 };
 
+const teamContextBadgeClass =
+  "text-foreground/60 shrink-0 rounded-xs bg-foreground/10 px-1.5 py-0.5 text-xs font-medium leading-none";
+
+function TeamPickerCheckmark() {
+  return (
+    <svg
+      className="text-foreground size-4 shrink-0"
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M3 8.5L6.5 12L13 4" />
+    </svg>
+  );
+}
+
+type TeamPickerRowsProps = {
+  activeTeam: string;
+  teams: { name: string; role: string }[];
+  userName: string;
+  onSelectTeam: (team: string) => void;
+};
+
+function TeamPickerRows({
+  activeTeam,
+  teams,
+  userName,
+  onSelectTeam,
+}: TeamPickerRowsProps) {
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => onSelectTeam("Personal")}
+        className={`flex w-full cursor-pointer items-center justify-between gap-2 px-3 py-2 text-left transition-colors duration-150 ${
+          activeTeam === "Personal"
+            ? "bg-foreground/5"
+            : "hover:bg-foreground/5"
+        }`}
+      >
+        <span className="flex min-w-0 flex-1 items-center gap-1.5">
+          <span className="text-foreground truncate text-sm font-normal">
+            {userName}
+          </span>
+          <span className={teamContextBadgeClass}>Personal</span>
+        </span>
+        {activeTeam === "Personal" && <TeamPickerCheckmark />}
+      </button>
+      {teams
+        .filter((t) => t.name !== "Personal")
+        .map((team) => (
+          <button
+            key={team.name}
+            type="button"
+            onClick={() => onSelectTeam(team.name)}
+            className={`flex w-full cursor-pointer items-center justify-between gap-2 px-3 py-2 text-left transition-colors duration-150 ${
+              activeTeam === team.name
+                ? "bg-foreground/5"
+                : "hover:bg-foreground/5"
+            }`}
+          >
+            <span className="flex min-w-0 flex-1 items-center gap-1.5">
+              <span className="text-foreground truncate text-sm font-normal">
+                {team.name}
+              </span>
+              <span className={teamContextBadgeClass}>Team</span>
+            </span>
+            {activeTeam === team.name && <TeamPickerCheckmark />}
+          </button>
+        ))}
+    </>
+  );
+}
+
 type NavIconProps = {
   icon: LucideIcon;
   className?: string;
@@ -129,11 +209,18 @@ export function Navbar({ mode = "default", overlay }: NavbarProps) {
   const [activeLang, setActiveLang] = useState("English");
   const [teams, setTeams] = useState(initialTeams);
   const [activeTeam, setActiveTeam] = useState("Dine Team");
+  const [teamSwitcherOpen, setTeamSwitcherOpen] = useState(false);
+  const [userTeamSubmenuOpen, setUserTeamSubmenuOpen] = useState(false);
   const [userOpen, setUserOpen] = useState(false);
   const [createTeamOpen, setCreateTeamOpen] = useState(false);
   const [newTeamName, setNewTeamName] = useState("");
   const [scrolled, setScrolled] = useState(false);
   const trimmedTeamName = newTeamName.trim();
+
+  const closeUserMenu = () => {
+    setUserOpen(false);
+    setUserTeamSubmenuOpen(false);
+  };
 
   const handleCreateTeam = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -149,7 +236,7 @@ export function Navbar({ mode = "default", overlay }: NavbarProps) {
       setActiveTeam(existingTeam.name);
       setCreateTeamOpen(false);
       setNewTeamName("");
-      setUserOpen(false);
+      closeUserMenu();
       return;
     }
 
@@ -157,7 +244,7 @@ export function Navbar({ mode = "default", overlay }: NavbarProps) {
     setActiveTeam(trimmedTeamName);
     setCreateTeamOpen(false);
     setNewTeamName("");
-    setUserOpen(false);
+    closeUserMenu();
   };
 
   useEffect(() => {
@@ -178,15 +265,60 @@ export function Navbar({ mode = "default", overlay }: NavbarProps) {
       <div className="flex w-full max-w-7xl items-center justify-between gap-6">
         {/* Left: Logo + Nav links */}
         <div className="flex min-w-0 items-center gap-10">
-          <Link
-            href="/"
-            aria-label="WaveSpeed home"
-            className="inline-flex items-center transition-opacity duration-150 hover:opacity-70"
-          >
-            <Logo
-              className={`h-6 w-auto ${isOverlay ? "text-white" : "text-foreground"}`}
-            />
-          </Link>
+          <div className="flex min-w-0 items-center gap-3">
+            <Link
+              href="/"
+              aria-label="WaveSpeed home"
+              className="inline-flex shrink-0 items-center transition-opacity duration-150 hover:opacity-70"
+            >
+              <Logo
+                className={`h-6 w-auto ${isOverlay ? "text-white" : "text-foreground"}`}
+              />
+            </Link>
+            {isDashboardMode && (
+              <div
+                className="relative hidden lg:block"
+                onMouseEnter={() => setTeamSwitcherOpen(true)}
+                onMouseLeave={() => setTeamSwitcherOpen(false)}
+              >
+                <button
+                  type="button"
+                  aria-label="Switch team"
+                  aria-expanded={teamSwitcherOpen}
+                  className="bg-surface hover:bg-foreground/10 flex h-8 cursor-pointer items-center gap-1.5 rounded-xs px-2 text-sm font-normal transition-colors duration-150"
+                >
+                  <span className="flex min-w-0 items-center gap-1.5">
+                    <span className="text-foreground max-w-32 truncate">
+                      {activeTeam === "Personal"
+                        ? userProfile.name
+                        : activeTeam}
+                    </span>
+                    <span className={teamContextBadgeClass}>
+                      {activeTeam === "Personal" ? "Personal" : "Team"}
+                    </span>
+                  </span>
+                  <ChevronDown
+                    className={`text-foreground/60 size-4 shrink-0 transition-transform duration-150 ${teamSwitcherOpen ? "rotate-180" : ""}`}
+                  />
+                </button>
+                {teamSwitcherOpen && (
+                  <div className="absolute top-full left-0 z-50 pt-2">
+                    <div className="border-foreground/5 bg-background flex w-56 flex-col rounded-xs border py-1 shadow-lg">
+                      <TeamPickerRows
+                        activeTeam={activeTeam}
+                        teams={teams}
+                        userName={userProfile.name}
+                        onSelectTeam={(name) => {
+                          setActiveTeam(name);
+                          setTeamSwitcherOpen(false);
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
           <div className="hidden items-center gap-6 lg:flex">
             {[
               { label: "Explore", href: "/explore" },
@@ -240,7 +372,7 @@ export function Navbar({ mode = "default", overlay }: NavbarProps) {
           </div>
         </div>
 
-        {/* Right: Search + Team + Utility buttons */}
+        {/* Right: Search + Utility buttons */}
         <div className="flex flex-1 items-center justify-end gap-2">
           <Link
             href="/explore"
@@ -321,7 +453,7 @@ export function Navbar({ mode = "default", overlay }: NavbarProps) {
               <div
                 className="relative"
                 onMouseEnter={() => setUserOpen(true)}
-                onMouseLeave={() => setUserOpen(false)}
+                onMouseLeave={closeUserMenu}
               >
                 <button
                   aria-label="User profile"
@@ -356,7 +488,7 @@ export function Navbar({ mode = "default", overlay }: NavbarProps) {
                       <div className="border-foreground/5 border-b py-1.5">
                         <Link
                           href="/settings"
-                          onClick={() => setUserOpen(false)}
+                          onClick={closeUserMenu}
                           className="text-foreground/80 hover:bg-foreground/5 flex items-center gap-3 px-4 py-2 text-sm transition-colors duration-150"
                         >
                           <NavIcon icon={Settings} />
@@ -364,7 +496,7 @@ export function Navbar({ mode = "default", overlay }: NavbarProps) {
                         </Link>
                         <Link
                           href="/api-keys"
-                          onClick={() => setUserOpen(false)}
+                          onClick={closeUserMenu}
                           className="text-foreground/80 hover:bg-foreground/5 flex items-center gap-3 px-4 py-2 text-sm transition-colors duration-150"
                         >
                           <NavIcon icon={KeyRound} />
@@ -372,7 +504,7 @@ export function Navbar({ mode = "default", overlay }: NavbarProps) {
                         </Link>
                         <Link
                           href="/billing"
-                          onClick={() => setUserOpen(false)}
+                          onClick={closeUserMenu}
                           className="text-foreground/80 hover:bg-foreground/5 flex items-center gap-3 px-4 py-2 text-sm transition-colors duration-150"
                         >
                           <NavIcon icon={CreditCard} />
@@ -380,7 +512,7 @@ export function Navbar({ mode = "default", overlay }: NavbarProps) {
                         </Link>
                         <Link
                           href="/billing"
-                          onClick={() => setUserOpen(false)}
+                          onClick={closeUserMenu}
                           className="text-foreground/80 hover:bg-foreground/5 flex items-center justify-between gap-3 px-4 py-2 text-sm transition-colors duration-150"
                         >
                           <span className="flex items-center gap-3">
@@ -394,6 +526,38 @@ export function Navbar({ mode = "default", overlay }: NavbarProps) {
                       </div>
 
                       <div className="border-foreground/5 border-b py-1.5">
+                        <div
+                          className="relative"
+                          onMouseEnter={() => setUserTeamSubmenuOpen(true)}
+                          onMouseLeave={() => setUserTeamSubmenuOpen(false)}
+                        >
+                          <div className="text-foreground/80 hover:bg-foreground/5 flex cursor-default items-center justify-between gap-3 px-4 py-2 text-sm">
+                            <span className="flex items-center gap-3">
+                              <NavIcon icon={Users} />
+                              <span>Select team</span>
+                            </span>
+                            <ChevronRight
+                              className="text-foreground/50 size-4 shrink-0"
+                              strokeWidth={1.75}
+                              aria-hidden
+                            />
+                          </div>
+                          {userTeamSubmenuOpen && (
+                            <div className="absolute top-0 right-full z-60 pr-2">
+                              <div className="border-foreground/5 bg-background flex w-56 flex-col rounded-xs border py-1 shadow-lg">
+                                <TeamPickerRows
+                                  activeTeam={activeTeam}
+                                  teams={teams}
+                                  userName={userProfile.name}
+                                  onSelectTeam={(name) => {
+                                    setActiveTeam(name);
+                                    closeUserMenu();
+                                  }}
+                                />
+                              </div>
+                            </div>
+                          )}
+                        </div>
                         <button
                           type="button"
                           onClick={() => setCreateTeamOpen(true)}
