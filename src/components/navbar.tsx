@@ -31,6 +31,8 @@ import {
   Users,
   X,
 } from "lucide-react";
+import { TeamPickerRows } from "@/features/product/components/team-picker-rows";
+import { useTeamOptional } from "@/features/product/team-context";
 
 const resourceGroups = [
   {
@@ -67,11 +69,6 @@ const resourceGroups = [
   },
 ];
 
-const initialTeams = [
-  { name: "Dine Team", role: "Owner" },
-  { name: "Personal", role: "Member" },
-];
-
 const languages = [
   "English",
   "Bahasa Indonesia",
@@ -101,84 +98,6 @@ const membershipTierBadgeClass: Record<MembershipTier, string> = {
   Ultra: "bg-violet-100 text-violet-800",
 };
 
-const teamContextBadgeClass =
-  "text-foreground/60 shrink-0 rounded-xs bg-foreground/10 px-1.5 py-0.5 text-xs font-medium leading-none";
-
-function TeamPickerCheckmark() {
-  return (
-    <svg
-      className="text-foreground size-4 shrink-0"
-      viewBox="0 0 16 16"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <path d="M3 8.5L6.5 12L13 4" />
-    </svg>
-  );
-}
-
-type TeamPickerRowsProps = {
-  activeTeam: string;
-  teams: { name: string; role: string }[];
-  userName: string;
-  onSelectTeam: (team: string) => void;
-};
-
-function TeamPickerRows({
-  activeTeam,
-  teams,
-  userName,
-  onSelectTeam,
-}: TeamPickerRowsProps) {
-  return (
-    <>
-      <button
-        type="button"
-        onClick={() => onSelectTeam("Personal")}
-        className={`flex w-full cursor-pointer items-center justify-between gap-2 px-3 py-2 text-left transition-colors duration-150 ${
-          activeTeam === "Personal"
-            ? "bg-foreground/5"
-            : "hover:bg-foreground/5"
-        }`}
-      >
-        <span className="flex min-w-0 flex-1 items-center gap-1.5">
-          <span className="text-foreground truncate text-sm font-normal">
-            {userName}
-          </span>
-          <span className={teamContextBadgeClass}>Personal</span>
-        </span>
-        {activeTeam === "Personal" && <TeamPickerCheckmark />}
-      </button>
-      {teams
-        .filter((t) => t.name !== "Personal")
-        .map((team) => (
-          <button
-            key={team.name}
-            type="button"
-            onClick={() => onSelectTeam(team.name)}
-            className={`flex w-full cursor-pointer items-center justify-between gap-2 px-3 py-2 text-left transition-colors duration-150 ${
-              activeTeam === team.name
-                ? "bg-foreground/5"
-                : "hover:bg-foreground/5"
-            }`}
-          >
-            <span className="flex min-w-0 flex-1 items-center gap-1.5">
-              <span className="text-foreground truncate text-sm font-normal">
-                {team.name}
-              </span>
-              <span className={teamContextBadgeClass}>Team</span>
-            </span>
-            {activeTeam === team.name && <TeamPickerCheckmark />}
-          </button>
-        ))}
-    </>
-  );
-}
-
 type NavIconProps = {
   icon: LucideIcon;
   className?: string;
@@ -207,9 +126,7 @@ export function Navbar({ mode = "default", overlay }: NavbarProps) {
   const [resourcesOpen, setResourcesOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const [activeLang, setActiveLang] = useState("English");
-  const [teams, setTeams] = useState(initialTeams);
-  const [activeTeam, setActiveTeam] = useState("Dine Team");
-  const [teamSwitcherOpen, setTeamSwitcherOpen] = useState(false);
+  const team = useTeamOptional();
   const [userTeamSubmenuOpen, setUserTeamSubmenuOpen] = useState(false);
   const [userOpen, setUserOpen] = useState(false);
   const [createTeamOpen, setCreateTeamOpen] = useState(false);
@@ -224,24 +141,27 @@ export function Navbar({ mode = "default", overlay }: NavbarProps) {
 
   const handleCreateTeam = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!trimmedTeamName) {
+    if (!trimmedTeamName || !team) {
       return;
     }
 
-    const existingTeam = teams.find(
-      (team) => team.name.toLowerCase() === trimmedTeamName.toLowerCase(),
+    const existingTeam = team.teams.find(
+      (t) => t.name.toLowerCase() === trimmedTeamName.toLowerCase(),
     );
 
     if (existingTeam) {
-      setActiveTeam(existingTeam.name);
+      team.setActiveTeam(existingTeam.name);
       setCreateTeamOpen(false);
       setNewTeamName("");
       closeUserMenu();
       return;
     }
 
-    setTeams((prev) => [{ name: trimmedTeamName, role: "Owner" }, ...prev]);
-    setActiveTeam(trimmedTeamName);
+    team.setTeams((prev) => [
+      { name: trimmedTeamName, role: "Owner" },
+      ...prev,
+    ]);
+    team.setActiveTeam(trimmedTeamName);
     setCreateTeamOpen(false);
     setNewTeamName("");
     closeUserMenu();
@@ -265,60 +185,15 @@ export function Navbar({ mode = "default", overlay }: NavbarProps) {
       <div className="flex w-full max-w-7xl items-center justify-between gap-6">
         {/* Left: Logo + Nav links */}
         <div className="flex min-w-0 items-center gap-10">
-          <div className="flex min-w-0 items-center gap-3">
-            <Link
-              href="/"
-              aria-label="WaveSpeed home"
-              className="inline-flex shrink-0 items-center transition-opacity duration-150 hover:opacity-70"
-            >
-              <Logo
-                className={`h-6 w-auto ${isOverlay ? "text-white" : "text-foreground"}`}
-              />
-            </Link>
-            {isDashboardMode && (
-              <div
-                className="relative hidden lg:block"
-                onMouseEnter={() => setTeamSwitcherOpen(true)}
-                onMouseLeave={() => setTeamSwitcherOpen(false)}
-              >
-                <button
-                  type="button"
-                  aria-label="Switch team"
-                  aria-expanded={teamSwitcherOpen}
-                  className="bg-surface hover:bg-foreground/10 flex h-8 cursor-pointer items-center gap-1.5 rounded-xs px-2 text-sm font-normal transition-colors duration-150"
-                >
-                  <span className="flex min-w-0 items-center gap-1.5">
-                    <span className="text-foreground max-w-32 truncate">
-                      {activeTeam === "Personal"
-                        ? userProfile.name
-                        : activeTeam}
-                    </span>
-                    <span className={teamContextBadgeClass}>
-                      {activeTeam === "Personal" ? "Personal" : "Team"}
-                    </span>
-                  </span>
-                  <ChevronDown
-                    className={`text-foreground/60 size-4 shrink-0 transition-transform duration-150 ${teamSwitcherOpen ? "rotate-180" : ""}`}
-                  />
-                </button>
-                {teamSwitcherOpen && (
-                  <div className="absolute top-full left-0 z-50 pt-2">
-                    <div className="border-foreground/5 bg-background flex w-56 flex-col rounded-xs border py-1 shadow-lg">
-                      <TeamPickerRows
-                        activeTeam={activeTeam}
-                        teams={teams}
-                        userName={userProfile.name}
-                        onSelectTeam={(name) => {
-                          setActiveTeam(name);
-                          setTeamSwitcherOpen(false);
-                        }}
-                      />
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
+          <Link
+            href="/"
+            aria-label="WaveSpeed home"
+            className="inline-flex shrink-0 items-center transition-opacity duration-150 hover:opacity-70"
+          >
+            <Logo
+              className={`h-6 w-auto ${isOverlay ? "text-white" : "text-foreground"}`}
+            />
+          </Link>
           <div className="hidden items-center gap-6 lg:flex">
             {[
               { label: "Explore", href: "/explore" },
@@ -542,15 +417,15 @@ export function Navbar({ mode = "default", overlay }: NavbarProps) {
                               aria-hidden
                             />
                           </div>
-                          {userTeamSubmenuOpen && (
+                          {userTeamSubmenuOpen && team && (
                             <div className="absolute top-0 right-full z-60 pr-2">
                               <div className="border-foreground/5 bg-background flex w-56 flex-col rounded-xs border py-1 shadow-lg">
                                 <TeamPickerRows
-                                  activeTeam={activeTeam}
-                                  teams={teams}
-                                  userName={userProfile.name}
+                                  activeTeam={team.activeTeam}
+                                  teams={team.teams}
+                                  userName={team.userName}
                                   onSelectTeam={(name) => {
-                                    setActiveTeam(name);
+                                    team.setActiveTeam(name);
                                     closeUserMenu();
                                   }}
                                 />
@@ -629,14 +504,14 @@ export function Navbar({ mode = "default", overlay }: NavbarProps) {
       {/* Mobile dropdown panel */}
       {menuOpen && (
         <div className="border-foreground/5 bg-background absolute top-16 right-0 left-0 z-50 flex flex-col gap-4 border-t p-4 shadow-lg lg:hidden">
-          {isDashboardMode && (
+          {isDashboardMode && team && (
             <div className="flex flex-col gap-1">
-              {teams.map((team) => (
+              {team.teams.map((t) => (
                 <button
-                  key={team.name}
-                  onClick={() => setActiveTeam(team.name)}
+                  key={t.name}
+                  onClick={() => team.setActiveTeam(t.name)}
                   className={`flex cursor-pointer items-center justify-between rounded-xs px-2 py-2 text-left transition-colors duration-150 ${
-                    activeTeam === team.name
+                    team.activeTeam === t.name
                       ? "bg-foreground/5"
                       : "hover:bg-foreground/5"
                   }`}
@@ -645,14 +520,14 @@ export function Navbar({ mode = "default", overlay }: NavbarProps) {
                     <span className="bg-foreground/10 inline-block size-5 rounded-full" />
                     <span>
                       <span className="text-foreground block text-sm font-medium">
-                        {team.name}
+                        {t.name}
                       </span>
                       <span className="text-foreground/50 block text-xs">
-                        {team.role}
+                        {t.role}
                       </span>
                     </span>
                   </span>
-                  {activeTeam === team.name && (
+                  {team.activeTeam === t.name && (
                     <svg
                       className="text-foreground size-4 shrink-0"
                       viewBox="0 0 16 16"
