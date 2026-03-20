@@ -88,7 +88,7 @@ function FooterColumn({
   links: { name: string; href: string }[];
 }) {
   return (
-    <div className={title ? "flex flex-col gap-3" : "flex flex-col gap-2 pt-6"}>
+    <div className={title ? "flex flex-col gap-3" : "flex flex-col gap-2 pt-7"}>
       {title && (
         <h2 className="tracking-xl font-mono text-xs text-white/30 uppercase">
           {title}
