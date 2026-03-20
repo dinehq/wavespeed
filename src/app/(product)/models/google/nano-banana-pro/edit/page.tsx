@@ -629,7 +629,7 @@ print(response.json())`;
             className="flex h-12 w-full max-w-7xl items-center gap-1.5 overflow-x-auto text-sm whitespace-nowrap [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
             <Link
-              href="/explore"
+              href="/models"
               className="text-foreground/60 hover:text-foreground transition-colors"
             >
               Explore

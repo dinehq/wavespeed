@@ -28,7 +28,7 @@ export const setupTasks = [
     action: "Start",
     tone: "secondary",
     done: false,
-    href: "/explore",
+    href: "/models",
   },
 ];
 
@@ -52,8 +52,8 @@ const apiTasks = [
 ];
 
 const createWithAiTasks = [
-  { label: "Desktop app", action: "Download", href: "/explore" },
-  { label: "Studio", action: "Open", href: "/explore" },
+  { label: "Desktop app", action: "Download", href: "/models" },
+  { label: "Studio", action: "Open", href: "/models" },
   {
     label: "Affiliate program",
     action: "Join",
@@ -67,7 +67,7 @@ const createWithAiTasks = [
   {
     label: "Get inspiration",
     action: "Explore",
-    href: "/explore",
+    href: "/models",
   },
   { label: "API Keys", action: "Manage", href: "/api-keys" },
 ];

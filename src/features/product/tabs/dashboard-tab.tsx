@@ -222,7 +222,7 @@ export function ProductDashboardTab({
                           <button
                             type="button"
                             onClick={() =>
-                              navigateFromGettingStarted("/product/explore")
+                              navigateFromGettingStarted("/product/models")
                             }
                             className="hover:bg-foreground/5 group -mx-2 flex h-11 w-[calc(100%+1rem)] cursor-pointer items-center justify-between gap-2 rounded-xs px-2 text-left transition-colors"
                           >
@@ -254,7 +254,7 @@ export function ProductDashboardTab({
                         <button
                           type="button"
                           onClick={() =>
-                            navigateFromGettingStarted("/product/explore")
+                            navigateFromGettingStarted("/product/models")
                           }
                           className="hover:bg-foreground/5 group -mx-2 flex h-11 w-[calc(100%+1rem)] cursor-pointer items-center justify-between gap-2 rounded-xs px-2 text-left transition-colors"
                         >

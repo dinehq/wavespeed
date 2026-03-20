@@ -196,7 +196,7 @@ export function Navbar({ mode = "default", overlay }: NavbarProps) {
           </Link>
           <div className="hidden items-center gap-6 lg:flex">
             {[
-              { label: "Explore", href: "/explore" },
+              { label: "Explore", href: "/models" },
               { label: "Pricing", href: "/pricing" },
               { label: "Enterprise", href: "/enterprise" },
             ].map((item) => (
@@ -250,7 +250,7 @@ export function Navbar({ mode = "default", overlay }: NavbarProps) {
         {/* Right: Search + Utility buttons */}
         <div className="flex flex-1 items-center justify-end gap-2">
           <Link
-            href="/explore"
+            href="/models"
             aria-label="Search"
             className={`hidden size-8 items-center justify-center rounded-xs transition-colors duration-150 md:flex xl:hidden ${isOverlay ? "bg-white/25 hover:bg-white/35" : "bg-surface hover:bg-foreground/10"}`}
           >
@@ -545,7 +545,7 @@ export function Navbar({ mode = "default", overlay }: NavbarProps) {
             </div>
           )}
           {[
-            { label: "Explore", href: "/explore" },
+            { label: "Explore", href: "/models" },
             { label: "Pricing", href: "/pricing" },
             { label: "Enterprise", href: "/enterprise" },
           ].map((item) => (

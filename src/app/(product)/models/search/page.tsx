@@ -2,8 +2,6 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { Navbar } from "@/components/navbar";
-import { Footer } from "@/components/footer";
 import {
   Select,
   SelectContent,
@@ -124,13 +122,11 @@ const models = Array.from({ length: 12 }, (_, index) => ({
     "Alibaba's 2nd-gen image generation models with breakthrough quality, precision, and multilingual prompt understanding.",
 }));
 
-export default function ExploreSearchPage() {
+export default function ModelsSearchPage() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   return (
     <main className="bg-background min-h-screen">
-      <Navbar />
-
       <section className="px-6 pt-5 pb-12 md:px-12 lg:px-20">
         <div className="mx-auto max-w-7xl">
           <div className="bg-surface focus-within:border-foreground/30 focus-within:ring-foreground/15 flex items-center gap-3 border border-transparent px-5 py-4 transition-colors focus-within:ring-2">
@@ -322,7 +318,6 @@ export default function ExploreSearchPage() {
           </div>
         </div>
       </section>
-      <Footer />
     </main>
   );
 }

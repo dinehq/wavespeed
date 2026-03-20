@@ -349,7 +349,7 @@ export function ProductUsageTab({
                             type="button"
                             onClick={() =>
                               router.push(
-                                `/explore?model=${encodeURIComponent(item.model)}`,
+                                `/models?model=${encodeURIComponent(item.model)}`,
                               )
                             }
                             className="text-foreground cursor-pointer underline-offset-2 hover:text-[#3f74ff] hover:underline"

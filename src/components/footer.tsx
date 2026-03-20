@@ -8,7 +8,7 @@ import { useMounted } from "@/hooks/use-mounted";
 
 const navLinks = [
   { name: "Home", href: "/" },
-  { name: "Explore", href: "/explore" },
+  { name: "Explore", href: "/models" },
   { name: "Pricing", href: "/pricing" },
   { name: "Enterprise", href: "/enterprise" },
 ];
