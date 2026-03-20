@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useRef } from "react";
+import { useRouter } from "next/navigation";
 import { Navbar } from "@/components/navbar";
 import { FeaturedModels } from "@/components/featured-models";
 import { ToolsSection } from "@/components/tools-section";
@@ -162,10 +163,25 @@ function ExploreCarousel() {
 }
 
 function SearchBar() {
-  const [query, setQuery] = useState("");
+  const router = useRouter();
+
+  const handleNavigate = () => {
+    router.push("/explore/search");
+  };
 
   return (
-    <div className="border-foreground/10 bg-surface focus-within:border-brand flex items-center gap-3 rounded-md border px-4 py-3 transition-colors">
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={handleNavigate}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          handleNavigate();
+        }
+      }}
+      className="bg-surface flex cursor-pointer items-center gap-3 px-4 py-3 transition-colors"
+    >
       <svg
         className="text-foreground/30 size-4 shrink-0"
         fill="none"
@@ -181,19 +197,11 @@ function SearchBar() {
       </svg>
       <input
         type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        readOnly
+        onFocus={handleNavigate}
         placeholder="Search models, tools, providers..."
-        className="text-foreground placeholder:text-foreground/30 w-full bg-transparent font-mono text-sm outline-none"
+        className="text-foreground placeholder:text-foreground/30 w-full cursor-pointer bg-transparent font-mono text-sm outline-none"
       />
-      {query && (
-        <button
-          onClick={() => setQuery("")}
-          className="text-foreground/30 hover:text-foreground/60 shrink-0 cursor-pointer font-mono text-xs transition-colors"
-        >
-          Clear
-        </button>
-      )}
     </div>
   );
 }
