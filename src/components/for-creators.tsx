@@ -32,7 +32,7 @@ export function ForCreators() {
                 </a>
               </div>
             </div>
-            <div className="dark min-w-0 overflow-hidden rounded-lg border border-white/10 lg:flex-1">
+            <div className="dark min-w-0 overflow-hidden rounded-lg border border-white/20 lg:flex-1">
               <CodeEditorCard />
             </div>
           </div>
@@ -76,7 +76,7 @@ export function ForCreators() {
                 </a>
               </div>
             </div>
-            <div className="min-w-0 overflow-hidden rounded-md border border-white/10 lg:order-first lg:flex-1">
+            <div className="min-w-0 overflow-hidden rounded-md border border-white/20 lg:order-first lg:flex-1">
               <Image
                 src={desktopBg}
                 alt="WaveSpeed Studio"
