@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useState } from "react";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import {
@@ -124,6 +125,8 @@ const models = Array.from({ length: 12 }, (_, index) => ({
 }));
 
 export default function ExploreSearchPage() {
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+
   return (
     <main className="bg-background min-h-screen">
       <Navbar />
@@ -151,12 +154,12 @@ export default function ExploreSearchPage() {
             />
           </div>
 
-          <div className="mt-5 flex flex-wrap items-center gap-2">
+          <div className="-mx-1 mt-5 flex flex-nowrap items-center gap-2 overflow-x-auto px-1 pb-1 md:mx-0 md:flex-wrap md:overflow-visible md:px-0 md:pb-0">
             {quickTools.map((item) => (
               <button
                 key={item.label}
                 type="button"
-                className="border-foreground/10 text-foreground/75 hover:text-foreground hover:bg-foreground/5 flex cursor-pointer items-center gap-1 rounded-xs border px-1 py-0.5 text-xs transition-colors"
+                className="border-foreground/10 text-foreground/75 hover:text-foreground hover:bg-foreground/5 flex shrink-0 cursor-pointer items-center gap-1 rounded-xs border px-1 py-0.5 text-xs transition-colors"
               >
                 <Image
                   src={item.icon}
@@ -170,12 +173,12 @@ export default function ExploreSearchPage() {
             ))}
           </div>
 
-          <div className="mt-4 flex flex-wrap items-center gap-2">
+          <div className="-mx-1 mt-4 flex flex-nowrap items-center gap-2 overflow-x-auto px-1 pb-1 md:mx-0 md:flex-wrap md:overflow-visible md:px-0 md:pb-0">
             {modelGroups.map((item) => (
               <button
                 key={item.label}
                 type="button"
-                className="border-foreground/10 text-foreground/75 hover:text-foreground hover:bg-foreground/5 flex cursor-pointer items-center gap-1 rounded-xs border px-1 py-0.5 text-xs transition-colors"
+                className="border-foreground/10 text-foreground/75 hover:text-foreground hover:bg-foreground/5 flex shrink-0 cursor-pointer items-center gap-1 rounded-xs border px-1 py-0.5 text-xs transition-colors"
               >
                 <Image
                   src={item.icon}
@@ -190,7 +193,7 @@ export default function ExploreSearchPage() {
           </div>
 
           <div className="mt-10 grid gap-8 md:grid-cols-[230px_minmax(0,1fr)]">
-            <aside className="border-foreground/5 border-r-[0.5px] pr-6">
+            <aside className="border-foreground/5 hidden border-r-[0.5px] pr-6 md:block">
               <h3 className="text-foreground text-lg font-semibold">
                 Category
               </h3>
@@ -220,20 +223,73 @@ export default function ExploreSearchPage() {
                 <h3 className="text-foreground text-lg font-semibold">
                   794 Models
                 </h3>
-                <Select defaultValue="most-popular">
-                  <SelectTrigger
-                    size="sm"
-                    className="border-foreground/15 text-foreground/80 hover:bg-foreground/5 h-8 cursor-pointer bg-transparent text-xs font-bold shadow-none"
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setIsFilterOpen((prev) => !prev)}
+                    className="border-foreground/15 text-foreground/80 hover:bg-foreground/5 flex h-8 cursor-pointer items-center gap-1 rounded-xs border bg-transparent px-3 text-xs font-bold md:hidden"
+                    aria-expanded={isFilterOpen}
+                    aria-controls="mobile-category-filter"
                   >
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent align="end">
-                    <SelectItem value="most-popular">Most Popular</SelectItem>
-                    <SelectItem value="newest">Newest</SelectItem>
-                    <SelectItem value="name-asc">Name A-Z</SelectItem>
-                  </SelectContent>
-                </Select>
+                    Filter
+                    <svg
+                      className={`size-4 transition-transform ${isFilterOpen ? "rotate-180" : ""}`}
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.51a.75.75 0 01-1.08 0l-4.25-4.51a.75.75 0 01.02-1.06z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                  <Select defaultValue="most-popular">
+                    <SelectTrigger
+                      size="sm"
+                      className="border-foreground/15 text-foreground/80 hover:bg-foreground/5 h-8 cursor-pointer bg-transparent text-xs font-bold shadow-none"
+                    >
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent align="end">
+                      <SelectItem value="most-popular">Most Popular</SelectItem>
+                      <SelectItem value="newest">Newest</SelectItem>
+                      <SelectItem value="name-asc">Name A-Z</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
+
+              {isFilterOpen ? (
+                <div
+                  id="mobile-category-filter"
+                  className="bg-surface mt-4 p-4 md:hidden"
+                >
+                  <h3 className="text-foreground text-lg font-semibold">
+                    Category
+                  </h3>
+                  <div className="mt-5 space-y-2">
+                    {categories.map((item) => (
+                      <label
+                        key={item.name}
+                        className="text-foreground/80 hover:text-foreground flex cursor-pointer items-center justify-between gap-2 text-sm"
+                      >
+                        <span className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            className="border-foreground/15 checked:border-foreground checked:bg-foreground size-3.5 appearance-none rounded-xs border bg-transparent"
+                          />
+                          {item.name}
+                        </span>
+                        <span className="text-foreground/40 text-xs">
+                          {item.count}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
 
               <div className="mt-5 grid gap-4 md:grid-cols-2">
                 {models.map((item) => (
