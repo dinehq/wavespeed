@@ -1,6 +1,12 @@
+import type { ReactNode } from "react";
+
 import ArrowRight from "@/images/arrow-right.svg";
 
-export function CTABanner() {
+interface CTABannerProps {
+  children?: ReactNode;
+}
+
+export function CTABanner({ children }: CTABannerProps) {
   return (
     <section className="relative h-76 overflow-hidden">
       <div className="absolute inset-0 scale-[1.05]">
@@ -17,19 +23,23 @@ export function CTABanner() {
       <div className="absolute inset-0 dark:bg-black/50" />
 
       <div className="relative mx-auto flex h-full max-w-360 flex-col items-center justify-center gap-6 px-6 py-12 md:flex-row md:justify-between md:px-12 md:py-0 lg:px-20">
-        <h2 className="font-display text-center text-2xl leading-none font-bold tracking-tight text-balance text-black md:text-left md:text-5xl dark:text-white">
-          Unlock Your AI Potential Today
-        </h2>
+        {children ?? (
+          <>
+            <h2 className="font-display text-center text-2xl leading-none font-bold tracking-tight text-balance text-black md:text-left md:text-5xl dark:text-white">
+              Unlock Your AI Potential Today
+            </h2>
 
-        <a
-          href="#"
-          className="flex shrink-0 items-center gap-3 rounded-xs bg-black px-8 py-4 text-white transition-colors duration-150 hover:bg-black/80"
-        >
-          <span className="tracking-xl font-mono text-sm leading-4 font-medium uppercase">
-            Start Building
-          </span>
-          <ArrowRight className="size-4" />
-        </a>
+            <a
+              href="#"
+              className="flex shrink-0 items-center gap-3 rounded-xs bg-black px-8 py-4 text-white transition-colors duration-150 hover:bg-black/80"
+            >
+              <span className="tracking-xl font-mono text-sm leading-4 font-medium uppercase">
+                Start Building
+              </span>
+              <ArrowRight className="size-4" />
+            </a>
+          </>
+        )}
       </div>
     </section>
   );
