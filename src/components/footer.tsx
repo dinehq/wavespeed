@@ -123,7 +123,7 @@ export function Footer() {
       <div className="mx-auto max-w-7xl">
         <div className="mb-12 flex flex-col gap-10">
           <div className="grid grid-cols-2 gap-x-6 md:grid-cols-3 lg:grid-cols-6">
-            <Link href="/" className="whitespace-nowrap">
+            <Link href="/" className="">
               <Logo className="h-5 w-auto text-white transition-opacity hover:opacity-80" />
             </Link>
             <a
