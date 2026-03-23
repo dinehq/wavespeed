@@ -178,7 +178,7 @@ export function Navbar({ mode = "default", overlay }: NavbarProps) {
 
   return (
     <nav
-      className={`z-50 flex h-16 w-full items-center justify-center px-6 transition-all duration-300 md:px-12 lg:px-20 ${
+      className={`z-50 flex h-16 w-full items-center justify-center px-6 transition-colors duration-150 md:px-12 lg:px-20 ${
         overlay ? "sticky top-0" : "relative"
       } ${isOverlay ? "text-white" : "bg-background"}`}
     >
