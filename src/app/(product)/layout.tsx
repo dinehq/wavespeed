@@ -1,11 +1,26 @@
 "use client";
 
 import { Suspense } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
 import { FakeAuthGuard } from "@/components/auth/fake-auth-guard";
 import { TeamProvider } from "@/features/product/team-context";
+
+function PublicModelsNavbar() {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const pathSegments = pathname.split("/").filter(Boolean);
+  const isExploreEntry = searchParams.get("entry") === "explore";
+  const useDashboardNavbarOnPublicRoute =
+    pathname.startsWith("/models/") &&
+    pathSegments.length >= 3 &&
+    !isExploreEntry;
+
+  return (
+    <Navbar mode={useDashboardNavbarOnPublicRoute ? "dashboard" : "default"} />
+  );
+}
 
 export default function ProductLayout({
   children,
@@ -22,8 +37,12 @@ export default function ProductLayout({
   if (isPublicModelsRoute) {
     return (
       <main>
-        <Navbar />
-        <Suspense>{children}</Suspense>
+        <TeamProvider>
+          <Suspense fallback={<Navbar mode="dashboard" />}>
+            <PublicModelsNavbar />
+          </Suspense>
+          <Suspense>{children}</Suspense>
+        </TeamProvider>
         <Footer />
       </main>
     );

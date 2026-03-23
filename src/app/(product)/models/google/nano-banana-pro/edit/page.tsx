@@ -53,6 +53,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { toast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
+import {
+  isFavouriteModelId,
+  removeFavouriteModel,
+  upsertFavouriteModel,
+} from "@/lib/favourite-models-storage";
 import { ProductTopTabs } from "@/features/product/components/product-top-tabs";
 import { ExamplesSection } from "./examples-section";
 import { ModelDetailInputForm, ModelSwitcher } from "./model-detail-input-form";
@@ -249,6 +255,15 @@ const requestDetailMockById: Record<
 
 const requestDetailInputCode = `{"prompt":"A hyper-realistic, high-resolution 4k texture of an ancient weathered brick wall heavily overgrown with lush green moss and soft lichens. The bricks are aged, featuring deep earthy tones, natural cracks, and gritty textures. Vibrant emerald moss fills the mortar lines and spills over the rough surfaces of the stones. Uniform, flat cinematic lighting ensures no harsh shadows, highlighting the intricate organic details and damp stone surfaces. The composition is a perfectly balanced overhead view, showcasing a rich tapestry of botanical growth and masonry craftsmanship with professional clarity and hyper-detailed grit.","image_size":"square_hd","num_inference_steps":8,"num_images":1,"enable_safety_checker":true,"output_format":"png","acceleration":"regular","tile_size":128,"tile_stride":64,"tiling_mode":"both","loras":[]}`;
 
+const FAVOURITE_MODEL_PAGE = {
+  id: "google/nano-banana-pro/edit",
+  name: "google/nano-banana-pro/edit",
+  provider: "wavespeed-ai",
+  taskType: "image-to-image",
+  priceLabel: "$ 0.03",
+  href: "/models/google/nano-banana-pro/edit",
+} as const;
+
 const requestDetailOutputCode = `{
   "seed": 1542419079,
   "images": [
@@ -287,8 +302,15 @@ export default function ModelDetailPage() {
   const [isInputSectionExpanded, setIsInputSectionExpanded] = useState(true);
   const [isOutputSectionExpanded, setIsOutputSectionExpanded] = useState(true);
   const [isResultSectionExpanded, setIsResultSectionExpanded] = useState(true);
+  const [favouriteVersion, setFavouriteVersion] = useState(0);
   const generationTimeoutRef = useRef<number | null>(null);
   const generationProgressTimeoutRef = useRef<number | null>(null);
+  const isFavourite = useMemo(
+    () =>
+      typeof window !== "undefined" &&
+      isFavouriteModelId(FAVOURITE_MODEL_PAGE.id),
+    [favouriteVersion],
+  );
   const apiJsonPayload = `{
   "enable_base64_output": false,
   "enable_sync_mode": false,
@@ -694,9 +716,41 @@ print(response.json())`;
                   variant="outline"
                   size="sm"
                   className={controlButtonSmClass}
+                  onClick={() => {
+                    if (isFavourite) {
+                      removeFavouriteModel(FAVOURITE_MODEL_PAGE.id);
+                      setFavouriteVersion((prev) => prev + 1);
+                      toast({
+                        title: "Removed from favourites",
+                        description:
+                          "You can add this model again from this page.",
+                      });
+                    } else {
+                      upsertFavouriteModel({ ...FAVOURITE_MODEL_PAGE });
+                      setFavouriteVersion((prev) => prev + 1);
+                      toast({
+                        description: (
+                          <>
+                            This model has been added to{" "}
+                            <Link
+                              href="/favourite"
+                              className="text-foreground decoration-foreground/35 hover:decoration-foreground/60 font-medium underline underline-offset-2"
+                            >
+                              Favourite
+                            </Link>
+                          </>
+                        ),
+                      });
+                    }
+                  }}
                 >
-                  <Star className="size-3" />
-                  Add to favourite
+                  <Star
+                    className={cn(
+                      "size-3",
+                      isFavourite && "fill-amber-400 text-amber-400",
+                    )}
+                  />
+                  {isFavourite ? "Remove from favourite" : "Add to favourite"}
                 </Button>
                 <Button
                   variant="outline"
