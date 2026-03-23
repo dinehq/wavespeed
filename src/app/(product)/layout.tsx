@@ -14,7 +14,10 @@ export default function ProductLayout({
 }>) {
   const pathname = usePathname();
   const isPublicModelsRoute =
-    pathname === "/models" || pathname.startsWith("/models/");
+    pathname === "/models" ||
+    pathname.startsWith("/models/") ||
+    pathname === "/collections" ||
+    pathname.startsWith("/collections/");
 
   if (isPublicModelsRoute) {
     return (
