@@ -122,8 +122,8 @@ export function Footer() {
     <footer className="bg-dark border-t border-white/10 px-6 py-12 md:px-12 md:py-16 lg:px-20">
       <div className="mx-auto max-w-7xl">
         <div className="mb-12 flex flex-col gap-10">
-          <div className="flex items-center gap-6">
-            <Link href="/" className="shrink-0 whitespace-nowrap">
+          <div className="grid grid-cols-2 gap-x-6 md:grid-cols-3 lg:grid-cols-6">
+            <Link href="/" className="whitespace-nowrap">
               <Logo className="h-5 w-auto text-white transition-opacity hover:opacity-80" />
             </Link>
             <a
