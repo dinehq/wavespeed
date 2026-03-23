@@ -247,6 +247,17 @@ export function ProductMain({ forcedMainTab }: ProductMainProps = {}) {
     (requestedTab && isProductMainTab(requestedTab)
       ? requestedTab
       : "Dashboard");
+
+  useEffect(() => {
+    if (resolvedMainTab !== "Favourite") {
+      return;
+    }
+    if (pathname === "/favourite") {
+      return;
+    }
+    router.replace("/favourite");
+  }, [resolvedMainTab, pathname, router]);
+
   const resolvedBillingTab =
     requestedBillingTab === "billing" || requestedBillingTab === "top-up"
       ? requestedBillingTab
