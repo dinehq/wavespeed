@@ -1,6 +1,7 @@
 "use client";
 
 import Image, { type StaticImageData } from "next/image";
+import Link from "next/link";
 import { useRef } from "react";
 import Lab1 from "@/images/lab-1.svg";
 import Lab2 from "@/images/lab-2.svg";
@@ -568,7 +569,9 @@ export function ToolsSection() {
         <DragRow className="cursor-grab overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {categoryRow1.map((cat, i) => (
             <div key={i} className="w-65 shrink-0 md:w-100">
-              <CategoryCard category={cat} />
+              <Link href="/collections/best-video-models" className="block">
+                <CategoryCard category={cat} />
+              </Link>
             </div>
           ))}
         </DragRow>
@@ -577,7 +580,9 @@ export function ToolsSection() {
         <DragRow className="cursor-grab overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {categoryRow2.map((cat, i) => (
             <div key={i} className="w-50 shrink-0 md:w-80">
-              <CategoryCard category={cat} />
+              <Link href="/collections/best-video-models" className="block">
+                <CategoryCard category={cat} />
+              </Link>
             </div>
           ))}
         </DragRow>
