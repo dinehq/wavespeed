@@ -124,7 +124,10 @@ export function PromoBar() {
 
   if (config.ctaLabel) {
     return (
-      <div style={{ backgroundColor: bgColor, color: textColor }}>
+      <div
+        data-promo-bar=""
+        style={{ backgroundColor: bgColor, color: textColor }}
+      >
         <div className={barClass}>
           {badgeEl}
           <span className="line-clamp-1 text-left">{config.text}</span>
@@ -141,15 +144,17 @@ export function PromoBar() {
   }
 
   return (
-    <PromoLink
-      href={config.href}
-      style={{ backgroundColor: bgColor, color: textColor }}
-      className="block transition-opacity duration-150 hover:opacity-90"
-    >
-      <div className={barClass}>
-        {badgeEl}
-        <span className="line-clamp-1 text-left">{config.text}</span>
-      </div>
-    </PromoLink>
+    <div data-promo-bar="">
+      <PromoLink
+        href={config.href}
+        style={{ backgroundColor: bgColor, color: textColor }}
+        className="block transition-opacity duration-150 hover:opacity-90"
+      >
+        <div className={barClass}>
+          {badgeEl}
+          <span className="line-clamp-1 text-left">{config.text}</span>
+        </div>
+      </PromoLink>
+    </div>
   );
 }
