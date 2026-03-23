@@ -687,7 +687,7 @@ export default function NanoBanana2Landing() {
         <div className="flex shrink-0 flex-wrap items-center justify-center gap-3">
           <Link
             href={config.primaryCta.href}
-            className="flex whitespace-nowrap items-center gap-3 rounded-xs bg-black px-8 py-4 text-white transition-colors duration-150 hover:bg-black/80"
+            className="flex items-center gap-3 rounded-xs bg-black px-8 py-4 whitespace-nowrap text-white transition-colors duration-150 hover:bg-black/80"
           >
             <span className="tracking-xl font-mono text-sm leading-4 font-medium uppercase">
               {config.primaryCta.label}
@@ -696,7 +696,7 @@ export default function NanoBanana2Landing() {
           </Link>
           <Link
             href={config.secondaryCta.href}
-            className="flex whitespace-nowrap items-center rounded-xs border border-black/20 px-8 py-4 text-black transition-colors duration-150 hover:bg-black/10 dark:border-white/20 dark:text-white dark:hover:bg-white/10"
+            className="flex items-center rounded-xs border border-black/20 px-8 py-4 whitespace-nowrap text-black transition-colors duration-150 hover:bg-black/10 dark:border-white/20 dark:text-white dark:hover:bg-white/10"
           >
             <span className="tracking-xl font-mono text-sm leading-4 font-medium uppercase">
               {config.secondaryCta.label}

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useReducer, useState } from "react";
 import { Star } from "lucide-react";
 import { slideImageForFavouriteId } from "@/lib/favourite-model-slide-image";
 import { useMounted } from "@/hooks/use-mounted";
@@ -79,26 +79,27 @@ function FavouriteModelCard({
   );
 }
 
+function useForceRender() {
+  return useReducer((n: number) => n + 1, 0)[1];
+}
+
 export default function FavouriteModelsPage() {
   const mounted = useMounted();
-  const [refreshTick, setRefreshTick] = useState(0);
+  const forceRender = useForceRender();
   const [activeFilter, setActiveFilter] = useState<FavouriteFilterId>("all");
 
-  const models = useMemo(
-    () => (mounted ? loadFavouriteModels() : []),
-    [mounted, refreshTick],
+  const models = mounted ? loadFavouriteModels() : [];
+  const filtered = models.filter((m) =>
+    matchesFavouriteFilter(m.taskType, activeFilter),
   );
 
-  const filtered = useMemo(
-    () =>
-      models.filter((m) => matchesFavouriteFilter(m.taskType, activeFilter)),
-    [models, activeFilter],
+  const handleRemove = useCallback(
+    (id: string) => {
+      removeFavouriteModel(id);
+      forceRender();
+    },
+    [forceRender],
   );
-
-  const handleRemove = useCallback((id: string) => {
-    removeFavouriteModel(id);
-    setRefreshTick((prev) => prev + 1);
-  }, []);
 
   const filterTabs = FAVOURITE_FILTER_IDS.map((id) => ({
     id,

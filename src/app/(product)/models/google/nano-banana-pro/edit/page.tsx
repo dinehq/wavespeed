@@ -302,15 +302,13 @@ export default function ModelDetailPage() {
   const [isInputSectionExpanded, setIsInputSectionExpanded] = useState(true);
   const [isOutputSectionExpanded, setIsOutputSectionExpanded] = useState(true);
   const [isResultSectionExpanded, setIsResultSectionExpanded] = useState(true);
-  const [favouriteVersion, setFavouriteVersion] = useState(0);
-  const generationTimeoutRef = useRef<number | null>(null);
-  const generationProgressTimeoutRef = useRef<number | null>(null);
-  const isFavourite = useMemo(
+  const [isFavourite, setIsFavourite] = useState(
     () =>
       typeof window !== "undefined" &&
       isFavouriteModelId(FAVOURITE_MODEL_PAGE.id),
-    [favouriteVersion],
   );
+  const generationTimeoutRef = useRef<number | null>(null);
+  const generationProgressTimeoutRef = useRef<number | null>(null);
   const apiJsonPayload = `{
   "enable_base64_output": false,
   "enable_sync_mode": false,
@@ -719,7 +717,7 @@ print(response.json())`;
                   onClick={() => {
                     if (isFavourite) {
                       removeFavouriteModel(FAVOURITE_MODEL_PAGE.id);
-                      setFavouriteVersion((prev) => prev + 1);
+                      setIsFavourite(false);
                       toast({
                         title: "Removed from favourites",
                         description:
@@ -727,7 +725,7 @@ print(response.json())`;
                       });
                     } else {
                       upsertFavouriteModel({ ...FAVOURITE_MODEL_PAGE });
-                      setFavouriteVersion((prev) => prev + 1);
+                      setIsFavourite(true);
                       toast({
                         description: (
                           <>
