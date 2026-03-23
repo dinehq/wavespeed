@@ -16,9 +16,13 @@ function PublicModelsNavbar() {
     pathname.startsWith("/models/") &&
     pathSegments.length >= 3 &&
     !isExploreEntry;
+  const isCollectionRoute = pathname.startsWith("/collections/");
 
   return (
-    <Navbar mode={useDashboardNavbarOnPublicRoute ? "dashboard" : "default"} />
+    <Navbar
+      mode={useDashboardNavbarOnPublicRoute ? "dashboard" : "default"}
+      overlay={isCollectionRoute}
+    />
   );
 }
 
