@@ -9,21 +9,21 @@ import { useMounted } from "@/hooks/use-mounted";
 const navLinks = [
   { name: "Home", href: "/" },
   { name: "Explore", href: "/models" },
-  { name: "Pricing", href: "/pricing" },
-  { name: "Enterprise", href: "/enterprise" },
+  { name: "Pricing", href: "#" },
+  { name: "Enterprise", href: "#" },
 ];
 
 const resourceLinks = [
-  { name: "Studio", href: "/studio" },
-  { name: "Desktop App", href: "/download" },
+  { name: "Studio", href: "#" },
+  { name: "Desktop App", href: "/landing/desktop" },
   { name: "Doc", href: "/docs" },
   { name: "Contact Sales", href: "/contact" },
-  { name: "Support", href: "/support" },
-  { name: "Affiliate", href: "/affiliate" },
-  { name: "Inspiration", href: "/inspiration" },
+  { name: "Support", href: "#" },
+  { name: "Affiliate", href: "#" },
+  { name: "Inspiration", href: "#" },
   { name: "Blog", href: "/blog" },
-  { name: "Be a Creator", href: "/creators" },
-  { name: "GitHub", href: "/github" },
+  { name: "Be a Creator", href: "#" },
+  { name: "GitHub", href: "#" },
 ];
 
 const modelLinks = [

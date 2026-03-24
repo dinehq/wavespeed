@@ -18,7 +18,7 @@ const STORAGE_KEY = "wavespeed-promo-bar";
 export const defaultConfig: PromoBarConfig = {
   enabled: true,
   text: "Share WaveSpeed. Earn 10%. Join the",
-  href: "/affiliate",
+  href: "#",
   bgColor: "#3f74ff",
   textColor: "#ffffff",
   badge: "NEW",

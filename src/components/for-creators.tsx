@@ -58,7 +58,7 @@ export function ForCreators() {
                   Try Studio
                 </a>
                 <a
-                  href="https://wavespeed.ai/landing/desktop"
+                  href="/landing/desktop"
                   className="group tracking-xl inline-flex items-center gap-2 rounded-xs border border-white/20 px-5 py-2.5 font-mono text-sm text-white uppercase transition-colors duration-150 hover:bg-white/10"
                 >
                   Desktop

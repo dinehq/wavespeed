@@ -38,16 +38,16 @@ const resourceGroups = [
   {
     label: "Products",
     items: [
-      { name: "Desktop", href: "/download" },
-      { name: "Studio", href: "/studio" },
-      { name: "Tools", href: "/tools" },
+      { name: "Desktop", href: "/landing/desktop" },
+      { name: "Studio", href: "#" },
+      { name: "Tools", href: "#" },
     ],
   },
   {
     label: "Developers",
     items: [
       { name: "Doc", href: "/docs" },
-      { name: "GitHub", href: "/github" },
+      { name: "GitHub", href: "#" },
       { name: "Blog", href: "/blog" },
     ],
   },
@@ -55,16 +55,16 @@ const resourceGroups = [
     label: "Company",
     items: [
       { name: "Contact Sales", href: "/contact" },
-      { name: "Customer Stories", href: "/customers" },
-      { name: "Affiliate", href: "/affiliate" },
+      { name: "Customer Stories", href: "#" },
+      { name: "Affiliate", href: "#" },
     ],
   },
   {
     label: "Community",
     items: [
-      { name: "Support", href: "/support" },
-      { name: "Inspiration", href: "/inspiration" },
-      { name: "Be a Creator", href: "/creators" },
+      { name: "Support", href: "#" },
+      { name: "Inspiration", href: "#" },
+      { name: "Be a Creator", href: "#" },
     ],
   },
 ];
@@ -197,8 +197,8 @@ export function Navbar({ mode = "default", overlay }: NavbarProps) {
           <div className="hidden items-center gap-6 lg:flex">
             {[
               { label: "Explore", href: "/models" },
-              { label: "Pricing", href: "/pricing" },
-              { label: "Enterprise", href: "/enterprise" },
+              { label: "Pricing", href: "#" },
+              { label: "Enterprise", href: "#" },
             ].map((item) => (
               <Link
                 key={item.label}
@@ -546,8 +546,8 @@ export function Navbar({ mode = "default", overlay }: NavbarProps) {
           )}
           {[
             { label: "Explore", href: "/models" },
-            { label: "Pricing", href: "/pricing" },
-            { label: "Enterprise", href: "/enterprise" },
+            { label: "Pricing", href: "#" },
+            { label: "Enterprise", href: "#" },
           ].map((item) => (
             <Link
               key={item.label}
