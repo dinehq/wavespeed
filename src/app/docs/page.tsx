@@ -467,7 +467,7 @@ export default function DocsPage() {
             <article className="max-w-3xl">
               <p className="text-foreground/40 mb-4 text-xs">Introduction</p>
 
-              <h1 className="text-heading font-display text-3xl leading-tight font-bold tracking-tight md:text-4xl">
+              <h1 className="text-heading text-3xl leading-tight font-bold tracking-tight md:text-4xl">
                 WaveSpeed Documentation
               </h1>
 
@@ -536,7 +536,7 @@ export default function DocsPage() {
 
               <h2
                 id="why-wavespeedai"
-                className="text-heading font-display border-foreground/8 mt-12 border-t pt-8 text-2xl font-semibold tracking-tight"
+                className="text-heading border-foreground/8 mt-12 border-t pt-8 text-2xl font-semibold tracking-tight"
               >
                 Why WaveSpeed
               </h2>
@@ -578,7 +578,7 @@ export default function DocsPage() {
 
               <h2
                 id="account-levels"
-                className="text-heading font-display border-foreground/8 mt-12 border-t pt-8 text-2xl font-semibold tracking-tight"
+                className="text-heading border-foreground/8 mt-12 border-t pt-8 text-2xl font-semibold tracking-tight"
               >
                 Account Levels
               </h2>
@@ -681,7 +681,7 @@ export default function DocsPage() {
 
               <h2
                 id="support"
-                className="text-heading font-display border-foreground/8 mt-12 border-t pt-8 text-2xl font-semibold tracking-tight"
+                className="text-heading border-foreground/8 mt-12 border-t pt-8 text-2xl font-semibold tracking-tight"
               >
                 Support
               </h2>
