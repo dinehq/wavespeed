@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import Link from "next/link";
+import { posts } from "@/app/blog/data";
 
 /* ------------------------------------------------------------------ */
 /*  Scan src/app/ for page.tsx files at build time                     */
@@ -33,6 +34,11 @@ function discoverRoutes(): DiscoveredRoute[] {
   }
 
   walk(appDir);
+
+  // Expand known dynamic routes
+  for (const post of posts) {
+    routes.push({ path: `/blog/posts/${post.slug}`, group: null });
+  }
 
   // Deduplicate by path
   const seen = new Set<string>();
