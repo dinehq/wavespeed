@@ -1,7 +1,13 @@
 import { useMemo, useState, type RefObject } from "react";
 
 import { format } from "date-fns";
-import { CalendarIcon, ChevronDown, Info } from "lucide-react";
+import {
+  CalendarIcon,
+  ChevronDown,
+  CreditCard,
+  Info,
+  Trash2,
+} from "lucide-react";
 import type { DateRange } from "react-day-picker";
 
 import {
@@ -9,6 +15,7 @@ import {
   billingUsageRecords,
   topUpAmountOptions,
 } from "@/features/product/data/product-main-data";
+import { toast } from "@/hooks/use-toast";
 import { ProductSectionHeader } from "@/features/product/components/product-section-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -141,6 +148,25 @@ export function ProductBillingTab({
   const [autoTopUpAmount, setAutoTopUpAmount] = useState("20");
   const [autoTopUpThreshold, setAutoTopUpThreshold] = useState("10");
   const [isAutoTopUpActive, setIsAutoTopUpActive] = useState(false);
+  const [savedCards, setSavedCards] = useState<
+    { brand: string; last4: string; expiry: string; isDefault: boolean }[]
+  >([]);
+
+  const addDemoCard = () => {
+    const brands = ["Mastercard", "Visa", "Amex"];
+    const last4 = String(Math.floor(1000 + Math.random() * 9000));
+    const month = String(Math.floor(1 + Math.random() * 12)).padStart(2, "0");
+    const year = 2028 + Math.floor(Math.random() * 6);
+    setSavedCards((prev) => [
+      ...prev.map((c) => ({ ...c, isDefault: false })),
+      {
+        brand: brands[Math.floor(Math.random() * brands.length)],
+        last4,
+        expiry: `${month}/${year}`,
+        isDefault: true,
+      },
+    ]);
+  };
   const [isPredictionFilterOpen, setIsPredictionFilterOpen] = useState(false);
   const [predictionFilterValue, setPredictionFilterValue] = useState("all");
   const [predictionFilterQuery, setPredictionFilterQuery] = useState("");
@@ -590,7 +616,16 @@ export function ProductBillingTab({
             </CardContent>
             <div className="border-foreground/10 mt-auto border-t px-4 py-4">
               <Button
-                onClick={() => setIsAutoTopUpActive((prev) => !prev)}
+                onClick={() => {
+                  if (!isAutoTopUpActive && savedCards.length === 0) {
+                    toast({
+                      description:
+                        "Please add a payment method before enabling Auto Top-up.",
+                    });
+                    return;
+                  }
+                  setIsAutoTopUpActive((prev) => !prev);
+                }}
                 variant={isAutoTopUpActive ? "outline" : "default"}
                 className="h-8 w-full rounded-xs text-xs"
               >
@@ -617,6 +652,101 @@ export function ProductBillingTab({
               />
               <Button className="h-8 rounded-xs px-3 text-xs">Redeem</Button>
             </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
+          <CardHeader className="px-4 pt-4 pb-3">
+            <CardTitle className="text-foreground text-sm font-semibold">
+              Payment Methods
+            </CardTitle>
+            <p className="text-foreground/60 text-xs">
+              Manage your saved cards, set a default, or add new payment methods
+              for purchases.
+            </p>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-3 px-4 pb-4">
+            {savedCards.length > 0 ? (
+              <>
+                {savedCards.map((card) => (
+                  <div
+                    key={card.last4}
+                    className="border-foreground/10 flex items-center gap-3 rounded-xs border px-3 py-3"
+                  >
+                    <CreditCard className="text-foreground size-5 shrink-0" />
+                    <span className="text-foreground text-sm font-medium">
+                      {card.brand} &bull;&bull;&bull;&bull; {card.last4}
+                    </span>
+                    {card.isDefault && (
+                      <Badge
+                        variant="outline"
+                        className="rounded-xs border-emerald-500/30 bg-emerald-500/12 px-1.5 py-0 text-xs text-emerald-700 dark:border-emerald-400/35 dark:bg-emerald-400/15 dark:text-emerald-300"
+                      >
+                        Default
+                      </Badge>
+                    )}
+                    <span className="text-foreground/50 text-sm">
+                      Valid until {card.expiry}
+                    </span>
+                    <button
+                      type="button"
+                      aria-label="Remove card"
+                      onClick={() =>
+                        setSavedCards((prev) => {
+                          const next = prev.filter(
+                            (c) => c.last4 !== card.last4,
+                          );
+                          if (next.length > 0 && !next.some((c) => c.isDefault))
+                            next[next.length - 1].isDefault = true;
+                          return next;
+                        })
+                      }
+                      className="bg-destructive hover:bg-destructive/90 ml-auto flex size-8 shrink-0 items-center justify-center rounded-xs text-white transition-colors"
+                    >
+                      <Trash2 className="size-4" />
+                    </button>
+                  </div>
+                ))}
+
+                <div className="bg-brand/8 border-brand/15 text-brand flex items-start gap-2 rounded-xs border px-2 py-2 text-xs">
+                  <Info className="mt-px size-3.5 shrink-0" />
+                  <p>
+                    You can add additional payment methods to have backup
+                    options and set a default payment method.
+                  </p>
+                </div>
+
+                <div>
+                  <Button
+                    onClick={addDemoCard}
+                    className="h-8 rounded-xs px-4 text-xs"
+                  >
+                    Add
+                  </Button>
+                </div>
+              </>
+            ) : (
+              <div className="flex flex-col items-center gap-3 py-10">
+                <CreditCard
+                  className="text-foreground size-8"
+                  strokeWidth={1.5}
+                />
+                <div className="text-center">
+                  <p className="text-foreground text-sm font-semibold">
+                    No payment methods added yet
+                  </p>
+                  <p className="text-foreground/50 text-xs">
+                    Add a card to purchase credits and receive invoices.
+                  </p>
+                </div>
+                <Button
+                  onClick={addDemoCard}
+                  className="mt-1 h-8 rounded-xs px-4 text-xs"
+                >
+                  Add card
+                </Button>
+              </div>
+            )}
           </CardContent>
         </Card>
 
