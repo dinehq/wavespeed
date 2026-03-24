@@ -102,7 +102,7 @@ load_dotenv()
 
 
 def main():
-    print("Hello from WaveSpeedAI!")
+    print("Hello from WaveSpeed!")
     API_KEY = os.getenv("WAVESPEED_API_KEY")
     print(f"API_KEY: {API_KEY}")
 

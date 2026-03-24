@@ -195,8 +195,8 @@ export default function BestVideoModelsPage() {
             </h1>
             <p className="max-w-xl font-mono text-sm leading-normal text-pretty text-white/50">
               Brainstorm, generate, edit, and iterate faster across images and
-              videos with WaveSpeedAI. Curated video models for cinematic
-              quality, motion control, and production-ready speed.
+              videos with WaveSpeed. Curated video models for cinematic quality,
+              motion control, and production-ready speed.
             </p>
           </div>
         </div>

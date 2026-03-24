@@ -49,7 +49,7 @@ export const defaultConfig: SlideshowConfig = {
       enabled: true,
       title: "Ultimate AI Media\nGeneration Platform",
       description:
-        "WaveSpeedAI accelerates AI Image and Video generation for you to build, create, and scale faster.",
+        "WaveSpeed accelerates AI Image and Video generation for you to build, create, and scale faster.",
       action: { label: "Explore Models", href: "#" },
       secondaryAction: { label: "Documentation", href: "#" },
       imageKey: "slide-1",

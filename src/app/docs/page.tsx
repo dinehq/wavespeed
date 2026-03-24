@@ -17,7 +17,7 @@ type NavItem = {
 const BASE = "#";
 
 const tocItems = [
-  { id: "why-wavespeedai", label: "Why WaveSpeedAI" },
+  { id: "why-wavespeedai", label: "Why WaveSpeed" },
   { id: "account-levels", label: "Account Levels" },
   { id: "support", label: "Support" },
 ];
@@ -53,7 +53,7 @@ const sidebarNav: { section?: string; items: NavItem[] }[] = [
   {
     section: "Core Concepts",
     items: [
-      { title: "How WaveSpeedAI Works", href: `${BASE}/how-wavespeedai-works` },
+      { title: "How WaveSpeed Works", href: `${BASE}/how-wavespeedai-works` },
       { title: "What are Models", href: `${BASE}/what-are-models` },
       { title: "What are Predictions", href: `${BASE}/what-are-predictions` },
       { title: "How to Use Webhooks", href: `${BASE}/how-to-use-webhooks` },
@@ -398,7 +398,7 @@ function SidebarContent({
       {/* Footer */}
       <div className="border-foreground/8 mt-8 border-t pt-4">
         <p className="text-foreground/30 text-xs">
-          &copy; {new Date().getFullYear()} WaveSpeedAI
+          &copy; {new Date().getFullYear()} WaveSpeed
         </p>
       </div>
     </div>
@@ -468,18 +468,18 @@ export default function DocsPage() {
               <p className="text-foreground/40 mb-4 text-xs">Introduction</p>
 
               <h1 className="text-heading font-display text-3xl leading-tight font-bold tracking-tight md:text-4xl">
-                WaveSpeedAI Documentation
+                WaveSpeed Documentation
               </h1>
 
               <p className="text-foreground/70 mt-5 leading-7">
-                WaveSpeedAI provides unified API access to 700+ AI models for
+                WaveSpeed provides unified API access to 700+ AI models for
                 text-to-image, image-to-video, text-to-video, and audio
                 generation. Supported models include FLUX, Kling, Veo, Luma,
                 Stable Diffusion, Seedance, Minimax, and more.
               </p>
 
               <p className="text-foreground mt-6 font-medium">
-                Get started with WaveSpeedAI:
+                Get started with WaveSpeed:
               </p>
               <ul className="mt-3 flex flex-col gap-2">
                 {[
@@ -538,7 +538,7 @@ export default function DocsPage() {
                 id="why-wavespeedai"
                 className="text-heading font-display border-foreground/8 mt-12 border-t pt-8 text-2xl font-semibold tracking-tight"
               >
-                Why WaveSpeedAI
+                Why WaveSpeed
               </h2>
               <ul className="mt-4 flex flex-col gap-3">
                 {[
@@ -583,7 +583,7 @@ export default function DocsPage() {
                 Account Levels
               </h2>
               <p className="text-foreground/70 mt-3 leading-7">
-                WaveSpeedAI offers four account levels to suit different usage
+                WaveSpeed offers four account levels to suit different usage
                 requirements:
               </p>
               <div className="mt-6 overflow-x-auto">

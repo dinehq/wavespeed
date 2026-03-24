@@ -8,8 +8,8 @@ export function Hero() {
           Ultimate AI Media Generation Platform
         </h1>
         <p className="text-subtle max-w-xl font-mono text-sm leading-normal text-pretty md:text-base">
-          WaveSpeedAI accelerates AI Image and Video generation for you to
-          build, create, and scale faster.
+          WaveSpeed accelerates AI Image and Video generation for you to build,
+          create, and scale faster.
         </p>
       </div>
 

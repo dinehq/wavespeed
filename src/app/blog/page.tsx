@@ -56,7 +56,7 @@ const posts: BlogPost[] = [
     title:
       "Best AI People Remover From Photos in 2026: Remove Unwanted People Instantly",
     description:
-      "Compare the top AI people remover tools of 2026. WaveSpeedAI offers instant, high-quality people removal from photos with API access and no watermarks.",
+      "Compare the top AI people remover tools of 2026. WaveSpeed offers instant, high-quality people removal from photos with API access and no watermarks.",
     date: "2026-03-22",
     readTime: "5 min read",
     slug: "best-ai-people-remover-from-photos-2026",
@@ -65,9 +65,9 @@ const posts: BlogPost[] = [
   },
   {
     title:
-      "Best Fotor Alternative in 2026: WaveSpeedAI for AI Image Generation & Editing",
+      "Best Fotor Alternative in 2026: WaveSpeed for AI Image Generation & Editing",
     description:
-      "Looking for a Fotor alternative? WaveSpeedAI delivers AI image generation, editing, and 200+ models via API — far beyond basic photo editing.",
+      "Looking for a Fotor alternative? WaveSpeed delivers AI image generation, editing, and 200+ models via API — far beyond basic photo editing.",
     date: "2026-03-21",
     readTime: "4 min read",
     slug: "best-fotor-alternative-2026-wavespeedai",
@@ -109,9 +109,9 @@ const posts: BlogPost[] = [
   },
   {
     title:
-      "Best Janitor AI Alternative in 2026: Why Creators Are Switching to WaveSpeedAI",
+      "Best Janitor AI Alternative in 2026: Why Creators Are Switching to WaveSpeed",
     description:
-      "WaveSpeedAI offers AI image generation, video creation, face swap, style transfer, and 200+ models via API — going far beyond text chatbots.",
+      "WaveSpeed offers AI image generation, video creation, face swap, style transfer, and 200+ models via API — going far beyond text chatbots.",
     date: "2026-03-21",
     readTime: "3 min read",
     slug: "best-janitor-ai-alternative-2026-wavespeedai",
@@ -120,9 +120,9 @@ const posts: BlogPost[] = [
   },
   {
     title:
-      "Best Media.io Alternative in 2026: WaveSpeedAI for AI Video, Image & Audio Tools",
+      "Best Media.io Alternative in 2026: WaveSpeed for AI Video, Image & Audio Tools",
     description:
-      "Compare Media.io vs WaveSpeedAI for AI video editing, image generation, and audio tools. 200+ AI models, full API access, free desktop tools.",
+      "Compare Media.io vs WaveSpeed for AI video editing, image generation, and audio tools. 200+ AI models, full API access, free desktop tools.",
     date: "2026-03-21",
     readTime: "4 min read",
     slug: "best-media-io-alternative-2026-wavespeedai",
@@ -141,7 +141,7 @@ const posts: BlogPost[] = [
     image: slides[4],
   },
   {
-    title: "Introducing AI Age Filter on WaveSpeedAI",
+    title: "Introducing AI Age Filter on WaveSpeed",
     description:
       "AI Age Filter transforms portraits to show how you'd look at different ages. Choose any target age and see realistic aging or de-aging effects.",
     date: "2026-03-20",
@@ -151,7 +151,7 @@ const posts: BlogPost[] = [
     image: slides[0],
   },
   {
-    title: "Introducing AI Dog Selfie on WaveSpeedAI",
+    title: "Introducing AI Dog Selfie on WaveSpeed",
     description:
       "AI Dog Selfie generates adorable dog selfie images with customizable breed, style, expression, and more. Create cute, shareable pet content instantly.",
     date: "2026-03-20",
@@ -161,7 +161,7 @@ const posts: BlogPost[] = [
     image: slides[1],
   },
   {
-    title: "Introducing AI Dog Selfie Video on WaveSpeedAI",
+    title: "Introducing AI Dog Selfie Video on WaveSpeed",
     description:
       "AI Dog Selfie Video generates cute animated dog selfie videos with customizable breed, style, expression, action, and duration.",
     date: "2026-03-20",
@@ -171,7 +171,7 @@ const posts: BlogPost[] = [
     image: slides[2],
   },
   {
-    title: "Introducing AI Gender Swap on WaveSpeedAI",
+    title: "Introducing AI Gender Swap on WaveSpeed",
     description:
       "AI Gender Swap transforms any portrait to show how you'd look as the opposite gender. Realistic face transformation with identity preservation.",
     date: "2026-03-20",
@@ -181,7 +181,7 @@ const posts: BlogPost[] = [
     image: slides[3],
   },
   {
-    title: "Introducing AI Ghibli Filter on WaveSpeedAI",
+    title: "Introducing AI Ghibli Filter on WaveSpeed",
     description:
       "AI Ghibli Filter transforms any photo into Studio Ghibli anime style instantly. Turn portraits, landscapes, and everyday photos into Miyazaki-inspired artwork.",
     date: "2026-03-20",
@@ -191,7 +191,7 @@ const posts: BlogPost[] = [
     image: slides[4],
   },
   {
-    title: "Introducing AI Ghibli Filter Video on WaveSpeedAI",
+    title: "Introducing AI Ghibli Filter Video on WaveSpeed",
     description:
       "AI Ghibli Filter Video transforms any photo into a Studio Ghibli anime style video with customizable duration. Create animated Miyazaki-inspired content.",
     date: "2026-03-20",

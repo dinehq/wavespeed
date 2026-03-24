@@ -109,12 +109,12 @@ export default function ContactPage() {
             </div>
             <div className="flex min-w-0 flex-col gap-6 lg:flex-1 lg:pt-2">
               <p className="text-foreground/60 font-mono text-sm leading-relaxed text-pretty md:text-base">
-                WaveSpeedAI is the core acceleration engine for the multimodal
-                AI era.
+                WaveSpeed is the core acceleration engine for the multimodal AI
+                era.
               </p>
               <p className="text-foreground/60 font-mono text-sm leading-relaxed text-pretty md:text-base">
                 Founded in 2025 by CEO Cheng Zeyi and CTO David Li, and
-                headquartered in Singapore, WaveSpeedAI is a global leading
+                headquartered in Singapore, WaveSpeed is a global leading
                 platform for multimodal AI acceleration. We aggregate the most
                 advanced AI models for image and video generation — and make
                 them faster, more efficient, and more accessible than ever.
@@ -123,7 +123,7 @@ export default function ContactPage() {
                 Our mission is simple: To supercharge AI content creation, help
                 AI-powered applications move faster, and give developers and
                 creators the tools they need to build, create, and scale.
-                WaveSpeedAI combines world-class inference acceleration with an
+                WaveSpeed combines world-class inference acceleration with an
                 open, model-rich ecosystem, supporting a wide range of AI
                 applications — from creative tools to enterprise-grade
                 platforms.
@@ -132,7 +132,7 @@ export default function ContactPage() {
                 In just a few short months, we&apos;ve seen rapid growth, won
                 the trust of developers and companies around the world, and
                 secured multi-million dollar funding from leading investors. But
-                we&apos;re just getting started. WaveSpeedAI is building the
+                we&apos;re just getting started. WaveSpeed is building the
                 foundation for the next generation of AI.
               </p>
             </div>

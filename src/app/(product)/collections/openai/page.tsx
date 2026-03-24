@@ -124,7 +124,7 @@ const models: ModelItem[] = [
     slug: "openai/dall-e-3",
     tags: ["text-to-image"],
     description:
-      "OpenAI DALL·E 3 for high-fidelity text-to-image generation available as a managed API on WaveSpeedAI.",
+      "OpenAI DALL·E 3 for high-fidelity text-to-image generation available as a managed API on WaveSpeed.",
     href: "/models/google/nano-banana-pro/edit?entry=explore",
     image: slide5,
   },

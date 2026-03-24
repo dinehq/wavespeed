@@ -135,7 +135,7 @@ export function ProductSettingsTab() {
           <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
             <CardContent className="space-y-3 p-4">
               <p className="text-foreground/60 text-xs">
-                WaveSpeedAI offers multiple account levels to match different
+                WaveSpeed offers multiple account levels to match different
                 throughput and concurrency requirements.
               </p>
 

@@ -17,7 +17,7 @@ const testimonials = [
     logoWidth: 109,
     logoHeight: 16,
     quote:
-      "Everyone wants faster, cheaper, and their way to use AI image and video generation services? Partnering with WaveSpeedAI has helped us stay competitive in AI media generation.",
+      "Everyone wants faster, cheaper, and their way to use AI image and video generation services? Partnering with WaveSpeed has helped us stay competitive in AI media generation.",
     name: "Alejandro Palma",
     title: "Cloud Architect at Freepik",
   },
@@ -26,7 +26,7 @@ const testimonials = [
     logoWidth: 105,
     logoHeight: 19,
     quote:
-      "WaveSpeedAI has significantly improved our inference efficiency and helped us cut video generation costs by up to 67%. With faster and more reliable video processing, we\u2019re able to deliver an exceptional user experience at scale.",
+      "WaveSpeed has significantly improved our inference efficiency and helped us cut video generation costs by up to 67%. With faster and more reliable video processing, we\u2019re able to deliver an exceptional user experience at scale.",
     name: "Junyu Huang",
     title: "Novita AI COO",
   },
@@ -44,7 +44,7 @@ const testimonials = [
     logoWidth: 122,
     logoHeight: 28,
     quote:
-      "WaveSpeedAI demonstrates extremely powerful capabilities in reasoning and acceleration optimization. MiniMax\u2019s Hailuo\u201102 video model and Speech\u201102 voice model represent the cutting edge of multimodal AI. We deeply value our collaboration, as it enables more users to experience MiniMax\u2019s speech and video large models.",
+      "WaveSpeed demonstrates extremely powerful capabilities in reasoning and acceleration optimization. MiniMax\u2019s Hailuo\u201102 video model and Speech\u201102 voice model represent the cutting edge of multimodal AI. We deeply value our collaboration, as it enables more users to experience MiniMax\u2019s speech and video large models.",
     name: "Yan Li",
     title: "Manager of MiniMax platform",
   },
@@ -53,7 +53,7 @@ const testimonials = [
     logoWidth: 138,
     logoHeight: 32,
     quote:
-      "Many of our users praise the WaveSpeedAI integration \u2018The FLUX result is the same, but now it is under 3 seconds\u2019 \u2018these are nice guys at wavespeed, beyond helpful\u2019. WaveSpeedAI integration allows us to do one-stop integration to catch up the latest close-source models, it is very important in this competitive environment.",
+      "Many of our users praise the WaveSpeed integration \u2018The FLUX result is the same, but now it is under 3 seconds\u2019 \u2018these are nice guys at wavespeed, beyond helpful\u2019. WaveSpeed integration allows us to do one-stop integration to catch up the latest close-source models, it is very important in this competitive environment.",
     name: "Liu Liu",
     title: "Draw Things",
   },
