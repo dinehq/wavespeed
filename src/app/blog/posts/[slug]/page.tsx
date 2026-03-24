@@ -544,6 +544,37 @@ export default async function BlogPostPage({ params }: Props) {
                 <span className="bg-foreground/20 size-1 rounded-full" />
                 <span>{post.readTime}</span>
               </div>
+
+              {post.relatedModel && (
+                <Link
+                  href={post.relatedModel.href}
+                  className="border-foreground/10 bg-background hover:bg-foreground/[0.02] mt-6 flex items-center justify-between gap-4 rounded-xs border py-2 pr-4 pl-2 transition-colors duration-150"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="relative size-14 shrink-0 overflow-hidden rounded-xs">
+                      <Image
+                        src={post.relatedModel.image}
+                        alt={post.relatedModel.name}
+                        fill
+                        sizes="56px"
+                        className="object-cover"
+                      />
+                    </div>
+                    <div className="min-w-0">
+                      <span className="text-heading block truncate text-sm font-medium">
+                        {post.relatedModel.name}
+                      </span>
+                      <span className="text-foreground/50 block truncate text-xs">
+                        {post.relatedModel.description}
+                      </span>
+                    </div>
+                  </div>
+                  <span className="text-foreground flex shrink-0 items-center gap-1.5 font-mono text-xs">
+                    Try it
+                    <ArrowRight className="size-3.5" />
+                  </span>
+                </Link>
+              )}
             </header>
 
             <div className="relative mb-10 aspect-video overflow-hidden rounded-xs">

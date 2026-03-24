@@ -8,6 +8,13 @@ import slide5 from "@/images/slide-5.webp";
 
 const slides = [slide1, slide2, slide3, slide4, slide5];
 
+export interface RelatedModel {
+  name: string;
+  description: string;
+  image: StaticImageData;
+  href: string;
+}
+
 export interface BlogPost {
   title: string;
   description: string;
@@ -16,7 +23,49 @@ export interface BlogPost {
   slug: string;
   tags: string[];
   image: StaticImageData;
+  relatedModel?: RelatedModel;
 }
+
+const models = {
+  wan26: {
+    name: "Wan 2.6",
+    description: "Text & image to video with efficient long-clip generation.",
+    image: slides[0],
+    href: "/models/wan-2-6",
+  },
+  seedance: {
+    name: "Seedance 1.5 Pro",
+    description: "Cinematic motion from stills with precise camera control.",
+    image: slides[1],
+    href: "/models/seedance-1-5-pro",
+  },
+  qwenImage2: {
+    name: "Qwen Image 2",
+    description: "Multilingual image generation and editing by Alibaba Cloud.",
+    image: slides[2],
+    href: "/models/qwen-image-2",
+  },
+  klingO3: {
+    name: "Kling O3",
+    description: "Lip-synced HD video from text or images in one step.",
+    image: slides[3],
+    href: "/models/kling-o3",
+  },
+  minimaxHailuo: {
+    name: "Minimax Hailuo",
+    description:
+      "Fast video generation with strong motion and scene coherence.",
+    image: slides[4],
+    href: "/models/minimax-hailuo",
+  },
+  seedreamAI: {
+    name: "Seedream AI",
+    description:
+      "High-quality image generation with fine-grained style control.",
+    image: slides[3],
+    href: "/models/seedream",
+  },
+} satisfies Record<string, RelatedModel>;
 
 export const posts: BlogPost[] = [
   {
@@ -28,6 +77,7 @@ export const posts: BlogPost[] = [
     slug: "wan-2-7-first-last-frame-guide",
     tags: ["wan", "video-generation", "guide", "api"],
     image: slides[0],
+    relatedModel: models.wan26,
   },
   {
     title: "WAN 2.7 vs WAN 2.6: Feature Diff & Upgrade Decision",
@@ -38,6 +88,7 @@ export const posts: BlogPost[] = [
     slug: "wan-2-7-vs-wan-2-6",
     tags: ["wan", "comparison", "ai-video"],
     image: slides[1],
+    relatedModel: models.wan26,
   },
   {
     title:
@@ -49,6 +100,7 @@ export const posts: BlogPost[] = [
     slug: "best-ai-people-remover-from-photos-2026",
     tags: ["people-remover", "ai-tools", "image-editing"],
     image: slides[2],
+    relatedModel: models.qwenImage2,
   },
   {
     title:
@@ -60,6 +112,7 @@ export const posts: BlogPost[] = [
     slug: "best-fotor-alternative-2026-wavespeedai",
     tags: ["fotor", "comparison", "alternative", "image-editing"],
     image: slides[3],
+    relatedModel: models.seedreamAI,
   },
   {
     title:
@@ -104,6 +157,7 @@ export const posts: BlogPost[] = [
     slug: "best-janitor-ai-alternative-2026-wavespeedai",
     tags: ["janitor-ai", "alternative", "ai-tools"],
     image: slides[2],
+    relatedModel: models.seedance,
   },
   {
     title:
@@ -115,6 +169,7 @@ export const posts: BlogPost[] = [
     slug: "best-media-io-alternative-2026-wavespeedai",
     tags: ["media-io", "comparison", "alternative", "ai-tools"],
     image: slides[3],
+    relatedModel: models.klingO3,
   },
   {
     title:
@@ -126,6 +181,7 @@ export const posts: BlogPost[] = [
     slug: "minimax-m2-7-self-evolving-agent-model-features-benchmarks-2026",
     tags: ["minimax", "llm", "ai-model", "benchmark"],
     image: slides[4],
+    relatedModel: models.minimaxHailuo,
   },
   {
     title: "Introducing AI Age Filter on WaveSpeed",
@@ -136,6 +192,7 @@ export const posts: BlogPost[] = [
     slug: "introducing-wavespeed-ai-ai-age-filter-on-wavespeedai",
     tags: ["age-filter", "announcement", "model-release"],
     image: slides[0],
+    relatedModel: models.qwenImage2,
   },
   {
     title: "Introducing AI Dog Selfie on WaveSpeed",
@@ -146,6 +203,7 @@ export const posts: BlogPost[] = [
     slug: "introducing-wavespeed-ai-ai-dog-selfie-on-wavespeedai",
     tags: ["dog-selfie", "announcement", "pet-content"],
     image: slides[1],
+    relatedModel: models.seedreamAI,
   },
   {
     title: "Introducing AI Dog Selfie Video on WaveSpeed",
@@ -156,6 +214,7 @@ export const posts: BlogPost[] = [
     slug: "introducing-wavespeed-ai-ai-dog-selfie-video-on-wavespeedai",
     tags: ["dog-selfie", "video-generation", "announcement"],
     image: slides[2],
+    relatedModel: models.seedance,
   },
   {
     title: "Introducing AI Gender Swap on WaveSpeed",
@@ -166,6 +225,7 @@ export const posts: BlogPost[] = [
     slug: "introducing-wavespeed-ai-ai-gender-swap-on-wavespeedai",
     tags: ["gender-swap", "announcement", "face-transformation"],
     image: slides[3],
+    relatedModel: models.qwenImage2,
   },
   {
     title: "Introducing AI Ghibli Filter on WaveSpeed",
@@ -176,6 +236,7 @@ export const posts: BlogPost[] = [
     slug: "introducing-wavespeed-ai-ai-ghibli-filter-on-wavespeedai",
     tags: ["ghibli-filter", "anime", "style-transfer"],
     image: slides[4],
+    relatedModel: models.seedreamAI,
   },
   {
     title: "Introducing AI Ghibli Filter Video on WaveSpeed",
@@ -186,6 +247,7 @@ export const posts: BlogPost[] = [
     slug: "introducing-wavespeed-ai-ai-ghibli-filter-video-on-wavespeedai",
     tags: ["ghibli-filter", "video-generation", "anime"],
     image: slides[0],
+    relatedModel: models.seedance,
   },
 ];
 
