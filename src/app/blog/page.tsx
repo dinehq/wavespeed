@@ -375,18 +375,18 @@ export default function BlogPage() {
                       {post.tags.slice(0, 2).map((t) => (
                         <span
                           key={t}
-                          className="bg-brand rounded-xs px-2 py-0.5 font-mono text-[11px] font-bold text-white uppercase"
+                          className="rounded-xs bg-white/20 px-2 py-0.5 font-mono text-[11px] font-bold text-white uppercase backdrop-blur-sm"
                         >
                           {t}
                         </span>
                       ))}
                     </div>
                   </div>
-                  <div className="bg-surface flex flex-1 flex-col gap-3 p-4">
-                    <h3 className="text-heading font-display group-hover:text-foreground/70 text-base leading-snug font-medium transition-colors duration-150">
+                  <div className="bg-surface flex flex-1 flex-col gap-2 p-4">
+                    <h3 className="text-heading font-display group-hover:text-foreground/70 text-lg leading-snug font-medium transition-colors duration-150">
                       {post.title}
                     </h3>
-                    <p className="text-foreground/60 line-clamp-2 font-mono text-xs leading-relaxed">
+                    <p className="text-foreground/60 line-clamp-2 text-sm">
                       {post.description}
                     </p>
                     <div className="text-foreground/40 mt-auto flex items-center gap-3 pt-2 font-mono text-xs">
