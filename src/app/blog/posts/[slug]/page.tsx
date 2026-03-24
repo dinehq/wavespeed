@@ -64,7 +64,7 @@ function Wan27Content() {
       {/* Section 1 */}
       <h2
         id="what-flf-does"
-        className="font-display text-heading mt-14 mb-5 text-xl font-bold tracking-tight first:mt-0 md:text-2xl"
+        className="text-heading mt-14 mb-5 text-xl font-bold tracking-tight first:mt-0 md:text-2xl"
       >
         What First-Frame &amp; Last-Frame Control Actually Does
       </h2>
@@ -124,7 +124,7 @@ function Wan27Content() {
       {/* Section 2 */}
       <h2
         id="input-preparation"
-        className="font-display text-heading mt-14 mb-5 text-xl font-bold tracking-tight md:text-2xl"
+        className="text-heading mt-14 mb-5 text-xl font-bold tracking-tight md:text-2xl"
       >
         Input Preparation
       </h2>
@@ -201,7 +201,7 @@ function Wan27Content() {
       {/* Section 3 */}
       <h2
         id="api-implementation"
-        className="font-display text-heading mt-14 mb-5 text-xl font-bold tracking-tight md:text-2xl"
+        className="text-heading mt-14 mb-5 text-xl font-bold tracking-tight md:text-2xl"
       >
         API Implementation
       </h2>
@@ -270,7 +270,7 @@ task_id = response.output.task_id`}</code>
       {/* Section 4 */}
       <h2
         id="production-workflow"
-        className="font-display text-heading mt-14 mb-5 text-xl font-bold tracking-tight md:text-2xl"
+        className="text-heading mt-14 mb-5 text-xl font-bold tracking-tight md:text-2xl"
       >
         Production Workflow: Draft-to-Final Method
       </h2>
@@ -328,7 +328,7 @@ task_id = response.output.task_id`}</code>
       {/* Section 5 */}
       <h2
         id="where-it-fits"
-        className="font-display text-heading mt-14 mb-5 text-xl font-bold tracking-tight md:text-2xl"
+        className="text-heading mt-14 mb-5 text-xl font-bold tracking-tight md:text-2xl"
       >
         Where This Feature Fits (and Where It Doesn&rsquo;t)
       </h2>
@@ -351,7 +351,7 @@ task_id = response.output.task_id`}</code>
       {/* Section 6 */}
       <h2
         id="failure-patterns"
-        className="font-display text-heading mt-14 mb-5 text-xl font-bold tracking-tight md:text-2xl"
+        className="text-heading mt-14 mb-5 text-xl font-bold tracking-tight md:text-2xl"
       >
         Common Failure Patterns &amp; Fixes
       </h2>
@@ -394,7 +394,7 @@ task_id = response.output.task_id`}</code>
       {/* Section 7 — FAQ */}
       <h2
         id="faq"
-        className="font-display text-heading mt-14 mb-5 text-xl font-bold tracking-tight md:text-2xl"
+        className="text-heading mt-14 mb-5 text-xl font-bold tracking-tight md:text-2xl"
       >
         FAQ
       </h2>
@@ -431,7 +431,7 @@ task_id = response.output.task_id`}</code>
       {/* Section 8 — Conclusion */}
       <h2
         id="conclusion"
-        className="font-display text-heading mt-14 mb-5 text-xl font-bold tracking-tight md:text-2xl"
+        className="text-heading mt-14 mb-5 text-xl font-bold tracking-tight md:text-2xl"
       >
         Conclusion
       </h2>
@@ -507,20 +507,13 @@ export default async function BlogPostPage({ params }: Props) {
           <div className="mx-auto max-w-3xl min-w-0 flex-1">
             {/* Article Header */}
             <header className="mb-8">
-              <nav className="text-foreground/40 mb-6 flex items-center gap-2 font-mono text-xs">
+              <div className="mb-5 flex flex-wrap items-center gap-2">
                 <Link
                   href="/blog"
-                  className="hover:text-foreground/60 transition-colors duration-150"
+                  className="text-foreground/50 hover:text-foreground/70 rounded-xs px-2.5 py-1 font-mono text-[11px] font-bold uppercase transition-colors duration-150"
                 >
                   Blog
                 </Link>
-                <span>/</span>
-                <span className="text-foreground/60 line-clamp-1">
-                  {post.title}
-                </span>
-              </nav>
-
-              <div className="mb-5 flex flex-wrap gap-2">
                 {post.tags.map((tag) => (
                   <span
                     key={tag}
@@ -603,31 +596,22 @@ export default async function BlogPostPage({ params }: Props) {
           <aside className="hidden w-52 shrink-0 xl:block">
             <div className="sticky top-24 space-y-8">
               {/* Desktop App */}
-              <div>
-                <p className="text-foreground/40 mb-4 font-mono text-xs font-bold tracking-widest uppercase">
+              <Link
+                href="/landing/desktop"
+                className="group border-foreground/5 bg-foreground/[0.03] hover:border-foreground/10 hover:bg-foreground/[0.05] block rounded-xs border p-4 transition-colors duration-150"
+              >
+                <p className="text-heading mb-3 text-sm font-bold">
                   WaveSpeed Desktop
                 </p>
-                <ul className="space-y-1">
-                  {[
-                    "Face Swapper",
-                    "Image Eraser",
-                    "Image Enhancer",
-                    "Image Generator",
-                    "Video Enhancer",
-                  ].map((tool) => (
-                    <li key={tool}>
-                      <span className="text-foreground/50 text-sm">{tool}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  href="/landing/desktop"
-                  className="text-foreground/60 hover:text-foreground mt-3 inline-flex items-center gap-1.5 text-sm font-medium transition-colors duration-150"
-                >
-                  Learn more
-                  <ArrowRight className="size-3.5 shrink-0" />
-                </Link>
-              </div>
+                <p className="text-foreground/40 text-xs leading-relaxed">
+                  Face Swapper, Image Eraser, Image Enhancer, Image Generator,
+                  Video Enhancer
+                </p>
+                <span className="text-foreground/50 group-hover:text-foreground/70 mt-4 flex items-center gap-1.5 text-xs transition-colors duration-150">
+                  Free download
+                  <ArrowRight className="size-3.5 shrink-0 -translate-y-px transition-transform duration-150 group-hover:translate-x-0.5" />
+                </span>
+              </Link>
 
               <div className="border-foreground/10 border-t" />
 
