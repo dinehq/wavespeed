@@ -37,12 +37,12 @@ const apiTasks = [
   {
     label: "Quick start guide",
     action: "Check",
-    href: "/serverless",
+    href: "#",
   },
   {
     label: "How to use in Python SDK",
     action: "Check",
-    href: "/llm",
+    href: "#",
   },
   {
     label: "Check documentation",

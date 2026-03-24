@@ -22,8 +22,8 @@ export const productMainTabRoutes: Partial<Record<ProductMainTab, string>> = {
   Favourite: "/favourite",
   Usage: "/usage",
   History: "/history",
-  LLM: "/llm",
-  Serverless: "/serverless",
+  LLM: "#",
+  Serverless: "#",
   "API Keys": "/api-keys",
   Billing: "/billing",
   Settings: "/settings",
@@ -43,10 +43,8 @@ export const resolveProductMainTabFromPathname = (
       return "Usage";
     case "/history":
       return "History";
-    case "/llm":
-      return "LLM";
-    case "/serverless":
-      return "Serverless";
+    case "#":
+      return null;
     case "/api-keys":
       return "API Keys";
     case "/billing":

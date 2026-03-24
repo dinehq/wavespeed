@@ -60,6 +60,8 @@ const sectionLabels: Record<string, string> = {
 const sectionOrder = Object.keys(sectionLabels);
 
 function classifyRoute(route: DiscoveredRoute): string {
+  if (route.path === "/") return "marketing";
+
   const segments = route.path.split("/").filter(Boolean);
   const first = segments[0] ?? "";
 
