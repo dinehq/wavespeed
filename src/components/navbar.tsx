@@ -117,9 +117,10 @@ function NavIcon({ icon: Icon, className = "size-4 shrink-0" }: NavIconProps) {
 type NavbarProps = {
   mode?: "default" | "dashboard";
   overlay?: boolean;
+  sticky?: boolean;
 };
 
-export function Navbar({ mode = "default", overlay }: NavbarProps) {
+export function Navbar({ mode = "default", overlay, sticky }: NavbarProps) {
   const router = useRouter();
   const isDashboardMode = mode === "dashboard";
   const [menuOpen, setMenuOpen] = useState(false);
@@ -179,7 +180,7 @@ export function Navbar({ mode = "default", overlay }: NavbarProps) {
   return (
     <nav
       className={`z-50 flex h-16 w-full items-center justify-center px-6 transition-colors duration-150 md:px-12 lg:px-20 ${
-        overlay ? "sticky top-0" : "relative"
+        overlay || sticky ? "sticky top-0" : "relative"
       } ${isOverlay ? "text-white" : "bg-background"}`}
     >
       <div className="flex w-full max-w-7xl items-center justify-between gap-6">
