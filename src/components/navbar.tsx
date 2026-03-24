@@ -198,7 +198,7 @@ export function Navbar({ mode = "default", overlay }: NavbarProps) {
             {[
               { label: "Explore", href: "/models" },
               { label: "Pricing", href: "#" },
-              { label: "Enterprise", href: "#" },
+              { label: "Enterprise", href: "/enterprise" },
             ].map((item) => (
               <Link
                 key={item.label}
@@ -547,7 +547,7 @@ export function Navbar({ mode = "default", overlay }: NavbarProps) {
           {[
             { label: "Explore", href: "/models" },
             { label: "Pricing", href: "#" },
-            { label: "Enterprise", href: "#" },
+            { label: "Enterprise", href: "/enterprise" },
           ].map((item) => (
             <Link
               key={item.label}
