@@ -108,18 +108,18 @@ export default function ContactPage() {
               </h2>
             </div>
             <div className="flex min-w-0 flex-col gap-6 lg:flex-1 lg:pt-2">
-              <p className="text-foreground/60 font-mono text-sm leading-relaxed text-pretty md:text-base">
+              <p className="text-foreground/60 text-sm leading-relaxed text-pretty md:text-base">
                 WaveSpeed is the core acceleration engine for the multimodal AI
                 era.
               </p>
-              <p className="text-foreground/60 font-mono text-sm leading-relaxed text-pretty md:text-base">
+              <p className="text-foreground/60 text-sm leading-relaxed text-pretty md:text-base">
                 Founded in 2025 by CEO Cheng Zeyi and CTO David Li, and
                 headquartered in Singapore, WaveSpeed is a global leading
                 platform for multimodal AI acceleration. We aggregate the most
                 advanced AI models for image and video generation — and make
                 them faster, more efficient, and more accessible than ever.
               </p>
-              <p className="text-foreground/60 font-mono text-sm leading-relaxed text-pretty md:text-base">
+              <p className="text-foreground/60 text-sm leading-relaxed text-pretty md:text-base">
                 Our mission is simple: To supercharge AI content creation, help
                 AI-powered applications move faster, and give developers and
                 creators the tools they need to build, create, and scale.
@@ -128,7 +128,7 @@ export default function ContactPage() {
                 applications — from creative tools to enterprise-grade
                 platforms.
               </p>
-              <p className="text-foreground/60 font-mono text-sm leading-relaxed text-pretty md:text-base">
+              <p className="text-foreground/60 text-sm leading-relaxed text-pretty md:text-base">
                 In just a few short months, we&apos;ve seen rapid growth, won
                 the trust of developers and companies around the world, and
                 secured multi-million dollar funding from leading investors. But
@@ -147,7 +147,7 @@ export default function ContactPage() {
             <h2 className="font-display text-heading text-2xl leading-none font-bold tracking-tight md:text-4xl">
               Contact Us
             </h2>
-            <p className="text-foreground/60 font-mono text-sm text-pretty">
+            <p className="text-foreground/60 text-sm text-pretty">
               We&apos;d love to hear from you
             </p>
           </div>
@@ -189,7 +189,7 @@ export default function ContactPage() {
             <h2 className="font-display text-heading text-2xl leading-none font-bold tracking-tight md:text-4xl">
               Join Us
             </h2>
-            <p className="text-foreground/60 font-mono text-sm text-pretty">
+            <p className="text-foreground/60 text-sm text-pretty">
               We&apos;re on a mission to revolutionize the future of AI, and we
               need brilliant minds like yours to join us.
             </p>
@@ -210,7 +210,7 @@ export default function ContactPage() {
                     {jobResponsibilities.map((item) => (
                       <li
                         key={item}
-                        className="text-foreground/60 flex items-start gap-2.5 font-mono text-sm leading-relaxed"
+                        className="text-foreground/60 flex items-start gap-2.5 text-sm leading-relaxed"
                       >
                         <span className="bg-foreground/20 mt-2 size-1 shrink-0 rounded-full" />
                         {item}
@@ -229,7 +229,7 @@ export default function ContactPage() {
                     {jobQualifications.map((item) => (
                       <li
                         key={item}
-                        className="text-foreground/60 flex items-start gap-2.5 font-mono text-sm leading-relaxed"
+                        className="text-foreground/60 flex items-start gap-2.5 text-sm leading-relaxed"
                       >
                         <span className="bg-foreground/20 mt-2 size-1 shrink-0 rounded-full" />
                         {item}
@@ -246,7 +246,7 @@ export default function ContactPage() {
                     {jobPerks.map((item) => (
                       <li
                         key={item}
-                        className="text-foreground/60 flex items-start gap-2.5 font-mono text-sm leading-relaxed"
+                        className="text-foreground/60 flex items-start gap-2.5 text-sm leading-relaxed"
                       >
                         <span className="bg-foreground/20 mt-2 size-1 shrink-0 rounded-full" />
                         {item}
