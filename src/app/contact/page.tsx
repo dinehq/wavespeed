@@ -8,7 +8,6 @@ import heroBg from "@/images/slide-5.webp";
 
 const contactChannels = [
   {
-    label: "Community",
     name: "Join the Community",
     href: "https://discord.com/invite/7WQTe7jMmY",
     icon: (
@@ -18,7 +17,6 @@ const contactChannels = [
     ),
   },
   {
-    label: "Follow us",
     name: "X (Twitter)",
     href: "https://x.com/wavespeed_ai",
     icon: (
@@ -28,7 +26,6 @@ const contactChannels = [
     ),
   },
   {
-    label: "Follow us",
     name: "GitHub",
     href: "https://github.com/WaveSpeedAI",
     icon: (
@@ -38,7 +35,6 @@ const contactChannels = [
     ),
   },
   {
-    label: "Contact us",
     name: "support@wavespeed.ai",
     href: "mailto:support@wavespeed.ai",
     icon: (
@@ -108,18 +104,18 @@ export default function ContactPage() {
               </h2>
             </div>
             <div className="flex min-w-0 flex-col gap-6 lg:flex-1 lg:pt-2">
-              <p className="text-foreground/60 text-sm leading-relaxed text-pretty md:text-base">
+              <p className="text-foreground text-base leading-relaxed text-pretty">
                 WaveSpeed is the core acceleration engine for the multimodal AI
                 era.
               </p>
-              <p className="text-foreground/60 text-sm leading-relaxed text-pretty md:text-base">
+              <p className="text-foreground text-base leading-relaxed text-pretty">
                 Founded in 2025 by CEO Cheng Zeyi and CTO David Li, and
                 headquartered in Singapore, WaveSpeed is a global leading
                 platform for multimodal AI acceleration. We aggregate the most
                 advanced AI models for image and video generation — and make
                 them faster, more efficient, and more accessible than ever.
               </p>
-              <p className="text-foreground/60 text-sm leading-relaxed text-pretty md:text-base">
+              <p className="text-foreground text-base leading-relaxed text-pretty">
                 Our mission is simple: To supercharge AI content creation, help
                 AI-powered applications move faster, and give developers and
                 creators the tools they need to build, create, and scale.
@@ -128,7 +124,7 @@ export default function ContactPage() {
                 applications — from creative tools to enterprise-grade
                 platforms.
               </p>
-              <p className="text-foreground/60 text-sm leading-relaxed text-pretty md:text-base">
+              <p className="text-foreground text-base leading-relaxed text-pretty">
                 In just a few short months, we&apos;ve seen rapid growth, won
                 the trust of developers and companies around the world, and
                 secured multi-million dollar funding from leading investors. But
@@ -147,9 +143,6 @@ export default function ContactPage() {
             <h2 className="font-display text-heading text-2xl leading-none font-bold tracking-tight md:text-4xl">
               Contact Us
             </h2>
-            <p className="text-foreground/60 text-sm text-pretty">
-              We&apos;d love to hear from you
-            </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {contactChannels.map((ch) => (
@@ -168,9 +161,6 @@ export default function ContactPage() {
                   {ch.icon}
                 </div>
                 <div className="flex flex-col gap-1">
-                  <span className="text-foreground/40 font-mono text-xs uppercase">
-                    {ch.label}
-                  </span>
                   <span className="text-heading flex items-center gap-2 font-mono text-sm font-medium">
                     {ch.name}
                     <ArrowRight className="text-foreground/30 size-3.5 transition-transform duration-150 group-hover:translate-x-0.5" />
@@ -189,28 +179,24 @@ export default function ContactPage() {
             <h2 className="font-display text-heading text-2xl leading-none font-bold tracking-tight md:text-4xl">
               Join Us
             </h2>
-            <p className="text-foreground/60 text-sm text-pretty">
-              We&apos;re on a mission to revolutionize the future of AI, and we
-              need brilliant minds like yours to join us.
-            </p>
           </div>
 
           <div className="bg-surface rounded-xs p-6 md:p-10">
-            <h3 className="text-heading font-display mb-6 text-xl font-bold">
+            <h3 className="text-heading mb-6 text-xl font-bold">
               Open-Source Community Intern
             </h3>
 
             <div className="flex flex-col gap-8 lg:flex-row lg:gap-16">
               <div className="flex flex-col gap-6 lg:flex-1">
                 <div>
-                  <h4 className="text-heading mb-3 font-mono text-xs font-bold tracking-wide uppercase">
+                  <h4 className="text-heading mb-3 font-mono text-sm font-bold tracking-wide uppercase">
                     Responsibilities
                   </h4>
                   <ul className="flex flex-col gap-2">
                     {jobResponsibilities.map((item) => (
                       <li
                         key={item}
-                        className="text-foreground/60 flex items-start gap-2.5 text-sm leading-relaxed"
+                        className="text-foreground/60 flex items-start gap-2.5 text-base leading-relaxed"
                       >
                         <span className="bg-foreground/20 mt-2 size-1 shrink-0 rounded-full" />
                         {item}
@@ -222,14 +208,14 @@ export default function ContactPage() {
 
               <div className="flex flex-col gap-6 lg:flex-1">
                 <div>
-                  <h4 className="text-heading mb-3 font-mono text-xs font-bold tracking-wide uppercase">
+                  <h4 className="text-heading mb-3 font-mono text-sm font-bold tracking-wide uppercase">
                     Qualifications
                   </h4>
                   <ul className="flex flex-col gap-2">
                     {jobQualifications.map((item) => (
                       <li
                         key={item}
-                        className="text-foreground/60 flex items-start gap-2.5 text-sm leading-relaxed"
+                        className="text-foreground/60 flex items-start gap-2.5 text-base leading-relaxed"
                       >
                         <span className="bg-foreground/20 mt-2 size-1 shrink-0 rounded-full" />
                         {item}
@@ -239,14 +225,14 @@ export default function ContactPage() {
                 </div>
 
                 <div>
-                  <h4 className="text-heading mb-3 font-mono text-xs font-bold tracking-wide uppercase">
+                  <h4 className="text-heading mb-3 font-mono text-sm font-bold tracking-wide uppercase">
                     Perks
                   </h4>
                   <ul className="flex flex-col gap-2">
                     {jobPerks.map((item) => (
                       <li
                         key={item}
-                        className="text-foreground/60 flex items-start gap-2.5 text-sm leading-relaxed"
+                        className="text-foreground/60 flex items-start gap-2.5 text-base leading-relaxed"
                       >
                         <span className="bg-foreground/20 mt-2 size-1 shrink-0 rounded-full" />
                         {item}
