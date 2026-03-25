@@ -15,7 +15,6 @@ import {
   billingUsageRecords,
   topUpAmountOptions,
 } from "@/features/product/data/product-main-data";
-import { toast } from "@/hooks/use-toast";
 import { ProductSectionHeader } from "@/features/product/components/product-section-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -461,7 +460,7 @@ export function ProductBillingTab({
                             isPaymentPickerOpen ? "border-brand!" : ""
                           }`}
                         >
-                          <span className="flex h-full w-[120px] items-center justify-center px-2">
+                          <span className="flex h-full w-30 items-center justify-center px-2">
                             <selectedPaymentMeta.Icon
                               className="max-h-full w-auto max-w-full shrink-0"
                               preserveAspectRatio="xMidYMid meet"
