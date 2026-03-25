@@ -34,6 +34,9 @@ import logosImg from "@/images/logos.webp";
 import securityImg from "@/images/security.webp";
 import googleModelsIcon from "@/images/Google Models.png";
 import qwenModelsIcon from "@/images/Qwen Image 2 Models.png";
+import tool01 from "@/images/tool-01.webp";
+import tool02 from "@/images/tool-02.webp";
+import tool03 from "@/images/tool-03.webp";
 import {
   Select,
   SelectContent,
@@ -87,6 +90,7 @@ const whyChoose = [
     title: "Lightning Fast",
     description:
       "Optimized inference pipeline delivers industry-leading response times. Get results in milliseconds, not seconds.",
+    bg: tool01,
     bullets: [
       "Average response < 100ms",
       "Global edge deployment",
@@ -98,6 +102,7 @@ const whyChoose = [
     title: "Rock Solid Stability",
     description:
       "Enterprise-grade infrastructure with automatic failover and redundancy. Your applications stay online, always.",
+    bg: tool02,
     bullets: [
       "99.9% uptime SLA guarantee",
       "Multi-region redundancy",
@@ -109,6 +114,7 @@ const whyChoose = [
     title: "Pay As You Go",
     description:
       "No minimum commitments, no wasted resources. Only pay for what you actually use, down to the second.",
+    bg: tool03,
     bullets: [
       "Per-second billing",
       "No upfront costs",
@@ -276,31 +282,42 @@ export default function ServerlessPage() {
             {whyChoose.map((item) => (
               <div
                 key={item.title}
-                className="bg-background flex flex-col gap-4 rounded-xs p-6"
+                className="bg-background flex flex-col gap-4 overflow-hidden rounded-xs"
               >
-                <item.icon
-                  className="text-foreground/40 size-6"
-                  strokeWidth={1.5}
-                />
-                <div className="flex flex-col gap-2">
-                  <h3 className="text-heading text-base font-medium">
-                    {item.title}
-                  </h3>
-                  <p className="text-foreground/60 text-sm leading-relaxed">
-                    {item.description}
-                  </p>
+                <div className="relative h-1.5 w-full">
+                  <Image
+                    src={item.bg}
+                    alt=""
+                    fill
+                    sizes="400px"
+                    className="object-cover object-center"
+                  />
                 </div>
-                <ul className="mt-auto flex flex-col gap-2 border-t border-current/5 pt-4">
-                  {item.bullets.map((bullet) => (
-                    <li
-                      key={bullet}
-                      className="text-foreground/50 flex items-center gap-2 text-sm"
-                    >
-                      <span className="bg-foreground/20 size-1 shrink-0 rounded-full" />
-                      {bullet}
-                    </li>
-                  ))}
-                </ul>
+                <div className="flex flex-col gap-4 px-6 pt-2 pb-6">
+                  <item.icon
+                    className="text-foreground/40 size-6"
+                    strokeWidth={1.5}
+                  />
+                  <div className="flex flex-col gap-2">
+                    <h3 className="text-heading text-base font-medium">
+                      {item.title}
+                    </h3>
+                    <p className="text-foreground/60 text-sm leading-relaxed">
+                      {item.description}
+                    </p>
+                  </div>
+                  <ul className="mt-auto flex flex-col gap-2 border-t border-current/5 pt-4">
+                    {item.bullets.map((bullet) => (
+                      <li
+                        key={bullet}
+                        className="text-foreground/50 flex items-center gap-2 text-sm"
+                      >
+                        <span className="bg-foreground/20 size-1 shrink-0 rounded-full" />
+                        {bullet}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             ))}
           </div>
