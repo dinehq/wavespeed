@@ -50,6 +50,14 @@ import googleModelsIcon from "@/images/Google Models.png";
 import fluxKontextModelsIcon from "@/images/Flux Kontext Models.png";
 import runwaymlAIModelsIcon from "@/images/Runwayml AI Models.png";
 import wan21VideoModelsIcon from "@/images/Wan 2.1 Video Models.png";
+import thumb1 from "@/images/thumb-1.webp";
+import thumb2 from "@/images/thumb-2.webp";
+import thumb3 from "@/images/thumb-3.webp";
+import thumb4 from "@/images/thumb-4.webp";
+import thumb5 from "@/images/thumb-5.webp";
+import thumb6 from "@/images/thumb-6.webp";
+import thumb7 from "@/images/thumb-7.webp";
+import thumb8 from "@/images/thumb-8.webp";
 
 const quickTools = [
   {
@@ -356,6 +364,131 @@ const ALL_MODELS: CatalogModel[] = [
   },
 ];
 
+const FEATURED_MODELS = [
+  {
+    id: 1,
+    name: "flux-pro/kontext",
+    provider: "wavespeed-ai",
+    type: "image-to-image",
+    description:
+      "Flux Kontext for in-context edits, identity-preserving variations, and text rendering.",
+    speed: "2.4s",
+    speedBar: 46,
+    tps: "39tps",
+    status: 5,
+    image: thumb1,
+  },
+  {
+    id: 2,
+    name: "wan-2.6/t2v",
+    provider: "wavespeed-ai",
+    type: "text-to-video",
+    description:
+      "Wan 2.6 text-to-video with efficient long-clip generation and audio sync.",
+    speed: "3.1s",
+    speedBar: 38,
+    tps: "32tps",
+    status: 5,
+    image: thumb2,
+  },
+  {
+    id: 3,
+    name: "flux-dev/lora",
+    provider: "wavespeed-ai",
+    type: "text-to-image",
+    description:
+      "Fast LoRA-tuned Flux for stylized and custom checkpoint generation.",
+    speed: "1.8s",
+    speedBar: 55,
+    tps: "45tps",
+    status: 5,
+    image: thumb3,
+  },
+  {
+    id: 4,
+    name: "gpt-image-1",
+    provider: "openai",
+    type: "text-to-image",
+    description:
+      "OpenAI image API with strong instruction following and text handling.",
+    speed: "4.2s",
+    speedBar: 30,
+    tps: "28tps",
+    status: 5,
+    image: thumb4,
+  },
+  {
+    id: 5,
+    name: "kling-v2.6",
+    provider: "kling-ai",
+    type: "text-to-video",
+    description:
+      "High-quality video generation with motion control and lip-sync options.",
+    speed: "5.1s",
+    speedBar: 25,
+    tps: "22tps",
+    status: 5,
+    image: thumb5,
+  },
+  {
+    id: 6,
+    name: "sora-2",
+    provider: "openai",
+    type: "text-to-video",
+    description:
+      "State-of-the-art video and audio generation with accurate physics and realism.",
+    speed: "6.3s",
+    speedBar: 20,
+    tps: "18tps",
+    status: 5,
+    image: thumb6,
+  },
+  {
+    id: 7,
+    name: "veo-3.1",
+    provider: "google",
+    type: "text-to-video",
+    description:
+      "Native 1080p video synthesis with flexible camera motion and enhanced quality.",
+    speed: "3.8s",
+    speedBar: 35,
+    tps: "30tps",
+    status: 5,
+    image: thumb7,
+  },
+  {
+    id: 8,
+    name: "seedance-v1.5",
+    provider: "bytedance",
+    type: "text-to-video",
+    description:
+      "Seedance 1.5 Pro for cinematic motion from stills with rich detail.",
+    speed: "4.5s",
+    speedBar: 28,
+    tps: "25tps",
+    status: 5,
+    image: thumb8,
+  },
+];
+
+function SpeedBar({ percent }: { percent: number }) {
+  return (
+    <div className="bg-foreground/10 h-0.75 w-16">
+      <div className="bg-foreground h-full" style={{ width: `${percent}%` }} />
+    </div>
+  );
+}
+
+function StatusDots({ count }: { count: number }) {
+  return (
+    <div className="flex items-center gap-px">
+      {Array.from({ length: count }).map((_, i) => (
+        <div key={i} className="bg-green h-3 w-1" />
+      ))}
+    </div>
+  );
+}
+
 function modelSearchHaystack(model: CatalogModel): string {
   return [model.name, model.description, model.type, ...model.tags]
     .join(" ")
@@ -487,6 +620,9 @@ export default function ModelsPage() {
     }
     return acc;
   }, []);
+
+  const isFiltering =
+    searchQuery.trim() !== "" || selectedCategories.length > 0;
 
   const filteredModels = useMemo(() => {
     let list = ALL_MODELS.filter(
@@ -621,8 +757,14 @@ export default function ModelsPage() {
             <section>
               <div className="flex items-center justify-between">
                 <h3 className="text-foreground text-lg font-semibold">
-                  {filteredModels.length}{" "}
-                  {filteredModels.length === 1 ? "Model" : "Models"}
+                  {isFiltering ? (
+                    <>
+                      {filteredModels.length}{" "}
+                      {filteredModels.length === 1 ? "Model" : "Models"}
+                    </>
+                  ) : (
+                    "Featured Models"
+                  )}
                 </h3>
                 <div className="flex items-center gap-2">
                   <button
@@ -646,19 +788,23 @@ export default function ModelsPage() {
                       />
                     </svg>
                   </button>
-                  <Select value={sortBy} onValueChange={setSortBy}>
-                    <SelectTrigger
-                      size="sm"
-                      className="border-foreground/15 text-foreground/80 hover:bg-foreground/5 h-8 cursor-pointer bg-transparent text-xs font-bold shadow-none"
-                    >
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent align="end">
-                      <SelectItem value="most-popular">Most Popular</SelectItem>
-                      <SelectItem value="newest">Newest</SelectItem>
-                      <SelectItem value="name-asc">Name A-Z</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  {isFiltering && (
+                    <Select value={sortBy} onValueChange={setSortBy}>
+                      <SelectTrigger
+                        size="sm"
+                        className="border-foreground/15 text-foreground/80 hover:bg-foreground/5 h-8 cursor-pointer bg-transparent text-xs font-bold shadow-none"
+                      >
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent align="end">
+                        <SelectItem value="most-popular">
+                          Most Popular
+                        </SelectItem>
+                        <SelectItem value="newest">Newest</SelectItem>
+                        <SelectItem value="name-asc">Name A-Z</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )}
                 </div>
               </div>
 
@@ -684,40 +830,87 @@ export default function ModelsPage() {
                 </div>
               ) : null}
 
-              <div className="mt-5 grid gap-4 md:grid-cols-2">
-                {filteredModels.length === 0 ? (
-                  <p className="text-foreground/55 col-span-full py-12 text-center text-sm">
-                    No models match your search and category filters.
-                  </p>
-                ) : (
-                  filteredModels.map((item) => (
+              {isFiltering ? (
+                <div className="mt-5 grid gap-4 md:grid-cols-2">
+                  {filteredModels.length === 0 ? (
+                    <p className="text-foreground/55 col-span-full py-12 text-center text-sm">
+                      No models match your search and category filters.
+                    </p>
+                  ) : (
+                    filteredModels.map((item) => (
+                      <a
+                        key={item.id}
+                        href="/models/google/nano-banana-pro/edit"
+                        className="bg-surface hover:bg-surface/80 flex flex-col justify-center gap-1 px-4 py-3 transition-colors"
+                      >
+                        <span className="text-foreground/45 font-mono text-xs">
+                          {item.type}
+                        </span>
+                        <h3 className="text-foreground text-sm leading-tight font-semibold">
+                          {item.name.includes("/") ? (
+                            <>
+                              <span className="text-foreground/55">
+                                {`${item.name.split("/")[0].trim()} / `}
+                              </span>
+                              {item.name.split("/").slice(1).join("/").trim()}
+                            </>
+                          ) : (
+                            item.name
+                          )}
+                        </h3>
+                        <p className="text-foreground/55 line-clamp-1 text-xs leading-relaxed">
+                          {item.description}
+                        </p>
+                      </a>
+                    ))
+                  )}
+                </div>
+              ) : (
+                <div className="mt-5 grid gap-4 md:grid-cols-2">
+                  {FEATURED_MODELS.map((model) => (
                     <a
-                      key={item.id}
+                      key={model.id}
                       href="/models/google/nano-banana-pro/edit"
-                      className="bg-surface hover:bg-surface/80 min-h-30 px-4 py-4 transition-colors"
+                      className="border-foreground/10 group hover:bg-foreground/3 grid grid-cols-[80px_1fr] overflow-hidden border transition-colors"
                     >
-                      <p className="text-foreground/45 font-mono text-xs">
-                        {item.type}
-                      </p>
-                      <h3 className="text-foreground mt-1 text-lg leading-tight font-semibold">
-                        {item.name.includes("/") ? (
-                          <>
-                            <span className="text-foreground/55">
-                              {`${item.name.split("/")[0].trim()} / `}
+                      <div className="relative overflow-hidden">
+                        <Image
+                          src={model.image}
+                          alt=""
+                          fill
+                          sizes="80px"
+                          className="object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                      </div>
+                      <div className="flex flex-col justify-center gap-1 px-4 py-3">
+                        <div className="flex items-center justify-between">
+                          <span className="text-foreground/45 font-mono text-xs">
+                            {model.type}
+                          </span>
+                          <StatusDots count={model.status} />
+                        </div>
+                        <h3 className="text-foreground text-sm leading-tight font-semibold">
+                          <span className="text-foreground/55">
+                            {model.provider} /{" "}
+                          </span>
+                          {model.name}
+                        </h3>
+                        <div className="flex items-center gap-4">
+                          <div className="flex items-center gap-2">
+                            <span className="text-foreground font-mono text-xs">
+                              {model.speed}
                             </span>
-                            {item.name.split("/").slice(1).join("/").trim()}
-                          </>
-                        ) : (
-                          item.name
-                        )}
-                      </h3>
-                      <p className="text-foreground/55 mt-2 text-xs leading-relaxed">
-                        {item.description}
-                      </p>
+                            <SpeedBar percent={model.speedBar} />
+                          </div>
+                          <span className="text-foreground/60 font-mono text-xs uppercase">
+                            {model.tps}
+                          </span>
+                        </div>
+                      </div>
                     </a>
-                  ))
-                )}
-              </div>
+                  ))}
+                </div>
+              )}
             </section>
           </div>
         </div>
