@@ -37,6 +37,11 @@ import qwenModelsIcon from "@/images/Qwen Image 2 Models.png";
 import tool01 from "@/images/tool-01.webp";
 import tool02 from "@/images/tool-02.webp";
 import tool03 from "@/images/tool-03.webp";
+import tool04 from "@/images/tool-04.webp";
+import tool05 from "@/images/tool-05.webp";
+import tool06 from "@/images/tool-06.webp";
+import tool07 from "@/images/tool-07.webp";
+import tool08 from "@/images/tool-08.webp";
 import {
   Select,
   SelectContent,
@@ -157,14 +162,14 @@ const infraFeatures = [
 ];
 
 const industries = [
-  { icon: Code2, name: "SaaS Platforms" },
-  { icon: ShoppingCart, name: "E-commerce" },
-  { icon: Rocket, name: "AI Startups" },
-  { icon: Globe, name: "Agencies" },
-  { icon: TrendingUp, name: "Enterprises" },
-  { icon: Gamepad2, name: "Gaming Studios" },
-  { icon: Cloud, name: "Cloud Providers" },
-  { icon: Palette, name: "Creative Tools" },
+  { icon: Code2, name: "SaaS Platforms", bg: tool01 },
+  { icon: ShoppingCart, name: "E-commerce", bg: tool02 },
+  { icon: Rocket, name: "AI Startups", bg: tool03 },
+  { icon: Globe, name: "Agencies", bg: tool04 },
+  { icon: TrendingUp, name: "Enterprises", bg: tool05 },
+  { icon: Gamepad2, name: "Gaming Studios", bg: tool06 },
+  { icon: Cloud, name: "Cloud Providers", bg: tool07 },
+  { icon: Palette, name: "Creative Tools", bg: tool08 },
 ];
 
 export default function ServerlessPage() {
@@ -517,23 +522,26 @@ export default function ServerlessPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4">
-            {industries.map((industry, i) => (
+          <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+            {industries.map((industry) => (
               <div
                 key={industry.name}
-                className="relative flex flex-col items-center gap-3 px-6 py-6 text-center"
+                className="group relative flex h-28 flex-col justify-between overflow-hidden rounded-xs p-5 md:h-36"
               >
-                {i % 4 !== 3 && (
-                  <span className="absolute top-1/2 right-0 hidden h-8 w-px -translate-y-1/2 bg-current/10 lg:block" />
-                )}
-                {i % 2 === 0 && (
-                  <span className="absolute top-1/2 right-0 block h-8 w-px -translate-y-1/2 bg-current/10 lg:hidden" />
-                )}
+                <div className="pointer-events-none absolute inset-0">
+                  <Image
+                    src={industry.bg}
+                    alt=""
+                    fill
+                    sizes="(min-width: 1024px) 25vw, 50vw"
+                    className="rotate-180 object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
                 <industry.icon
-                  className="text-foreground size-5 shrink-0"
+                  className="relative size-5 shrink-0 text-black/50"
                   strokeWidth={1.5}
                 />
-                <span className="text-heading text-sm font-medium">
+                <span className="font-display relative text-sm font-medium tracking-tight text-black md:text-base">
                   {industry.name}
                 </span>
               </div>
