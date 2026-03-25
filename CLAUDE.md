@@ -24,27 +24,10 @@ Pre-commit hook runs `tsc --noEmit` and `lint-staged` (Prettier + ESLint on stag
 - `src/app/(product)/` — dashboard routes behind fake auth (dashboard, models, usage, billing, api-keys, settings, history, requests)
 - `src/app/admin/` — admin pages (brand, slideshow, promo)
 
-**Key modules:**
-
-- `src/features/product/` — dashboard feature: context (`team-context.tsx`), tab components (`tabs/`), shared data (`data/`), types (`types/`)
-- `src/components/ui/` — shadcn/ui components (New York style, Lucide icons)
-- `src/components/` — page-level components (navbar, footer, hero, sections)
-- `src/lib/` — utilities (`cn()` in utils.ts, fake auth, localStorage helpers)
-- `src/hooks/` — custom hooks (`use-mounted`, `use-toast`)
-
-**State management:** React Context for team state, custom reducer hook for toasts, localStorage for user preferences (favorites, auth). No external state library.
-
-**Auth:** Fake/demo auth system via localStorage. `FakeAuthGuard` protects `(product)` routes.
-
-**SVGs** are imported as React components via `@svgr/webpack`.
-
-## Styling Rules (from AGENTS.md)
+## Styling Rules
 
 - **Prefer Tailwind presets over arbitrary values.** Only use arbitrary values when no suitable preset exists.
+- **Typography**: use Geist for body text, Geist Mono for badges or lists for accent, try not to use font-display in secondary pages
 - **Never produce different HTML between server and client.** Read browser-only values inside `useEffect`, never during render.
 - **Dashboard buttons:** `font-bold h-8 rounded-xs text-xs`, no letter-spacing.
 - **Letter spacing:** `tracking-tighter` for large headings (2xl+), `tracking-tight` for medium display text, `tracking-lg` for table headers/uppercase labels, `tracking-xl` for main nav tabs, default for everything else.
-
-## Import Aliases
-
-`@/*` maps to `./src/*` — use `@/components`, `@/lib`, `@/hooks`, `@/features`, etc.
