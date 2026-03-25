@@ -155,9 +155,13 @@ function resolveImage(key: string): StaticImageData {
   return imageMap[key] ?? slide1;
 }
 
-export function HeroSlideshow() {
+export function HeroSlideshow({
+  slides: slidesProp,
+}: {
+  slides?: SlideConfig[];
+} = {}) {
   const { slides: allSlides } = useSlideshowConfig();
-  const slides = allSlides.filter((s) => s.enabled);
+  const slides = slidesProp ?? allSlides.filter((s) => s.enabled);
 
   const [rawActive, setActive] = useState(0);
   const active = slides.length > 0 ? rawActive % slides.length : 0;
@@ -191,7 +195,7 @@ export function HeroSlideshow() {
   if (!current) return null;
 
   return (
-    <section className="relative -mt-16 h-[420px] w-full overflow-hidden sm:h-[480px] md:h-[560px] lg:h-[640px]">
+    <section className="sm:h-120h-[560px] relative -mt-16 h-105 w-full overflow-hidden lg:h-160">
       {slides.map((slide, i) => (
         <div
           key={slide.id}

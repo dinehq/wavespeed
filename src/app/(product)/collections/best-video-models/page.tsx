@@ -164,7 +164,7 @@ export default function BestVideoModelsPage() {
   return (
     <>
       {/* ── Hero ─────────────────────────────────────────────── */}
-      <section className="relative -mt-16 h-[480px] w-full overflow-hidden sm:h-[560px] md:h-[640px] lg:h-[720px]">
+      <section className="relative -mt-16 h-120 w-full overflow-hidden sm:h-140 md:h-160 lg:h-180">
         <Image
           src={slide4}
           alt=""
