@@ -33,6 +33,12 @@ const models = {
     image: slides[0],
     href: "/models/wan-2-6",
   },
+  fluxSchnell: {
+    name: "FLUX.1 Schnell",
+    description: "Ultra-fast text-to-image generation in under a second.",
+    image: slides[2],
+    href: "/models/flux-1-schnell",
+  },
 } satisfies Record<string, RelatedModel>;
 
 export const posts: BlogPost[] = [
@@ -47,9 +53,39 @@ export const posts: BlogPost[] = [
     image: slides[0],
     relatedModel: models.wan26,
   },
+  {
+    title: "Batch Processing 10,000 Images with FLUX.1 Schnell",
+    description:
+      "A practical walkthrough of high-throughput image generation — queue design, concurrency tuning, error handling, and cost optimization at scale.",
+    date: "2026-03-18",
+    readTime: "7 min read",
+    slug: "batch-processing-flux-schnell",
+    tags: ["flux", "image-generation", "guide", "api"],
+    image: slides[2],
+    relatedModel: models.fluxSchnell,
+  },
+  {
+    title: "Building a Real-Time AI Video Pipeline with WebSockets",
+    description:
+      "How to stream AI-generated video frames to the browser in real time — protocol choice, buffering strategy, and latency optimization.",
+    date: "2026-03-12",
+    readTime: "11 min read",
+    slug: "real-time-video-pipeline-websockets",
+    tags: ["video-generation", "guide", "infrastructure"],
+    image: slides[4],
+  },
 ];
 
-export const allTags = ["All", "wan", "video-generation", "guide", "api"];
+export const allTags = [
+  "All",
+  "wan",
+  "flux",
+  "video-generation",
+  "image-generation",
+  "guide",
+  "api",
+  "infrastructure",
+];
 
 export function formatDate(dateStr: string) {
   const d = new Date(dateStr + "T00:00:00");

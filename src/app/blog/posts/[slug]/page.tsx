@@ -39,6 +39,25 @@ const tocMap: Record<string, TOCItem[]> = {
     { id: "faq", label: "FAQ" },
     { id: "conclusion", label: "Conclusion" },
   ],
+  "batch-processing-flux-schnell": [
+    { id: "why-batch", label: "Why Batch Processing" },
+    { id: "queue-design", label: "Queue Design" },
+    { id: "concurrency", label: "Concurrency Tuning" },
+    { id: "error-handling", label: "Error Handling" },
+    { id: "cost-optimization", label: "Cost Optimization" },
+    { id: "monitoring", label: "Monitoring & Observability" },
+    { id: "conclusion", label: "Conclusion" },
+  ],
+  "real-time-video-pipeline-websockets": [
+    { id: "architecture-overview", label: "Architecture Overview" },
+    { id: "protocol-choice", label: "Protocol Choice" },
+    { id: "server-setup", label: "Server Setup" },
+    { id: "client-integration", label: "Client Integration" },
+    { id: "buffering-strategy", label: "Buffering Strategy" },
+    { id: "latency-optimization", label: "Latency Optimization" },
+    { id: "production-considerations", label: "Production Considerations" },
+    { id: "conclusion", label: "Conclusion" },
+  ],
 };
 
 /* ------------------------------------------------------------------ */
@@ -470,8 +489,440 @@ task_id = response.output.task_id`}</code>
   );
 }
 
+function BatchFluxContent() {
+  return (
+    <>
+      {/* Intro */}
+      <p className="text-foreground/80 mb-5 text-lg leading-8">
+        Generating one image is easy. Generating ten thousand — with consistent
+        quality, sensible error recovery, and a bill that doesn&rsquo;t make
+        your finance team flinch — is a different problem entirely.
+      </p>
+      <p className="text-foreground/80 mb-10 text-lg leading-8">
+        This guide walks through the architecture we use internally for
+        high-throughput FLUX.1 Schnell jobs. The patterns are model-agnostic,
+        but the tuning numbers are specific to Schnell&rsquo;s sub-second
+        generation times.
+      </p>
+
+      {/* Section 1 */}
+      <h2
+        id="why-batch"
+        className="text-heading mt-14 mb-5 text-xl font-bold tracking-tight first:mt-0 md:text-2xl"
+      >
+        Why Batch Processing
+      </h2>
+      <p className="text-foreground/80 mb-5 leading-7">
+        Serial API calls are fine for prototyping. Once you&rsquo;re generating
+        product images for a catalog, thumbnails for a content platform, or
+        variations for A/B testing at scale, you need a pipeline that handles
+        failures gracefully and maximizes throughput without hitting rate
+        limits.
+      </p>
+      <p className="text-foreground/80 mb-5 leading-7">
+        The naive approach — a for-loop with{" "}
+        <code className="bg-surface rounded px-1.5 py-0.5 font-mono text-sm">
+          await
+        </code>{" "}
+        on each call — leaves most of your compute budget idle. FLUX.1 Schnell
+        generates images in under a second, which means the bottleneck is almost
+        always your client-side orchestration, not the model.
+      </p>
+
+      {/* Section 2 */}
+      <h2
+        id="queue-design"
+        className="text-heading mt-14 mb-5 text-xl font-bold tracking-tight md:text-2xl"
+      >
+        Queue Design
+      </h2>
+      <h3 className="text-heading mt-8 mb-3 text-lg font-semibold">
+        Job Definition
+      </h3>
+      <p className="text-foreground/80 mb-5 leading-7">
+        Each job in the queue should be a self-contained unit: prompt, negative
+        prompt, dimensions, seed, and a unique job ID for tracking. Store the
+        full input alongside the job so retries don&rsquo;t require
+        re-computation of prompt parameters.
+      </p>
+      <pre className="border-foreground/5 bg-surface/80 mb-5 overflow-x-auto rounded-xs border p-5 font-mono text-sm leading-6">
+        <code>{`interface BatchJob {
+  id: string;
+  prompt: string;
+  negativePrompt?: string;
+  width: number;
+  height: number;
+  seed?: number;
+  retries: number;
+  status: "pending" | "running" | "done" | "failed";
+}`}</code>
+      </pre>
+
+      <h3 className="text-heading mt-8 mb-3 text-lg font-semibold">
+        Persistent vs In-Memory Queues
+      </h3>
+      <p className="text-foreground/80 mb-5 leading-7">
+        For jobs under 1,000, an in-memory array with periodic checkpoint writes
+        to disk is fine. Beyond that, use Redis or Postgres — you need crash
+        recovery, and you need to resume from the last successful job without
+        re-running completed work.
+      </p>
+
+      {/* Section 3 */}
+      <h2
+        id="concurrency"
+        className="text-heading mt-14 mb-5 text-xl font-bold tracking-tight md:text-2xl"
+      >
+        Concurrency Tuning
+      </h2>
+      <p className="text-foreground/80 mb-5 leading-7">
+        Schnell&rsquo;s generation latency is low enough that your concurrency
+        limit is typically dictated by the API rate limit, not model speed.
+        Start with 10 concurrent requests, measure 429 response rates, and
+        binary search upward. Most accounts stabilize around 20–50 concurrent
+        requests.
+      </p>
+      <pre className="border-foreground/5 bg-surface/80 mb-5 overflow-x-auto rounded-xs border p-5 font-mono text-sm leading-6">
+        <code>{`const CONCURRENCY = 25;
+
+async function processQueue(jobs: BatchJob[]) {
+  const pending = jobs.filter(j => j.status === "pending");
+  const chunks = chunkArray(pending, CONCURRENCY);
+
+  for (const chunk of chunks) {
+    await Promise.allSettled(chunk.map(job => generateImage(job)));
+    await checkpoint(jobs); // persist progress
+  }
+}`}</code>
+      </pre>
+      <p className="text-foreground/80 mb-5 leading-7">
+        Don&rsquo;t use unbounded{" "}
+        <code className="bg-surface rounded px-1.5 py-0.5 font-mono text-sm">
+          Promise.all
+        </code>{" "}
+        over the full job list. A single timeout or network hiccup will fail the
+        entire batch. Chunk-and-checkpoint is the pattern that survives
+        real-world conditions.
+      </p>
+
+      {/* Section 4 */}
+      <h2
+        id="error-handling"
+        className="text-heading mt-14 mb-5 text-xl font-bold tracking-tight md:text-2xl"
+      >
+        Error Handling
+      </h2>
+      <p className="text-foreground/80 mb-5 leading-7">
+        At 10,000 images, you will hit transient failures. Rate limits (429),
+        timeouts, and occasional 500s are not exceptions — they&rsquo;re
+        expected. Your retry strategy should distinguish between these:
+      </p>
+      <ul className="text-foreground/80 mb-5 list-disc space-y-2 pl-6 leading-7">
+        <li>
+          <strong>429 (rate limit):</strong> exponential backoff with jitter,
+          max 3 retries
+        </li>
+        <li>
+          <strong>500 (server error):</strong> retry once after 2 seconds, then
+          mark as failed
+        </li>
+        <li>
+          <strong>400 (bad request):</strong> do not retry — log the input and
+          move on
+        </li>
+        <li>
+          <strong>Timeout:</strong> retry with the same parameters, the
+          generation may have succeeded server-side
+        </li>
+      </ul>
+
+      {/* Section 5 */}
+      <h2
+        id="cost-optimization"
+        className="text-heading mt-14 mb-5 text-xl font-bold tracking-tight md:text-2xl"
+      >
+        Cost Optimization
+      </h2>
+      <p className="text-foreground/80 mb-5 leading-7">
+        Three levers matter at scale: resolution, step count, and deduplication.
+        Schnell is already optimized for speed, so reducing steps has
+        diminishing returns on cost. Instead, focus on not generating images you
+        don&rsquo;t need.
+      </p>
+      <p className="text-foreground/80 mb-5 leading-7">
+        Hash your prompts. If the same prompt+seed combination appears twice in
+        a batch, skip the duplicate and copy the result. In catalog workflows,
+        this alone can reduce volume by 10–15%.
+      </p>
+
+      {/* Section 6 */}
+      <h2
+        id="monitoring"
+        className="text-heading mt-14 mb-5 text-xl font-bold tracking-tight md:text-2xl"
+      >
+        Monitoring &amp; Observability
+      </h2>
+      <p className="text-foreground/80 mb-5 leading-7">
+        Track four metrics: throughput (images/minute), error rate, p95 latency
+        per image, and total cost. A simple dashboard that plots these over time
+        will catch regressions faster than log tailing ever will.
+      </p>
+      <p className="text-foreground/80 mb-5 leading-7">
+        Emit structured logs for every job — ID, status, latency, and any error
+        code. When a batch fails at image 7,842, you want to know why without
+        re-reading 7,841 success logs.
+      </p>
+
+      {/* Conclusion */}
+      <h2
+        id="conclusion"
+        className="text-heading mt-14 mb-5 text-xl font-bold tracking-tight md:text-2xl"
+      >
+        Conclusion
+      </h2>
+      <p className="text-foreground/80 mb-5 leading-7">
+        Batch image generation is less about the model and more about the
+        plumbing. FLUX.1 Schnell is fast enough that your pipeline design
+        becomes the bottleneck — which is actually good news, because
+        that&rsquo;s the part you control.
+      </p>
+      <p className="text-foreground/80 mb-5 leading-7">
+        Get the queue right, handle errors without drama, and checkpoint
+        everything. The rest is just tuning numbers.
+      </p>
+    </>
+  );
+}
+
+function RealtimeVideoContent() {
+  return (
+    <>
+      {/* Intro */}
+      <p className="text-foreground/80 mb-5 text-lg leading-8">
+        Most AI video demos show a progress bar and a download link. Real
+        applications need frames arriving in the browser as they&rsquo;re
+        generated — think live previews, interactive editing, and collaborative
+        workflows where waiting 30 seconds for a full render kills the
+        experience.
+      </p>
+      <p className="text-foreground/80 mb-10 text-lg leading-8">
+        This guide covers the architecture for streaming AI-generated video
+        frames over WebSockets, from server-side generation to client-side
+        rendering.
+      </p>
+
+      {/* Section 1 */}
+      <h2
+        id="architecture-overview"
+        className="text-heading mt-14 mb-5 text-xl font-bold tracking-tight first:mt-0 md:text-2xl"
+      >
+        Architecture Overview
+      </h2>
+      <p className="text-foreground/80 mb-5 leading-7">
+        The pipeline has three stages: generation, transport, and rendering. The
+        generation server produces frames (either from a model running locally
+        or by polling a remote API). The transport layer streams those frames to
+        clients. The client assembles frames into a playable sequence.
+      </p>
+      <p className="text-foreground/80 mb-5 leading-7">
+        Each stage has different latency characteristics, and the overall
+        experience is only as fast as the slowest one. In practice, transport is
+        rarely the bottleneck — generation speed and client-side decode are
+        where you spend most of your optimization budget.
+      </p>
+
+      {/* Section 2 */}
+      <h2
+        id="protocol-choice"
+        className="text-heading mt-14 mb-5 text-xl font-bold tracking-tight md:text-2xl"
+      >
+        Protocol Choice
+      </h2>
+      <h3 className="text-heading mt-8 mb-3 text-lg font-semibold">
+        WebSockets vs SSE vs HTTP Polling
+      </h3>
+      <p className="text-foreground/80 mb-5 leading-7">
+        Server-Sent Events (SSE) work for text streams but hit limitations with
+        binary data — you end up base64-encoding frames, which adds 33%
+        overhead. HTTP polling introduces unnecessary latency. WebSockets give
+        you bidirectional binary transport with no encoding overhead and
+        built-in connection management.
+      </p>
+      <p className="text-foreground/80 mb-5 leading-7">
+        The tradeoff: WebSockets require more infrastructure (load balancer
+        support, sticky sessions or connection state), but for frame-rate video
+        data, nothing else comes close.
+      </p>
+
+      {/* Section 3 */}
+      <h2
+        id="server-setup"
+        className="text-heading mt-14 mb-5 text-xl font-bold tracking-tight md:text-2xl"
+      >
+        Server Setup
+      </h2>
+      <pre className="border-foreground/5 bg-surface/80 mb-5 overflow-x-auto rounded-xs border p-5 font-mono text-sm leading-6">
+        <code>{`import { WebSocketServer } from "ws";
+
+const wss = new WebSocketServer({ port: 8080 });
+
+wss.on("connection", (ws) => {
+  ws.on("message", async (data) => {
+    const request = JSON.parse(data.toString());
+
+    // Start generation and stream frames as they arrive
+    const stream = generateVideoFrames(request);
+
+    for await (const frame of stream) {
+      if (ws.readyState === ws.OPEN) {
+        // Send frame as binary — no base64 encoding
+        ws.send(frame.buffer, { binary: true });
+      }
+    }
+
+    // Signal completion
+    ws.send(JSON.stringify({ type: "done" }));
+  });
+});`}</code>
+      </pre>
+      <p className="text-foreground/80 mb-5 leading-7">
+        The key detail: send frames as binary messages, not JSON with embedded
+        base64. This cuts bandwidth by a third and eliminates encode/decode
+        overhead on both sides.
+      </p>
+
+      {/* Section 4 */}
+      <h2
+        id="client-integration"
+        className="text-heading mt-14 mb-5 text-xl font-bold tracking-tight md:text-2xl"
+      >
+        Client Integration
+      </h2>
+      <pre className="border-foreground/5 bg-surface/80 mb-5 overflow-x-auto rounded-xs border p-5 font-mono text-sm leading-6">
+        <code>{`const ws = new WebSocket("wss://api.wavespeed.ai/stream");
+ws.binaryType = "arraybuffer";
+
+const frames: ImageBitmap[] = [];
+
+ws.onmessage = async (event) => {
+  if (typeof event.data === "string") {
+    const msg = JSON.parse(event.data);
+    if (msg.type === "done") startPlayback(frames);
+    return;
+  }
+
+  // Decode binary frame off the main thread
+  const blob = new Blob([event.data], { type: "image/webp" });
+  const bitmap = await createImageBitmap(blob);
+  frames.push(bitmap);
+
+  // Optionally show latest frame as preview
+  drawPreview(bitmap);
+};`}</code>
+      </pre>
+      <p className="text-foreground/80 mb-5 leading-7">
+        Use{" "}
+        <code className="bg-surface rounded px-1.5 py-0.5 font-mono text-sm">
+          createImageBitmap
+        </code>{" "}
+        instead of creating Image objects. It decodes off the main thread, which
+        prevents frame drops when frames arrive faster than the browser can
+        paint.
+      </p>
+
+      {/* Section 5 */}
+      <h2
+        id="buffering-strategy"
+        className="text-heading mt-14 mb-5 text-xl font-bold tracking-tight md:text-2xl"
+      >
+        Buffering Strategy
+      </h2>
+      <p className="text-foreground/80 mb-5 leading-7">
+        Don&rsquo;t start playback on the first frame. Buffer 5–10 frames before
+        beginning, then play at a fixed interval while continuing to receive.
+        This absorbs network jitter without adding noticeable delay.
+      </p>
+      <p className="text-foreground/80 mb-5 leading-7">
+        If the buffer runs dry during playback, pause and show the last rendered
+        frame rather than looping or showing a spinner. Users perceive a brief
+        pause as &ldquo;loading&rdquo; — a spinner tells them something broke.
+      </p>
+
+      {/* Section 6 */}
+      <h2
+        id="latency-optimization"
+        className="text-heading mt-14 mb-5 text-xl font-bold tracking-tight md:text-2xl"
+      >
+        Latency Optimization
+      </h2>
+      <p className="text-foreground/80 mb-5 leading-7">
+        Three changes that matter most in production:
+      </p>
+      <ul className="text-foreground/80 mb-5 list-disc space-y-2 pl-6 leading-7">
+        <li>
+          <strong>Frame format:</strong> WebP at quality 75 hits the best
+          size/quality tradeoff for streaming. JPEG is faster to encode but
+          larger; PNG is lossless but too heavy.
+        </li>
+        <li>
+          <strong>Resolution scaling:</strong> stream at 480p for preview,
+          generate the full-resolution version in the background. Most users
+          can&rsquo;t tell the difference during playback.
+        </li>
+        <li>
+          <strong>Connection reuse:</strong> keep WebSocket connections alive
+          between generations. The handshake adds 100–300ms that you&rsquo;ll
+          notice on rapid iterations.
+        </li>
+      </ul>
+
+      {/* Section 7 */}
+      <h2
+        id="production-considerations"
+        className="text-heading mt-14 mb-5 text-xl font-bold tracking-tight md:text-2xl"
+      >
+        Production Considerations
+      </h2>
+      <p className="text-foreground/80 mb-5 leading-7">
+        WebSocket connections are stateful, which complicates horizontal
+        scaling. Use a connection registry (Redis pub/sub works well) so any
+        server instance can route frames to the right client. Health checks
+        should ping the WebSocket endpoint, not just the HTTP server.
+      </p>
+      <p className="text-foreground/80 mb-5 leading-7">
+        Memory management matters: each connected client accumulates frames in
+        server memory until the generation completes. Set a maximum frame buffer
+        per connection and apply backpressure (slow down generation) if the
+        client can&rsquo;t keep up.
+      </p>
+
+      {/* Conclusion */}
+      <h2
+        id="conclusion"
+        className="text-heading mt-14 mb-5 text-xl font-bold tracking-tight md:text-2xl"
+      >
+        Conclusion
+      </h2>
+      <p className="text-foreground/80 mb-5 leading-7">
+        Real-time video streaming isn&rsquo;t fundamentally hard — it&rsquo;s
+        just different from the request/response model most AI integrations use.
+        The WebSocket layer is straightforward; the work is in buffering,
+        backpressure, and making the experience feel smooth even when the
+        network isn&rsquo;t.
+      </p>
+      <p className="text-foreground/80 mb-5 leading-7">
+        Start with the simplest version — binary frames over a WebSocket, a
+        small buffer, and canvas rendering — and add complexity only when your
+        metrics tell you to.
+      </p>
+    </>
+  );
+}
+
 const contentMap: Record<string, () => React.ReactNode> = {
   "wan-2-7-first-last-frame-guide": Wan27Content,
+  "batch-processing-flux-schnell": BatchFluxContent,
+  "real-time-video-pipeline-websockets": RealtimeVideoContent,
 };
 
 /* ------------------------------------------------------------------ */
@@ -524,7 +975,7 @@ export default async function BlogPostPage({ params }: Props) {
                 ))}
               </div>
 
-              <h1 className="font-display text-heading text-3xl leading-tight font-bold tracking-tighter sm:text-4xl md:text-5xl">
+              <h1 className="font-display text-heading text-3xl leading-tight font-bold tracking-tight sm:text-4xl md:text-5xl">
                 {post.title}
               </h1>
 
@@ -541,7 +992,7 @@ export default async function BlogPostPage({ params }: Props) {
               {post.relatedModel && (
                 <Link
                   href={post.relatedModel.href}
-                  className="border-foreground/10 bg-background hover:bg-foreground/[0.02] mt-6 flex items-center justify-between gap-4 rounded-xs border py-2 pr-4 pl-2 transition-colors duration-150"
+                  className="border-foreground/10 bg-background hover:bg-foreground/2 mt-6 flex items-center justify-between gap-4 rounded-xs border py-2 pr-4 pl-2 transition-colors duration-150"
                 >
                   <div className="flex items-center gap-3">
                     <div className="relative size-14 shrink-0 overflow-hidden rounded-xs">
@@ -598,7 +1049,7 @@ export default async function BlogPostPage({ params }: Props) {
               {/* Desktop App */}
               <Link
                 href="/landing/desktop"
-                className="group border-foreground/5 bg-foreground/[0.03] hover:border-foreground/10 hover:bg-foreground/[0.05] block rounded-xs border p-4 transition-colors duration-150"
+                className="group border-foreground/5 bg-foreground/3 hover:border-foreground/10 hover:bg-foreground/5 block rounded-xs border p-4 transition-colors duration-150"
               >
                 <p className="text-heading mb-3 text-sm font-bold">
                   WaveSpeed Desktop
@@ -688,7 +1139,7 @@ export default async function BlogPostPage({ params }: Props) {
                   </div>
                 </div>
                 <div className="flex flex-1 flex-col gap-2 p-4">
-                  <h3 className="text-heading group-hover:text-foreground/70 text-lg leading-snug font-medium transition-colors duration-150">
+                  <h3 className="text-heading font-display group-hover:text-foreground/70 text-lg leading-snug font-medium transition-colors duration-150">
                     {r.title}
                   </h3>
                   <p className="text-foreground/60 line-clamp-2 text-sm">
@@ -702,29 +1153,6 @@ export default async function BlogPostPage({ params }: Props) {
                 </div>
               </Link>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Newsletter */}
-      <section className="px-6 py-16 md:px-12 md:py-24 lg:px-20">
-        <div className="mx-auto flex max-w-7xl flex-col items-center gap-6 text-center">
-          <h2 className="font-display text-heading text-2xl leading-none font-bold tracking-tight md:text-4xl">
-            Subscribe to Our Blog
-          </h2>
-          <p className="text-foreground/60 max-w-md font-mono text-sm text-pretty">
-            Weekly AI insights, tutorials, and model updates delivered to your
-            inbox.
-          </p>
-          <div className="flex w-full max-w-md gap-2">
-            <input
-              type="email"
-              placeholder="your@email.com"
-              className="border-foreground/10 bg-background text-foreground placeholder:text-foreground/30 focus:border-foreground/30 h-11 flex-1 rounded-xs border px-4 font-mono text-sm transition-colors duration-150 outline-none"
-            />
-            <button className="bg-foreground text-background hover:bg-foreground/80 tracking-xl shrink-0 cursor-pointer rounded-xs px-6 py-2.5 font-mono text-sm font-bold uppercase transition-colors duration-150">
-              Subscribe
-            </button>
           </div>
         </div>
       </section>

@@ -235,29 +235,6 @@ export default function BlogPage() {
         </section>
       )}
 
-      {/* Newsletter */}
-      <section className="bg-surface px-6 py-16 md:px-12 md:py-24 lg:px-20">
-        <div className="mx-auto flex max-w-7xl flex-col items-center gap-6 text-center">
-          <h2 className="font-display text-heading text-2xl leading-none font-bold tracking-tight md:text-4xl">
-            Subscribe to Our Blog
-          </h2>
-          <p className="text-foreground/60 max-w-md font-mono text-sm text-pretty">
-            Weekly AI insights, tutorials, and model updates delivered to your
-            inbox.
-          </p>
-          <div className="flex w-full max-w-md gap-2">
-            <input
-              type="email"
-              placeholder="your@email.com"
-              className="border-foreground/10 bg-background text-foreground placeholder:text-foreground/30 focus:border-foreground/30 h-11 flex-1 rounded-xs border px-4 font-mono text-sm transition-colors duration-150 outline-none"
-            />
-            <button className="bg-foreground text-background hover:bg-foreground/80 tracking-xl shrink-0 cursor-pointer rounded-xs px-6 py-2.5 font-mono text-sm font-bold uppercase transition-colors duration-150">
-              Subscribe
-            </button>
-          </div>
-        </div>
-      </section>
-
       {/* CTA */}
       <CTABanner>
         <h2 className="font-display text-center text-2xl leading-none font-bold tracking-tight text-balance text-black md:text-left md:text-5xl dark:text-white">
