@@ -2,6 +2,7 @@
 
 import { useCallback, useSyncExternalStore } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export type PromoBarConfig = {
   enabled: boolean;
@@ -105,8 +106,9 @@ const barClass =
 
 export function PromoBar() {
   const config = usePromoConfig();
+  const pathname = usePathname();
 
-  if (!config.enabled) return null;
+  if (!config.enabled || pathname === "/designsystem") return null;
 
   const { bgColor, textColor } = config;
 
