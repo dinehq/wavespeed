@@ -657,7 +657,7 @@ export default function ModelsPage() {
                 <h3 className="text-foreground text-lg font-semibold">
                   {isFiltering
                     ? `${filteredModels.length} ${filteredModels.length === 1 ? "Model" : "Models"}`
-                    : `${ALL_MODELS.length} Models`}
+                    : "Featured Models"}
                 </h3>
                 <div className="flex items-center gap-2">
                   <button
