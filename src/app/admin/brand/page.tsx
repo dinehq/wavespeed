@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import NextImage from "next/image";
-import Link from "next/link";
+import { AdminNav } from "@/components/admin-nav";
 import slide1 from "@/images/slide-1.webp";
 import slide2 from "@/images/slide-2.webp";
 import slide3 from "@/images/slide-3.webp";
@@ -1017,12 +1017,7 @@ export default function AdminBrandPage() {
       <div className="mx-auto max-w-7xl px-6 py-12 md:px-12">
         {/* Header */}
         <div className="mb-8">
-          <Link
-            href="/"
-            className="text-foreground/40 hover:text-foreground/60 mb-2 inline-block font-mono text-xs transition-colors"
-          >
-            &larr; Back
-          </Link>
+          <AdminNav />
           <h1 className="text-foreground font-display text-2xl font-bold tracking-tighter">
             Brand Assets
           </h1>

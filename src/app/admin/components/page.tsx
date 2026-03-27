@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { AdminNav } from "@/components/admin-nav";
 import {
   Activity,
   AlignLeft,
@@ -32,7 +33,6 @@ import {
   Trash2,
   X,
 } from "lucide-react";
-import LogoSvg from "@/images/logo.svg";
 import PaymentMethodSvg from "@/images/payment-method.svg";
 import PaymentKrwSvg from "@/images/payment-krw.svg";
 import PaymentPaypalSvg from "@/images/payment-paypal.svg";
@@ -107,7 +107,6 @@ const navSections = [
   {
     group: "Foundation",
     items: [
-      { id: "logo-svg", label: "Logo SVG" },
       { id: "billing-svg", label: "Billing SVG" },
       { id: "icons-svg", label: "Icons SVG" },
       { id: "fonts", label: "Fonts" },
@@ -168,7 +167,7 @@ export default function DesignSystemPage() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(
     new Date(),
   );
-  const [activeId, setActiveId] = useState("fonts");
+  const [activeId, setActiveId] = useState("");
   const sectionRefs = useRef<Map<string, HTMLElement>>(new Map());
 
   // Intersection observer to highlight active nav item on scroll
@@ -198,13 +197,17 @@ export default function DesignSystemPage() {
   };
 
   return (
-    <div className="px-6 pt-6 pb-16 md:px-12 md:pt-8 md:pb-24 lg:px-20">
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-4">
-        {/* Page title */}
-        <div className="pb-3">
-          <h1 className="text-heading text-3xl leading-none font-semibold">
-            Design System
+    <div className="bg-background text-foreground min-h-screen">
+      <div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-12 md:px-12">
+        {/* Header */}
+        <div className="mb-8">
+          <AdminNav />
+          <h1 className="text-foreground font-display text-2xl font-bold tracking-tighter">
+            Components
           </h1>
+          <p className="text-foreground/50 mt-1 text-sm">
+            Design system reference for UI components and tokens.
+          </p>
         </div>
 
         <div className="flex gap-12">
@@ -249,27 +252,6 @@ export default function DesignSystemPage() {
               {/* ====================================================== */}
               {/*  FOUNDATION                                             */}
               {/* ====================================================== */}
-
-              {/* Logo SVG */}
-              <section id="logo-svg" ref={setRef("logo-svg")}>
-                <h2 className="text-foreground border-foreground/10 mb-6 border-b pb-3 text-lg font-semibold">
-                  Logo SVG
-                </h2>
-                <Label>Brand logo asset</Label>
-                <Card className="border-foreground/10 bg-background gap-0 rounded-xs py-0 shadow-none">
-                  <CardContent className="p-4">
-                    <div className="bg-surface border-foreground/10 flex min-h-24 items-center justify-center rounded-xs border px-4 py-6">
-                      <LogoSvg
-                        className="h-7 w-auto"
-                        preserveAspectRatio="xMidYMid meet"
-                      />
-                    </div>
-                    <p className="text-foreground/50 mt-3 font-mono text-xs">
-                      @/images/logo.svg
-                    </p>
-                  </CardContent>
-                </Card>
-              </section>
 
               {/* Billing SVG */}
               <section id="billing-svg" ref={setRef("billing-svg")}>
@@ -837,7 +819,6 @@ export default function DesignSystemPage() {
                   </Badge>
                 </div>
               </section>
-
               {/* ====================================================== */}
               {/*  CONTROLS                                               */}
               {/* ====================================================== */}

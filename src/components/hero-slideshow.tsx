@@ -219,6 +219,7 @@ export function HeroSlideshow({
               alt=""
               fill
               sizes="100vw"
+              loading={i === 0 ? "eager" : undefined}
               priority={i === 0}
               className="object-cover"
             />

@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import Link from "next/link";
+import { AdminNav } from "@/components/admin-nav";
 import { posts } from "@/app/blog/data";
 
 /* ------------------------------------------------------------------ */
@@ -117,38 +118,43 @@ export default function AdminLs() {
   const grouped = groupRoutes(routes);
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-16 md:py-24">
-      <h1 className="font-display mb-2 text-2xl font-bold tracking-tight">
-        All Pages
-      </h1>
-      <p className="text-foreground/50 mb-10 font-mono text-xs">
-        {routes.length} routes
-      </p>
+    <div className="bg-background text-foreground min-h-screen">
+      <div className="mx-auto max-w-7xl px-6 py-12 md:px-12">
+        <div className="mb-8">
+          <AdminNav />
+          <h1 className="text-foreground font-display text-2xl font-bold tracking-tighter">
+            All Pages
+          </h1>
+          <p className="text-foreground/50 mt-1 text-sm">
+            {routes.length} static pages.
+          </p>
+        </div>
 
-      <div className="flex flex-col gap-10">
-        {grouped.map((section) => (
-          <div key={section.key}>
-            <h2 className="text-foreground/40 tracking-xl mb-3 font-mono text-xs uppercase">
-              {section.label}
-            </h2>
-            <div className="flex flex-col">
-              {section.routes.map((route) => (
-                <Link
-                  key={route.path}
-                  href={route.path}
-                  className="group border-foreground/5 hover:bg-foreground/[0.02] flex items-center justify-between gap-4 border-b py-2.5 transition-colors"
-                >
-                  <span className="text-foreground/80 group-hover:text-foreground text-sm">
-                    {routeLabel(route.path)}
-                  </span>
-                  <code className="text-foreground/30 group-hover:text-foreground/50 font-mono text-xs transition-colors">
-                    {route.path}
-                  </code>
-                </Link>
-              ))}
+        <div className="flex flex-col gap-10">
+          {grouped.map((section) => (
+            <div key={section.key}>
+              <h2 className="text-foreground/40 tracking-xl mb-3 font-mono text-xs uppercase">
+                {section.label}
+              </h2>
+              <div className="flex flex-col">
+                {section.routes.map((route) => (
+                  <Link
+                    key={route.path}
+                    href={route.path}
+                    className="group border-foreground/5 hover:bg-foreground/2 flex items-center justify-between gap-4 border-b py-2.5 transition-colors"
+                  >
+                    <span className="text-foreground/80 group-hover:text-foreground text-sm">
+                      {routeLabel(route.path)}
+                    </span>
+                    <code className="text-foreground/30 group-hover:text-foreground/50 font-mono text-xs transition-colors">
+                      {route.path}
+                    </code>
+                  </Link>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );

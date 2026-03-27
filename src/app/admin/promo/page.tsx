@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import Link from "next/link";
+import { AdminNav } from "@/components/admin-nav";
 import {
   type PromoBarConfig,
   setPromoConfig,
@@ -145,17 +145,12 @@ export default function AdminPromoPage() {
 
   return (
     <div className="bg-background text-foreground min-h-screen">
-      <div className="mx-auto max-w-5xl px-6 py-12 md:px-12">
+      <div className="mx-auto max-w-7xl px-6 py-12 md:px-12">
         <div className="mb-8 flex items-center justify-between">
           <div>
-            <Link
-              href="/"
-              className="text-foreground/40 hover:text-foreground/60 mb-2 inline-block font-mono text-xs transition-colors"
-            >
-              ← Back
-            </Link>
+            <AdminNav />
             <h1 className="text-foreground font-display text-2xl font-bold tracking-tighter">
-              Promo Bar CMS
+              Promo Bar
             </h1>
             <p className="text-foreground/50 mt-1 text-sm">
               Configure the announcement bar shown across the site.

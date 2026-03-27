@@ -108,7 +108,7 @@ export function PromoBar() {
   const config = usePromoConfig();
   const pathname = usePathname();
 
-  if (!config.enabled || pathname === "/designsystem") return null;
+  if (!config.enabled || pathname?.startsWith("/admin/")) return null;
 
   const { bgColor, textColor } = config;
 
