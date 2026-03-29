@@ -1,0 +1,31 @@
+{
+  "version": "1.0",
+  "exportedAt": "2026-03-27T02:00:54.514Z",
+  "templates": [
+    {
+      "id": "3f284c17-9756-42b4-bce5-ac996351e788",
+      "name": "WaveSpeed Image Template",
+      "description": null,
+      "tags": [],
+      "type": "custom",
+      "templateType": "playground",
+      "isFavorite": false,
+      "createdAt": "2026-03-27T02:00:27.361Z",
+      "updatedAt": "2026-03-27T02:00:27.361Z",
+      "author": null,
+      "useCount": 0,
+      "thumbnail": null,
+      "playgroundData": {
+        "modelId": "openai/gpt-image-1.5/text-to-image",
+        "modelName": "openai/gpt-image-1.5/text-to-image",
+        "values": {
+          "size": "1536*1024",
+          "quality": "high",
+          "output_format": "jpeg",
+          "prompt": "[主体描述：A close-up of a single red rose in full bloom with delicate layered petals. The flower is semi-transparent and ethereal, with light visibly passing through the translucent petals. Isolated against a solid pure black background with no environment. The petals and stem dissolve into optical afterimages.] Non-linear spectral light trails curve and flow through the flower form. Strong prismatic dispersion along petal edges. Temporal smearing and motion echo. Chromatic aberration. Light bleeding into darkness. Long exposure effect. Experimental cinematic optical art, surreal and time-stretched. Macro lens, ultra-detailed."
+        }
+      },
+      "workflowData": null
+    }
+  ]
+}

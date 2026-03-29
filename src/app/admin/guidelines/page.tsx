@@ -2,15 +2,9 @@
 
 import { useRef, useEffect, useState } from "react";
 import NextImage from "next/image";
-import { Copy, Check } from "lucide-react";
+import { Copy, Check, Download } from "lucide-react";
 import { AdminNav } from "@/components/admin-nav";
 import LogoSvg from "@/images/logo.svg";
-import slide1 from "@/images/slide-1.webp";
-import slide2 from "@/images/slide-2.webp";
-import slide3 from "@/images/slide-3.webp";
-import slide4 from "@/images/slide-4.webp";
-import slide5 from "@/images/slide-5.webp";
-import editorPreview from "@/images/editor-image-preview.webp";
 
 /* ------------------------------------------------------------------ */
 /*  Data                                                               */
@@ -53,32 +47,39 @@ const navSections = [
 
 function PromptCard({
   category,
-  image,
-  prompt,
+  imageSrc,
+  copyText,
+  children,
 }: {
   category: string;
-  image: { src: string; width: number; height: number };
-  prompt: string;
+  imageSrc: string;
+  copyText: string;
+  children: React.ReactNode;
 }) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(prompt);
+    await navigator.clipboard.writeText(copyText);
     setCopied(true);
     setTimeout(() => setCopied(false), 1500);
   };
 
   return (
-    <div className="border-foreground/10 overflow-hidden rounded-lg border">
-      <div className="relative aspect-21/9 w-full overflow-hidden bg-black">
-        <NextImage src={image} alt={category} fill className="object-cover" />
+    <div className="border-foreground/10 flex overflow-hidden rounded-lg border">
+      <div className="relative aspect-square w-48 shrink-0 overflow-hidden bg-black">
+        <NextImage
+          src={imageSrc}
+          alt={category}
+          fill
+          className="object-cover"
+        />
       </div>
-      <div className="flex items-start gap-3 px-4 py-3">
+      <div className="flex min-w-0 flex-1 items-start gap-3 px-4 py-3">
         <div className="min-w-0 flex-1">
           <p className="text-foreground text-sm font-medium">{category}</p>
-          <p className="text-foreground/50 mt-1 text-xs leading-relaxed">
-            {prompt}
-          </p>
+          <div className="text-foreground/50 mt-1 text-xs leading-relaxed">
+            {children}
+          </div>
         </div>
         <button
           onClick={handleCopy}
@@ -431,51 +432,66 @@ export default function GuidelinesPage() {
                   use cases.
                 </p>
                 <div className="flex flex-col gap-4">
-                  {[
-                    {
-                      category: "Product Hero",
-                      image: slide1,
-                      prompt:
-                        "A glowing holographic interface floating in a dark studio, soft volumetric lighting, ultra-high detail",
-                    },
-                    {
-                      category: "Social Banner",
-                      image: slide2,
-                      prompt:
-                        "Wide panoramic cityscape at golden hour, ultra-wide angle, warm gradient sky fading to deep blue",
-                    },
-                    {
-                      category: "Blog / Editorial",
-                      image: slide3,
-                      prompt:
-                        "Close-up of hands typing on a floating translucent keyboard, shallow depth of field, warm ambient light",
-                    },
-                    {
-                      category: "Avatar / Icon",
-                      image: slide4,
-                      prompt:
-                        "Abstract gradient orb with internal light, glass morphism effect, centered on dark background, square crop",
-                    },
-                    {
-                      category: "Landing Page",
-                      image: slide5,
-                      prompt:
-                        "Futuristic skyline with mirrored glass towers reflecting sunset, cinematic color grading, ultra-wide angle",
-                    },
-                    {
-                      category: "Feature Preview",
-                      image: editorPreview,
-                      prompt:
-                        "Minimal flat-lay of a sleek device on matte black surface, dramatic top-down lighting, clean composition",
-                    },
-                  ].map((item) => (
-                    <PromptCard
-                      key={item.category}
-                      category={item.category}
-                      image={item.image}
-                      prompt={item.prompt}
-                    />
-                  ))}
+                  <PromptCard
+                    category="openai/gpt-image-1.5/text-to-image"
+                    imageSrc="/prompt/result.png"
+                    copyText="A close-up of a single red rose in full bloom with delicate layered petals. The flower is semi-transparent and ethereal, with light visibly passing through the translucent petals. Isolated against a solid pure black background with no environment. The petals and stem dissolve into optical afterimages. Non-linear spectral light trails curve and flow through the flower form. Strong prismatic dispersion along petal edges. Temporal smearing and motion echo. Chromatic aberration. Light bleeding into darkness. Long exposure effect. Experimental cinematic optical art, surreal and time-stretched. Macro lens, ultra-detailed."
+                  >
+                    <p>
+                      A close-up of a single red rose in full bloom with
+                      delicate layered petals. The flower is semi-transparent
+                      and ethereal, with light visibly passing through the
+                      translucent petals. Isolated against a solid pure black
+                      background with no environment. The petals and stem
+                      dissolve into optical afterimages. Non-linear spectral
+                      light trails curve and flow through the flower form.
+                      Strong prismatic dispersion along petal edges. Temporal
+                      smearing and motion echo. Chromatic aberration. Light
+                      bleeding into darkness. Long exposure effect. Experimental
+                      cinematic optical art, surreal and time-stretched. Macro
+                      lens, ultra-detailed.
+                    </p>
+                    <a
+                      href="/prompt/template.json"
+                      download
+                      className="text-foreground hover:text-foreground/50 mt-4 inline-flex items-center gap-1 text-xs transition-colors"
+                    >
+                      <Download className="size-3" />
+                      template.json
+                    </a>
+                  </PromptCard>
+
+                  <PromptCard
+                    category="Midjourney"
+                    imageSrc="/prompt/result.png"
+                    copyText="Reach out hand silhouette merging with optical afterimages, non-linear spectral light trails flowing through the form, strong prismatic dispersion, temporal smearing and motion echo, chromatic aberration, light bleeding into darkness, long exposure effect, deep blue-black background, experimental cinematic optical art, surreal and time-stretched"
+                  >
+                    <p>
+                      <em className="text-foreground/70">
+                        Reach out hand silhouette merging
+                      </em>{" "}
+                      with optical afterimages, non-linear spectral light trails
+                      flowing through the form, strong prismatic dispersion,
+                      temporal smearing and motion echo, chromatic aberration,
+                      light bleeding into darkness, long exposure effect, deep
+                      blue-black background, experimental cinematic optical art,
+                      surreal and time-stretched
+                    </p>
+                    <div className="mt-4 flex items-center gap-3">
+                      <a
+                        href="/prompt/reference.png"
+                        download
+                        className="text-foreground hover:text-foreground/50 inline-flex items-center gap-1 text-xs transition-colors"
+                      >
+                        <Download className="size-3" />
+                        reference.png
+                      </a>
+                      <span className="text-foreground/70 text-xs">
+                        Change <em>italic</em> to the object you want, you must
+                        use the reference image.
+                      </span>
+                    </div>
+                  </PromptCard>
                 </div>
               </section>
             </div>
