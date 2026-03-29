@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
+import { CTABanner } from "@/components/cta-banner";
 import ArrowRight from "@/images/arrow-right.svg";
 
 const imageVideoModels = [
@@ -611,39 +612,7 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="px-6 pb-20 md:px-12 md:pb-28 lg:px-20">
-        <div className="mx-auto max-w-7xl">
-          <div className="bg-foreground flex flex-col items-center gap-6 rounded-xs px-6 py-12 text-center md:px-12 md:py-16">
-            <h2 className="font-display text-background text-2xl leading-none font-bold tracking-tight text-balance md:text-4xl">
-              Ready to start building?
-            </h2>
-            <p className="text-background/60 max-w-md text-sm text-pretty md:text-base">
-              Join thousands of developers and creators using WaveSpeed to power
-              their AI applications.
-            </p>
-            <div className="flex flex-wrap justify-center gap-3">
-              <Link
-                href="/sign-in"
-                className="text-foreground bg-background hover:bg-background/90 flex items-center gap-2.5 rounded-xs px-6 py-3 transition-colors duration-150"
-              >
-                <span className="tracking-xl font-mono text-sm leading-4 font-bold uppercase">
-                  Get started free
-                </span>
-                <ArrowRight className="size-4" />
-              </Link>
-              <Link
-                href="/docs"
-                className="border-background/20 text-background hover:bg-background/10 flex items-center rounded-xs border px-6 py-3 transition-colors duration-150"
-              >
-                <span className="tracking-xl font-mono text-sm leading-4 font-bold uppercase">
-                  Read the docs
-                </span>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      <CTABanner />
 
       <Footer />
     </main>
