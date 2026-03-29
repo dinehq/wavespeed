@@ -538,50 +538,45 @@ export default function PricingPage() {
       {/* Enterprise */}
       <section className="px-6 pt-20 md:px-12 md:pt-28 lg:px-20">
         <div className="mx-auto max-w-7xl">
-          <div className="bg-surface rounded-xs p-8 md:p-12">
-            <div className="mb-10 flex flex-col items-center gap-4 text-center">
-              <span className="bg-brand/10 text-brand rounded-xs px-3 py-1 font-mono text-xs font-medium uppercase">
-                Enterprise
+          <div className="mb-12 flex max-w-xl flex-col gap-4">
+            <h2 className="font-display text-heading text-2xl leading-none font-bold tracking-tight md:text-4xl">
+              Need more? Talk to us.
+            </h2>
+            <p className="text-foreground/60 text-sm text-pretty md:text-base">
+              For teams that need higher limits, dedicated support, and custom
+              deployment options.
+            </p>
+            <Link
+              href="/enterprise"
+              className="bg-foreground text-background hover:bg-foreground/80 mt-2 inline-flex w-fit items-center gap-2.5 rounded-xs px-6 py-3 transition-colors duration-150"
+            >
+              <span className="tracking-xl font-mono text-sm leading-4 font-bold uppercase">
+                Contact Sales
               </span>
-              <h2 className="font-display text-heading text-2xl leading-none font-bold tracking-tight text-balance md:text-4xl">
-                Built for scale
-              </h2>
-              <p className="text-foreground/60 max-w-lg text-sm text-pretty md:text-base">
-                For teams that need more power, security, and support. Custom
-                pricing based on your usage requirements.
-              </p>
-              <Link
-                href="/enterprise"
-                className="bg-foreground text-background hover:bg-foreground/80 mt-2 flex items-center gap-2.5 rounded-xs px-6 py-3 transition-colors duration-150"
-              >
-                <span className="tracking-xl font-mono text-sm leading-4 font-bold uppercase">
-                  Contact Sales
-                </span>
-                <ArrowRight className="size-4" />
-              </Link>
-            </div>
+              <ArrowRight className="size-4" />
+            </Link>
+          </div>
 
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {enterpriseFeatures.map((feature) => (
-                <div
-                  key={feature.title}
-                  className="bg-background flex flex-col gap-3 rounded-xs p-5"
-                >
-                  <feature.icon
-                    className="text-foreground/40 size-5"
-                    strokeWidth={1.5}
-                  />
-                  <div className="flex flex-col gap-1">
-                    <h3 className="text-heading text-sm font-medium">
-                      {feature.title}
-                    </h3>
-                    <p className="text-foreground/60 text-xs leading-relaxed">
-                      {feature.description}
-                    </p>
-                  </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {enterpriseFeatures.map((feature) => (
+              <div
+                key={feature.title}
+                className="bg-surface flex flex-col gap-4 rounded-xs p-6"
+              >
+                <feature.icon
+                  className="text-foreground/40 size-6"
+                  strokeWidth={1.5}
+                />
+                <div className="flex flex-col gap-2">
+                  <h3 className="text-heading text-base font-medium">
+                    {feature.title}
+                  </h3>
+                  <p className="text-foreground/60 text-sm leading-relaxed">
+                    {feature.description}
+                  </p>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
