@@ -198,7 +198,7 @@ export function Navbar({ mode = "default", overlay, sticky }: NavbarProps) {
           <div className="hidden items-center gap-6 lg:flex">
             {[
               { label: "Explore", href: "/models" },
-              { label: "Pricing", href: "#" },
+              { label: "Pricing", href: "/pricing" },
               { label: "Enterprise", href: "/enterprise" },
             ].map((item) => (
               <Link
@@ -547,7 +547,7 @@ export function Navbar({ mode = "default", overlay, sticky }: NavbarProps) {
           )}
           {[
             { label: "Explore", href: "/models" },
-            { label: "Pricing", href: "#" },
+            { label: "Pricing", href: "/pricing" },
             { label: "Enterprise", href: "/enterprise" },
           ].map((item) => (
             <Link
