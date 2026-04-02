@@ -5,20 +5,20 @@ import NextImage from "next/image";
 import { Copy, Check, Download } from "lucide-react";
 import { AdminNav } from "@/components/admin-nav";
 import LogoSvg from "@/images/logo.svg";
-import logoSpace from "@/images/logo space.png";
-import symbolSpace from "@/images/symbol space.png";
-import logoSize from "@/images/logo size.png";
-import symbolSize from "@/images/symbol size.png";
-import incorrectUsage01 from "@/images/incorrect-usage01.png";
-import incorrectUsage02 from "@/images/incorrect-usage02.png";
-import incorrectUsage03 from "@/images/incorrect-usage03.png";
-import incorrectUsage04 from "@/images/incorrect-usage04.png";
-import incorrectUsage05 from "@/images/incorrect-usage05.png";
-import incorrectUsage06 from "@/images/incorrect-usage06.png";
-import logoCoSpace from "@/images/logo-co-space.png";
-import symbolCoSpace from "@/images/symbol-co-space.png";
-import logoCoEg from "@/images/logo-co-e.g.png";
-import symbolCoEg from "@/images/symbol-co-e.g.png";
+import logoSpace from "@/images/logo space.webp";
+import symbolSpace from "@/images/symbol space.webp";
+import logoSize from "@/images/logo size.webp";
+import symbolSize from "@/images/symbol size.webp";
+import incorrectUsage01 from "@/images/incorrect-usage01.webp";
+import incorrectUsage02 from "@/images/incorrect-usage02.webp";
+import incorrectUsage03 from "@/images/incorrect-usage03.webp";
+import incorrectUsage04 from "@/images/incorrect-usage04.webp";
+import incorrectUsage05 from "@/images/incorrect-usage05.webp";
+import incorrectUsage06 from "@/images/incorrect-usage06.webp";
+import logoCoSpace from "@/images/logo-co-space.webp";
+import symbolCoSpace from "@/images/symbol-co-space.webp";
+import logoCoEg from "@/images/logo-co-e.g.webp";
+import symbolCoEg from "@/images/symbol-co-e.g.webp";
 
 /* ------------------------------------------------------------------ */
 /*  Symbol-only SVG (wave mark extracted from logo)                    */
@@ -61,7 +61,6 @@ const navSections = [
   {
     group: "Identity",
     items: [
-      { id: "logo", label: "Logo" },
       { id: "variants", label: "Logo Variants" },
       { id: "clearspace", label: "Clearspace" },
       { id: "incorrect", label: "Incorrect Usage" },
@@ -115,7 +114,7 @@ function PromptCard({
       <div className="flex min-w-0 flex-1 items-start gap-3 px-4 py-3">
         <div className="min-w-0 flex-1">
           <p className="text-foreground text-sm font-medium">{category}</p>
-          <div className="text-foreground/50 mt-1 text-xs leading-relaxed">
+          <div className="text-foreground/50 mt-1 text-sm leading-relaxed">
             {children}
           </div>
         </div>
@@ -216,29 +215,6 @@ export default function GuidelinesPage() {
           {/* ── Content ── */}
           <div className="min-w-0 flex-1">
             <div className="flex flex-col gap-20">
-              {/* ─── Logo ─── */}
-              <section id="logo" ref={setRef("logo")}>
-                <h2 className="text-foreground mb-8 text-lg font-semibold">
-                  Logo
-                </h2>
-
-                {/* Lockup on light */}
-                <div className="bg-surface border-foreground/10 flex items-center justify-center rounded-lg border px-10 py-16">
-                  <LogoSvg
-                    className="h-8 w-auto"
-                    preserveAspectRatio="xMidYMid meet"
-                  />
-                </div>
-
-                {/* Lockup on dark */}
-                <div className="bg-dark mt-3 flex items-center justify-center rounded-lg px-10 py-16">
-                  <LogoSvg
-                    className="h-8 w-auto text-white"
-                    preserveAspectRatio="xMidYMid meet"
-                  />
-                </div>
-              </section>
-
               {/* ─── Logo Variants ─── */}
               <section id="variants" ref={setRef("variants")}>
                 <h2 className="text-foreground mb-2 text-lg font-semibold">
@@ -284,10 +260,17 @@ export default function GuidelinesPage() {
                 </div>
 
                 {/* Mono reference */}
-                <p className="text-foreground/50 mt-6 text-xs">
+                <p className="text-foreground/50 mt-6 text-sm">
                   Always use the monochrome version — black on light
                   backgrounds, white on dark. Never colorize the logo.
                 </p>
+                <a
+                  href="/admin/brand?tab=avatar"
+                  className="text-foreground hover:text-foreground/50 mt-4 inline-flex items-center gap-1 text-sm transition-colors"
+                >
+                  <Download className="size-3" />
+                  Download logo assets
+                </a>
               </section>
 
               {/* ─── Clearspace & Minimum Size ─── */}
@@ -299,31 +282,29 @@ export default function GuidelinesPage() {
                   Maintain a minimum clear zone around the logo. The unit
                   &ldquo;x&rdquo; equals the height of the symbol mark.
                 </p>
-                <div className="space-y-6">
-                  <div className="flex items-start gap-6">
-                    <NextImage
-                      src={logoSpace}
-                      alt="Lockup clearspace specification"
-                      className="w-0 min-w-0 flex-3"
-                    />
-                    <NextImage
-                      src={symbolSpace}
-                      alt="Symbol clearspace specification"
-                      className="w-0 min-w-0 flex-1"
-                    />
-                  </div>
-                  <div className="flex max-w-sm items-end gap-6">
-                    <NextImage
-                      src={logoSize}
-                      alt="Lockup minimum size specification"
-                      className="w-0 min-w-0 flex-3"
-                    />
-                    <NextImage
-                      src={symbolSize}
-                      alt="Symbol minimum size specification"
-                      className="w-0 min-w-0 flex-1"
-                    />
-                  </div>
+                <div className="grid grid-cols-[3fr_1fr] gap-x-8 gap-y-6">
+                  <NextImage
+                    src={logoSpace}
+                    alt="Lockup clearspace specification"
+                    className="w-full"
+                  />
+                  <NextImage
+                    src={symbolSpace}
+                    alt="Symbol clearspace specification"
+                    className="w-full"
+                  />
+                </div>
+                <div className="mt-6 grid max-w-lg grid-cols-[3fr_1fr] items-end gap-x-16">
+                  <NextImage
+                    src={logoSize}
+                    alt="Lockup minimum size specification"
+                    className="w-full"
+                  />
+                  <NextImage
+                    src={symbolSize}
+                    alt="Symbol minimum size specification"
+                    className="w-full"
+                  />
                 </div>
               </section>
 
@@ -377,6 +358,8 @@ export default function GuidelinesPage() {
                     alt="Co-branding symbol with partner logo spacing"
                     className="w-full"
                   />
+                </div>
+                <div className="mt-6 grid max-w-lg grid-cols-[3fr_1fr] place-items-center gap-x-16">
                   <NextImage
                     src={logoCoEg}
                     alt="Co-branding lockup example"
@@ -640,14 +623,19 @@ export default function GuidelinesPage() {
                       cinematic optical art, surreal and time-stretched. Macro
                       lens, ultra-detailed.
                     </p>
-                    <a
-                      href="/prompt/template.json"
-                      download
-                      className="text-foreground hover:text-foreground/50 mt-4 inline-flex items-center gap-1 text-xs transition-colors"
-                    >
-                      <Download className="size-3" />
-                      template.json
-                    </a>
+                    <div className="mt-4 flex items-center gap-3">
+                      <a
+                        href="/prompt/template.json"
+                        download
+                        className="text-foreground hover:text-foreground/50 inline-flex items-center gap-1 text-xs transition-colors"
+                      >
+                        <Download className="size-3" />
+                        template.json{" "}
+                      </a>
+                      <span className="text-foreground/70 text-xs">
+                        Works with WaveSpeed Desktop
+                      </span>
+                    </div>
                   </PromptCard>
 
                   <PromptCard
