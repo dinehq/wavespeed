@@ -5,6 +5,40 @@ import NextImage from "next/image";
 import { Copy, Check, Download } from "lucide-react";
 import { AdminNav } from "@/components/admin-nav";
 import LogoSvg from "@/images/logo.svg";
+import logoSpace from "@/images/logo space.webp";
+import symbolSpace from "@/images/symbol space.webp";
+import logoSize from "@/images/logo size.webp";
+import symbolSize from "@/images/symbol size.webp";
+import incorrectUsage01 from "@/images/incorrect-usage01.webp";
+import incorrectUsage02 from "@/images/incorrect-usage02.webp";
+import incorrectUsage03 from "@/images/incorrect-usage03.webp";
+import incorrectUsage04 from "@/images/incorrect-usage04.webp";
+import incorrectUsage05 from "@/images/incorrect-usage05.webp";
+import incorrectUsage06 from "@/images/incorrect-usage06.webp";
+import logoCoSpace from "@/images/logo-co-space.webp";
+import symbolCoSpace from "@/images/symbol-co-space.webp";
+import logoCoEg from "@/images/logo-co-e.g.webp";
+import symbolCoEg from "@/images/symbol-co-e.g.webp";
+
+/* ------------------------------------------------------------------ */
+/*  Symbol-only SVG (wave mark extracted from logo)                    */
+/* ------------------------------------------------------------------ */
+
+function SymbolSvg({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 36 20"
+      className={className}
+    >
+      <path
+        fill="currentColor"
+        d="M11.637 12.316l3.943-6.851A2.917 2.917 0 0 1 18.108 4h3.787a1.42 1.42 0 0 1 1.417 1.423v6.893l3.943-6.851A2.917 2.917 0 0 1 29.783 4h3.787a1.42 1.42 0 0 1 1.418 1.423v5.521a1.42 1.42 0 0 1-1.418 1.422h-.657l-4.318 7.503a2.914 2.914 0 0 1-3.987 1.072l-2.9-1.68a2.93 2.93 0 0 1-1.46-2.536v-2.639l-3.329 5.783a2.914 2.914 0 0 1-3.987 1.072l-2.9-1.68a2.93 2.93 0 0 1-1.46-2.536v-2.639l-1.16 2.016a1.415 1.415 0 0 1-1.936.52l-4.767-2.76a1.425 1.425 0 0 1-.519-1.943l3.715-6.454A2.917 2.917 0 0 1 6.432 4h3.787a1.42 1.42 0 0 1 1.418 1.423v6.893Z"
+      />
+    </svg>
+  );
+}
 
 /* ------------------------------------------------------------------ */
 /*  Data                                                               */
@@ -27,7 +61,10 @@ const navSections = [
   {
     group: "Identity",
     items: [
-      { id: "logo", label: "Logo" },
+      { id: "variants", label: "Logo Variants" },
+      { id: "clearspace", label: "Clearspace" },
+      { id: "incorrect", label: "Incorrect Usage" },
+      { id: "cobranding", label: "Co-branding" },
       { id: "colors", label: "Colors" },
       { id: "gradients", label: "Gradients" },
     ],
@@ -77,7 +114,7 @@ function PromptCard({
       <div className="flex min-w-0 flex-1 items-start gap-3 px-4 py-3">
         <div className="min-w-0 flex-1">
           <p className="text-foreground text-sm font-medium">{category}</p>
-          <div className="text-foreground/50 mt-1 text-xs leading-relaxed">
+          <div className="text-foreground/50 mt-1 text-sm leading-relaxed">
             {children}
           </div>
         </div>
@@ -178,25 +215,160 @@ export default function GuidelinesPage() {
           {/* ── Content ── */}
           <div className="min-w-0 flex-1">
             <div className="flex flex-col gap-20">
-              {/* ─── Logo ─── */}
-              <section id="logo" ref={setRef("logo")}>
-                <h2 className="text-foreground mb-8 text-lg font-semibold">
-                  Logo
+              {/* ─── Logo Variants ─── */}
+              <section id="variants" ref={setRef("variants")}>
+                <h2 className="text-foreground mb-2 text-lg font-semibold">
+                  Logo Variants
                 </h2>
+                <p className="text-foreground/50 mb-8 text-sm">
+                  The WaveSpeed logo comes in two forms: the full lockup
+                  (symbol&nbsp;+ wordmark) and the symbol alone. Use the lockup
+                  wherever space allows; reserve the symbol for compact contexts
+                  like favicons and app icons.
+                </p>
 
-                {/* Lockup on light */}
-                <div className="bg-surface border-foreground/10 flex items-center justify-center rounded-lg border px-10 py-16">
-                  <LogoSvg
-                    className="h-8 w-auto"
-                    preserveAspectRatio="xMidYMid meet"
-                  />
+                {/* Lockup + Symbol on light */}
+                <p className="text-foreground/50 mb-3 text-xs font-medium tracking-wider uppercase">
+                  On light
+                </p>
+                <div className="mb-4 grid grid-cols-2 gap-3">
+                  <div className="bg-surface border-foreground/10 flex items-center justify-center rounded-lg border px-10 py-14">
+                    <LogoSvg
+                      className="h-7 w-auto"
+                      preserveAspectRatio="xMidYMid meet"
+                    />
+                  </div>
+                  <div className="bg-surface border-foreground/10 flex items-center justify-center rounded-lg border px-10 py-14">
+                    <SymbolSvg className="h-8 w-auto" />
+                  </div>
                 </div>
 
-                {/* Lockup on dark */}
-                <div className="bg-dark mt-3 flex items-center justify-center rounded-lg px-10 py-16">
-                  <LogoSvg
-                    className="h-8 w-auto text-white"
-                    preserveAspectRatio="xMidYMid meet"
+                {/* Lockup + Symbol on dark */}
+                <p className="text-foreground/50 mb-3 text-xs font-medium tracking-wider uppercase">
+                  On dark
+                </p>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-dark flex items-center justify-center rounded-lg px-10 py-14">
+                    <LogoSvg
+                      className="h-7 w-auto text-white"
+                      preserveAspectRatio="xMidYMid meet"
+                    />
+                  </div>
+                  <div className="bg-dark flex items-center justify-center rounded-lg px-10 py-14">
+                    <SymbolSvg className="h-8 w-auto text-white" />
+                  </div>
+                </div>
+
+                {/* Mono reference */}
+                <p className="text-foreground/50 mt-6 text-sm">
+                  Always use the monochrome version — black on light
+                  backgrounds, white on dark. Never colorize the logo.
+                </p>
+                <a
+                  href="/admin/brand?tab=avatar"
+                  className="text-foreground hover:text-foreground/50 mt-4 inline-flex items-center gap-1 text-sm transition-colors"
+                >
+                  <Download className="size-3" />
+                  Download logo assets
+                </a>
+              </section>
+
+              {/* ─── Clearspace & Minimum Size ─── */}
+              <section id="clearspace" ref={setRef("clearspace")}>
+                <h2 className="text-foreground mb-2 text-lg font-semibold">
+                  Clearspace &amp; Minimum Size
+                </h2>
+                <p className="text-foreground/50 mb-8 text-sm">
+                  Maintain a minimum clear zone around the logo. The unit
+                  &ldquo;x&rdquo; equals the height of the symbol mark.
+                </p>
+                <div className="grid grid-cols-[3fr_1fr] gap-x-8 gap-y-6">
+                  <NextImage
+                    src={logoSpace}
+                    alt="Lockup clearspace specification"
+                    className="w-full"
+                  />
+                  <NextImage
+                    src={symbolSpace}
+                    alt="Symbol clearspace specification"
+                    className="w-full"
+                  />
+                </div>
+                <div className="mt-6 grid max-w-lg grid-cols-[3fr_1fr] items-end gap-x-16">
+                  <NextImage
+                    src={logoSize}
+                    alt="Lockup minimum size specification"
+                    className="w-full"
+                  />
+                  <NextImage
+                    src={symbolSize}
+                    alt="Symbol minimum size specification"
+                    className="w-full"
+                  />
+                </div>
+              </section>
+
+              {/* ─── Incorrect Usage ─── */}
+              <section id="incorrect" ref={setRef("incorrect")}>
+                <h2 className="text-foreground mb-2 text-lg font-semibold">
+                  Incorrect Usage
+                </h2>
+                <p className="text-foreground/50 mb-6 text-sm">
+                  Preserve the integrity of the logo. Avoid the following
+                  modifications in all contexts.
+                </p>
+                <div className="grid grid-cols-3 gap-4">
+                  {[
+                    incorrectUsage01,
+                    incorrectUsage02,
+                    incorrectUsage03,
+                    incorrectUsage04,
+                    incorrectUsage05,
+                    incorrectUsage06,
+                  ].map((src, i) => (
+                    <NextImage
+                      key={i}
+                      src={src}
+                      alt={`Incorrect usage example ${i + 1}`}
+                      className="w-full rounded-lg"
+                    />
+                  ))}
+                </div>
+              </section>
+
+              {/* ─── Co-branding ─── */}
+              <section id="cobranding" ref={setRef("cobranding")}>
+                <h2 className="text-foreground mb-2 text-lg font-semibold">
+                  Co-branding
+                </h2>
+                <p className="text-foreground/50 mb-8 text-sm">
+                  When the WaveSpeed logo appears alongside a partner brand,
+                  separate them with a vertical divider. Align to the x-height
+                  of the wordmark and maintain 1.5&times; clear space on both
+                  sides of the divider.
+                </p>
+                <div className="grid grid-cols-[3fr_1fr] place-items-center gap-6">
+                  <NextImage
+                    src={logoCoSpace}
+                    alt="Co-branding lockup with partner logo spacing"
+                    className="w-full"
+                  />
+                  <NextImage
+                    src={symbolCoSpace}
+                    alt="Co-branding symbol with partner logo spacing"
+                    className="w-full"
+                  />
+                </div>
+                <div className="mt-6 grid max-w-lg grid-cols-[3fr_1fr] place-items-center gap-x-16">
+                  <NextImage
+                    src={logoCoEg}
+                    alt="Co-branding lockup example"
+                    className="w-full"
+                  />
+                  <NextImage
+                    src={symbolCoEg}
+                    alt="Co-branding symbol example"
+                    className="w-full"
                   />
                 </div>
               </section>
@@ -451,14 +623,19 @@ export default function GuidelinesPage() {
                       cinematic optical art, surreal and time-stretched. Macro
                       lens, ultra-detailed.
                     </p>
-                    <a
-                      href="/prompt/template.json"
-                      download
-                      className="text-foreground hover:text-foreground/50 mt-4 inline-flex items-center gap-1 text-xs transition-colors"
-                    >
-                      <Download className="size-3" />
-                      template.json
-                    </a>
+                    <div className="mt-4 flex items-center gap-3">
+                      <a
+                        href="/prompt/template.json"
+                        download
+                        className="text-foreground hover:text-foreground/50 inline-flex items-center gap-1 text-xs transition-colors"
+                      >
+                        <Download className="size-3" />
+                        template.json{" "}
+                      </a>
+                      <span className="text-foreground/70 text-xs">
+                        Works with WaveSpeed Desktop
+                      </span>
+                    </div>
                   </PromptCard>
 
                   <PromptCard

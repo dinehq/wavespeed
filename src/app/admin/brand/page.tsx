@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import NextImage from "next/image";
 import { AdminNav } from "@/components/admin-nav";
 import slide1 from "@/images/slide-1.webp";
@@ -823,7 +824,14 @@ function Toggle({
 // ─── Main Page ───────────────────────────────────────────
 
 export default function AdminBrandPage() {
-  const [config, setConfig] = useState<BrandConfig>(DEFAULT_CONFIG);
+  const searchParams = useSearchParams();
+  const [config, setConfig] = useState<BrandConfig>(() => {
+    const tab = searchParams.get("tab") as AssetType | null;
+    if (tab && ["avatar", "banner", "post"].includes(tab)) {
+      return { ...DEFAULT_CONFIG, assetType: tab };
+    }
+    return DEFAULT_CONFIG;
+  });
   const [logoImg, setLogoImg] = useState<HTMLImageElement | null>(null);
   const [bgImg, setBgImg] = useState<HTMLImageElement | null>(null);
   const [fontsReady, setFontsReady] = useState(false);
