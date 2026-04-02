@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import NextImage from "next/image";
 import { AdminNav } from "@/components/admin-nav";
@@ -824,6 +824,14 @@ function Toggle({
 // ─── Main Page ───────────────────────────────────────────
 
 export default function AdminBrandPage() {
+  return (
+    <Suspense>
+      <AdminBrandPageInner />
+    </Suspense>
+  );
+}
+
+function AdminBrandPageInner() {
   const searchParams = useSearchParams();
   const [config, setConfig] = useState<BrandConfig>(() => {
     const tab = searchParams.get("tab") as AssetType | null;
