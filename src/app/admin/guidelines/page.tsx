@@ -304,7 +304,7 @@ export default function GuidelinesPage() {
                     <NextImage
                       src={logoSpace}
                       alt="Lockup clearspace specification"
-                      className="w-0 min-w-0 flex-[3]"
+                      className="w-0 min-w-0 flex-3"
                     />
                     <NextImage
                       src={symbolSpace}
@@ -316,7 +316,7 @@ export default function GuidelinesPage() {
                     <NextImage
                       src={logoSize}
                       alt="Lockup minimum size specification"
-                      className="w-0 min-w-0 flex-[3]"
+                      className="w-0 min-w-0 flex-3"
                     />
                     <NextImage
                       src={symbolSize}
