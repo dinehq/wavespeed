@@ -104,12 +104,7 @@ function PromptCard({
   return (
     <div className="border-foreground/10 flex overflow-hidden rounded-lg border">
       <div className="relative aspect-square w-48 shrink-0 overflow-hidden bg-black">
-        <NextImage
-          src={imageSrc}
-          alt={category}
-          fill
-          className="object-cover"
-        />
+        <NextImage src={imageSrc} alt={category} fill className="object-fill" />
       </div>
       <div className="flex min-w-0 flex-1 items-start gap-3 px-4 py-3">
         <div className="min-w-0 flex-1">
@@ -232,13 +227,13 @@ export default function GuidelinesPage() {
                   On light
                 </p>
                 <div className="mb-4 grid grid-cols-2 gap-3">
-                  <div className="bg-surface border-foreground/10 flex items-center justify-center rounded-lg border px-10 py-14">
+                  <div className="flex items-center justify-center rounded-lg border border-black/10 bg-white px-10 py-14 text-black">
                     <LogoSvg
                       className="h-7 w-auto"
                       preserveAspectRatio="xMidYMid meet"
                     />
                   </div>
-                  <div className="bg-surface border-foreground/10 flex items-center justify-center rounded-lg border px-10 py-14">
+                  <div className="flex items-center justify-center rounded-lg border border-black/10 bg-white px-10 py-14 text-black">
                     <SymbolSvg className="h-8 w-auto" />
                   </div>
                 </div>
@@ -286,24 +281,24 @@ export default function GuidelinesPage() {
                   <NextImage
                     src={logoSpace}
                     alt="Lockup clearspace specification"
-                    className="w-full"
+                    className="w-full dark:invert"
                   />
                   <NextImage
                     src={symbolSpace}
                     alt="Symbol clearspace specification"
-                    className="w-full"
+                    className="w-full dark:invert"
                   />
                 </div>
                 <div className="mt-6 grid max-w-lg grid-cols-[3fr_1fr] items-end gap-x-16">
                   <NextImage
                     src={logoSize}
                     alt="Lockup minimum size specification"
-                    className="w-full"
+                    className="w-full dark:invert"
                   />
                   <NextImage
                     src={symbolSize}
                     alt="Symbol minimum size specification"
-                    className="w-full"
+                    className="w-full dark:invert"
                   />
                 </div>
               </section>
@@ -317,21 +312,46 @@ export default function GuidelinesPage() {
                   Preserve the integrity of the logo. Avoid the following
                   modifications in all contexts.
                 </p>
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
                   {[
-                    incorrectUsage01,
-                    incorrectUsage02,
-                    incorrectUsage03,
-                    incorrectUsage04,
-                    incorrectUsage05,
-                    incorrectUsage06,
-                  ].map((src, i) => (
-                    <NextImage
-                      key={i}
-                      src={src}
-                      alt={`Incorrect usage example ${i + 1}`}
-                      className="w-full rounded-lg"
-                    />
+                    {
+                      src: incorrectUsage01,
+                      caption: "Do not change the color or outline the logo.",
+                    },
+                    {
+                      src: incorrectUsage02,
+                      caption: "Do not add any effects to the logo.",
+                    },
+                    {
+                      src: incorrectUsage03,
+                      caption:
+                        "Do not change the typeface within the wordmark.",
+                    },
+                    {
+                      src: incorrectUsage04,
+                      caption:
+                        "Do not distort, rotate, or otherwise modify the logo.",
+                    },
+                    {
+                      src: incorrectUsage05,
+                      caption: "Do not rearrange or resize the logo elements.",
+                    },
+                    {
+                      src: incorrectUsage06,
+                      caption:
+                        "Do not place the logo over a low-contrast part of an image.",
+                    },
+                  ].map((item, i) => (
+                    <figure key={i}>
+                      <NextImage
+                        src={item.src}
+                        alt={item.caption}
+                        className="w-full rounded-lg"
+                      />
+                      <figcaption className="text-foreground/40 mt-2 text-xs">
+                        {item.caption}
+                      </figcaption>
+                    </figure>
                   ))}
                 </div>
               </section>
@@ -351,24 +371,24 @@ export default function GuidelinesPage() {
                   <NextImage
                     src={logoCoSpace}
                     alt="Co-branding lockup with partner logo spacing"
-                    className="w-full"
+                    className="w-full dark:invert"
                   />
                   <NextImage
                     src={symbolCoSpace}
                     alt="Co-branding symbol with partner logo spacing"
-                    className="w-full"
+                    className="w-full dark:invert"
                   />
                 </div>
                 <div className="mt-6 grid max-w-lg grid-cols-[3fr_1fr] place-items-center gap-x-16">
                   <NextImage
                     src={logoCoEg}
                     alt="Co-branding lockup example"
-                    className="w-full"
+                    className="w-full dark:invert"
                   />
                   <NextImage
                     src={symbolCoEg}
                     alt="Co-branding symbol example"
-                    className="w-full"
+                    className="w-full dark:invert"
                   />
                 </div>
               </section>
@@ -543,40 +563,47 @@ export default function GuidelinesPage() {
                         role: "Hero",
                         classes:
                           "font-display text-5xl font-bold leading-none tracking-tighter",
+                        meta: "bold · leading-none",
                         sample: "Next-gen AI",
                       },
                       {
                         role: "Page title",
                         classes:
                           "font-display text-2xl font-bold tracking-tighter",
+                        meta: "bold · leading-normal",
                         sample: "Featured Models",
                       },
                       {
                         role: "Section",
                         classes:
                           "font-display text-xl font-medium tracking-tight",
+                        meta: "medium · leading-normal",
                         sample: "Built for speed",
                       },
                       {
                         role: "Body",
                         classes: "text-base",
+                        meta: "regular · leading-relaxed",
                         sample:
                           "Generate images, video, and speech with state-of-the-art AI models.",
                       },
                       {
                         role: "Small body",
                         classes: "text-subtle text-sm",
+                        meta: "regular · leading-relaxed",
                         sample:
                           "WaveSpeed runs on optimized infrastructure so you get results faster.",
                       },
                       {
                         role: "Caption",
                         classes: "text-foreground/50 text-xs",
+                        meta: "regular · leading-normal",
                         sample: "Pricing may vary by region.",
                       },
                       {
                         role: "CTA",
                         classes: "text-sm font-semibold",
+                        meta: "semibold · leading-normal",
                         sample: "Get Started Free",
                       },
                     ].map((row) => (
@@ -587,7 +614,12 @@ export default function GuidelinesPage() {
                         <span className="text-foreground/30 w-20 shrink-0 text-xs">
                           {row.role}
                         </span>
-                        <p className={row.classes}>{row.sample}</p>
+                        <p className={`min-w-0 flex-1 ${row.classes}`}>
+                          {row.sample}
+                        </p>
+                        <span className="text-foreground/30 shrink-0 font-mono text-xs">
+                          {row.meta}
+                        </span>
                       </div>
                     ))}
                   </div>
