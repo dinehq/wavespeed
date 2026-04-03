@@ -5,10 +5,10 @@ import NextImage from "next/image";
 import { Copy, Check, Download } from "lucide-react";
 import { AdminNav } from "@/components/admin-nav";
 import LogoSvg from "@/images/logo.svg";
-import logoSpace from "@/images/logo space.webp";
-import symbolSpace from "@/images/symbol space.webp";
-import logoSize from "@/images/logo size.webp";
-import symbolSize from "@/images/symbol size.webp";
+import logoSpace from "@/images/logo-space.webp";
+import symbolSpace from "@/images/symbol-space.webp";
+import logoSize from "@/images/logo-size.webp";
+import symbolSize from "@/images/symbol-size.webp";
 import incorrectUsage01 from "@/images/incorrect-usage01.webp";
 import incorrectUsage02 from "@/images/incorrect-usage02.webp";
 import incorrectUsage03 from "@/images/incorrect-usage03.webp";
@@ -277,28 +277,28 @@ export default function GuidelinesPage() {
                   Maintain a minimum clear zone around the logo. The unit
                   &ldquo;x&rdquo; equals the height of the symbol mark.
                 </p>
-                <div className="grid grid-cols-[3fr_1fr] gap-x-8 gap-y-6">
+                <div className="flex flex-col items-start gap-6">
                   <NextImage
                     src={logoSpace}
                     alt="Lockup clearspace specification"
-                    className="w-full dark:invert"
+                    className="h-auto w-full dark:invert"
                   />
                   <NextImage
                     src={symbolSpace}
                     alt="Symbol clearspace specification"
-                    className="w-full dark:invert"
+                    className="h-auto w-full dark:invert"
                   />
                 </div>
-                <div className="mt-6 grid max-w-lg grid-cols-[3fr_1fr] items-end gap-x-16">
+                <div className="mt-10 flex flex-wrap items-end gap-8">
                   <NextImage
                     src={logoSize}
                     alt="Lockup minimum size specification"
-                    className="w-full dark:invert"
+                    className="h-32 w-auto max-w-full dark:invert"
                   />
                   <NextImage
                     src={symbolSize}
                     alt="Symbol minimum size specification"
-                    className="w-full dark:invert"
+                    className="h-32 w-auto max-w-full dark:invert"
                   />
                 </div>
               </section>
@@ -367,28 +367,28 @@ export default function GuidelinesPage() {
                   of the wordmark and maintain 1.5&times; clear space on both
                   sides of the divider.
                 </p>
-                <div className="grid grid-cols-[3fr_1fr] place-items-center gap-6">
+                <div className="flex flex-col items-start gap-6">
                   <NextImage
                     src={logoCoSpace}
                     alt="Co-branding lockup with partner logo spacing"
-                    className="w-full dark:invert"
+                    className="h-auto w-full dark:invert"
                   />
                   <NextImage
                     src={symbolCoSpace}
                     alt="Co-branding symbol with partner logo spacing"
-                    className="w-full dark:invert"
+                    className="h-auto w-full dark:invert"
                   />
                 </div>
-                <div className="mt-6 grid max-w-lg grid-cols-[3fr_1fr] place-items-center gap-x-16">
+                <div className="mt-10 flex flex-wrap items-end gap-8">
                   <NextImage
                     src={logoCoEg}
                     alt="Co-branding lockup example"
-                    className="w-full dark:invert"
+                    className="h-16 w-auto max-w-full dark:invert"
                   />
                   <NextImage
                     src={symbolCoEg}
                     alt="Co-branding symbol example"
-                    className="w-full dark:invert"
+                    className="h-16 w-auto max-w-full dark:invert"
                   />
                 </div>
               </section>
